@@ -1,2 +1,0 @@
-# DOM and Web Browser
-
