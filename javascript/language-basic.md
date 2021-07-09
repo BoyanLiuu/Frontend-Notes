@@ -264,7 +264,7 @@ console.log(str1 instanceof Object) //false
 * == check for value equality with coercion allowed,
 * === checks for both value equality without coercion allowed, This is often called strict equality
 
-## 5.equal and not equal:
+## 5.equal and not equal
 
 * Convert equal to 0 or 1 and then compare
 * If one is string and another one is number, convert string to number first
@@ -284,7 +284,7 @@ console.log(str1 instanceof Object) //false
 
 
 
-## 6.Detecting array:
+## 6.Detecting array
 
 ```text
 //Method 1
@@ -514,7 +514,7 @@ console.log(getSum(...values, ...[5,6,7])); // 28
 
 
 
-## 12 .Functions:
+## 12 .Functions
 
 ### new.target in function
 
@@ -535,7 +535,7 @@ King(); // Error: King must be instantiated using "new"
 
 *  New in ECMAScript 6 is the ability to determine if a function was   invoked with the new keyword using _**new.target**_ If a function is called normally, new.target will   be undefined. 
 
-### Function properties and methods
+### Function properties
 
 ```text
 function sayName(name) {
@@ -553,19 +553,271 @@ function sayHi() {
 console.log(sayName.length); // 1
 console.log(sum.length); // 2
 console.log(sayHi.length); // 0
+console.log(sayHi.name);// "sayHi"
 ```
 
-* Each function has two properties: length and prototype. The length property indicates
-
-  the number of named arguments that the function expects
-
+* Each function has 3 properties: **length and prototype, name**. The **length property** indicates   the number of named arguments that the function expects, **name give its name**
 * In strict mode, the this value of a function called without a context   object is not coerced to window. Instead, this becomes undefined unless explicitly set by either attaching the function to an object or using apply\(\) or call\(\).
 
-## 13. binda & apply 
+### Function method :bind,call & apply 
 
-### bind
+* Both call the function with a specific **this** value,  effective setting the value of this object inside the function body.
+
+### bind:
+
+```text
+window.color = 'red';
+var o = {
+ color: 'blue'
+};
+
+function sayColor() {
+ console.log(this.color);
+}
+let objectSayColor = sayColor.bind(o);
+objectSayColor(); // blue
+```
+
+* Definded in the ECMAScript 5, It create a new function instance whose this value is bound to the value that was passed into bind\(\);
+* a new function called objectSayColor\(\) is created from sayColor\(\) by calling bind\(\) and   passing in the object o. The objectSayColor\(\) function has a this value equivalent to o,
+
+### call
+
+```text
+function Product(name, price) {
+  this.name = name;
+  this.price = price;
+}
+
+function Food(name, price) {
+  //we call function by using new operator
+  // so we are attaching it to the Food object,
+  //so this == Food object
+  Product.call(this, name, price);
+  this.name = name;
+  this.price = price;
+
+}
+
+console.log(new Food('cheese', 5).price);//5
+
+
+window.color = 'red';
+let o = {
+ color: 'blue'
+};
+
+function sayColor() {
+ console.log(this.color);
+}
+
+sayColor(); // red
+
+sayColor.call(this); // red
+sayColor.call(window); // red
+sayColor.call(o); // blue
+```
+
+* The first argument is the this value, but the remaining arguments are passed directly into the   function. 
 
 ### apply
+
+```text
+function sum(num1, num2) {
+ return num1 + num2;
+}
+
+function callSum1(num1, num2) {
+ return sum.apply(this, arguments); // passing in arguments object
+}
+
+function callSum2(num1, num2) {
+ return sum.apply(this, [num1, num2]); // passing in array
+}
+
+console.log(callSum1(10, 10)); // 20
+console.log(callSum2(10, 10)); // 20
+```
+
+* It accepts two arguments: the value of this inside the function and an
+
+  array of arguments, the second argument can be an array or arguments
+
+### What is difference between call apply?
+
+* apply requires an array as its second argument wheres call requires the parameters to be listed explicitly.
+
+
+
+### Private Variables:
+
+```text
+function MyObject() {
+ // private variables and functions
+ let privateVariable = 10;
+
+ function privateFunction() {
+ return false;
+ }
+
+ // privileged methods
+ this.publicMethod = function() {
+ privateVariable++;
+ return privateFunction();
+ };
+}
+
+let a = new MyObject();
+console.log(a.privateVariable);// undefined
+```
+
+* publicMethod: This is one way to create privileged methods on object\(inside a constructor\) 
+* 
+### StaticPrivateVariables:
+
+* Here is another way to create privileged methods , using private scope to define the private variables or   functions.
+* In this pattern, a private scope is created to **enclose the constructor and its methods**. The private   variables and functions are defined first, followed by the constructor and the public methods. Public methods are defined on the prototype, as in the typical **prototype pattern**
+* This would create static private variables for better code reuse through prototype., although each instance doesn't have its own private variable.
+
+```text
+(function() {
+ // private variables and functions
+ let privateVariable = 10;
+
+ function privateFunction() {
+ return false;
+ }
+
+ // constructor
+ MyObject = function() {};
+
+ // public and privileged methods
+ MyObject.prototype.publicMethod = function() {
+ privateVariable++;
+ return privateFunction();
+ };
+})();
+
+
+let a =  new MyObject ();
+console.log(a.publicMethod());//false
+console.log(a.privateVariable);//undefined
+```
+
+* publicMethod is defined on its prototype,
+* Initializaing an undeclared variable always creates a global variable, so MyObject becomes global and available   outside the private scope
+* **publicMethod**: being a closure, always holds a reference to the containing scope. so that is why he can access privateVariable 
+
+```text
+(function() {
+ let name = '';
+
+ Person = function(value) {
+ name = value;
+ };
+
+ Person.prototype.getName = function() {
+ return name;
+ };
+
+ Person.prototype.setName = function(value) {
+ name = value;
+ };
+})();
+
+let person1 = new Person('Nicholas');
+console.log(person1.getName()); // 'Nicholas'
+person1.setName('Matt');
+console.log(person1.getName()); // 'Matt'
+
+let person2 = new Person('Michael');
+console.log(person1.getName()); // 'Michael'
+console.log(person2.getName()); // 'Michael'
+
+```
+
+
+
+## 13 Closure
+
+* It is when an inner function has access to variables in the outer scope That all functions are closures in javascript
+* Common use of closure
+  * For object Data Privacy， have private variable, private method
+  * In event Handlers
+  * In callback Functions
+  * Currying
+
+### Immediately invoked function expression
+
+```text
+// IIFE
+(function () {
+ for (var i = 0; i < count; i++) {
+ console.log(i);
+ }
+})();
+```
+
+* An anonymous function that is called immediately
+
+### 问题
+
+
+
+## 14：This object
+
+```text
+//Ex1
+window.identity = 'The Window';
+                   
+let object = {
+  identity: 'My Object',           
+  getIdentityFunc() {
+    return function() {
+      return this.identity;
+    };
+  }
+};
+                   
+console.log(object.getIdentityFunc()());  // 'The Window'
+
+
+//Solution 1
+window.identity = 'The Window';
+
+let object = {
+ identity: 'My Object',
+ getIdentityFunc() {
+ let that = this;
+ return function() {
+ return that.identity;
+ };
+ }
+};
+
+console.log(object.getIdentityFunc()()); // 'My Object'
+```
+
+* When a function is not   defined using the arrow syntax, the this object is bound at runtime based on the context in which   a function is executed: 
+  * when used inside global functionsm, this is equal to **window in nonstrict** mode     and undefined in strict mode
+  * this is equal to the object when called as an object method
+* **Ex1:**  getIdentityFunc\(\) returns a function, so calling this function immediately call the function that is returned.
+  * Each function automatically gets two special variables as soon as the function is
+
+    called: **this and arguments.** An inner function can never access these variables directly from an outer     function
+
+  * Before     defining the anonymous function, a variable named that is assigned equal to the this object. When     the closure is defined, it has access to that because it is a uniquely named variable in the containing     function. Even after the function is returned, that is still bound to object, so calling object.getIdentityFunc\(\)  returns 'My Object'.
+* Both **this and arguments** behave in this way. If you want access to a   containing scope’s arguments object, you’ll need to save a reference into another   variable that the closure can access.
+
+
+
+## 15.
+
+
+
+
+
+
 
 
 
