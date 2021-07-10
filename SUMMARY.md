@@ -4,7 +4,7 @@
 * [HTML](html.md)
 * [CSS](css.md)
 * [Javascript](javascript/README.md)
-  * [Language Basic](javascript/language-basic.md)
+  * [Javascript](javascript/language-basic.md)
   * [Write your own JS API](javascript/write-your-own-js-api.md)
   * [Design Pattern](javascript/design-pattern.md)
   * [Security](javascript/security.md)

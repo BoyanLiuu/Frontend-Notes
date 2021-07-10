@@ -1,4 +1,4 @@
-# Language Basic
+# Javascript
 
 ## 1.Strict Mode
 
@@ -853,7 +853,7 @@ console.log(object.getIdentityFunc()()); // 'My Object'
 
 ## 15. Call Stack & Event Loop
 
-![](../.gitbook/assets/image%20%2817%29.png)
+![](../.gitbook/assets/image%20%2818%29.png)
 
 * call stack
   * stores all your running JavaScript code. The interpreter reads the code line-by-line
@@ -940,7 +940,7 @@ console.log(months);
 
 ## 17. Destructuring
 
-![](../.gitbook/assets/image%20%2816%29.png)
+![](../.gitbook/assets/image%20%2817%29.png)
 
 ```text
 // Q1 Get name of second object 
@@ -1038,7 +1038,7 @@ Object destructuring follows a syntax similar to creating an object literal but 
 
 
 
-## Event Handling
+## 18. Event Handling
 
 ```text
 let btn = document.getElementById("myBtn");
@@ -1072,7 +1072,7 @@ btn.removeEventListener("click", handler, false); // works!
 
 
 
-### 18.Event bubbling
+### Event bubbling
 
 * When an event happens on an element, it first runs the handlers on it, then on its parent, then all the way up on other ancestors.  **Goes all the way to html**
 * How to stop bubbling?
@@ -1105,7 +1105,7 @@ parent.addEventListener(
 
 
 
-## 18. Security
+## 19. Security
 
 ### Same origin Policy
 
@@ -1139,6 +1139,228 @@ document.domain = "company.com"
   * **URL5**: We set document.domain to company.com for url5; this means we are allowing the subdomain xyz.company.com to access its parent’s company.com's resources.
     * However, that means we need to do the same for url1; this step will indicate that url1 wishes to allow url5 to access its resources.Now, url5 can pass the same-origin check with url1. Implementing the above-mentioned steps allows url5 to pass the port number check as well. How is that?
     * The port number is checked separately; any call to `document.domain` overwrites the port number to null. Calling this statement for url5 sets its port number to null. Since both url1 and url5 need to have the same port number, we need to execute this statement for url1 as well. In the example above, we do exactly that; now, url5 will be of the same origin as url1.
+
+
+
+## 19. The client side storage
+
+### cookies
+
+```text
+document.cookie = encodeURIComponent("name") + "=" +
+ encodeURIComponent("Nicholas");
+ 
+ document.cookie = encodeURIComponent("name") + "=" +
+ encodeURIComponent("Nicholas") + "; domain=.wrox.com; path=/";
+ 
+ class CookieUtil {
+ static get(name) {
+ let cookieName = `${encodeURIComponent(name)}=`,
+ cookieStart = document.cookie.indexOf(cookieName),
+ cookieValue = null;
+
+ if (cookieStart > -1){
+ let cookieEnd = document.cookie.indexOf(";", cookieStart);
+ if (cookieEnd == -1){
+ cookieEnd = document.cookie.length;
+ }
+ cookieValue = decodeURIComponent(document.cookie.substring(cookieStart
+ + cookieName.length, cookieEnd));
+ }
+
+ return cookieValue;
+ }
+
+ static set(name, value, expires, path, domain, secure) {
+ let cookieText =
+ `${encodeURIComponent(name)}=${encodeURIComponent(value)}`
+
+ if (expires instanceof Date) {
+ cookieText += `; expires=${expires.toGMTString()}`;
+ }
+
+ if (path) {
+ cookieText += `; path=${path}`;
+ }
+
+ if (domain) {
+ cookieText += `; domain=${domain}`;
+ }
+
+ if (secure) {
+ cookieText += "; secure";
+ }
+
+ document.cookie = cookieText;
+ }
+ static unset(name, path, domain, secure) {
+ CookieUtil.set(name, "", new Date(0), path, domain, secure);
+ }
+}; 
+ 
+ 
+```
+
+* This HTTP response sets a cookie with the name of "name" and a value of "value". Both the name   and the value are **URL-encoded** when sent
+* To specify additional information about the created cookie, just append it to string in the same format as the Set-Cookie header
+* Cookie get method:
+  * We first use indexOf\(\) to find its occurrence,
+  * Then the next indexOf is used to find the next semicolon after that location.
+  * If the semicolon isn’t found, this means that the cookie is the last one in the string.
+
+### session storage
+
+```text
+// Save data to sessionStorage
+sessionStorage.setItem('key', 'value');
+
+// Get saved data from sessionStorage
+let data = sessionStorage.getItem('key');
+
+// Remove saved data from sessionStorage
+sessionStorage.removeItem('key');
+
+// Remove all saved data from sessionStorage
+sessionStorage.clear();
+```
+
+* Around 5MB
+* Do not store sensitive information because the data   cache isn’t encrypted
+* The data is stored **until the browser is closed,**
+* 
+  **When to use:** It should only be used primary for small pieces of data that are valid only for a session.
+
+### local storage
+
+* Around 5MB
+* Do not store sensitive information because the data   cache isn’t encrypted
+* Permanent storage
+* In order to access the same localStorage object, pages must   be served  followed same origin policy
+
+## 19 Client Detection
+
+```text
+ function isIOS() {
+  return /iphone|ipad|itouch/i.test(navigator.userAgent);
+}
+
+
+ function isAndroid() {
+  return /android/i.test(navigator.userAgent);
+}
+```
+
+
+
+* The Navigator userAgent property is used for returning the user-agent header’s value sent to the server by the browser. It returns a string representing values such as the name, version, and platform of the browser.
+
+## **20.** The Document Object Model
+
+* Api that treats HTML and XML documents as tree structures with nodes
+* The DOM is constructed in the browser as the page loads
+
+### **Window VS document:**
+
+* window is that global object that holds global variables, global functions, location, history everything is under it. Besides, setTimeout, ajax call \(XMLHttpRequest\), console or localStorage are part of window
+* the document is also under the window. document is a property of the window object. document represents the DOM and DOM is the object oriented representation of the html markup you have written. All the nodes are part of document
+
+### **W**indow.onload vs document.onload
+
+* window.onload is fired when DOM is ready and all the contents including images, css, scripts, sub-frames, etc. finished loaded. This means everything is loaded.
+* document.onload is fired when DOM \(DOM tree built from markup code within the document\)is ready which can be prior to images and other external content is loaded.Think about the differences between window and document, this would be easier for you.
+
+### Node 
+
+#### Node name
+
+* `xx.nodeName == tag name`
+
+#### Node type
+
+![](../.gitbook/assets/image%20%2816%29.png)
+
+* There are 12 numeric constants on the Node type
+
+#### Node manipulation
+
+```text
+ someNode.firstNode
+ someNode.lastNode
+ someNode.parentNode
+ someNode.childNodes[0];
+ 
+someNode.nextSibling
+// adds a node to the end of the childNodes
+ someNode.appendChild(newNode);
+ 
+// insert as last child
+returnedNode = someNode.insertBefore(newNode, null);
+alert(newNode == someNode.lastChild); // true
+
+// insert as the new first child
+returnedNode = someNode.insertBefore(newNode, someNode.firstChild);
+alert(returnedNode == newNode); // true
+alert(newNode == someNode.firstChild); // true
+
+// insert before last child
+returnedNode = someNode.insertBefore(newNode, someNode.lastChild);
+alert(newNode == someNode.childNodes[someNode.childNodes.length - 2]); // true
+
+// replace first child
+someNode.replaceChild(newNode, someNode.firstChild);
+
+//remove child
+ this.removeChild(e.target);   
+```
+
+### Get elements  from dom:
+
+* getElementById
+* getElementsByName
+* getElementsByTagName
+* getElementsByTagNameNS
+  * with the given tag name belonging to the given namespace
+* getElementsByClassName
+* querySelector
+* querySelectorAll
+
+### How come, I can't use forEach or similar array methods on a NodeList?
+
+* Both array and nodeList have length and you can loop through elements but they are not same object.
+
+* Both are inherited from Object. However array has different prototype object than nodeList. forEach, map, etc are on array.prototype which doesn't exist in the NodeList.prototype object. Hence, you don't have forEach
+
+### How to solve previous question?
+
+```text
+let nodesArray = Array.prototype.slice.call(myNodeList);
+```
+
+*  It create an empty array, then iterate through the object it's running on \(originally an array, now a NodeList\) and keep appending the elements of that object to the empty array it created, which is eventually returned
+
+### How could you make sure to run some javaScript when DOM is ready like $\(document\).ready?
+
+1. Put your script in the last tag of html body element. DOM would be ready by the time browser hits the script tag.
+2.  `document.addEventListener('DOMContentLoaded')`
+3. Watch changes in the readyState of the document. And the last state is "complete" state, you can put your code there  , either loading, or complete ![](../.gitbook/assets/image%20%2819%29.png) 
+
+### The classList property
+
+```text
+div.classList.remove('dsiabled');
+div.classList.add('dsiabled');
+div.classList.toggle('dsiabled');
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
