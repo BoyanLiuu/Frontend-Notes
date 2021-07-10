@@ -762,7 +762,47 @@ console.log(person2.getName()); // 'Michael'
 
 ### 问题
 
+```text
+//Q1
+const array = [5, 11, 18, 25];
+for (var i = 0; i < array.length; i++) {
+  setTimeout(function() {
+    console.log('Element: ' + array[i] + ', at index: ' + i);
+  }, 3000);
+}
 
+//Q2 how to fix about question?
+
+// Solution 1
+const array = [5, 11, 18, 25];
+for (let i = 0; i < array.length; i++) {
+  setTimeout(function() {
+    console.log('Element: ' + array[i] + ', at index: ' + i);
+    }, 3000);
+}
+
+
+// Solution 2
+const array = [5, 11, 18, 25];
+for (var i = 0; i < array.length; i++) {
+  setTimeout((function(local_i) {
+  return function(){
+  console.log('Element: ' + array[local_i] + ', at index: ' + local_i);
+  }
+ })(i), 3000);
+}
+
+
+// end of solution for Q2
+```
+
+### 解析
+
+1. Output:  Element: undefined, at index:4     乘4
+   1. on each iteration, the setTimeout will be triggered,since it’s an asynchronous web API, the command enters the event queue, after which the next loop iteration occurs. Hence, the event queue waits for the loop commands to execute first and call stack to get empty, after which the four setTimeout commands move from the event queue to call stack and execute.
+2.  There are 2 possible solution:
+   1. Using Es6 featre, **let**   It  creates a new binding for each loop iteration, each i refers to the binding of one specific iteration and preserves the value that was current at that time
+   2. **Using IFFE**: That function takes the parameter local\_i, that is the variable i. It calls another function in return, an anonymous function that displays the value of i stored in the variable local\_i
 
 ## 14：This object
 
@@ -811,7 +851,294 @@ console.log(object.getIdentityFunc()()); // 'My Object'
 
 
 
-## 15.
+## 15. Call Stack & Event Loop
+
+![](../.gitbook/assets/image%20%2817%29.png)
+
+* call stack
+  * stores all your running JavaScript code. The interpreter reads the code line-by-line
+* event table
+  *  This table is responsible for moving the asynchronous code to the event queue after a specified time
+* event loop:
+  * Itt is responsible for keeping check of both the call stack and the event queue. It keeps checking if all the statements from the call stack have finished execution; that is, if the call stack is empty. If so, it pops the statement from the event queue \(if present\) to the call stack to execute.
+
+### 问题：
+
+```text
+//Q1
+console.log("Before Function")
+setTimeout(function(){
+  console.log("Inside Function")
+},3000)
+console.log("After Function")
+// Q1 answer: 
+//Before function, After Function , Inside Function
+```
+
+### 解析：
+
+
+
+## 16.Array splice\(\) & slice\(\):
+
+### slice\(\)
+
+```text
+const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+
+console.log(animals.slice(2));
+// expected output: Array ["camel", "duck", "elephant"]
+
+console.log(animals.slice(2, 4));
+// expected output: Array ["camel", "duck"]
+
+console.log(animals.slice(1, 5));
+// expected output: Array ["bison", "camel", "duck", "elephant"]
+
+console.log(animals.slice(-2));
+// expected output: Array ["duck", "elephant"]
+
+console.log(animals.slice(2, -1));
+// expected output: Array ["camel", "duck"]
+```
+
+* It is used to return all the values from the given start index \(first parameter\) to the given end index \(second parameter\)
+
+### splice\(\)
+
+```text
+//splice(start)
+//splice(start, deleteCount)
+//splice(start, deleteCount, item1)
+//splice(start, deleteCount, item1, item2, itemN)
+
+
+const months = ['Jan', 'March', 'April', 'June'];
+// deletion:
+months.splice(2, 1); ==== months.splice(2);
+console.log(months);
+// expected output: Array ["Jan", "March", "June"]
+
+// insert
+months.splice(1,0,'Feb');
+console.log(months);
+// expected output: Array ["Jan", "Feb", "March", "April", "June"]
+
+//replace
+months.splice(2,1,'Feb','July');
+console.log(months);
+// expected output: Array ["Jan", "March", "Feb", "July", "June"]
+```
+
+* It is method changes the contents of an array by removing or replacing existing elements and/or adding new elements in place
+* 
+
+
+
+
+
+
+## 17. Destructuring
+
+![](../.gitbook/assets/image%20%2816%29.png)
+
+```text
+// Q1 Get name of second object 
+const exampleObject = {
+   collection : [
+                  {name: "kelly",},
+                  {name: "Anna",}
+                ],
+}
+
+//Q1 solution: 
+const {collection: [,{name:secondObject,}]} = exampleObject
+
+
+//Q2 list returned with the first two elements removed
+function removeFirstTwo(list) {
+  return list
+} 
+
+//Q2 solution
+function removeFirstTwo(list) {
+  const [, , ...arr] = list; 
+  return arr;
+} 
+
+
+// Q3  return nth cat
+function returnNthCat(n){
+const state = {
+   cats : [
+      {catId : 1 , name : "tom"},
+      {catId : 2 , name : "tiggy"},
+      {catId : 3 , name : "leo"},
+      {catId : 4 , name : "nixie"}
+   ],
+   curpage : 3
+}
+}
+
+//Q3 solution
+function returnNthCat(n){
+const state = {
+   cats : [
+      {catId : 1 , name : "tom"},
+      {catId : 2 , name : "tiggy"},
+      {catId : 3 , name : "leo"},
+      {catId : 4 , name : "tommy"}
+   ],
+   curpage : 3
+}
+
+const { cats: { [n]:{name:thisCatName}}} = state;
+
+return thisCatName
+}
+console.log(returnNthCat(1))
+
+
+//Q4  implement the destructuring of undefined
+function pointValues(point){
+    const {name:n,age:a} = point 
+    console.log(n)
+    console.log(a)
+}
+//Solution 1
+function pointValues(point){
+    const {name:n,age:a} = {...point} 
+    console.log(n)
+    console.log(a)
+}
+pointValues({name:"jerry", age:2})
+pointValues(undefined)
+
+// solution 2
+function pointValues(point){
+    const {name:n,age:a} = point || {}
+    console.log(n)
+    console.log(a)
+}
+pointValues(undefined)
+pointValues({name: "jerry", age:2})
+```
+
+Object destructuring follows a syntax similar to creating an object literal but on the left-hand side
+
+1. we use **,** to skip first index element
+2.  we use rest operator to collect all the remaining values into an array
+3.  steps
+   1. We first access the cats property.
+   2. After accessing it, we need to decide which cat object to access given the value of n.
+   3. Since cats is an array, we access the specific cat object in the array using indexing \[n\] and store it in the thisCat property.
+4. Two solutions
+   1. using spread operator, we create a clone of object, The values undefined and null get ignored when passed in this case, and we get an empty new object.
+   2. using circus shortcut
+
+
+
+## Event Handling
+
+```text
+let btn = document.getElementById("myBtn");
+btn.addEventListener("click", () => {
+ console.log(this.id);
+}, false);
+btn.addEventListener("click", () => {
+ console.log("Hello world!");
+}, false);
+
+let btn = document.getElementById("myBtn");
+let handler = function() {
+ console.log(this.id);
+};
+btn.addEventListener("click", handler, false);
+
+// other code here
+
+btn.removeEventListener("click", handler, false); // works!
+```
+
+* we can add multiple eventListener , The event handlers fire in the order in which
+
+  they were added
+
+* `btn.removeEventListener()`   remove event listener or `btn.onclick = null` 
+
+### Internet Explorer Event Handlers
+
+* using attachEvent\(\) and detachEvent\(\)
+
+
+
+### 18.Event bubbling
+
+* When an event happens on an element, it first runs the handlers on it, then on its parent, then all the way up on other ancestors.  **Goes all the way to html**
+* How to stop bubbling?
+  * **event.stopPropagation\(\)**
+  * **event.cancelBubble\(\)**
+
+\*\*\*\*
+
+### Event Capturing
+
+```text
+parent.addEventListener(
+  "click",
+  function() {
+    console.log("Box is clicked");
+  },
+  true
+);
+```
+
+* when handler as true, we will have event capture, **it runs from top to bottom**
+* 
+### Event Delegation
+
+![](../.gitbook/assets/image%20%2815%29.png)
+
+* The solution to the too many event handlers issue
+* Event delegation takes   advantage of event bubbling to assign a single event handler to manage all events of a particular type
+* we add eventlistener on the parent div
+
+
+
+## 18. Security
+
+### Same origin Policy
+
+```text
+//Q1
+url1 = http://company.com/dir/page.html
+
+url2 = http://company.com/dir/inner/another.html
+
+url3 = https://company.com/dir/page.html
+
+url4 = http://sub.company.com/dir/page.html
+
+url5 = http://xyz.company.com/dir/page.html
+// in the code on xyz.company.com the following change is made
+document.domain = "company.com"
+// in the code on company.com the following change is made
+document.domain = "company.com"
+```
+
+* It allows the script in one page to access data in another page only if they have the same origin
+* It is a security protocol to prevent attacks like cross site scripting
+* How to checks that the same origin policy makes for two URLS?
+  * Same host name
+  * Same port number
+  * Same Protocol
+* Which of the urls have same origin comparison with url1?
+  * **Url2:** the hostname, port \(HTTP is port 80 by default\), and domain are the same for both URLs; only the path dir/inner/another.html is different
+  * Url3:It has a different protocol than url1, https instead of http;
+  * Url4: we can see that it has a different hostname; hence, it is not of the same origin.
+  * **URL5**: We set document.domain to company.com for url5; this means we are allowing the subdomain xyz.company.com to access its parent’s company.com's resources.
+    * However, that means we need to do the same for url1; this step will indicate that url1 wishes to allow url5 to access its resources.Now, url5 can pass the same-origin check with url1. Implementing the above-mentioned steps allows url5 to pass the port number check as well. How is that?
+    * The port number is checked separately; any call to `document.domain` overwrites the port number to null. Calling this statement for url5 sets its port number to null. Since both url1 and url5 need to have the same port number, we need to execute this statement for url1 as well. In the example above, we do exactly that; now, url5 will be of the same origin as url1.
 
 
 
