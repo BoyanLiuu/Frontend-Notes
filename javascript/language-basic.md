@@ -1358,7 +1358,104 @@ div.classList.toggle('dsiabled');
 
 
 
+## 21: Pure functions
 
+* Functions must be highly predictable, Given the same input, it should always return the same output.
+* Functions must return exactly value which is determined solely by its input.
+* Has no side effects.
+
+## 22. Higher Order Functions
+
+* Higher-Order functions accept functions as parameters or return a function as an output.
+* setTimeout, map, reduce
+
+## 23. Currying functions
+
+```text
+// Basic example 1
+function multiply(a,b,c){
+  return a*b*c
+}
+console.log(multiply(2,3,4))
+
+//curry function for example 1
+function multiply(a) {
+    return (b) => {
+        return (c) => {
+            return a * b * c
+        }
+    }
+}
+```
+
+* currying transforms a function into a sequence of nesting functions. Basically, it converts a function from `f(a,b,c)`  to this: `f(a)(b)(c)`
+* It involves taking a function with multiple arguments and returning a sequence of nested functions, each taking a single argument, eventually resolving to a value.
+
+### 问题:
+
+```text
+// Question 1
+function currying(func) {
+}
+function multiply(a, b, c) {
+    return a*b*c;
+}
+// Q1 要求 that takes any function and converts it into a currying function.
+let curried = currying(multiply);
+curried(2)(3)(4) //24
+curried(2,3)(4) //24
+
+// Q1 答案
+function currying(func) {
+    function curriedfunc(...args) {
+        if(args.length >= func.length) {
+            return func(...args);
+        } else {
+            return function(...next) {
+                return curriedfunc(...args,...next);
+            }
+        }
+    }
+    return curriedfunc;
+}
+```
+
+### 解析:
+
+* First, we are passing the function, func, to our function, currying \(line 1\).
+* The next step is to think about the output. Re-stating the problem, we want to return a currying function. Hence, we define the function curriedfunc , which we will return as an output.
+* Then inside curriedfunc, we will check for the length of the arguments \(args\) passed
+* If args.length &gt;= func.length, meaning all the arguments are passed, we call func \(the function multiply\)
+* However, if all the arguments are not passed, we return a function again to get the remaining arguments.
+
+
+
+## 24. Partial functions
+
+* Partial functions allow taking a function as an argument and along with it takes arguments of other types too. It then uses some of the arguments passed and returns a function that will take the remaining arguments. The function returned when invoked will call the parent function with the original and its own set of arguments.
+
+![](../.gitbook/assets/image%20%2820%29.png)
+
+```text
+const filter = func => arr => arr.filter(func);
+const map = func => arr => arr.map(func);
+
+const funcCompose = (...funcs) => args => funcs.reduceRight((arg, fn) => fn(arg), args);
+
+function test(customers){
+  const ans = funcCompose(
+  map(x => x.name),
+  filter(x => x.age >= 18)
+  )(customers)
+  return ans
+}
+```
+
+
+
+
+
+25. Asynchronous 
 
 
 
