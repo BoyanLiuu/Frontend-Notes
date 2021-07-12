@@ -168,6 +168,52 @@ display();
 
 ![typeof can not deter](../.gitbook/assets/image%20%284%29.png)
 
+### 如何理解bigint：
+
+```text
+// 第一种创建 方法
+console.log( 9007199254740995n );    // → 9007199254740995n	
+console.log( 9007199254740995 );     // → 9007199254740996
+
+// 第二种创建 方法
+BigInt("9007199254740995");    // → 9007199254740995n
+
+// 简单的 使用方法
+10n + 20n;    // → 30n	
+10n - 20n;    // → -10n	
++10n;         // → TypeError: Cannot convert a BigInt value to a number	
+-10n;         // → -10n	
+10n * 20n;    // → 200n	
+20n / 10n;    // → 2n	
+23n % 10n;    // → 3n	
+10n ** 3n;    // → 1000n	
+
+const x = 10n;	
+++x;          // → 11n	
+--x;          // → 9n
+console.log(typeof x);   //"bigint"
+
+作者：神三元
+链接：https://juejin.cn/post/6844903974378668039
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+* 在JS中，所有的数字都以双精度64位浮点格式表示，那这会带来什么问题呢？
+* 这导致JS中的Number无法精确表示非常大的整数，它会将非常大的整数四舍五入，确切地说，JS中的Number类型只能安全地表示-9007199254740991\(-\(2^53-1\)\)和9007199254740991（\(2^53-1\)），任何超出此范围的整数值都可能失去精度。
+* `console.log(9999999999999999);  //=>10000000000000000`
+* 有一定安全性问题： `9007199254740992 === 9007199254740993;    // → true 居然是true!`
+* 如何创建并使用BigInt？
+  * 要创建BigInt，只需要在数字末尾追加n即可。
+  * 另一种创建BigInt的方法是用BigInt\(\)构造函数
+* 值得警惕的点：
+  * 因为隐式类型转换可能丢失信息，所以不允许在bigint和 Number 之间进行混合操作。当混合使用大整数和浮点数时，结果值可能无法由BigInt或Number精确表示。 
+    * `10 + 10n;    // → TypeError`
+  * 不能将BigInt传递给Web api和内置的 JS 函数，这些函数需要一个 Number 类型的数字。尝试这样做会报TypeError错误。
+    * Math.max\(2n, 4n, 6n\);    // → TypeError
+  * 元素都为BigInt的数组可以进行sort。
+  * BigInt可以正常地进行位运算，如\|、&、&lt;&lt;、&gt;&gt;和^
+
 ### The typeof Operator:
 
 * It tell the type of a given variable, used them for **primitive type**  data
@@ -187,6 +233,51 @@ typeof null ===> object
 
 ![](../.gitbook/assets/image%20%285%29.png)
 
+### \[\] == !\[\]结果是什么？为什么？
+
+* == 中，左右两边都需要转换为数字然后进行比较。
+* \[\]转换为数字为0。  !\[\] 首先是转换为布尔值，由于\[\]作为一个引用类型转换为布尔值为true,
+
+
+
+  因此!\[\]为false，进而在转换成数字，变为0。0 == 0 ， 结果为true
+
+
+
+
+
+### null是对象吗？为什么？
+
+* 虽然 typeof null 会输出 object，但是这只是 JS 存在的一个悠久 Bug。在 JS 的最初版本中使用的是 32 位系统，为了性能考虑使用低位存储变量的类型信息，000 开头代表是对象然而 null 表示为全零，所以将它错误的判断为 object 。
+
+### 0.1+0.2为什么不等于0.3？
+
+* `0.1 + 0.2 = 0.30000000000000004`
+* 十进制0.1转换成二进制，乘2取整过程
+
+![](../.gitbook/assets/image%20%2821%29.png)
+
+* 从上面可以看出，0.1的二进制格式是：0.0001100011....。这是一个二进制无限循环小数，但计算机内存有限，我们不能用储存所有的小数位数。那么在精度与内存间如何取舍呢？
+* 在某个精度点直接舍弃。当然，代价就是，0.1在计算机内部根本就不是精确的0.1，而是一个有舍入误差的0.1。当代码被编译或解释后，0.1已经被四舍五入成一个与之很接近的计算机内部数字，以至于计算还没开始，一个很小的舍入错误就已经产生了。这也就是 0.1 + 0.2 不等于0.3 的原因。
+* **不要直接比较两个浮点的大小**：
+* **JS中如何进入浮点数运算 :**
+
+```text
+{
+  let x = new BigNumber(0.1);
+  let y = new BigNumber(0.2)
+  let z = new BigNumber(0.3)
+
+  console.log(z.equals(x.add(y))) // 0.3 === 0.1 + 0.2, true
+  console.log(z.minus(x).equals(y)) // true
+  console.log(z.minus(y).equals(x)) // true
+}
+```
+
+\*\*\*\*
+
+
+
 ### What is NaN
 
 * Not a number
@@ -205,13 +296,15 @@ console.log(isNaN(true)); // false - can be converted to number 1
 
 ###  Type Conversion/ Concatenate:
 
-* toString\(\)
-* parseInt:
+![https://juejin.cn/post/6844903974378668039\#heading-14](../.gitbook/assets/image%20%2822%29.png)
+
+* toString\(\),转换成字符串
+* parseInt,转换成数字
   * True -&gt; 1
   * False -&gt; 0
   * Undefined, 或者失误转换为 NaN
   * Null -&gt; 0
-* new Boolean\(\)
+* new Boolean\(\),转换成布尔值
   * false value will return false;
 * **concatenate:**
   * 如果+的 其中一个操作数时字符串， 则 concatenate， 否则 数字加法
@@ -224,7 +317,56 @@ var d = 0;
 console.log(a+b); //420
 ```
 
+ 
 
+### 对象转原始类型是根据什么流程运行的？
+
+* 对象转原始类型，会调用内置的\[ToPrimitive\]函数，对于该函数而言，其逻辑如下：
+  * 如果Symbol.toPrimitive\(\)方法，优先调用再返回
+  * 调用valueOf\(\)，如果转换为原始类型，则返回
+  * 调用toString\(\)，如果转换为原始类型，则返回
+  * 如果都没有返回原始类型，会报错
+
+```text
+var obj = {
+  value: 3,
+  valueOf() {
+    return 4;
+  },
+  toString() {
+    return '5'
+  },
+  [Symbol.toPrimitive]() {
+    return 6
+  }
+}
+console.log(obj + 1); // 输出7
+
+作者：神三元
+链接：https://juejin.cn/post/6844903974378668039
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+### 如何让if\(a == 1 && a == 2\)条件成立？
+
+* 其实就是上个知识点的应用
+
+```text
+var a = {
+  value: 0,
+  valueOf: function() {
+    this.value++;
+    return this.value;
+  }
+};
+console.log(a == 1 && a == 2);//true
+
+作者：神三元
+链接：https://juejin.cn/post/6844903974378668039
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
 
 ### Instance of:
 
@@ -257,9 +399,33 @@ console.log(str1 instanceof Object) //false
 
 * str1 is string literal, and is not created using the **String** object, Hence even though its type is string , it is not an instance of String
 
+### Object.is和===的区别？
+
+![](../.gitbook/assets/image%20%2823%29.png)
+
+* Object在严格等于的基础上修复了一些特殊情况下的失误，具体来说就是+0和-0，NaN和NaN。 源码如下：
+* The Object.is\(\) method determines whether two values are the same value.
+
+```text
+// Case 2: Signed zero
+Object.is(0, -0);                 // false
+Object.is(+0, -0);                // false
+Object.is(-0, -0);                // true
+Object.is(0n, -0n);               // true
+
+// 0 ===-0 // true
 
 
-## ==  and ===
+// Case 3: NaN
+Object.is(NaN, 0/0);              // true
+Object.is(NaN, Number.NaN)        // true
+Object.is(NaN,NaN)                //  true
+NaN === NaN                      //false
+```
+
+
+
+### ==  and ===
 
 * == check for value equality with coercion allowed,
 * === checks for both value equality without coercion allowed, This is often called strict equality
@@ -408,22 +574,22 @@ let double = (x) => { return 2 * x; };
 let triple = (x) => 3 * x;
 ```
 
-### Questions:
 
-#### How does the arrow function differ from other functions?
+
+### How does the arrow function differ from other functions?
 
 * Implicitly returns values, the return keyword can be avoided
 * Is anonymous,There is no need for a name or the function keyword in an arrow function
 * Inherits the value of this from enclosing scope, meaning since they don’t have their own context in which they execute, this gets inherited from the parent function. Hence, they don’t have their own this value.
 
-#### Which of the following are an arrow function's uses cases?
+### Which of the following are an arrow function's uses cases?
 
 * Managing asynchronous code
   * Using arrow functions in codes using promises or asynchronous callbacks makes the code easier to read and more concise.
 * Array manipulation
   * One of the common operations you might need to perform on an array is to map or reduce them. Doing this using arrow functions makes the code more concise and easier to read.
 
-#### What will be the result of clicking on the button?
+### What will be the result of clicking on the button?
 
 ```text
 const button = document.querySelector('#pushy');
@@ -791,18 +957,34 @@ for (var i = 0; i < array.length; i++) {
   }
  })(i), 3000);
 }
-
+// 这个跟 solution2 一样
+for(var i = 1;i <= array.length;i++){
+  (function(local_i){
+    setTimeout(function timer(){
+       console.log('Element: ' + array[local_i] + ', at index: ' + local_i);
+    }, 0)
+  })(i)
+}
 
 // end of solution for Q2
+// Solution 3
+
+for(var i=1;i<= array.length;i++){
+  setTimeout(function timer(local_i){
+     console.log('Element: ' + array[local_i] + ', at index: ' + local_i);
+  }, 0, i)
+}
 ```
 
 ### 解析
 
 1. Output:  Element: undefined, at index:4     乘4
    1. on each iteration, the setTimeout will be triggered,since it’s an asynchronous web API, the command enters the event queue, after which the next loop iteration occurs. Hence, the event queue waits for the loop commands to execute first and call stack to get empty, after which the four setTimeout commands move from the event queue to call stack and execute.
-2.  There are 2 possible solution:
+2.  There are 3 possible solution:
    1. Using Es6 featre, **let**   It  creates a new binding for each loop iteration, each i refers to the binding of one specific iteration and preserves the value that was current at that time
    2. **Using IFFE**: That function takes the parameter local\_i, that is the variable i. It calls another function in return, an anonymous function that displays the value of i stored in the variable local\_i
+   3. 给定时器传入第三个参数, 作为timer函数的第一个函数参数
+      1. 
 
 ## 14：This object
 
@@ -1324,7 +1506,7 @@ someNode.replaceChild(newNode, someNode.firstChild);
 * querySelector
 * querySelectorAll
 
-### How come, I can't use forEach or similar array methods on a NodeList?
+###  I can't use forEach or similar array methods on a NodeList?
 
 * Both array and nodeList have length and you can loop through elements but they are not same object.
 
@@ -1333,10 +1515,33 @@ someNode.replaceChild(newNode, someNode.firstChild);
 ### How to solve previous question?
 
 ```text
+//Solution 1
 let nodesArray = Array.prototype.slice.call(myNodeList);
+
+//Solution 2
+let nodesArray = Array.from(myNodeList);
+
+//Solution 3
+function sum(a, b) {
+  let args = [...arguments];
+  console.log(args.reduce((sum, cur) => sum + cur));//args可以调用数组原生的方法啦
+}
+sum(1, 2);//3
+
+//Solution 4
+function sum(a, b) {
+  let args = Array.prototype.concat.apply([], arguments);//apply方法会把第二个参数展开
+  console.log(args.reduce((sum, cur) => sum + cur));//args可以调用数组原生的方法啦
+}
+sum(1, 2);//3
+
+
 ```
 
-*  It create an empty array, then iterate through the object it's running on \(originally an array, now a NodeList\) and keep appending the elements of that object to the empty array it created, which is eventually returned
+1.  It create an empty array, then iterate through the object it's running on \(originally an array, now a NodeList\) and keep appending the elements of that object to the empty array it created, which is eventually returned
+2. **Array.from\(\)**
+3.  **ES6展开运算符**
+4. **利用concat+apply**
 
 ### How could you make sure to run some javaScript when DOM is ready like $\(document\).ready?
 
@@ -1455,7 +1660,138 @@ function test(customers){
 
 
 
-25. Asynchronous 
+
+
+## 25. forEach中return有效果吗？如何中断forEach循环？
+
+```text
+let nums = [1, 2, 3];
+nums.forEach((item, index) => {
+  return;//无效
+})
+
+
+//Solution 1
+let nums = [1, 2, 3];
+try{
+  nums.forEach((item, index) => {
+        throw 'Parameter is not a number!';
+})
+}catch(e){
+    console.log(e);
+ }
+ 
+ // solution 2
+ 
+Array.prototype.some()
+const array = [1, 2, 3, 4, 5];
+
+// checks whether an element is even
+const even = (element) => element % 2 === 0;
+
+console.log(array.some(even));
+// expected output: true
+```
+
+For each 用 r二turn 不会返回, 函数会继续执行
+
+1. 使用try监视代码块，在需要中断的地方抛出异常。
+2. 官方推荐方法（替换方法）：用every和some替代forEach函数。every在碰到return false的时候，中止循环。some在碰到return true的时候，中止循环
+
+
+
+## JS判断数组中是否包含某个值
+
+```text
+//SOLUTION 1
+var arr=[1,2,3,4];
+var index=arr.indexOf(3);
+console.log(index);
+
+//SOLUTION 2
+var arr=[1,2,3,4];
+if(arr.includes(3))
+    console.log("存在");
+else
+    console.log("不存在");
+    
+    
+//SOLUTION 3
+var arr=[1,2,3,4];
+var result = arr.find(item =>{
+    return item > 3
+});
+console.log(result);
+
+
+// SOLUTION 4
+
+var arr=[1,2,3,4];
+var result = arr.findIndex(item =>{
+    return item > 3
+});
+console.log(result);
+
+```
+
+1. **array.indexOf**
+2. **array.includes\(searcElement\[,fromIndex\]\)**
+3. **array.find\(callback\[,thisArg\]\)  ,** 返回数组中满足条件的第一个元素的值，如果没有，返回undefined
+4. **array.findeIndex\(callback\[,thisArg\]\)**    返回数组中满足条件的第一个元素的下标，如果没有找到，返回-1\]
+
+
+
+## JS中flat---数组扁平化
+
+```text
+需求:多维数组=>一维数组
+//SOLUTION 1
+ary = ary.flat(Infinity);
+
+//SOLUTION 2
+ary = str.replace(/(\[|\])/g, '').split(',')
+
+//SOLUTION 3
+str = str.replace(/(\[|\])/g, '');
+str = '[' + str + ']';
+ary = JSON.parse(str);
+
+//SOLUTION 4
+let result = [];
+let fn = function(ary) {
+  for(let i = 0; i < ary.length; i++) {
+    let item = ary[i];
+    if (Array.isArray(ary[i])){
+      fn(item);
+    } else {
+      result.push(item);
+    }
+  }
+}
+
+
+
+//SOLUTION 5
+function flatten(ary) {
+    return ary.reduce((pre, cur) => {
+        return pre.concat(Array.isArray(cur) ? flatten(cur) : cur);
+    }, []);
+}
+let ary = [1, 2, [3, 4], [5, [6, 7]]]
+console.log(flatten(ary))
+
+
+
+//SOLUTION 6
+ary = ary.flat(Infinity);
+```
+
+1. 调用ES6中的flat方法
+2. replace + split
+3.  replace + JSON.parse
+4. 普通递归
+5. 利用reduce函数迭代
+6. 扩展运算符
 
 
 
