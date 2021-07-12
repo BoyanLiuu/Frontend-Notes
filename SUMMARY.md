@@ -2,6 +2,7 @@
 
 * [Initial page](README.md)
 * [HTML](html.md)
+* [Creating an open soruce JS library on github](creating-an-open-soruce-js-library-on-github.md)
 * [CSS](css.md)
 * [Javascript](javascript/README.md)
   * [Javascript](javascript/language-basic.md)
