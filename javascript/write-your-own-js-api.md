@@ -40,6 +40,12 @@ function is(x, y) {
 }
 ```
 
+
+
+## Write your own Promise
+
+[https://juejin.cn/post/6844904004007247880\#heading-52](https://juejin.cn/post/6844904004007247880#heading-52)
+
 ## Array API:
 
 ### apply\(\)

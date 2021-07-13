@@ -1055,6 +1055,12 @@ obj.a(); // this represent object
   *  This table is responsible for moving the asynchronous code to the event queue after a specified time
 * event loop:
   * Itt is responsible for keeping check of both the call stack and the event queue. It keeps checking if all the statements from the call stack have finished execution; that is, if the call stack is empty. If so, it pops the statement from the event queue \(if present\) to the call stack to execute.
+* Macro task:
+  * * 宏任务
+  * 普通js code 和 settime out一类的定时器回调任务
+* Micro Task:
+  * 对于每一个 宏任务而言， 其内部都有一个微任务队列，当该宏任务执行完成，会检查其中的微任务队列，如果为空则直接执行下一个宏任务，如果不为空，则依次执行微任务，执行完成才去执行下一个宏任务
+  * MutationObserver、Promise.then\(或.reject\) 以及以 Promise 为基础开发的其他技术\(比如fetch API\)
 
 ### 问题：
 
@@ -1067,9 +1073,55 @@ setTimeout(function(){
 console.log("After Function")
 // Q1 answer: 
 //Before function, After Function , Inside Function
+
+
+// Q2
+console.log('start');
+setTimeout(() => {
+  console.log('timeout');
+});
+Promise.resolve().then(() => {
+  console.log('resolve');
+});
+console.log('end');
+
+
+
+// Question 3:
+
+Promise.resolve().then(()=>{
+  console.log('Promise1')  
+  setTimeout(()=>{
+    console.log('setTimeout2')
+  },0)
+});
+setTimeout(()=>{
+  console.log('setTimeout1')
+  Promise.resolve().then(()=>{
+    console.log('Promise2')    
+  })
+},0);
+console.log('start');
+
+// start
+// Promise1
+// setTimeout1
+// Promise2
+// setTimeout2
 ```
 
 ### 解析：
+
+1. 不需要解释什么
+2. 解释
+
+   1. 先打印 start 和 end
+   2. setTimeout 作为一个宏任务放入宏任务队列（MacroTask）
+   3. Promise.then作为一个为微任务放入到微任务队列
+   4. 当本次宏任务执行完，检查微任务队列，发现一个Promise.then, 执行
+   5. 接下来进入到下一个宏任务——setTimeout, 执行
+
+![](../.gitbook/assets/image%20%2826%29.png)
 
 
 
@@ -1906,10 +1958,148 @@ const deepClone = (target) => {
   }
 }
 
-作者：神三元
-链接：https://juejin.cn/post/6844903986479251464
-来源：掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+//Solution 3 解决了 循环应用问题
+const isObject = (target) => (typeof target === 'object' || typeof target === 'function') && target !== null;
+//const deepClone = (target, map = new WeakMap()) 
+const deepClone = (target, map = new Map()) => { 
+  if(map.get(target))  
+    return target; 
+ 
+ 
+  if (isObject(target)) { 
+    map.set(target, true); 
+    const cloneTarget = Array.isArray(target) ? []: {}; 
+    for (let prop in target) { 
+      if (target.hasOwnProperty(prop)) { 
+          cloneTarget[prop] = deepClone(target[prop],map); 
+      } 
+    } 
+    return cloneTarget; 
+  } else { 
+    return target; 
+  } 
+  
+}
+const a = {val:2};
+a.target = a;
+let newA = deepClone(a);
+console.log(newA)//{ val: 2, target: { val: 2, target: [Circular] } }
+
+
+// Solution 4
+// 解决 特殊对象
+
+const getType = obj => Object.prototype.toString.call(obj);
+
+const isObject = (target) => (typeof target === 'object' || typeof target === 'function') && target !== null;
+
+const canTraverse = {
+  '[object Map]': true,
+  '[object Set]': true,
+  '[object Array]': true,
+  '[object Object]': true,
+  '[object Arguments]': true,
+};
+// 不可遍历的对象
+const mapTag = '[object Map]';
+const setTag = '[object Set]';
+const boolTag = '[object Boolean]';
+const numberTag = '[object Number]';
+const stringTag = '[object String]';
+const symbolTag = '[object Symbol]';
+const dateTag = '[object Date]';
+const errorTag = '[object Error]';
+const regexpTag = '[object RegExp]';
+const funcTag = '[object Function]';
+
+const handleRegExp = (target) => {
+  const { source, flags } = target;
+  return new target.constructor(source, flags);
+}
+
+const handleFunc = (func) => {
+  // 箭头函数直接返回自身
+  if(!func.prototype) return func;
+  const bodyReg = /(?<={)(.|\n)+(?=})/m;
+  const paramReg = /(?<=\().+(?=\)\s+{)/;
+  const funcString = func.toString();
+  // 分别匹配 函数参数 和 函数体
+  const param = paramReg.exec(funcString);
+  const body = bodyReg.exec(funcString);
+  if(!body) return null;
+  if (param) {
+    const paramArr = param[0].split(',');
+    return new Function(...paramArr, body[0]);
+  } else {
+    return new Function(body[0]);
+  }
+}
+
+const handleNotTraverse = (target, tag) => {
+  const Ctor = target.constructor;
+  switch(tag) {
+    case boolTag:
+      return new Object(Boolean.prototype.valueOf.call(target));
+    case numberTag:
+      return new Object(Number.prototype.valueOf.call(target));
+    case stringTag:
+      return new Object(String.prototype.valueOf.call(target));
+    case symbolTag:
+      return new Object(Symbol.prototype.valueOf.call(target));
+    case errorTag: 
+    case dateTag:
+      return new Ctor(target);
+    case regexpTag:
+      return handleRegExp(target);
+    case funcTag:
+      return handleFunc(target);
+    default:
+      return new Ctor(target);
+  }
+}
+
+const deepClone = (target, map = new WeakMap()) => {
+  if(!isObject(target)) 
+    return target;
+  let type = getType(target);
+  let cloneTarget;
+  if(!canTraverse[type]) {
+    // 处理不能遍历的对象
+    return handleNotTraverse(target, type);
+  }else {
+    // 这波操作相当关键，可以保证对象的原型不丢失！
+    let ctor = target.constructor;
+    cloneTarget = new ctor();
+  }
+
+  if(map.get(target)) 
+    return target;
+  map.set(target, true);
+
+  if(type === mapTag) {
+    //处理Map
+    target.forEach((item, key) => {
+      cloneTarget.set(deepClone(key, map), deepClone(item, map));
+    })
+  }
+  
+  if(type === setTag) {
+    //处理Set
+    target.forEach(item => {
+      cloneTarget.add(deepClone(item, map));
+    })
+  }
+
+  // 处理数组和对象
+  for (let prop in target) {
+    if (target.hasOwnProperty(prop)) {
+        cloneTarget[prop] = deepClone(target[prop], map);
+    }
+  }
+  return cloneTarget;
+}
+
+
 
 ```
 
@@ -1918,7 +2108,206 @@ const deepClone = (target) => {
    2. 无法拷贝一写特殊的对象，诸如 RegExp, Date, Set, Map等。
    3. 无法拷贝**函数\(function\)**。
 2. 简易版本
-   1. 
+3. 解决循环应用：
+   1. 创建一个Map。记录下已经拷贝过的对象，如果说已经拷贝过，那直接返回它行了。
+   2. **这里有一个潜在的坑**： 就是map 上的 key 和 map 构成了强引用关系，这是相当危险的
+      1. 被弱引用的对象可以在任何时候被回收，而对于强引用来说，只要这个强引用还在，那么对象无法被回收。拿上面的例子说，map 和 a一直是强引用的关系， 在程序结束之前，a 所占的内存空间一直**不会被释放**
+      2. **解决办法：**让 map 的 key 和 map 构成弱引用即可。ES6给我们提供了这样的数据结构，它的名字叫WeakMap，它是一种特殊的Map, 其中的键是弱引用的。其键必须是对象，而值可以是任意的。`const deepClone = (target, map = new WeakMap())` 
+4. 解决特殊对象：
+   1. 对于特殊的对象，我们使用以下方式来鉴别:`Object.prototype.toString.call(obj);`
+   2. 然后 分别处理 可继续遍历的， 和 不可遍历的对象
+   3. 不可遍历对象 ， 不同对象有不同的处理
+5. 解决拷贝函数问题
+   1. 一种是普通函数，另一种是箭头函数。每个普通函数都是 Function的实例，而箭头函数不是任何类的实例，每次调用都是不一样的引用。那我们只需要 处理普通函数的情况，箭头函数直接返回它本身就好了。
+   2. 那么如何来区分两者呢？
+      1. 利用原型。箭头函数是不存在原型的。
+6. [别人的 post](https://juejin.cn/post/6975880204447121422/#heading-15)
+
+
+
+## 30. Asynchronous Callbacks
+
+### 异步编程 有哪些方案
+
+```text
+// 回调函数时代
+fs.readFile('1.json', (err, data) => {
+    fs.readFile('2.json', (err, data) => {
+        fs.readFile('3.json', (err, data) => {
+            fs.readFile('4.json', (err, data) => {
+
+            });
+        });
+    });
+});
+
+
+// Promise 时代
+readFilePromise('1.json').then(data => {
+    return readFilePromise('2.json')
+}).then(data => {
+    return readFilePromise('3.json')
+}).then(data => {
+    return readFilePromise('4.json')
+});
+
+// async + await方式
+const readFileAsync = async function () {
+  const f1 = await readFilePromise('1.json')
+  const f2 = await readFilePromise('2.json')
+  const f3 = await readFilePromise('3.json')
+  const f4 = await readFilePromise('4.json')
+}
+
+```
+
+1. 回调函数时代: 回调当中嵌套回调，也称回调地狱。这种代码的可读性和可维护性都是非常差的，因为嵌套的层级太多
+2. Promise 时代
+3. async + await方式
+
+###  解释一下async/await的运行机制
+
+```text
+
+// await 200 变成 下面这个 function了
+
+function resolveAfter0Seconds() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve('200');
+    }, 0);
+  });
+}
+
+async function asyncCall() {
+  console.log('calling');
+  const result = await resolveAfter2Seconds();
+  console.log(result);
+  console.log(300)
+}
+console.log(1);
+asyncCall();
+console.log(100)
+// 1
+// "calling"
+// 100
+// "200"
+// 300
+```
+
+* [https://juejin.cn/post/6844904004007247880\#heading-67](https://juejin.cn/post/6844904004007247880#heading-67)
+
+###   forEach 中用 await 会产生什么问题?怎么解决这个问题？, 
+
+```text
+async function test() {
+	let arr = [4, 2, 1]
+	arr.forEach(async item => {
+		const res = await handle(item)
+		console.log(res)
+	})
+	console.log('结束')
+}
+
+function handle(x) {
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			resolve(x)
+		}, 1000 * x)
+	})
+}
+
+test()
+
+
+```
+
+* 问题:对于异步代码，forEach 并不能保证按顺序执行。
+* * 我们期望 4，2，1 但其实得到 1，2，4
+* 问题原因
+  * foreach 底层 是拿来 直接执行了   ![](../.gitbook/assets/image%20%2827%29.png) 
+* 解决办法： 使用 for loop 就好了
+* 解决原理：for...of并不像forEach那么简单粗暴的方式去遍历执行，而是采用一种特别的手段——迭代器去遍历。
+
+```text
+async function test() {
+  let arr = [4, 2, 1]
+  let iterator = arr[Symbol.iterator]();
+  let res = iterator.next();
+  while(!res.done) {
+    let value = res.value;
+    console.log(value);
+    await handle(value);
+    res = iterater.next();
+  }
+	console.log('结束')
+}
+// 4
+// 2
+// 1
+// 结束
+
+
+```
+
+
+
+
+
+## 30. Promise:
+
+### Promise 凭借什么消灭了回调地狱（callback hell）？
+
+```text
+//Solution 1
+let readFilePromise = (filename) => {
+  fs.readFile(filename, (err, data) => {
+    if(err) {
+      reject(err);
+    }else {
+      resolve(data);
+    }
+  })
+}
+readFilePromise('1.json').then(data => {
+  return readFilePromise('2.json')
+});
+
+
+//Solution 2
+let x = readFilePromise('1.json').then(data => {
+  return readFilePromise('2.json')//这是返回的Promise
+});
+x.then(/* 内部逻辑省略 */)
+
+
+// Solution 3
+readFilePromise('1.json').then(data => {
+    return readFilePromise('2.json');
+}).then(data => {
+    return readFilePromise('3.json');
+}).then(data => {
+    return readFilePromise('4.json');
+}).catch(err => {
+  // xxx
+})
+
+
+```
+
+* 多层嵌套的问题。complex nested callbacks
+* 每种任务的处理结果存在两种可能性（成功或失败），那么需要在每种任务执行结束后分别处理这两种可能性。
+* each and every callback takes an argument that is a result of the previous callbacks.
+* 使用 3大手段 解决 callback hell
+  * 回调函数延迟绑定 use `.then()`  回调函数不是直接声明的，而是在通过后面的 then 方法传入的，即延迟传入。这就是回调函数延迟绑定。
+  * 返回值穿透: 我们会根据 then 中回调函数的传入值创建不同类型的Promise, 然后把返回的 Promise 穿透到外层, 以供后续的调用。这里的 x 指的就是内部返回的 Promise，然后在 x 后面可以依次完成链式调用
+  * 错误冒泡  use .catch\(\)
+
+
+
+
+
+
 
 
 
