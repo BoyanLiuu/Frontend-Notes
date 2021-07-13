@@ -37,7 +37,7 @@
 
 
 
-Promise 面试题：
+## Promise 面试题：  2天
 
 {% embed url="https://juejin.cn/post/6844903808200343559" %}
 
@@ -50,6 +50,76 @@ Promise 面试题：
 
 
 
+
+## 原型链
+
+{% embed url="https://juejin.cn/post/6844903475021627400" %}
+
+{% embed url="https://juejin.cn/post/6934498361475072014" %}
+
+
+
+{% embed url="https://juejin.cn/post/6844904093828251662" %}
+
+
+
+{% embed url="https://juejin.cn/post/6844903454599561230" %}
+
+
+
+{% embed url="https://juejin.cn/post/6844903567375990791" %}
+
+
+
+{% embed url="https://juejin.cn/post/6844903797039300615" %}
+
+{% embed url="https://juejin.cn/post/6844903782229213197" %}
+
+
+
+{% embed url="https://juejin.cn/post/6844903989088092174" %}
+
+
+
+## OOP
+
+{% embed url="https://www.educative.io/courses/learn-object-oriented-programming-in-javascript" %}
+
+
+
+
+
+
+
+{% embed url="https://frontendmasters.com/courses/javascript-hard-parts/" %}
+
+* Asynchronous JavaScript
+* Object-Oriented JavaScript
+
+
+
+{% embed url="https://frontendmasters.com/courses/javascript-hard-parts-v2/" %}
+
+* Classes & Prototypes
+* Promises
+* Asynchronous JavaScript
+
+{% embed url="https://frontendmasters.com/courses/object-oriented-js/" %}
+
+* 全部
+
+
+
+{% embed url="https://frontendmasters.com/courses/javascript-new-hard-parts/" %}
+
+
+
+{% embed url="https://frontendmasters.com/courses/javascript-foundations/" %}
+
+
+
+* Object-Orienting
+* Prototypes、
 
 
 
