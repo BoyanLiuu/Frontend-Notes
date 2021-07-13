@@ -904,7 +904,7 @@ console.log(person2.getName()); // 'Michael'
 
 
 
-## 13 Closure
+## 13.Closure
 
 * It is when an inner function has access to variables in the outer scope That all functions are closures in javascript
 * Common use of closure
@@ -986,7 +986,7 @@ for(var i=1;i<= array.length;i++){
    3. 给定时器传入第三个参数, 作为timer函数的第一个函数参数
       1. 
 
-## 14：This object
+## 14.This object
 
 ```text
 //Ex1
@@ -1018,11 +1018,23 @@ let object = {
 };
 
 console.log(object.getIdentityFunc()()); // 'My Object'
+
+// Ex 2
+let obj = {
+  a: function() {
+    console.log(this);
+  }
+}
+let func = obj.a;
+func();  // this is window
+obj.a(); // this represent object
+
 ```
 
 * When a function is not   defined using the arrow syntax, the this object is bound at runtime based on the context in which   a function is executed: 
-  * when used inside global functionsm, this is equal to **window in nonstrict** mode     and undefined in strict mode
-  * this is equal to the object when called as an object method
+  * when used inside global functionsm, this is equal to **window in nonstrict** mode     and **undefined in strict mode**
+  * this is equal to the object when called as an object method   `obj.a();`
+  * Dom 事件绑定, onclick和addEventerListener中 this 默认指向绑定事件的元素。
 * **Ex1:**  getIdentityFunc\(\) returns a function, so calling this function immediately call the function that is returned.
   * Each function automatically gets two special variables as soon as the function is
 
@@ -1563,7 +1575,7 @@ div.classList.toggle('dsiabled');
 
 
 
-## 21: Pure functions
+## 21.Pure functions
 
 * Functions must be highly predictable, Given the same input, it should always return the same output.
 * Functions must return exactly value which is determined solely by its input.
@@ -1700,7 +1712,7 @@ For each 用 r二turn 不会返回, 函数会继续执行
 
 
 
-## JS判断数组中是否包含某个值
+## 26.JS判断数组中是否包含某个值
 
 ```text
 //SOLUTION 1
@@ -1741,7 +1753,7 @@ console.log(result);
 
 
 
-## JS中flat---数组扁平化
+## 27.JS中flat---数组扁平化
 
 ```text
 需求:多维数组=>一维数组
@@ -1792,6 +1804,123 @@ ary = ary.flat(Infinity);
 4. 普通递归
 5. 利用reduce函数迭代
 6. 扩展运算符
+
+## 28. JS中浅拷贝的手段有哪些?
+
+```text
+// Solution 1
+const shallowClone = (target) => {
+  if (typeof target === 'object' && target !== null) {
+    const cloneTarget = Array.isArray(target) ? []: {};
+    for (let prop in target) {
+      if (target.hasOwnProperty(prop)) {
+          cloneTarget[prop] = target[prop];// 只是copy reference
+      }
+    }
+    return cloneTarget;
+  } else {
+    return target;
+  }
+}
+
+
+//Solution 2
+//但是需要注意的是，Object.assgin() 拷贝的是对象的属性的引用，而不是对象本身。
+let obj = { name: 'sy', age: 18 };
+const obj2 = Object.assign({}, obj, {name: 'sss'});
+console.log(obj2);//{ name: 'sss', age: 18 }
+console.log(obj);//{ name: 'sy', age: 18 }
+
+
+//Solution 3
+
+let arr = [1, 2, 3];
+let newArr = arr.concat();//如果第一个parameter 忽略了, 我们就返还一个shallow copy
+newArr[1] = 100;
+console.log(arr);//[ 1, 2, 3 ]
+
+// Solution 4
+let arr = [1, 2, {val: 4}];
+let newArr = arr.slice();
+newArr[2].val = 1000;
+
+console.log(arr);//[ 1, 2, { val: 1000 } ]
+
+// Solution 5
+
+let arr = [1, 2, 3];
+let newArr = [...arr];//跟arr.slice()是一样的效果
+```
+
+1.  手动实现
+2. Object.assign
+3. concat浅拷贝数组
+4. slice浅拷贝
+5. ...展开运算符
+
+## 29.实现一个 深拷贝
+
+```text
+//Solution 1
+JSON.parse(JSON.stringify());
+
+//问题 1
+//拷贝a会出现系统栈溢出，因为出现了无限递归的情况。
+let obj = {
+  name:'boyan',
+  age:15
+}
+
+obj.name = obj;
+//"TypeError: Converting circular structure to JSON
+JSON.parse(JSON.stringify(obj));
+
+// 问题 3
+let obj = {
+  name:'boyan',
+  age:15,
+  getName: function() {
+    return this.name;
+  }
+}
+
+let objB = JSON.parse(JSON.stringify(obj));
+console.log(objB.getName());
+//"TypeError: objB.getName is not a function
+// ======================================
+
+// Solution 2 简易版本
+
+const deepClone = (target) => {
+  if (typeof target === 'object' && target !== null) {
+    const cloneTarget = Array.isArray(target) ? []: {};
+    for (let prop in target) {
+      if (target.hasOwnProperty(prop)) {
+          //recursive call to copy every object 
+          cloneTarget[prop] = deepClone(target[prop]);
+      }
+    }
+    return cloneTarget;
+  } else {
+    return target;
+  }
+}
+
+作者：神三元
+链接：https://juejin.cn/post/6844903986479251464
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+```
+
+1.  `JSON.parse()`
+   1. 问题: 无法解决循环引用的问题。举个例子：
+   2. 无法拷贝一写特殊的对象，诸如 RegExp, Date, Set, Map等。
+   3. 无法拷贝**函数\(function\)**。
+2. 简易版本
+   1. 
+
+
 
 
 
