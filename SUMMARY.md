@@ -6,6 +6,7 @@
 * [CSS](css.md)
 * [Javascript](javascript/README.md)
   * [Javascript](javascript/language-basic.md)
+  * [OOP & 原型链](javascript/oop-yuan-xing-lian.md)
   * [Write your own JS API](javascript/write-your-own-js-api.md)
   * [Design Pattern](javascript/design-pattern.md)
   * [Security](javascript/security.md)
