@@ -37,11 +37,9 @@
 
 
 
-## Promise 面试题：  2天
+## Promise 面试题：  
 
 {% embed url="https://juejin.cn/post/6844903808200343559" %}
-
-{% embed url="https://juejin.cn/post/6844903605250572302" %}
 
 {% embed url="https://juejin.cn/post/6945319439772434469" %}
 
