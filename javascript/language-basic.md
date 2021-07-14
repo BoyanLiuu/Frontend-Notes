@@ -1055,12 +1055,13 @@ obj.a(); // this represent object
   *  This table is responsible for moving the asynchronous code to the event queue after a specified time
 * event loop:
   * Itt is responsible for keeping check of both the call stack and the event queue. It keeps checking if all the statements from the call stack have finished execution; that is, if the call stack is empty. If so, it pops the statement from the event queue \(if present\) to the call stack to execute.
-* Macro task:
+* Macro task queue:
   * * 宏任务
-  * 普通js code 和 settime out一类的定时器回调任务
-* Micro Task:
+  * script，setTimeout，setImmediate，promise中的executor
+* Micro Task queue\(Callback queue\):
   * 对于每一个 宏任务而言， 其内部都有一个微任务队列，当该宏任务执行完成，会检查其中的微任务队列，如果为空则直接执行下一个宏任务，如果不为空，则依次执行微任务，执行完成才去执行下一个宏任务
   * MutationObserver、Promise.then\(或.reject\) 以及以 Promise 为基础开发的其他技术\(比如fetch API\)
+* **process.nextTick优先级高于Promise.then**
 
 ### 问题：
 
@@ -1108,6 +1109,103 @@ console.log('start');
 // setTimeout1
 // Promise2
 // setTimeout2
+
+// Question 4
+setTimeout(()=>{
+   console.log(1) 
+},0)
+let a=new Promise((resolve)=>{
+    console.log(2)
+    resolve()
+}).then(()=>{
+   console.log(3) 
+}).then(()=>{
+   console.log(4) 
+})
+console.log(5)
+
+//2 -> 5 -> 3 -> 4 -> 1
+
+// Solution 5 
+
+new Promise((resolve,reject)=>{
+    console.log("promise1")
+    resolve()
+}).then(()=>{
+    console.log("then11")
+    new Promise((resolve,reject)=>{
+        console.log("promise2")
+        resolve()
+    }).then(()=>{
+        console.log("then21")
+    }).then(()=>{
+        console.log("then23")
+    })
+}).then(()=>{
+    console.log("then12")
+})
+
+// "promise1"
+// "then11"
+// "promise2"
+// "then21"
+// "then12"
+// "then23"
+
+
+
+// Solution 6
+new Promise((resolve,reject)=>{
+    console.log("promise1")
+    resolve()
+}).then(()=>{
+    console.log("then11")
+    return new Promise((resolve,reject)=>{
+        console.log("promise2")
+        resolve()
+    }).then(()=>{
+        console.log("then21")
+    }).then(()=>{
+        console.log("then23")
+    })
+}).then(()=>{
+    console.log("then12")
+})
+
+// "promise1"
+// "then11"
+// "promise2"
+// "then21"
+// "then23"
+// "then12"
+
+
+//7. 多个 promise
+new Promise((resolve,reject)=>{
+    console.log("promise1")
+    resolve()
+}).then(()=>{
+    console.log("then11")
+    new Promise((resolve,reject)=>{
+        console.log("promise2")
+        resolve()
+    }).then(()=>{
+        console.log("then21")
+    }).then(()=>{
+        console.log("then23")
+    })
+}).then(()=>{
+    console.log("then12")
+})
+new Promise((resolve,reject)=>{
+    console.log("promise3")
+    resolve()
+}).then(()=>{
+    console.log("then31")
+})
+
+//[promise1,promise3,then11,promise2,then31,then21,then12,then23]
+
 ```
 
 ### 解析：
@@ -1122,6 +1220,62 @@ console.log('start');
    5. 接下来进入到下一个宏任务——setTimeout, 执行
 
 ![](../.gitbook/assets/image%20%2826%29.png)
+
+4. 解释
+
+* Promise的executor是一个同步函数，即非异步，立即执行的一个函数，因此他应该是和当前的任务一起执行的。而Promise的链式调用then，每次都会在内部生成一个新的Promise，然后执行then，在执行的过程中不断向微任务\(microtask\)推入新的函数，因此直至微任务\(microtask\)的队列清空后才会执行下一波的macrotask。
+
+5. 解释 **then中return一个promise的掌握**
+
+第一轮:
+
+* current task: promise1是当之无愧的立即执行的一个函数，参考上一章节的executor，立即执行输出`[promise1]`
+* micro task queue: \[promise1的第一个then\]
+
+第二轮
+
+* current task: then1执行中，立即输出了**then11**以及新promise2的**promise2**
+* micro task queue: \[新promise2的then函数,以及promise1的第二个then函数\]
+
+第三轮
+
+* current task: 新promise2的then函数输出then21和promise1的第二个then函数输出then12
+* micro task queue: \[新promise2的第二then函数\]
+
+
+
+第四轮
+
+* current task: 新promise2的第二then函数输出then23
+* micro task queue: \[\]
+
+6. 解释 then中返还一个promise的掌握
+
+* 这个考的重点在于Promise而非Eventloop了。这里就很好理解为何then12会在then23之后执行，这里Promise的第二个then相当于是挂在新Promise的最后一个then的返回值上
+
+7. 如果有多个 promise
+
+第一轮:
+
+* current task: promise1，promise3
+* micro task queue: \[promise1的第一个then，promise3的第一个then\]
+
+第二轮
+
+* current task: then11，promise2，then31
+* micro task queue: \[promise2的第一个then，promise1的第二个then\]
+
+第三轮
+
+* current task: then21，then12
+* micro task queue: \[promise2的第二个then\]
+
+第四轮
+
+* current task: then23
+* micro task queue: \[\]
+
+
 
 
 
