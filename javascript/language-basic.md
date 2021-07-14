@@ -1055,12 +1055,16 @@ obj.a(); // this represent object
   *  This table is responsible for moving the asynchronous code to the event queue after a specified time
 * event loop:
   * Itt is responsible for keeping check of both the call stack and the event queue. It keeps checking if all the statements from the call stack have finished execution; that is, if the call stack is empty. If so, it pops the statement from the event queue \(if present\) to the call stack to execute.
-* Macro task queue:
-  * * 宏任务
+
+### 执行机制
+
+![](../.gitbook/assets/image%20%2828%29.png)
+
+* 对于每一个 宏任务而言， 其内部都有一个微任务队列，当该宏任务执行完成，会检查其中的微任务队列，如果为空则直接执行下一个宏任务，如果不为空，则依次执行微任务，执行完成才去执行下一个宏任务
+* Macro task queue:宏任务
   * script，setTimeout，setImmediate，promise中的executor
 * Micro Task queue\(Callback queue\):
-  * 对于每一个 宏任务而言， 其内部都有一个微任务队列，当该宏任务执行完成，会检查其中的微任务队列，如果为空则直接执行下一个宏任务，如果不为空，则依次执行微任务，执行完成才去执行下一个宏任务
-  * MutationObserver、Promise.then\(或.reject\) 以及以 Promise 为基础开发的其他技术\(比如fetch API\)
+  * MutationObserver，process.nextTick    、Promise.then\(或.reject\) 以及以 Promise 为基础开发的其他技术\(比如fetch API\)，
 * **process.nextTick优先级高于Promise.then**
 
 ### 问题：
@@ -1206,6 +1210,71 @@ new Promise((resolve,reject)=>{
 
 //[promise1,promise3,then11,promise2,then31,then21,then12,then23]
 
+
+//8. 
+
+console.log('1');
+
+setTimeout(function() {
+    console.log('2');
+    process.nextTick(function() {
+        console.log('3');
+    })
+    new Promise(function(resolve) {
+        console.log('4');
+        resolve();
+    }).then(function() {
+        console.log('5')
+    })
+})
+process.nextTick(function() {
+    console.log('6');
+})
+new Promise(function(resolve) {
+    console.log('7');
+    resolve();
+}).then(function() {
+    console.log('8')
+})
+
+setTimeout(function() {
+    console.log('9');
+    process.nextTick(function() {
+        console.log('10');
+    })
+    new Promise(function(resolve) {
+        console.log('11');
+        resolve();
+    }).then(function() {
+        console.log('12')
+    })
+})
+
+
+// 9
+const first = () => (new Promise((resolve,reject)=>{
+    console.log(3);
+    let p = new Promise((resolve, reject)=>{
+         console.log(7);
+        setTimeout(()=>{
+           console.log(5);
+           resolve(6); 
+        },0)
+        resolve(1);
+    }); 
+    resolve(2);
+    p.then((arg)=>{
+        console.log(arg);
+    });
+
+}));
+
+first().then((arg)=>{
+    console.log(arg);
+});
+console.log(4);
+
+// 3-7-4-1-2-5
 ```
 
 ### 解析：
@@ -1274,6 +1343,21 @@ new Promise((resolve,reject)=>{
 
 * current task: then23
 * micro task queue: \[\]
+
+8.  [解析](https://juejin.cn/post/6844903512845860872)
+
+9.
+
+* **第一轮事件循环**
+  * 先执行**宏任务**，主script ，new Promise立即执行，输出【3】，执行p这个new Promise 操作，输出【7】，发现setTimeout，将回调放入下一轮任务队列（Event Queue），p的then，姑且叫做then1，放入**微任务队列**，发现first的then，叫then2，放入**微任务队列**。执行console.log\(4\)，输出【4】,宏任务执行结束。再执行**微任务**，执行then1，输出【1】，执行then2，输出【2】。到此为止，第一轮事件循环结束。开始执行第二轮。
+* **第二轮事件循环**
+  * 先执行宏任务里面的，也就是setTimeout的回调，输出【5】。resovle不会生效，因为p这个Promise的状态一旦改变就不会在改变了。 所以最终的输出顺序是3、7、4、1、2、5。
+
+
+
+
+
+
 
 
 
@@ -2409,6 +2493,352 @@ async function test() {
 
 
 ## 30. Promise:
+
+### 基础
+
+```text
+const promise = new Promise(function(resolve, reject) {
+  // ... some code
+
+  if (/* 异步操作成功 */){
+    resolve(value);
+  } else {
+    reject(error);
+  }
+});
+```
+
+*  `Promise`对象代表一个异步操作， 有三种状态：`pending`（进行中）、`fulfilled`（已成功）和`rejected`（已失败）
+* 一旦状态改变，就不会再变，任何时候都可以得到这个结果
+*  `Promise`实例生成以后，可以用`then`方法分别指定`resolved`状态和`rejected`状态的回调函数,
+*  `then`方法可以接受两个回调函数作为参数。第一个回调函数是`Promise`对象的状态变为`resolved`时调用，第二个回调函数是`Promise`对象的状态变为`rejected`时调用。这两个函数都是可选的，不一定要提供。它们都接受`Promise`对象传出的值作为参数。 **但是我们通常不是不使用 then 第二个 参数 写法**
+
+```text
+function timeout(ms) {
+  return new Promise((resolve, reject) => {
+    setTimeout(reject, ms, 'done');
+  });
+}
+
+timeout(100).then((value) => {
+  //success
+  console.log('this is success');
+  console.log(value);
+},function(error) {
+  // failure
+  console.log(error);
+  console.log('this is error')
+});
+//output: done, this is error
+```
+
+* **Promise 新建后就会立即执行**
+
+```text
+let promise = new Promise(function(resolve, reject) {
+  console.log('Promise');
+  resolve();
+});
+
+promise.then(function() {
+  console.log('resolved.');
+});
+
+console.log('Hi!');
+
+// Promise
+// Hi!
+// resolved
+
+```
+
+*  `p1`和`p2`都是 Promise 的实例，但是`p2`的`resolve`方法将`p1`作为参数，即一个异步操作的结果是返回另一个异步操作。 这时`p1`的状态就会传递给`p2`，也就是说，`p1`的状态决定了`p2`的状态。如果`p1`的状态是`pending`，那么`p2`的回调函数就会等待`p1`的状态改变；如果`p1`的状态已经是`resolved`或者`rejected`，那么`p2`的回调函数将会立刻执行。
+
+```text
+const p1 = new Promise(function (resolve, reject) {
+  setTimeout(() => reject(new Error('fail')), 3000)
+})
+
+const p2 = new Promise(function (resolve, reject) {
+  setTimeout(() => resolve(p1), 1000)
+})
+
+p2
+  .then(result => console.log(result))
+  .catch(error => console.log(error))
+// Error: fail
+```
+
+ `p1`是一个 Promise，3 秒之后变为`rejected`。`p2`的状态在 1 秒之后改变，`resolve`方法返回的是`p1`。由于`p2`返回的是另一个 Promise，导致`p2`自己的状态无效了，由`p1`的状态决定`p2`的状态。所以，后面的`then`语句都变成针对后者（`p1`）。又过了 2 秒，`p1`变为`rejected`，导致触发`catch`方法指定的回调函数。
+
+*  调用`resolve`或`reject`**并不会终结 Promise 的参数函数的执行。** 
+
+```text
+new Promise((resolve, reject) => {
+  resolve(1);
+  console.log(2);
+}).then(r => {
+  console.log(r);
+});
+// 2
+// 1
+```
+
+### Promise.prototype.then\(\) <a id="Promise-prototype-then"></a>
+
+*  它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，`then`方法的第一个参数是`resolved`状态的回调函数，第二个参数是`rejected`状态的回调函数，它们都是可选的。 `then`方法返回的是一个新的`Promise`实例
+
+```text
+getJSON("/post/1.json").then(function(post) {
+  return getJSON(post.commentURL);
+}).then(function (comments) {
+  console.log("resolved: ", comments);
+}, function (err){
+  console.log("rejected: ", err);
+});
+```
+
+*  上面代码中，第一个`then`方法指定的回调函数，返回的是另一个`Promise`对象。这时，第二个`then`方法指定的回调函数，就会等待这个新的`Promise`对象状态发生变化。如果变为`resolved`，就调用第一个回调函数，如果状态变为`rejected`，就调用第二个回调函数。
+
+### Promise.prototype.catch\(\)  <a id="Promise-prototype-catch"></a>
+
+```text
+getJSON('/posts.json').then(function(posts) {
+  // ...
+}).catch(function(error) {
+  // 处理 getJSON 和 前一个回调函数运行时发生的错误
+  console.log('发生错误！', error);
+});
+```
+
+* 用于指定发生错误时的回调函数， 上面代码中，`getJSON()`方法返回一个 Promise 对象，如果该对象状态变为`resolved`，则会调用`then()`方法指定的回调函数；如果异步操作抛出错误，状态就会变为`rejected`，就会调用`catch()`方法指定的回调函数，处理这个错误。另外，`then()`方法指定的回调函数，如果运行中抛出错误，也会被`catch()`方法捕获。
+*  **如果 Promise 状态已经变成`resolved`，再抛出错误是无效的。**
+
+```text
+const promise = new Promise(function(resolve, reject) {
+  resolve('ok');
+  throw new Error('test');
+});
+promise
+  .then(function(value) { console.log(value) })
+  .catch(function(error) { console.log(error) });
+// ok
+```
+
+*  跟传统的`try/catch`代码块不同的是，如果没有使用`catch()`方法指定错误处理的回调函数，Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。 `someAsyncThing()`函数产生的 Promise 对象，内部有语法错误。浏览器运行到这一行，会打印出错误提示`ReferenceError: x is not defined`，但是不会退出进程、终止脚本执行，2 秒之后还是会输出`123`。这就是说，**Promise 内部的错误不会影响到 Promise 外部的代码**，通俗的说法就是“Promise 会吃掉错误”。
+
+```text
+const someAsyncThing = function() {
+  return new Promise(function(resolve, reject) {
+    // 下面一行会报错，因为x没有声明
+    resolve(x + 2);
+  });
+};
+
+someAsyncThing().then(function() {
+  console.log('everything is great');
+});
+
+setTimeout(() => { console.log(123) }, 2000);
+// Uncaught (in promise) ReferenceError: x is not defined
+// 123
+```
+
+* Promise 指定在下一轮“事件循环”再抛出错误。到了那个时候，Promise 的运行已经结束了，所以这个错误是在 Promise 函数体外抛出的，会冒泡到最外层，成了未捕获的错误， 所以都建议使用 catch
+
+```text
+const promise = new Promise(function (resolve, reject) {
+  resolve('ok');
+  setTimeout(function () { throw new Error('test') }, 0)
+});
+promise.then(function (value) { console.log(value) });
+// ok
+// Uncaught Error: test， 会报错
+```
+
+### Promise.prototype.finally <a id="Promise-prototype-finally"></a>
+
+```text
+promise
+.then(result => {···})
+.catch(error => {···})
+.finally(() => {···});
+```
+
+* 不管 Promise 对象最后状态如何，都会执行的操作
+
+### Promise.all\(\) <a id="Promise-all"></a>
+
+```text
+// 例子 1
+const p = Promise.all([p1, p2, p3]);
+const promise1 = Promise.resolve(3);
+const promise2 = 42;
+const promise3 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 100, 'foo');
+});
+
+Promise.all([promise1, promise2, promise3]).then((values) => {
+  console.log(values);
+});
+```
+
+* 方法用于将多个 Promise 实例，包装成一个新的 Promise 实例。 `p1`、`p2`、`p3`都是 Promise 实例，如果不是，就会先调用下面讲到的`Promise.resolve`方法，将参数转为 Promise 实例，再进一步处理。另外，`Promise.all()`方法的参数可以不是数组，但必须具有 Iterator 接口，且返回的每个成员都是 Promise 实例
+*  `p`的状态由`p1`、`p2`、`p3`决定，分成两种情况。
+  *  只有`p1`、`p2`、`p3`的状态都变成`fulfilled`，`p`的状态才会变成`fulfilled`，此时`p1`、`p2`、`p3`的返回值组成一个数组，传递给`p`的回调函数
+  *  只要`p1`、`p2`、`p3`之中有一个被`rejected`，`p`的状态就变成`rejected`，此时第一个被`reject`的实例的返回值，会传递给`p`的回调函
+*  如果作为参数的 Promise 实例，自己定义了`catch`方法，那么它一旦被`rejected`，并不会触发`Promise.all()`的`catch`方法。
+
+```text
+const p1 = new Promise((resolve, reject) => {
+  resolve('hello');
+})
+.then(result => result)
+.catch(e => e);
+
+const p2 = new Promise((resolve, reject) => {
+  throw new Error('报错了');
+})
+.then(result => result)
+.catch(e => e);
+
+Promise.all([p1, p2])
+.then(result => console.log(result))
+.catch(e => console.log(e));
+// ["hello", Error: 报错了]
+
+
+// 没有 自己的 catch
+const p1 = new Promise((resolve, reject) => {
+  resolve('hello');
+})
+.then(result => result);
+
+const p2 = new Promise((resolve, reject) => {
+  throw new Error('报错了');
+})
+.then(result => result);
+
+Promise.all([p1, p2])
+.then(result => console.log(result))
+.catch(e => console.log(e));
+// Error: 报错了
+```
+
+*  上面这个 例子 `p1`会`resolved`，`p2`首先会`rejected`，但是`p2`有自己的`catch`方法，该方法返回的是一个新的 Promise 实例，`p2`指向的实际上是这个实例。该实例执行完`catch`方法后，也会变成`resolved`，导致`Promise.all()`方法参数里面的两个实例都会`resolved`，因此会调用`then`方法指定的回调函数，而不会调用`catch`方法指定的回调函数。
+*  **如果`p2`没有自己的`catch`方法，就会调用`Promise.all()`的`catch`方法。**
+
+### Promise.race\(\) <a id="Promise-race"></a>
+
+```text
+const p = Promise.race([p1, p2, p3]);
+
+// 例子 2
+const p = Promise.race([
+  fetch('/resource-that-may-take-a-while'),
+  new Promise(function (resolve, reject) {
+    setTimeout(() => reject(new Error('request timeout')), 5000)
+  })
+]);
+
+p
+.then(console.log)
+.catch(console.error);
+```
+
+*  `Promise.race()`方法同样是将多个 Promise 实例，包装成一个新的 Promise 实例。 只要`p1`、`p2`、`p3`之中有一个实例率先改变状态，`p`的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给`p`的回调函数
+* 上面的 例子2 如果指定时间内没有获得结果，就将 Promise 的状态变为`reject`，否则变为`resolve`。
+
+### Promise.allSettled\(\) <a id="Promise-allSettled"></a>
+
+```text
+const resolved = Promise.resolve(42);
+const rejected = Promise.reject(-1);
+
+const allSettledPromise = Promise.allSettled([resolved, rejected]);
+
+allSettledPromise.then(function (results) {
+  console.log(results);
+});
+// [
+//    { status: 'fulfilled', value: 42 },
+//    { status: 'rejected', reason: -1 }
+// ]
+```
+
+* 方法接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例。只有等到所有这些参数实例都返回结果，不管是fulfilled还是rejected
+* 该方法返回的新的 Promise 实例，一旦结束，状态总是fulfilled，不会变成rejected
+*  **只关心这些操作有没有结束。这时，`Promise.allSettled()`方法就很有用**
+
+### Promise.any\(\) <a id="Promise-any"></a>
+
+```text
+Promise.any([
+  fetch('https://v8.dev/').then(() => 'home'),
+  fetch('https://v8.dev/blog').then(() => 'blog'),
+  fetch('https://v8.dev/docs').then(() => 'docs')
+]).then((first) => {  // 只要有一个 fetch() 请求成功
+  console.log(first);
+}).catch((error) => { // 所有三个 fetch() 全部请求失败
+  console.log(error);
+});
+```
+
+*  只要参数实例有一个变成`fulfilled`状态，包装实例就会变成`fulfilled`状态；如果所有参数实例都变成`rejected`状态，包装实例就会变成`rejected`状态。
+
+### Promise.resolve\(\)  <a id="Promise-resolve"></a>
+
+```text
+Promise.resolve('foo')
+// 等价于
+new Promise(resolve => resolve('foo'))
+
+//参数是一个thenable对象
+let thenable = {
+  then: function(resolve, reject) {
+    resolve(42);
+  }
+};
+
+let p1 = Promise.resolve(thenable);
+p1.then(function (value) {
+  console.log(value);  // 42
+});
+
+// 参数不是具有then()方法的对象，或根本就不是对象
+const p = Promise.resolve('Hello');
+
+p.then(function (s) {
+  console.log(s)
+});
+
+// 不带任何参数
+```
+
+*  `Promise.resolve()`方法的参数分成四种情况。
+  *  **参数是一个 Promise 实例**
+    * 如果参数是 Promise 实例，那么Promise.resolve将不做任何修改、原封不动地返回这个实例。
+  *  **参数是一个`thenable`对象**
+    * thenable对象指的是具有then方法的对象，比如下面这个对象。
+    *  `Promise.resolve()`方法会将这个对象转为 Promise 对象，然后就立即执行`thenable`对象的`then()`方法。
+  *  **参数不是具有`then()`方法的对象，或根本就不是对象**
+    *  则`Promise.resolve()`方法返回一个新的 Promise 对象，状态为`resolved`。
+    *  生成一个新的 Promise 对象的实例`p`。由于字符串`Hello`不属于异步操作（判断方法是字符串对象不具有 then 方法），返回 Promise 实例的状态从一生成就是`resolved`，所以回调函数会立即执行。`Promise.resolve()`方法的参数，会同时传给回调函数。
+  *  **不带有任何参数**
+
+    \*\*\*\*
+
+  * \*\*\*\*
+
+### 
+
+### 
+
+### 
+
+### 
+
+### 
 
 ### Promise 凭借什么消灭了回调地狱（callback hell）？
 
