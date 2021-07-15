@@ -1,5 +1,9 @@
 # Write your own JS API
 
+{% embed url="https://juejin.cn/post/6873513007037546510" %}
+
+{% embed url="https://juejin.cn/post/6946022649768181774" %}
+
 
 
 ## instanceof 

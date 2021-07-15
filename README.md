@@ -18,11 +18,17 @@
 
 知识体系
 
+{% embed url="https://juejin.cn/post/6844904103504527374" %}
+
 
 
 ## Some book I should read:
 
 * Professional JavaScript for Web Developers 4th
+
+{% embed url="https://juejin.cn/post/6844903453529997320" %}
+
+
 
 
 
@@ -30,9 +36,16 @@
 
 ## Notes:
 
-* https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/async%20%26%20performance/ch3.md
-* https://wangdoc.com/javascript/async/promise.html
-* https://juejin.cn/post/6844903607968481287
+{% embed url="https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/async%20%26%20performance/ch3.md" %}
+
+
+
+{% embed url="https://wangdoc.com/javascript/async/promise.html" %}
+
+{% embed url="https://juejin.cn/post/6844903607968481287" %}
+
+
+
 * 看 红宝书
 
 
@@ -118,6 +131,18 @@
 
 * Object-Orienting
 * Prototypes、
+
+
+
+
+
+
+
+## 面试题
+
+{% embed url="https://juejin.cn/post/6844903885488783374" %}
+
+
 
 
 
