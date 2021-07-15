@@ -11,5 +11,6 @@
   * [Design Pattern](javascript/design-pattern.md)
   * [Security](javascript/security.md)
   * [Implement basic web component](javascript/implement-basic-web-component.md)
+  * [Write better code](javascript/write-better-code.md)
 * [React](react.md)
 
