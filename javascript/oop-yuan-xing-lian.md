@@ -92,7 +92,7 @@ obj instanceof Number // true
 
 
 
-### Object 的静态方法 <a id="object-&#x7684;&#x9759;&#x6001;&#x65B9;&#x6CD5;"></a>
+### Object 的静态方法\(static method\) <a id="object-&#x7684;&#x9759;&#x6001;&#x65B9;&#x6CD5;"></a>
 
 ```text
 // ===== EG 1 =====
@@ -188,13 +188,105 @@ Object.freeze(obj);
 
 obj.bar.push('c');
 obj.bar // ["a", "b", "c"]
+
+
+//4.1 ===== Object.create() =====
+
+
+var A = {
+  print: function () {
+    console.log('hello');
+  }
+};
+
+var B = Object.create(A);
+
+Object.getPrototypeOf(B) === A // true
+B.print() // hello
+B.print === A.print // true
+
+Object.create()
+// TypeError: Object prototype may only be an Object or null
+Object.create(123)
+// TypeError: Object prototype may only be an Object or null
+
+// 在原型上添加或修改任何方法，会立刻反映在新对象之上。
+var obj1 = { p: 1 };
+var obj2 = Object.create(obj1);
+
+obj1.p = 2;
+obj2.p // 2
+
+
+// 第二个参数
+
+var obj = Object.create({}, {
+  p1: {
+    value: 123,
+    enumerable: true,
+    configurable: true,
+    writable: true,
+  },
+  p2: {
+    value: 'abc',
+    enumerable: true,
+    configurable: true,
+    writable: true,
+  }
+});
+
+// 等同于
+var obj = Object.create({});
+obj.p1 = 123;
+obj.p2 = 'abc';
+
+
+// 4.2 ===== 原型链相关方法 =====
+var F = function () {};
+var f = new F();
+Object.getPrototypeOf(f) === F.prototype // true
+
+// 空对象的原型是 Object.prototype
+Object.getPrototypeOf({}) === Object.prototype // true
+
+// Object.prototype 的原型是 null
+Object.getPrototypeOf(Object.prototype) === null // true
+
+// 函数的原型是 Function.prototype
+function f() {}
+Object.getPrototypeOf(f) === Function.prototype // true
+
+// 4.3 ===== Object.setPrototypeOf() =====
+var a = {
+  name:'test'
+};
+var b = {
+  age: 10
+};
+Object.setPrototypeOf(a, b);
+
+Object.getPrototypeOf(a) === b // true
+console.log(a.name); //test
+console.log(a.age); // 10
+
+
+
+// 5 ===== getOwnPropertyNames =====
+Object.getOwnPropertyNames(Date)
+// ["parse", "arguments", "UTC", "caller", "name", "prototype", "now", "length"]
+
+
+
+// 6 ===== hasOwnProperty =====
+Date.hasOwnProperty('length') // true
+Date.hasOwnProperty('toString') // false
 ```
 
 _**是指Object 对象自身的方法**_
 
 **Object.prototype.keys\(obj\) // \["p1", "p2"\]   // this is not a function**
 
-1. **`Object.keys()，Object.getOwnPropertyNames()`**   都用来遍历对象的属性 
+1. **`Object.keys()，Object.getOwnPropertyNames() , for ...in`**  都用来遍历对象的属性 
    1.  这两个方法的参数是一个对象，返回一个数组。该数组的成员都是该对象自身的（而不是继承的）所有属性名。
    2.  只有涉及不可枚举属性时，才会有不一样的结果。`Object.keys`方法只返回可枚举的属性，`Object.getOwnPropertyNames`方法还返回不可枚举的属性名
    3.  一般情况下，几乎总是使用`Object.keys`方法，遍历对象的属性。
@@ -213,12 +305,70 @@ _**是指Object 对象自身的方法**_
       1. 漏洞： 可以通过改变原型对象，来为对象增加属性。 上面代码中，对象obj本身不能新增属性，但是可以在它的原型对象上新增属性，就依然能够在obj上读到。
       2. 另外一个局限是，如果属性值是对象，上面这些方法只能冻结属性指向的对象，而不能冻结对象本身的内容。 上面代码中，`obj.bar`属性指向一个数组，`obj`对象被冻结以后，这个指向无法改变，即无法指向其他值，但是所指向的数组是可以改变的。
 4. 原型链相关方法
-   1. `Object.create()`：该方法可以指定原型对象和属性，返回一个新的对象。
+   1. `Object.create()`：该方法接受一个对象作为参数，然后以它为原型，返回一个实例对象。该实例完全继承原型对象的属性
+      1.  使用Object.create\(\)方法的时候，必须提供对象原型，即参数不能为空，或者不是对象，否则会报错
+      2.  Object.create\(\)方法生成的新对象，动态继承了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上
+      3.  `Object.create()`方法还可以接受第二个参数。该参数是一个属性描述对象，它所描述的对象属性，会添加到实例对象，作为该对象自身的属性
    2. `Object.getPrototypeOf()`：获取对象的`Prototype`对象。
+   3.  `Object.setPrototypeOf()`  方法为参数对象设置原型，返回该参数对象。它接受两个参数，第一个是现有对象，第二个是原型对象。`Object.setPrototypeOf(a, b);`  将a的原型设置到b上面
+5. `getOwnPropertyNames`    返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名。
+6. `Object.prototype.hasOwnProperty()`用于判断某个属性定义在对象自身，还是定义在原型链上。 `Date.length`（构造函数`Date`可以接受多少个参数）是`Date`自身的属性，`Date.toString`是继承的属性。
 
+### 生成的新对象方法
 
+```text
+var obj1 = Object.create({});
+var obj2 = Object.create(Object.prototype);
+var obj3 = new Object();
 
-### Object 的实例方法 <a id="object-&#x7684;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;"></a>
+var obj = Object.create(null);
+
+obj.valueOf()
+// TypeError: Object [object Object] has no method 'valueOf'
+```
+
+* 这些都是等价的
+*  如果想要生成一个不继承任何属性（比如没有`toString()`和`valueOf()`方法）的对象，可以将`Object.create()`的参数设为`null`。
+
+###  获取实例对象`obj`的原型对象 
+
+```text
+var obj = new Object();
+
+obj.__proto__ === Object.prototype
+// true
+obj.__proto__ === obj.constructor.prototype
+
+// 三种方法
+obj.__proto__
+obj.constructor.prototype
+Object.getPrototypeOf(obj)
+
+// 手动更改 原型对象时候 也需要更改 constructor 属性
+
+var P = function () {};
+var p = new P();
+
+var C = function () {};
+C.prototype = p;
+var c = new C();
+
+c.constructor.prototype === p // false
+// 正确修改方法
+C.prototype = p;
+C.prototype.constructor = C;
+
+var c = new C();
+c.constructor.prototype === p // true
+```
+
+*  上面三种方法之中，前两种都不是很可靠。`__proto__`属性只有浏览器才需要部署，其他环境可以不部署。而`obj.constructor.prototype`在手动改变原型对象时，可能会失效。
+*  上面例子中 构造函数`C`的原型对象被改成了`p`，但是实例对象的`c.constructor.prototype`却没有指向`p`。所以，在改变原型对象时，一般要同时设置`constructor`属性。
+* 关于 constructor 的解释情况 在 原型链 section看
+
+###  <a id="object-&#x7684;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;"></a>
+
+### Object 的实例方法\(instance method） <a id="object-&#x7684;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;"></a>
 
  定义在`Object.prototype`对象。它们称为实例方法  所有`Object`的实例对象都继承了这些方法。
 
@@ -324,6 +474,13 @@ o.propertyIsEnumerable("x");        // true: property x is local and enumerable
 o.propertyIsEnumerable("y");        // false: o doesn't have a property y
 o.propertyIsEnumerable("toString"); // false: toString property is inherited
 Object.prototype.propertyIsEnumerable("toString");  // false: nonenumerable
+
+// ===== EG 7 =====
+var obj = {};
+var p = {};
+
+obj.__proto__ = p;
+Object.getPrototypeOf(obj) === p // true
 ```
 
 1. `Object.prototype.valueOf()`：返回当前对象对应的值。默认情况下返回对象本身。
@@ -339,6 +496,10 @@ Object.prototype.propertyIsEnumerable("toString");  // false: nonenumerable
 5. `Object.prototype.isPrototypeOf()`：判断当前对象是否为另一个对象的原型。
 6. `Object.prototype.propertyIsEnumerable()`：判断某个属性是否可枚举。
    1. 这个方法只能用于判断对象自身的属性，对于继承的属性一律返回false
+7. `Object.prototype.__proto__`   返回该对象的原型。该属性可读写。
+
+   1. `Object.getPrototypeOf(a) === a.proto;`   等同于Object.getPrototypeof\(\);
+   2.  根据语言标准，`__proto__`属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用`Object.getPrototypeOf()`和`Object.setPrototypeOf()`，进行原型对象的读写操作。
 
 ### \*\*\*\*
 
@@ -676,7 +837,7 @@ extend({}, {
 })
 // {a: 1}
 
-// 正确 的对象拷贝方法
+// 正确 的对象拷贝方法 方法1
 
 var extend = function (to, from) {
   for (var property in from) {
@@ -712,9 +873,20 @@ console.log(b);
 //   name: "boyan"
 // }
 
+
+// 方法二
+function copyObject(orig) {
+  return Object.create(
+    Object.getPrototypeOf(orig),
+    Object.getOwnPropertyDescriptors(orig)
+  );
+}
+
+
 ```
 
 * 上面这个方法问题在于， 遇到 accessor 属性时候 ， 只会拷贝数值
+* 方法二
 
 ### Merging Objects:
 
@@ -722,6 +894,296 @@ console.log(b);
 * `Object.assign(target, ...sources)`
 * It take one destination , and one or many so
 
+
+
+
+
+## New 命令
+
+### new 命令的原理
+
+* 创建一个空对象，作为将要返回的对象实例。
+* 将这个空对象的原型，指向构造函数的prototype属性。
+* 将这个空对象赋值给函数内部的this关键字
+* 开始执行构造函数内部的代码。
+
+也就是说，构造函数内部，this指的是一个新生成的空对象，所有针对this的操作，都会发生在这个空对象上。构造函数之所以叫“构造函数”，就是说这个函数的目的，就是操作一个空对象（即this对象），将其“构造”为需要的样子
+
+```text
+var Vehicle = function () {
+  this.price = 1000;
+  return 1000;
+};
+
+(new Vehicle()) === 1000
+// false
+
+var Vehicle = function (){
+  this.price = 1000;
+  return { price: 2000 };
+};
+
+(new Vehicle()).price
+// 2000,因为不是返还 this返还的是别的 object
+
+
+//如果对普通函数（内部没有this关键字的函数）使用new
+function getMessage() {
+  return 'this is a message';
+}
+
+var msg = new getMessage();
+
+msg // {}
+typeof msg // "object"
+```
+
+* **如果构造函数内部有return语句，而且return后面跟着一个对象，new命令会返回return语句指定的对象；否则，就会不管return语句，返回this对象**。
+*  上面代码中，构造函数`Vehicle`的`return`语句返回一个数值。这时，`new`命令就会忽略这个`return`语句，返回“构造”后的`this`对象。
+*  但是，如果`return`语句返回的是一个跟`this`无关的新对象，`new`命令会返回这个新对象，而不是`this`对象。这一点需要特别引起注意。
+*  另一方面，如果对普通函数（内部没有`this`关键字的函数）使用`new`命令，则会返回一个空对象。
+
+### new 命令简化的内部流程
+
+```text
+function _new(/* 构造函数 */ constructor, /* 构造函数参数 */ params) {
+  // 将 arguments 对象转为数组
+  var args = [].slice.call(arguments);
+  // 取出构造函数
+  var constructor = args.shift();
+  // 创建一个空对象，继承构造函数的 prototype 属性
+  var context = Object.create(constructor.prototype);
+  // 执行构造函数
+  var result = constructor.apply(context, args);
+  // 如果返回结果是对象，就直接返回，否则返回 context 对象
+  return (typeof result === 'object' && result != null) ? result : context;
+}
+
+// 实例
+var actor = _new(Person, '张三', 28);
+```
+
+
+
+## 原型链继承（prototype）
+
+### 构造函数的缺点
+
+```text
+function Cat(name, color) {
+  this.name = name;
+  this.color = color;
+  this.meow = function () {
+    console.log('喵喵');
+  };
+}
+
+var cat1 = new Cat('大毛', '白色');
+var cat2 = new Cat('二毛', '黑色');
+
+cat1.meow === cat2.meow
+// false
+```
+
+* 同一个构造函数的多个实例之间，无法共享属性，从而造成对系统资源的浪费
+*  上面代码中，`cat1`和`cat2`是同一个构造函数的两个实例，它们都具有`meow`方法。由于`meow`方法是生成在每个实例对象上面，所以两个实例就生成了两次。也就是说，每新建一个实例，就会新建一个`meow`方法
+* 解决办法 JavaScript 的原型对象（prototype）
+
+### prototype 属性的作用 
+
+```text
+function f() {}
+typeof f.prototype // "object"
+
+// EG 1
+function Animal(name) {
+  this.name = name;
+}
+Animal.prototype.color = 'white';
+
+var cat1 = new Animal('大毛');
+var cat2 = new Animal('二毛');
+
+cat1.color // 'white'
+cat2.color // 'white'
+
+//只要修改原型对象，变动就立刻会体现在所有实例对象上。
+Animal.prototype.color = 'yellow';
+
+cat1.color // "yellow"
+cat2.color // "yellow"
+```
+
+* 原型对象的所有属性和方法，都能被实例对象共享。也就是说，如果属性和方法定义在原型上，那么所有实例对象就能共享，不仅节省了内存，还体现了实例对象之间的联系。
+*  每个函数都有一个`prototype`属性，指向一个对象。
+* EG 1 
+  * 生成实例的时候，该属性会自动成为实例对象的原型
+  *  只要修改原型对象，变动就立刻会体现在**所有**实例对象上。
+  * 当实例对象本身没有某个属性或方法的时候，它会到原型对象去寻找该属性或方法
+
+### 原型链
+
+```text
+Object.getPrototypeOf(Object.prototype)
+// NULL
+
+// ===== EG1 =====
+var MyArray = function () {};
+
+MyArray.prototype = new Array();
+MyArray.prototype.constructor = MyArray;
+
+var mine = new MyArray();
+mine.push(1, 2, 3);
+mine.length // 3
+mine instanceof Array // true
+```
+
+* 所有对象都有自己的原型对象（prototype）。一方面，任何一个对象，都可以充当其他对象的原型；另一方面，由于原型对象也是对象，所以它也有自己的原型。因此，就会形成一个“原型链”（prototype chain）：对象到原型，再到原型的原型……
+*  所有对象的原型最终都可以上溯到`Object.prototype`
+*  即`Object`构造函数的`prototype`属性。也就是说，所有对象都继承了`Object.prototype`的属性
+*  `bject.prototype`的原型是`null  ,` 原型链的尽头就是`null`。
+
+#### constructor 属性 <a id="constructor-&#x5C5E;&#x6027;"></a>
+
+```text
+function P() {}
+P.prototype.constructor === P // true
+var p = new P();
+p.constructor === P // true
+p.constructor === P.prototype.constructor // true
+p.hasOwnProperty('constructor') // false
+
+
+//  查看出是哪一个构造函数产生的
+function F() {};
+var f = new F();
+
+f.constructor === F // true
+f.constructor === RegExp // false
+
+// 如果修改了原型对象，一般会同时修改constructor属性
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.constructor === Person // true
+
+Person.prototype = {
+  method: function () {}
+};
+
+Person.prototype.constructor === Person // false
+Person.prototype.constructor === Object // true
+```
+
+*  **`f.constructor.name`**  可以得到 构造函数的名称。
+* `prototype`对象有一个`constructor`属性，默认指向`prototype`对象所在的构造函数\(function\)
+*  由于`constructor`属性定义在`prototype`对象上面，意味着可以被所有实例对象继承。
+*  `constructor`属性的作用是，可以得知某个实例对象，到底是哪一个构造函数产生的。
+* `constructor`属性表示原型对象与构造函数之间的关联关系，如果修改了原型对象，一般会同时修改`constructor`属性，防止引用的时候出错。 **修改原型对象时，一般要同时修改`constructor`属性的指向。**
+
+  *  上面代码中，构造函数`Person`的原型对象改掉了，但是没有修改`constructor`属性，导致这个属性不再指向`Person`。由于`Person`的新原型是一个普通对象，而普通对象的`constructor`属性指向`Object`构造函数，导致`Person.prototype.constructor`变成了`Object`
+
+### 构造函数的继承 <a id="&#x6784;&#x9020;&#x51FD;&#x6570;&#x7684;&#x7EE7;&#x627F;"></a>
+
+```text
+// Step 1
+function Sub(value) {
+  Super.call(this);
+  this.prop = value;
+}
+
+// step 2
+Sub.prototype = Object.create(Super.prototype);
+Sub.prototype.constructor = Sub;
+Sub.prototype.method = '...';
+
+// 另一种写法
+Sub.prototype = new Super();
+
+
+//例子：
+
+function Shape() {
+  this.x = 0;
+  this.y = 0;
+}
+
+Shape.prototype.move = function (x, y) {
+  this.x += x;
+  this.y += y;
+  console.info('Shape moved.');
+};
+
+// 第一步，子类继承父类的实例
+function Rectangle() {
+  Shape.call(this); // 调用父类构造函数
+}
+
+// 第二步，子类继承父类的原型
+Rectangle.prototype = Object.create(Shape.prototype);
+Rectangle.prototype.constructor = Rectangle;
+
+var rect = new Rectangle();
+
+rect instanceof Rectangle  // true
+rect instanceof Shape  // true
+
+
+//如果只是想继承父类的一个 method
+ClassB.prototype.print = function() {
+  ClassA.prototype.print.call(this);
+  // some code
+}
+```
+
+1. 第一步是在子类的构造函数中，调用父类的构造函数 `Sub`是子类的构造函数，`this`是子类的实例。在实例上调用父类的构造函数`Super`，就会让子类实例具有父类实例的属性
+2. 第二步是让子类的原型指向父类的原型，这样子类就可以继承父类原型。
+   1.  上面代码中，`Sub.prototype`是子类的原型，要将它赋值为`Object.create(Super.prototype)`，而不是直接等于`Super.prototype`。否则后面两行对`Sub.prototype`的操作，会连父类的原型`Super.prototype`一起修改掉。
+
+* 另一种写法也有继承的效果，但是子类会具有父类实例的方法。有时，这可能不是我们需要的
+*  采用这样的写法以后，`instanceof`运算符会对子类和父类的构造函数，都返回`true`
+* 上面代码中，子类是整体继承父类。有时只需要单个方法的继承，这时可以采用下面的写法。
+* 如果只是想继承父类的一个 method
+
+### 多重继承  <a id="&#x591A;&#x91CD;&#x7EE7;&#x627F;"></a>
+
+```text
+function M1() {
+  this.hello = 'hello';
+}
+
+function M2() {
+  this.world = 'world';
+}
+
+function S() {
+  M1.call(this);
+  M2.call(this);
+}
+
+// 继承 M1
+S.prototype = Object.create(M1.prototype);
+// 继承链上加入 M2
+Object.assign(S.prototype, M2.prototype);
+
+// 指定构造函数
+S.prototype.constructor = S;
+
+var s = new S();
+s.hello // 'hello'
+s.world // 'world'
+```
+
+* JavaScript 不提供多重继承功能，即不允许一个对象同时继承多个对象。但是，可以通过变通方法，实现这个功能
+*  子类`S`同时继承了父类`M1`和`M2`。这种模式又称为 Mixin（混入）
+
+
+
+
+
+  
 
 
 
