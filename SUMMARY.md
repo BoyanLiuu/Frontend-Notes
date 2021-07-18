@@ -13,4 +13,5 @@
   * [Implement basic web component](javascript/implement-basic-web-component.md)
   * [Write better code](javascript/write-better-code.md)
 * [React](react.md)
+* [Write your own component](write-your-own-component.md)
 
