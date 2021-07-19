@@ -890,10 +890,41 @@ function copyObject(orig) {
 
 ### Merging Objects:
 
+```text
+let dest, src, result;
+
+dest = {};
+src = { id: 'src' };
+result = Object.assign(dest, src);
+// Object.assign mutates the destination object
+// and also returns that object after exiting.
+console.log(dest === result); // true
+console.log(dest !== src); // true
+dest.id ='heyya';
+
+console.log(result); // { id: heyya }
+console.log(dest); // { id: heya }
+console.log(src); // { id: src}
+
+
+
+/**
+ * Object references
+ */
+dest = {};
+src = { a: {} };
+Object.assign(dest, src);
+// Shallow property copies means only object references copied.
+console.log(dest); // { a :{} }
+console.log(dest.a === src.a); // true 
+```
+
 * **`Object.assign()`** method.
 * `Object.assign(target, ...sources)`
-* It take one destination , and one or many so
-
+* It take one destination , and one or many sources, If we modify destination, result would change as well, but it would not affect source object if we do not modify object, since **Object.assign\(\) only perform shallow copy  from each source object.**
+* If multiple source objects have the same property defined, the **last one to b**e copied will be the ultimate value
+* 已经做过的copy出错后也不会 重置，所以就会有 partially copy
+* 
 
 
 
