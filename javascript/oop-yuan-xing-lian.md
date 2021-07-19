@@ -2,6 +2,47 @@
 
 ## Understanding Objects:
 
+### Object Destructuing:
+
+```text
+// EG 1
+let person = {
+ name: 'Matt',
+ age: 27
+};
+let { name, job } = person;
+console.log(name); // Matt
+console.log(job); // undefined
+
+// EG 2
+let person = {
+ name: 'Matt',
+ age: 27
+};
+let { name, job='Software engineer' } = person;
+console.log(name); // Matt
+console.log(job); // Software engineer
+
+
+
+// EG 3
+let person = {
+ name: 'Matt',
+ age: 27,
+ job: {
+ title: 'Software engineer'
+ }
+};
+// Declares 'title' variable and assigns person.job.title as its value
+let { job: { title }} = person;
+console.log(title); // Software engineer 
+```
+
+1. 如果没有match 就会得到 undefined
+2. It can have default value
+3. Nested Destructuring
+   1. 
+
 ### Object 方法：
 
 ```text
@@ -929,9 +970,83 @@ console.log(dest.a === src.a); // true
 
 
 
+## Object creation
+
+Although using the Object constructor or an object literal are convenient ways to create single objects, there is an obvious downside: Creating multiple objects with the same interface requires a lot of code duplication.
+
+### The factory pattern:
+
+```text
+function createPerson(name, age, job) {
+ let o = new Object();
+ o.name = name;
+ o.age = age;
+ o.job = job;
+ o.sayName = function() {
+ console.log(this.name);
+ };
+ return o;
+}
+
+let person1 = createPerson("Nicholas", 29, "Software Engineer");
+let person2 = createPerson("Greg", 27, "Doctor");
+```
+
+* The function can be called any number of times with different arguments and will still return an object that has three properties and one method. Though this solved the problem of creating multiple similar objects, the **factory pattern didn’t address the issue of object identification** \(what type of object an object is\)
+
+### The Function Constructor Pattern:
+
+```text
+function Person(name, age, job){
+ this.name = name;
+ this.age = age;
+ this.job = job;
+ this.sayName = function() {
+ console.log(this.name);
+ };
+}
+
+let person1 = new Person("Nicholas", 29, "Software Engineer");
+let person2 = new Person("Greg", 27, "Doctor");
+person1.sayName(); // Nicholas
+person2.sayName(); // Greg
+
+//  Or this way
+let Person = function(name, age, job) {
+ this.name = name;
+ this.age = age;
+ this.job = job;
+ this.sayName = function() {
+ console.log(this.name);
+ };
+}
+```
+
+* define custom constructors, in the form   of a function, that define properties and methods for your own type of object.
+* `person1 instanceof Person`
+* The major downside to constructors is that methods are created once for each instance.
+* To solve the downside, we use prototype, , 在底下解释了
+
+### Prototype pattern 
+
 ## New 命令
 
 ### new 命令的原理
+
+英文：
+
+* A new object is created in memory
+* The new object’s internal \[\[Prototype\]\] pointer is assigned to the constructor’s prototype property
+* The this value of the constructor is assigned to the new object \(so this points to the
+
+  new object\).
+
+* The code inside the constructor is executed \(adds properties to the new object\).
+* If the constructor function returns a non-null object, that object is returned. Otherwise, the
+
+  new object that was just created is returned.
+
+中文:
 
 * 创建一个空对象，作为将要返回的对象实例。
 * 将这个空对象的原型，指向构造函数的prototype属性。
@@ -996,9 +1111,56 @@ var actor = _new(Person, '张三', 28);
 
 
 
-## 原型链继承（prototype）
+## 原型链继承（prototype pattern）
 
-### 构造函数的缺点
+### 基础概念
+
+* By default, all prototypes automatically get a property called constructor that points back
+
+  to the function on which it is a property. In the previous example, for instance, Person.prototype.
+
+  constructor points to Person
+
+```text
+function Person() {}
+/**
+ * Upon declaration, the constructor function already
+ * has a prototype object associated with it:
+ */
+console.log(typeof Person.prototype); //Object
+console.log(Person.prototype);
+// {
+// constructor: f Person(),
+// __proto__: Object
+// }
+
+console.log(Person.prototype.constructor === Person); // true
+
+
+/**
+ * An instance is linked to the prototype through __proto__, which
+ * is the literal manifestation of the [[Prototype]] hidden property.
+ *
+ * A constructor is linked to the prototype through the constructor property.
+ *
+ * An instance has no direct link to the constructor, only through the prototype.
+ */
+console.log(person1.__proto__ === Person.prototype); // true
+conosle.log(person1.__proto__.constructor === Person); // true
+```
+
+![](../.gitbook/assets/image%20%2831%29.png)
+
+* Note that Person.prototype points to the prototype object but Person.prototype.constructor points back to Person **理解图**
+
+### **Prototypes 的缺点**
+
+* , it negates the ability to pass initialization   ****arguments into the constructor, meaning that all instances get the same property values by default. 
+* The main problem comes with their shared nature. The real problem occurs when a property contains a reference value.， 你更改其中一个 field 所有的 instance都会得到更改过后的值
+
+
+
+### 构造函数的缺点\(constructor function\)
 
 ```text
 function Cat(name, color) {
@@ -1119,8 +1281,49 @@ Person.prototype.constructor === Object // true
 ### 构造函数的继承 <a id="&#x6784;&#x9020;&#x51FD;&#x6570;&#x7684;&#x7EE7;&#x627F;"></a>
 
 ```text
+// 第一种写法，记这个把
+function SuperType(name){
+ this.name = name;
+ this.colors = ["red", "blue", "green"];
+}
+
+SuperType.prototype.sayName = function() {
+ console.log(this.name);
+};
+
+function SubType(name, age){
+ // inherit properties
+ SuperType.call(this, name);
+
+ this.age = age;
+}
+
+// inherit methods
+SubType.prototype = new SuperType();
+
+SubType.prototype.sayAge = function() {
+ console.log(this.age);
+};
+
+let instance1 = new SubType("Nicholas", 29);
+instance1.colors.push("black");
+console.log(instance1.colors); // "red,blue,green,black"
+instance1.sayName(); // "Nicholas";
+instance1.sayAge(); // 29
+
+let instance2 = new SubType("Greg", 27);
+console.log(instance2.colors); // "red,blue,green"
+instance2.sayName(); // "Greg";
+instance2.sayAge(); // 27
+
+
+
+
+// 第二种写法
 // Step 1
 function Sub(value) {
+  // this is constructor stealing,it call super type constructor 
+  // within sub stype
   Super.call(this);
   this.prop = value;
 }
@@ -1128,10 +1331,8 @@ function Sub(value) {
 // step 2
 Sub.prototype = Object.create(Super.prototype);
 Sub.prototype.constructor = Sub;
-Sub.prototype.method = '...';
 
-// 另一种写法
-Sub.prototype = new Super();
+
 
 
 //例子：
@@ -1214,12 +1415,273 @@ s.world // 'world'
 
 
 
-  
+
+
+## Classes
+
+```text
+//ES 5的 class 写法
+function Point(x, y) {
+  this.x = x;
+  this.y = y;
+}
+
+Point.prototype.toString = function () {
+  return '(' + this.x + ', ' + this.y + ')';
+};
+
+var p = new Point(1, 2);
+
+// ES 6 的class
+
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  toString() {
+    return '(' + this.x + ', ' + this.y + ')';
+  }
+}
+
+
+// ===== class 就是一个 function type=====
+class Point {
+  // ...
+}
+
+typeof Point // "function"
+Point === Point.prototype.constructor // true
+
+
+// ===== EG 3 =====
+class Point {
+  constructor(){
+    // ...
+  }
+}
+
+Object.assign(Point.prototype, {
+  toString(){},
+  toValue(){}
+});
+
+
+// ===== EG 5 =====
+var p1 = new Point(2,3);
+var p2 = new Point(3,2);
+
+p1.__proto__ === p2.__proto__
+```
+
+1. ES6 的class可以看作只是一个语法糖，它的绝大部分功能，ES5 都可以做到
+2. class 的所有 method 都再 prototype 上面 Point.prototype
+3.  由于类的方法都定义在`prototype`对象上面，所以类的新方法可以添加在`prototype`对象上面。`Object.assign()`方法可以很方便地一次向类添加多个方法。
+4. 类的内部所有定义的方法，都是不可枚举的（non-enumerable）
+5. 与 ES5 一样，类的所有实例共享一个原型对象。
+6. 类 不存在 hoist
+
+### 静态方法 ， 静态 属性
+
+```text
+class Foo {
+  static classMethod() {
+    return 'hello';
+  }
+}
+
+Foo.classMethod() // 'hello'
+
+var foo = new Foo();
+foo.classMethod()
+// TypeError: foo.classMethod is not a function
+
+class Foo {
+  static bar() {
+    this.baz();
+  }
+  static baz() {
+    console.log('hello');
+  }
+  baz() {
+    console.log('world');
+  }
+}
+
+Foo.bar() // hello
+
+
+
+// 静态属性
+class MyClass {
+  static myStaticProp = 42;
+
+  constructor() {
+    console.log(MyClass.myStaticProp); // 42
+  }
+}
+```
+
+
+
+* 该方法不会被实例继承，而是直接通过类来调用， static 里的 this 指的 是 lei 而不是 实例
+
+
+
+### 私有方法 & 私有属性
+
+```text
+// ===== 方法 1 =====
+class Widget {
+
+  // 公有方法
+  foo (baz) {
+    this._bar(baz);
+  }
+
+  // 私有方法
+  _bar(baz) {
+    return this.snaf = baz;
+  }
+
+  // ...
+}
+
+// ===== 方法 2 =====
+const bar = Symbol('bar');
+const snaf = Symbol('snaf');
+
+export default class myClass{
+
+  // 公有方法
+  foo(baz) {
+    this[bar](baz);
+  }
+
+  // 私有方法
+  [bar](baz) {
+    return this[snaf] = baz;
+  }
+
+  // ...
+};
+```
+
+1. 一种做法是在命名上加以区别，这种命名是不保险的，在类的外部，还是可以调用到这个方法
+2.  还有一种方法是利用`Symbol`值的唯一性，将私有方法的名字命名为一个`Symbol`值。 一般情况下无法获取到它们，因此达到了私有方法和私有属性的效果。但是也不是绝对不行，`Reflect.ownKeys()`依然可以拿到它们。
+
+### Class 的继承
+
+```text
+// ===== EG 1 =====
+class Point {
+}
+
+class ColorPoint extends Point {
+}
+
+// ===== EG 2 =====
+class Point { /* ... */ }
+
+class ColorPoint extends Point {
+  constructor() {
+  }
+}
+
+let cp = new ColorPoint(); // ReferenceError
+```
+
+1.  Class 可以通过`extends`关键字实现继承
+2.  子类必须在`constructor`方法中调用`super`方法，否则新建实例时会报错。这是因为子类自己的`this`对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。如果不调用`super`方法，子类就得不到`this`对象。
+
+### Class 的 prototype 属性和\_\_proto\_\_属性 <a id="&#x7C7B;&#x7684;-prototype-&#x5C5E;&#x6027;&#x548C;__proto__&#x5C5E;&#x6027;"></a>
+
+```text
+class A {
+}
+
+class B extends A {
+}
+
+B.__proto__ === A // true
+B.prototype.__proto__ === A.prototype // true
 
 
 
 
+Object.setPrototypeOf(B.prototype, A.prototype);
+// 等同于
+B.prototype.__proto__ = A.prototype;
 
+Object.setPrototypeOf(B, A);
+// 等同于
+B.__proto__ = A;
+```
+
+*  子类的`__proto__`属性，表示构造函数的继承，总是指向父类
+*  子类`prototype`属性的`__proto__`属性，表示方法的继承，总是指向父类的`prototype`属性
+*  这两条继承链，可以这样理解：作为一个对象，子类（`B`）的原型（`__proto__`属性）是父类（`A`）；作为一个构造函数，子类（`B`）的原型对象（`prototype`属性）是父类的原型对象（`prototype`属性）的实例。
+
+
+
+### 实例的 \_\_proto\_\_ 属性
+
+```text
+var p1 = new Point(2, 3);
+var p2 = new ColorPoint(2, 3, 'red');
+
+p2.__proto__ === p1.__proto__ // false
+p2.__proto__.__proto__ === p1.__proto__ // true
+```
+
+*  子类实例的`__proto__`属性的`__proto__`属性，指向父类实例的`__proto__`属性。也就是说，子类的原型的原型，是父类的原型。
+
+### Mixin 模式
+
+```text
+// 最基本的实现
+const a = {
+  a: 'a'
+};
+const b = {
+  b: 'b'
+};
+const c = {...a, ...b}; // {a: 'a', b: 'b'}
+
+// 完整实现
+class Vehicle {}
+
+let FooMixin = (Superclass) => class extends Superclass {
+  foo() {
+    console.log('foo');
+  }
+};
+let BarMixin = (Superclass) => class extends Superclass {
+  bar() {
+    console.log('bar');
+  }
+};
+let BazMixin = (Superclass) => class extends Superclass {
+  baz() {
+    console.log('baz');
+  }
+};
+
+function mix(BaseClass, ...Mixins) {
+  return Mixins.reduce((accumulator, current) => current(accumulator), BaseClass);
+}
+
+class Bus extends mix(Vehicle, FooMixin, BarMixin, BazMixin) {}
+
+let b = new Bus();
+b.foo();  // foo
+b.bar();  // bar
+b.baz();  // baz 
+```
+
+* Mixin 指的是多个对象合成一个新的对象，新对象具有各个组成成员的接口。它的最简单实现如下。
+*  One strategy is to define “nestable” functions that accept a superclass as a parameter, define the mixin class as a subclass of the parameter, and return that class. These mixins can be chained inside each other and provided as the superclass expression
 
 
 
