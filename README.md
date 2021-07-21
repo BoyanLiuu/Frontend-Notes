@@ -16,9 +16,13 @@
 * [ES6 入门教程](https://es6.ruanyifeng.com/)
 * [Javascript 教程](https://wangdoc.com/javascript/)
 
-知识体系
+## 知识体系
 
 {% embed url="https://juejin.cn/post/6844904103504527374" %}
+
+{% embed url="https://juejin.cn/post/6844903830887366670\#heading-8" %}
+
+{% embed url="https://juejin.cn/post/6844903962529759239\#heading-26" %}
 
 
 
