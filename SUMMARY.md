@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Initial page](README.md)
+* [总章](README.md)
 * [HTML](html.md)
 * [Creating an open soruce JS library on github](creating-an-open-soruce-js-library-on-github.md)
 * [CSS](css.md)
