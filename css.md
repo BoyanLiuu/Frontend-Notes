@@ -71,6 +71,7 @@
   *  `grid-row-gap: 10px` 表示行间距是 10px，`grid-column-gap: 20px` 表示列间距是 20px。`grid-gap: 10px 20px` 实现的效果是一样的
 * **grid-template-areas：** 属性用于定义区域，一个区域由一个或者多个单元格组成
 * **grid-auto-flow ：默认值是 row**  `grid-auto-flow: row | column | row dense | column dense;`
+* **grid-auto-columns:,grid-auto-rows:**Specifies the size of any auto-generated grid track, 多余的行会根据 grid-auto-rows 算， 
 *  **justify-items** 属性设置单元格内容的水平位置
 *  **align-items** 属性设置单元格的垂直位置（上中下）
 *  **justify-content** 属性是整个内容区域在容器里面的水平位置
