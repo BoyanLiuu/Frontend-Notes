@@ -16,7 +16,7 @@
 * [ES6 入门教程](https://es6.ruanyifeng.com/)
 * [Javascript 教程](https://wangdoc.com/javascript/)
 * [https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblLUxZFqOA2vI2F&view=vew0lbb2R4](https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblLUxZFqOA2vI2F&view=vew0lbb2R4)
-
+* 
 ## 知识体系
 
 {% embed url="https://juejin.cn/post/6844904103504527374" %}
@@ -30,6 +30,8 @@
 {% embed url="https://juejin.cn/post/6844903830887366670\#heading-8" %}
 
 {% embed url="https://juejin.cn/post/6844903962529759239\#heading-26" %}
+
+{% embed url="https://mp.weixin.qq.com/s?\_\_biz=MzI3ODU4MzQ1MA==&mid=2247486932&idx=2&sn=40089546edeb01432c86fcbb617d497e&chksm=eb558c21dc220537d2da01b685e38269414feea70ac4438f73648fec2b074e29a06771db176e&scene=21\#wechat\_redirect" %}
 
 
 
