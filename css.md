@@ -59,6 +59,37 @@
 
 ## Grid 布局
 
+{% embed url="https://juejin.cn/post/6854573220306255880" %}
+
+
+
+* Grid 算作二维布局，  `display: grid | inline-grid;`
+* **grid-template-columns** 和 **grid-template-rows** 属性来定义网格中的行和列
+  *  `grid-template-columns` 属性设置列宽 `grid-template-rows` 属性设置行高
+* **grid-row-gap** 属性、**grid-column-gap** 属性以及 grid-gap 属性
+  *  `grid-row-gap` 属性、`grid-column-gap` 属性分别设置行间距和列间距。`grid-gap` 属性是两者的简写形式
+  *  `grid-row-gap: 10px` 表示行间距是 10px，`grid-column-gap: 20px` 表示列间距是 20px。`grid-gap: 10px 20px` 实现的效果是一样的
+* **grid-template-areas：** 属性用于定义区域，一个区域由一个或者多个单元格组成
+* **grid-auto-flow ：默认值是 row**  `grid-auto-flow: row | column | row dense | column dense;`
+*  **justify-items** 属性设置单元格内容的水平位置
+*  **align-items** 属性设置单元格的垂直位置（上中下）
+*  **justify-content** 属性是整个内容区域在容器里面的水平位置
+*  **align-content** 属性是整个内容区域的垂直位置（上中下）
+
+### Grid 实战
+
+* fr 实现 等分响应式: `grid-template-columns: 1fr 1fr 1fr;` 表示容器分为三等分
+* repeat + auto-fit——固定列宽，改变列数量   `grid-template-columns: repeat(auto-fit, 200px);`
+  * 我们的网格能够固定列宽，并根据容器的宽度来改变列的数量,表示固定列宽为 200px，数量是自适应的，只要容纳得下，就会往上排列
+
+### Grid 兼容性
+
+* 但在 IE 10 以下不支持。个人建议在公司的内部系统运用起来是没有问题的，但 TOC 的话，可能目前还是不太合适
+
+
+
+
+
 
 
 ## CSS box mode
