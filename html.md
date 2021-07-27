@@ -133,6 +133,36 @@ we use &lt;script&gt; to inserting Javascript into an HTML page
 
 *  `<figure>` is for wrapping your image content around it, and `<figcaption>` is to caption your image.
 
+
+
+## 6. HTML 常用的 头部标签
+
+### 基本标签
+
+* DOCTYPE  该声明位于文档中最前面的位置，处于 html 标签之前，此标签告知浏览器文档使用哪种 HTML 或者 XHTML 规范。  声明以 &lt;!DOCTYPE&gt; 开始，不区分大小写，前面没有任何内容，
+* 优先使用 IE 最新版本和 Chrome  `<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />`
+* viewport：可以让布局在移动浏览器上显示的更好,如果网站不是响应式 就不要使用 initial-scale`<meta name="viewport" content="width=device-width, initial-scale=1.0">`
+* Specifying your document's character encoding:    `<meta charset="utf-8">`
+* Specifying language:  `<html lang="zh-cmn-Hans">` 
+
+### SEO 优化标签
+
+* 页面描述：  `<meta name="description" content="不超过150个字符">`
+* 页面关键词：`<meta name="keywords" content="">`
+* 定义页面标题: `<title>标题</title>`
+* 定义网页作者：`<meta name="author" content="name, email@gmail.com">`
+
+### Social Meta tag:
+
+`<meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.png">`
+
+* og:title
+* og:type
+* og:image
+* og:description
+
+
+
 ## 
 
 ##  
