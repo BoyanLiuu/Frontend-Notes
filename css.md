@@ -341,14 +341,22 @@ background:red;
   height:100px;
   
 }
-
+// 方法 1：inline block的方法
 .box1{
   background:lightblue;
   margin:10px;
 }
 .box2{
   background:red;
-    margin:10px;
+  margin:10px;
+   display:inline-block; 
+}
+
+// 方法 2：相对定位
+.box2{
+  background:red;
+   position:relative;
+   top:10px;
 }
 ```
 
@@ -505,16 +513,22 @@ background:lightblue;
 ![Typical float example](.gitbook/assets/image%20%2848%29.png)
 
 * 
-### The great Collapse:
+### The great Collapse:浮动塌陷
 
 ![](.gitbook/assets/image%20%2845%29.png)
 
 * floated elements does not affect parent height
-* How to fix above issue?
-  * Adds an empty div with a clear at the end of parent div  ,  drawback: **It add unwanted markup to HTML**  `<div style="clear: left"></div>`
-  * we can use pseudo-element, ::after   
+
+### **清除浮动**  How to fix above issue?
+
+* Method 1: 使用BFC 在parent 这里 加入 `overflow:auto;`
+* Method 2: 把父元素也变成float 就可以了， 但是这样子会影响布局， 比较局限
+* Method 3: Adds an empty div with a clear at the end of parent div  ,  drawback: **It add unwanted markup to HTML**  `<div style="clear: left"></div>`
+* Method 4:we can use pseudo-element, ::after    **最推荐**
 
 ![](.gitbook/assets/image%20%2853%29.png)
+
+
 
 ### clear property:
 
@@ -571,7 +585,12 @@ background:lightblue;
 * When the text is long enough, it wraps around the floated element. This is the normal float behavior, but it’s not what we want in this case
 * How to solve above issue?
   * we need to establish BFS for the media body. **So it will not overlap with floated elements outside the BFC.**
-  * \*\*\*\*
+
+\*\*\*\*
+
+\*\*\*\*
+
+### \*\*\*\*
 
 
 
