@@ -327,7 +327,7 @@ background:red;
 
 ```
 
-### 外边框塌陷:
+### 外边框塌陷:（margin）
 
 ```text
 //case 1
@@ -445,6 +445,40 @@ background:lightblue;
 position:relative;
 top:20px;
 }
+
+// 在父类使用 BFC
+
+.divA{
+height: 80px;
+width:200px;
+background: lightgrey;
+margin-top:10px;
+overflow:hidden;
+}
+
+.divB{
+height: 30px;
+width:200px;
+background:lightblue;
+margin-top:20px;
+}
+
+
+// 使用 padding
+
+.divA{
+height: 80px;
+width:200px;
+background: lightgrey;
+margin-top:10px;
+padding-top:20px;
+}
+
+.divB{
+height: 30px;
+width:200px;
+background:lightblue;
+}
 ```
 
 * 什么时候会发现这种事情？
@@ -455,9 +489,12 @@ top:20px;
   * 两个都是负数， 取 绝对值最大的
   * 一正 一负， 相加的和
 * 解决办法
+
   * 绝对定位
   *  使用 inline block element
   * 使用 相对定位,就不可以使用 margin-top 定位了
+  * 使用 BFC
+  * 使用 padding
 
 
 
@@ -541,7 +578,7 @@ top:20px;
 ## BFC
 
 * A block formatting context itself is part of the surrounding document flow, **but it isolates its contents from   the outside context,** This isolation does three things for the element that establishes the BFC:
-  * It contains the top and bottom margins of all elements within it. They won’t collapse with margins of elements outside of the block formatting context.
+  * It contains the top and bottom margins of all elements within it. They won’t collapse with margins of elements outside of the block formatting context. **不会出现外边距塌陷**
   * It contains all floated elements within it.
   * _**It doesn’t overlap with floated elements outside the BFC.**_
 * the contents inside a block formatting context will not overlap or interact with elements on the outside as you would normally expect
