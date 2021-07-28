@@ -305,13 +305,254 @@ a:active {color: orange;}
 
 
 
+## Margin:
+
+![](.gitbook/assets/image%20%2854%29.png)
+
+* 底下方法可以使 div 包含 margin
+
+```text
+<div class="wrapper"><h1>This is heading 1</h1></div>
+
+// CSS
+
+.wrapper{
+background:red;
+}
+.wrapper::before,
+.wrapper::after {
+    display: table;
+    content: " ";
+}
+
+```
+
+### 外边框塌陷:
+
+```text
+//case 1
+<div class="box1 box">
+</div>
+<div class="box2 box">
+
+//CSS 每个 box 都有 上下10px 理论上应该会有 20px间距 但是最终只有10px
+.box{
+  width:100px;
+  height:100px;
+  
+}
+
+.box1{
+  background:lightblue;
+  margin:10px;
+}
+.box2{
+  background:red;
+    margin:10px;
+}
+```
+
+![](.gitbook/assets/image%20%2847%29.png)
+
+
+
+![A&#x5143;&#x7D20;&#x5305;&#x542B; B&#x5143;&#x7D20;&#xFF0C;A&#x5143;&#x7D20;&#x548C;C&#x5143;&#x7D20;&#x662F; &#x5144;&#x5F1F;&#x5173;&#x7CFB;](.gitbook/assets/image%20%2851%29.png)
+
+![&#x9519;&#x8BEF;&#x7684;code &#x7684;&#x6548;&#x679C;&#xFF0C; &#x8FD9;&#x91CC; &#x9009;&#x53D6;&#x4E86; 20px](.gitbook/assets/image%20%2850%29.png)
+
+```text
+// 怎么可以给A元素 margin top 10px， B 元素  margin top 20px
+// 这里跟 A，B 同时设置外边距， 就会出现外边框塌陷
+
+// 错误的 code
+.divC{
+height: 60px;
+width:200px;
+background:red;
+}
+
+.divA{
+height: 80px;
+width:200px;
+background: lightgrey;
+margin-top:10px;
+}
+
+.divB{
+height: 30px;
+width:200px;
+background:lightblue;
+margin-top:20px;
+}
+
+
+
+//绝对定位
+
+.divC{
+height: 60px;
+width:200px;
+background:red;
+}
+
+.divA{
+height: 80px;
+width:200px;
+background: lightgrey;
+margin-top:10px;
+position: relative;
+}
+
+.divB{
+height: 30px;
+width:200px;
+background:lightblue;
+position: absolute;
+margin-top:20px;
+}
+
+
+// 使用 inline block element
+
+.divA{
+height: 80px;
+width:200px;
+background: lightgrey;
+margin-top:10px;
+}
+
+.divB{
+height: 30px;
+width:200px;
+background:lightblue;
+display:inline-block;
+margin-top:20px;
+}
+
+// 使用 相对定位
+
+.divA{
+height: 80px;
+width:200px;
+background: lightgrey;
+margin-top:10px;
+}
+
+.divB{
+height: 30px;
+width:200px;
+background:lightblue;
+position:relative;
+top:20px;
+}
+```
+
+* 什么时候会发现这种事情？
+  * 发生在垂直方向 而不是 水平方向
+  * 只会发生在 block element， inline-block 和 inline 都不会发生
+* 外边距计算
+  * 两个都是正数 取 最大的数
+  * 两个都是负数， 取 绝对值最大的
+  * 一正 一负， 相加的和
+* 解决办法
+  * 绝对定位
+  *  使用 inline block element
+  * 使用 相对定位,就不可以使用 margin-top 定位了
 
 
 
 
 
+## float:
 
-## BFC实现原理，可以解决的问题，如何创建BFC
+![Typical float example](.gitbook/assets/image%20%2848%29.png)
+
+* 
+### The great Collapse:
+
+![](.gitbook/assets/image%20%2845%29.png)
+
+* floated elements does not affect parent height
+* How to fix above issue?
+  * Adds an empty div with a clear at the end of parent div  ,  drawback: **It add unwanted markup to HTML**  `<div style="clear: left"></div>`
+  * we can use pseudo-element, ::after   
+
+![](.gitbook/assets/image%20%2853%29.png)
+
+### clear property:
+
+![](.gitbook/assets/image%20%2856%29.png)
+
+*  When we use the `float` property, and we want the next element below \(not on right or left\), we will have to use the `clear` property.
+*  The `clear` property specifies what should happen with the element that is next to a floating element.
+*  The `clear` property can have one of the following values:
+  * `none` - The element is not pushed below left or right floated elements. This is default
+  * `left` - The element is pushed below left floated elements
+  * `right` - The element is pushed below right floated elements
+  * `both` - The element is pushed below both left and right floated elements
+  * `inherit` - The element inherits the clear value from its parent
+
+![](.gitbook/assets/image%20%2855%29.png)
+
+
+
+```text
+.media:nth-child(odd) {
+  clear: left;
+}
+```
+
+* In order to fix above issue, the third float needs to clear the floats above it.more generally, **the first element of each row needs to clear the float above it**
+
+![img is floated to the left](.gitbook/assets/image%20%2852%29.png)
+
+![](.gitbook/assets/image%20%2849%29.png)
+
+![](.gitbook/assets/image%20%2846%29.png)
+
+```text
+<div class="media">
+ <img class="media-image" src="shoes.png">
+ <div class="media-body">
+ <h4>Change it up</h4>
+ <p>
+ Don't run the same every time you hit the
+ road. Vary your pace, and vary the distance
+ of your runs.
+ </p>
+ </div>
+</div>
+
+
+//CSS create a new BFC
+  .media-body {
+      overflow: auto;
+      margin-top: 0;
+}
+```
+
+* When the text is long enough, it wraps around the floated element. This is the normal float behavior, but it’s not what we want in this case
+* How to solve above issue?
+  * we need to establish BFS for the media body. **So it will not overlap with floated elements outside the BFC.**
+  * \*\*\*\*
+
+
+
+## BFC
+
+* A block formatting context itself is part of the surrounding document flow, **but it isolates its contents from   the outside context,** This isolation does three things for the element that establishes the BFC:
+  * It contains the top and bottom margins of all elements within it. They won’t collapse with margins of elements outside of the block formatting context.
+  * It contains all floated elements within it.
+  * _**It doesn’t overlap with floated elements outside the BFC.**_
+* the contents inside a block formatting context will not overlap or interact with elements on the outside as you would normally expect
+* How to establish a new BFC:
+  * float: left or float: right—anything but none
+  * overflow: hidden, auto, or scroll—anything but visible
+  * display: inline-block, table-cell, table-caption, flex, inline-flex,
+
+    grid, or inline-grid—these are called block containers
+
+  * position: absolute or position: fixed
 
 ## 掌握一套完整的响应式布局方案
 
