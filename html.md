@@ -165,7 +165,7 @@ we use &lt;script&gt; to inserting Javascript into an HTML page
 
 ## HTML 中  href 和 src 的区别
 
-![](.gitbook/assets/image%20%2846%29.png)
+![](.gitbook/assets/image%20%2847%29.png)
 
 ### href: hypertext reference 
 

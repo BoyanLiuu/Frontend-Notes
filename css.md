@@ -307,7 +307,7 @@ a:active {color: orange;}
 
 ## Margin:
 
-![](.gitbook/assets/image%20%2856%29.png)
+![](.gitbook/assets/image%20%2858%29.png)
 
 * 底下方法可以使 div 包含 margin
 
@@ -360,13 +360,13 @@ background:red;
 }
 ```
 
-![](.gitbook/assets/image%20%2849%29.png)
+![](.gitbook/assets/image%20%2851%29.png)
 
 
 
-![A&#x5143;&#x7D20;&#x5305;&#x542B; B&#x5143;&#x7D20;&#xFF0C;A&#x5143;&#x7D20;&#x548C;C&#x5143;&#x7D20;&#x662F; &#x5144;&#x5F1F;&#x5173;&#x7CFB;](.gitbook/assets/image%20%2853%29.png)
+![A&#x5143;&#x7D20;&#x5305;&#x542B; B&#x5143;&#x7D20;&#xFF0C;A&#x5143;&#x7D20;&#x548C;C&#x5143;&#x7D20;&#x662F; &#x5144;&#x5F1F;&#x5173;&#x7CFB;](.gitbook/assets/image%20%2855%29.png)
 
-![&#x9519;&#x8BEF;&#x7684;code &#x7684;&#x6548;&#x679C;&#xFF0C; &#x8FD9;&#x91CC; &#x9009;&#x53D6;&#x4E86; 20px](.gitbook/assets/image%20%2852%29.png)
+![&#x9519;&#x8BEF;&#x7684;code &#x7684;&#x6548;&#x679C;&#xFF0C; &#x8FD9;&#x91CC; &#x9009;&#x53D6;&#x4E86; 20px](.gitbook/assets/image%20%2854%29.png)
 
 ```text
 // 怎么可以给A元素 margin top 10px， B 元素  margin top 20px
@@ -510,12 +510,12 @@ background:lightblue;
 
 ## float:
 
-![Typical float example](.gitbook/assets/image%20%2850%29.png)
+![Typical float example](.gitbook/assets/image%20%2852%29.png)
 
 * 
 ### The great Collapse:浮动塌陷
 
-![](.gitbook/assets/image%20%2847%29.png)
+![](.gitbook/assets/image%20%2848%29.png)
 
 * floated elements does not affect parent height
 
@@ -526,13 +526,13 @@ background:lightblue;
 * Method 3: Adds an empty div with a clear at the end of parent div  ,  drawback: **It add unwanted markup to HTML**  `<div style="clear: left"></div>`
 * Method 4:we can use pseudo-element, ::after    **最推荐**
 
-![](.gitbook/assets/image%20%2855%29.png)
+![](.gitbook/assets/image%20%2857%29.png)
 
 
 
 ### clear property:
 
-![](.gitbook/assets/image%20%2859%29.png)
+![](.gitbook/assets/image%20%2861%29.png)
 
 *  When we use the `float` property, and we want the next element below \(not on right or left\), we will have to use the `clear` property.
 *  The `clear` property specifies what should happen with the element that is next to a floating element.
@@ -543,7 +543,7 @@ background:lightblue;
   * `both` - The element is pushed below both left and right floated elements
   * `inherit` - The element inherits the clear value from its parent
 
-![](.gitbook/assets/image%20%2858%29.png)
+![](.gitbook/assets/image%20%2860%29.png)
 
 
 
@@ -555,11 +555,11 @@ background:lightblue;
 
 * In order to fix above issue, the third float needs to clear the floats above it.more generally, **the first element of each row needs to clear the float above it**
 
-![img is floated to the left](.gitbook/assets/image%20%2854%29.png)
+![img is floated to the left](.gitbook/assets/image%20%2856%29.png)
 
-![](.gitbook/assets/image%20%2851%29.png)
+![](.gitbook/assets/image%20%2853%29.png)
 
-![](.gitbook/assets/image%20%2848%29.png)
+![](.gitbook/assets/image%20%2850%29.png)
 
 ```text
 <div class="media">
@@ -666,7 +666,7 @@ background:lightblue;
 * visibility：hidden 隐藏对应元素，在文档布局中仍保留原来的空间（重绘）,transition 可以正常使用，子元素可以通过设置visibility 出现
 * opacity: 跟visibility 很相似， opacity:0 **不会导致重绘，  子元素不能复原**
 
-![](.gitbook/assets/image%20%2857%29.png)
+![](.gitbook/assets/image%20%2859%29.png)
 
 
 
@@ -774,13 +774,31 @@ background:lightblue;
 
 3.如果pc，移动要兼容，而且要求很高那么响应式布局还是最好的选择，前提是设计根据不同的高宽做不同的设计，响应式根据媒体查询做不同的布局
 
-##  What are some ways for writing efficient CSS
+##  Writing efficient CSS
 
 * Firstly, understand that browsers match selectors from rightmost \(key selector\) to left. Browsers filter out elements in the DOM according to the key selector and traverse up its parent elements to determine matches. The shorter the length of the selector chain, the faster the browser can determine if that element matches the selector. Hence avoid key selectors that are tag and universal selectors. They match a large number of elements and browsers will have to do more work in determining if the parents do match
 * **Everything should has a single class.**
 * Be aware of which CSS properties trigger reflow, repaint, and compositing. Avoid writing styles that change the layout \(trigger reflow\) where possible.
 
 
+
+## 图片 与 图片之间产生间隙
+
+![](.gitbook/assets/image%20%2845%29.png)
+
+* img 标签默认是 inline-block
+* normal flow 的情况 下， 多个 空白行会合并成一行， 是因为 `white-space:normal`  换行也背当成一个空白符 这就是为什么会有间隙的原因， 间隙就是空白符
+* **解决办法**
+  * img element 互相紧挨着， 没有换行， 但是 会导致代码不方便阅读
+  * 因为空白符 是个 字符， 所以就会有字体大小 ， 所以我们可以把它 设置为 0， `font-size：0`, 不过增加了代码量,  **只有这个方法可以把垂直和水平方向空隙都删除了**
+  * `letter-spacing:-100px;   , 不过增加了`
+
+![](.gitbook/assets/image%20%2849%29.png)
+
+* img 是 没有基线的， 所以 它的低端会和父元素的基线对齐， 所以这里即使没有字体， img 下面也会有间隙， 这样子 有字体出现的时候 字体就会有额外的位置了
+* 如果把父元素 `font-size: 0;`  **它的底部就不会有间隙了， 但是这种情况是没有考虑父元素里面的字体的**
+* 因为我们知道 字体是基线对齐才会导致底部有间隙， 所以我们可以让字体 不以 baseline 对齐
+  * 我们更改 父元素 `vertical-align:bottom`
 
 ## 使用CSS绘制几何图形
 
