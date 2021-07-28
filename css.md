@@ -307,7 +307,7 @@ a:active {color: orange;}
 
 ## Margin:
 
-![](.gitbook/assets/image%20%2854%29.png)
+![](.gitbook/assets/image%20%2856%29.png)
 
 * 底下方法可以使 div 包含 margin
 
@@ -360,13 +360,13 @@ background:red;
 }
 ```
 
-![](.gitbook/assets/image%20%2847%29.png)
+![](.gitbook/assets/image%20%2849%29.png)
 
 
 
-![A&#x5143;&#x7D20;&#x5305;&#x542B; B&#x5143;&#x7D20;&#xFF0C;A&#x5143;&#x7D20;&#x548C;C&#x5143;&#x7D20;&#x662F; &#x5144;&#x5F1F;&#x5173;&#x7CFB;](.gitbook/assets/image%20%2851%29.png)
+![A&#x5143;&#x7D20;&#x5305;&#x542B; B&#x5143;&#x7D20;&#xFF0C;A&#x5143;&#x7D20;&#x548C;C&#x5143;&#x7D20;&#x662F; &#x5144;&#x5F1F;&#x5173;&#x7CFB;](.gitbook/assets/image%20%2853%29.png)
 
-![&#x9519;&#x8BEF;&#x7684;code &#x7684;&#x6548;&#x679C;&#xFF0C; &#x8FD9;&#x91CC; &#x9009;&#x53D6;&#x4E86; 20px](.gitbook/assets/image%20%2850%29.png)
+![&#x9519;&#x8BEF;&#x7684;code &#x7684;&#x6548;&#x679C;&#xFF0C; &#x8FD9;&#x91CC; &#x9009;&#x53D6;&#x4E86; 20px](.gitbook/assets/image%20%2852%29.png)
 
 ```text
 // 怎么可以给A元素 margin top 10px， B 元素  margin top 20px
@@ -510,12 +510,12 @@ background:lightblue;
 
 ## float:
 
-![Typical float example](.gitbook/assets/image%20%2848%29.png)
+![Typical float example](.gitbook/assets/image%20%2850%29.png)
 
 * 
 ### The great Collapse:浮动塌陷
 
-![](.gitbook/assets/image%20%2845%29.png)
+![](.gitbook/assets/image%20%2847%29.png)
 
 * floated elements does not affect parent height
 
@@ -526,13 +526,13 @@ background:lightblue;
 * Method 3: Adds an empty div with a clear at the end of parent div  ,  drawback: **It add unwanted markup to HTML**  `<div style="clear: left"></div>`
 * Method 4:we can use pseudo-element, ::after    **最推荐**
 
-![](.gitbook/assets/image%20%2853%29.png)
+![](.gitbook/assets/image%20%2855%29.png)
 
 
 
 ### clear property:
 
-![](.gitbook/assets/image%20%2856%29.png)
+![](.gitbook/assets/image%20%2859%29.png)
 
 *  When we use the `float` property, and we want the next element below \(not on right or left\), we will have to use the `clear` property.
 *  The `clear` property specifies what should happen with the element that is next to a floating element.
@@ -543,7 +543,7 @@ background:lightblue;
   * `both` - The element is pushed below both left and right floated elements
   * `inherit` - The element inherits the clear value from its parent
 
-![](.gitbook/assets/image%20%2855%29.png)
+![](.gitbook/assets/image%20%2858%29.png)
 
 
 
@@ -555,11 +555,11 @@ background:lightblue;
 
 * In order to fix above issue, the third float needs to clear the floats above it.more generally, **the first element of each row needs to clear the float above it**
 
-![img is floated to the left](.gitbook/assets/image%20%2852%29.png)
+![img is floated to the left](.gitbook/assets/image%20%2854%29.png)
 
-![](.gitbook/assets/image%20%2849%29.png)
+![](.gitbook/assets/image%20%2851%29.png)
 
-![](.gitbook/assets/image%20%2846%29.png)
+![](.gitbook/assets/image%20%2848%29.png)
 
 ```text
 <div class="media">
@@ -660,10 +660,17 @@ background:lightblue;
 
 * initial: It is used to set a CSS property to its default value.
 
-##  **display:none与visibility：hidden的区别？**
+##  **display:none,visibility：hidden, opacity:0的区别？**
 
-* display：none 不显示对应的元素，在文档布局中不再分配空间（回流+重绘）
-* visibility：hidden 隐藏对应元素，在文档布局中仍保留原来的空间（重绘）
+* display：none 不显示对应的元素，在文档布局中不再分配空间（回流+重绘）， 子元素即使设置了 display： block 也不会再出现
+* visibility：hidden 隐藏对应元素，在文档布局中仍保留原来的空间（重绘）,transition 可以正常使用，子元素可以通过设置visibility 出现
+* opacity: 跟visibility 很相似， opacity:0 **不会导致重绘，  子元素不能复原**
+
+![](.gitbook/assets/image%20%2857%29.png)
+
+
+
+
 
 ## CSS @media Rule
 

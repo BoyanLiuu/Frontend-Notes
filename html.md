@@ -163,6 +163,22 @@ we use &lt;script&gt; to inserting Javascript into an HTML page
 
 
 
+## HTML 中  href 和 src 的区别
+
+![](.gitbook/assets/image%20%2846%29.png)
+
+### href: hypertext reference 
+
+* lina 和 a 元素
+* href属性会建立一个通道， 通道联系一个资源
+* 上面 那个图片的 a tag 点击之后才会显示图片
+
+### src: source
+
+* img, style, script, input, iframe 
+* 应用的资源会直接成为当前文档的一部分
+* 在引用时候会下载目标资源 嵌入到当前文档中，浏览器遇到这个属性时候 会暂停其他资源下载和处理， 直到这个属性下载编译执行完后才会进行下一步
+
 ## 
 
 ##  
