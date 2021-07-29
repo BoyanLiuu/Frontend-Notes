@@ -1260,7 +1260,13 @@ footer , header{
 }
 ```
 
-![](.gitbook/assets/image%20%2876%29.png)
+![](.gitbook/assets/image%20%2877%29.png)
+
+#### 一 利用 float 布局 + 负 margin 
+
+{% embed url="https://jsfiddle.net/Boyanliuu/xLceghj3/32/" %}
+
+
 
 1.中间需要优先加载， 所以会把 中间的 div 紧跟着header 放
 
@@ -1309,7 +1315,81 @@ footer , header{
 }
 ```
 
-5. 上面的问题是 左右区域会挡住 主区域的内容， 如果主区域是 1000 px 左右分别是100px的话， 我们就只能展示出来  800px
+5. 上面的问题是 左右区域会挡住 主区域的内容， 如果主区域是 1000 px 左右分别是100px的话， 我们就只能展示出来  800px， 我们可以使用 相对定位 解决.
+
+![](.gitbook/assets/image%20%2876%29.png)
+
+```text
+.left{
+  margin-left:-100%;
+  position: relative;
+ left:-100px;
+}
+
+.right{
+  margin-left:-100px;
+  position: relative;
+  right: -100px;
+}
+```
+
+####  利用 flex 布局
+
+{% embed url="https://jsfiddle.net/Boyanliuu/xe1wahLt/6/" %}
+
+* code 最少
+
+```text
+.wrapper{
+  display:flex;
+}
+.left{
+  order:-1;
+}
+.left, .right{
+  width:100px;
+}
+.center{
+   flex: 1;
+}
+```
+
+**使用 grid 布局**
+
+```text
+.wrapper{
+ display:grid;
+}
+.left{
+    grid-row:2;
+    grid-column:1/2;
+}
+
+
+.right{
+  grid-row:2;
+  grid-column:4/5;
+}
+
+  .center{
+   grid-row:2;
+   grid-column:2/4;
+}
+```
+
+{% embed url="https://jsfiddle.net/Boyanliuu/2xsztb7j/9/" %}
+
+#### 使用 position absolute
+
+{% embed url="https://jsfiddle.net/Boyanliuu/2bpwjh6f/13/" %}
+
+* `.center { left: 200px; right: 200px; }`     这个可以让他的 宽度 起始点是 left 终点是right
+
+
+
+
+
+
 
 
 
