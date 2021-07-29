@@ -1201,7 +1201,86 @@ ul.parentNode.replaceChild(clone, ul);
 
 ### 品字布局
 
-### 圣杯
+### 圣杯布局
+
+![](.gitbook/assets/image%20%2873%29.png)
+
+```text
+// 基础 结构
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>圣杯布局</title>
+    </head>
+    <body>
+        <header> header</header>
+        <div class="clearfix">
+            <div class="center">
+                Main content
+            </div>
+            <div class="left">
+                Left content
+            </div>
+            <div class="right">
+                right content
+            </div>
+        </div>
+        <footer> footer</footer>
+    </body>
+</html>
+
+// css
+
+:root {
+    box-sizing: border-box;
+}
+
+*,
+::before,
+::after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+
+.center{
+  background:lightblue;
+}
+
+.left{
+  background:gold;
+}
+.right{
+  background:yellow;
+}
+footer , header{
+  background:CornflowerBlue;
+}
+```
+
+![](.gitbook/assets/image%20%2874%29.png)
+
+1.中间需要优先加载， 所以会把 中间的 div 紧跟着header 放
+
+2. 为了让 中间的3个区域再同一行， 我们使用 float
+
+![](.gitbook/assets/image%20%2872%29.png)
+
+```text
+.center,.left,.right{
+  float:left;
+}
+```
+
+3. 页脚也跑了上来 因为 float产生了 塌陷， 所以 我们需要再中间区域 清除浮动
+
+
+
+
+
+
 
 ### 双飞翼
 
