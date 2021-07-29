@@ -221,6 +221,8 @@ p:nth-child(2)
 
 A pseudo-class is a selector that selects elements that are in a specific state, e.g. they are the first element of their type, or they are being hovered over by the mouse pointer. They tend to act as if you had applied a class to some part of your document
 
+* 伪类可以进行多个拼接  `input:out-of-range:focuse {background:gold;}`
+
 伪类就是开头为冒号的关键字：
 
 1. Selecting the root element     `:root`
@@ -243,6 +245,8 @@ A pseudo-class is a selector that selects elements that are in a specific state,
 ###  伪元素 pseudo-element
 
 Pseudo-elements start with a double colon ::
+
+* 伪元素只能放在最后面  所以 `input::after:checked{display:block}`   **不正确**
 
 ```text
 // eg 1, 就会在之后添加 这些东西
@@ -662,9 +666,9 @@ background:lightblue;
 
   * position: absolute or position: fixed 绝对定位元素
 * 应用场景
-  * **防止浮动导致父元素高度塌陷，** ![](.gitbook/assets/image%20%2864%29.png) 
+  * **防止浮动导致父元素高度塌陷，** ![](.gitbook/assets/image%20%2867%29.png) 
   * **外边框塌陷问题 （上面有解决办法）**
-  * **阻止普通文档流元素被浮动元素覆盖** ![](.gitbook/assets/image%20%2862%29.png) 创建了BFC 之后 ![](.gitbook/assets/image%20%2863%29.png) 
+  * **阻止普通文档流元素被浮动元素覆盖** ![](.gitbook/assets/image%20%2862%29.png) 创建了BFC 之后 ![](.gitbook/assets/image%20%2864%29.png) 
   * 
 
 ## 掌握一套完整的响应式布局方案
@@ -755,6 +759,7 @@ background:lightblue;
 
 ## line-height
 
+* 基线距离就是line height
 * It accept both units and unitless values
 *  CSS中起高度作用的应该就是`height`以及`line-height`了吧！如果一个标签没有定义`height`属性\(包括百分比高度\)，那么其最终表现的高度一定是由`line-height`起作用
 *  `line-height`行高怎么就产生了高度呢?
@@ -764,6 +769,102 @@ background:lightblue;
 * You should typically use unitless numbers because they’re inherited differently  `line-height: 1.2;`
   * the line     height is calculated locally to 38.4 px \(32 px × 1.2\).
   * When you use a unitless number, that declared value is inherited, meaning its computed value is recalculated for each inheriting child element
+
+
+
+## 等高布局
+
+### 使用table
+
+* 父元素:  `display:table;`   子元素 `display: table-cell;`
+
+### 使用 flexbox
+
+### 使用 grid:
+
+* 父元素: `display:grid;   grid-auto-flow:column;`
+
+### 使用 margin padding 互相抵消
+
+* 这个方法 不需要考虑 兼容性问题 最好
+* padding 会把背景颜色延伸出去， 正的 margin 会把 边框往外推，然后 创建 一个 BFC 就可以了
+
+![](.gitbook/assets/image%20%2863%29.png)
+
+```text
+div.left{
+padding-bottom: 99999px;
+margin-bottom: -99999px;
+}
+section{
+overflow:hidden;
+}
+```
+
+
+
+## CSS 多行省略
+
+```text
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+```
+
+![](.gitbook/assets/image%20%2865%29.png)
+
+### 私有属性
+
+* 简洁明了， 缺点就是 私有属性了不是规范的 属性
+
+### 使用 规范 css， 2个伪元素
+
+*  优点完全符合css 规范 ， 缺点是 如果背景 不是纯色就不好办了， 或者是图片就不好办了
+
+```text
+// 1 使用 伪元素 创建一个包含 ... 的文本 放在右下角
+
+ p::before{
+  content:"...";
+  position:absolute;
+  right:0;
+  bottom:0;
+}
+
+ // 2 给省略号添加一些空间, 并且是 文字两端 对齐
+ p{
+  height:100px;
+  overflow: hidden;
+  position:relative;
+  padding-right:10px;
+  text-align:justify;
+}
+// 3 在不需要省略时候隐藏掉 。。。 这里我们用 跟背景一样的颜色 掩盖省略号, 因为我们只是设置了 right
+// 所以他会一直跟在后面
+p::after{
+  content:"";
+  position:absolute;
+  width:1em;
+  height:1em;
+  background:white;
+  
+  right:0;
+  margin-top:0.5em;
+}
+```
+
+### 另外一种省略方法
+
+![](.gitbook/assets/image%20%2868%29.png)
+
+![](.gitbook/assets/image%20%2866%29.png)
+
+* 创建一个渐变颜色方块 遮挡住最后的文字， 接着 把 这个方块放到右下角的位置
+* 然后 把渐变颜色的后面部分改成和背景颜色一样即可
+* 缺点也是 背景 如果是图片会比较麻烦
+
+
 
 
 
