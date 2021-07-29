@@ -1007,7 +1007,13 @@ p::after{
 
 
 
-##  Is there any reason you’d want to use `translate()` instead of `absolute` positioning,
+## 水平垂直居中
+
+{% embed url="https://boyanliu.hashnode.dev/how-many-ways-can-you-come-up-with-centering-horizontally-vertically-or-both" %}
+
+
+
+## Is there any reason you’d want to use `translate()` instead of `absolute` positioning,
 
 *  `translate()` is a value of CSS `transform`. Changing `transform` or `opacity` does not trigger browser reflow or repaint, only compositions, whereas changing the absolute positioning triggers `reflow`
 *  Hence `translate()` is more efficient and will result in shorter paint times for smoother animations.
