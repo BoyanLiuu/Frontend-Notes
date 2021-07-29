@@ -843,9 +843,11 @@ background:lightblue;
 
 ![](.gitbook/assets/image%20%2845%29.png)
 
+* **inline-block元素放到一起会产生一段空白。**
 * img 标签默认是 inline-block
-* normal flow 的情况 下， 多个 空白行会合并成一行， 是因为 `white-space:normal`  换行也背当成一个空白符 这就是为什么会有间隙的原因， 间隙就是空白符
+* normal flow 的情况 下， 多个 空白行会合并成一行， 是因为 `white-space:normal` 换行也背当成一个空白符 ， 会合并多余空白 这就是为什么会有间隙的原因， 间隙就是空白符
 * **解决办法**
+  * 给其中一个元素添加 float：left/ right
   * img element 互相紧挨着， 没有换行， 但是 会导致代码不方便阅读
   * 因为空白符 是个 字符， 所以就会有字体大小 ， 所以我们可以把它 设置为 0， `font-size：0`, 不过增加了代码量,  **只有这个方法可以把垂直和水平方向空隙都删除了**
   * `letter-spacing:-100px;   , 不过增加了`
