@@ -666,7 +666,7 @@ background:lightblue;
 
   * position: absolute or position: fixed 绝对定位元素
 * 应用场景
-  * **防止浮动导致父元素高度塌陷，** ![](.gitbook/assets/image%20%2869%29.png) 
+  * **防止浮动导致父元素高度塌陷，** ![](.gitbook/assets/image%20%2870%29.png) 
   * **外边框塌陷问题 （上面有解决办法）**
   * **阻止普通文档流元素被浮动元素覆盖** ![](.gitbook/assets/image%20%2862%29.png) 创建了BFC 之后 ![](.gitbook/assets/image%20%2864%29.png) 
   * 
@@ -818,6 +818,20 @@ overflow:hidden;
 
 
 
+## CSS 单行省略
+
+![](.gitbook/assets/image%20%2866%29.png)
+
+```text
+p{
+  height:20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+```
+
+* 
 ## CSS 多行省略
 
 ```text
@@ -827,7 +841,7 @@ overflow:hidden;
   -webkit-line-clamp: 5;
 ```
 
-![](.gitbook/assets/image%20%2866%29.png)
+![](.gitbook/assets/image%20%2867%29.png)
 
 ### 私有属性
 
@@ -871,9 +885,9 @@ p::after{
 
 ### 另外一种省略方法
 
-![](.gitbook/assets/image%20%2870%29.png)
+![](.gitbook/assets/image%20%2871%29.png)
 
-![](.gitbook/assets/image%20%2867%29.png)
+![](.gitbook/assets/image%20%2868%29.png)
 
 * 创建一个渐变颜色方块 遮挡住最后的文字， 接着 把 这个方块放到右下角的位置
 * 然后 把渐变颜色的后面部分改成和背景颜色一样即可
@@ -976,7 +990,24 @@ p::after{
 * Splitting your code into multiple files. CSS files can be split up too but doing so will require a HTTP request to download each CSS file.
 *  **Disadvantages:** Requires tools for preprocessing. Re-compilation time can be slow.
 
-## Is there any reason you’d want to use `translate()` instead of `absolute` positioning,
+## 怎么把下列图片宽度变成 300px
+
+```text
+<img class="img" src="pic_trulli.jpg" alt="Trulli" style="width:480px!important;">
+
+```
+
+* `max-width: 300px`
+* `transform: scale(0.625,0.625)`
+* `box-sizing: border-box;`
+
+  `padding: 0 90px;`
+
+* `document.getElementsByTagName("img")[0].setAttribute("style","width:300px!important;")`
+
+
+
+##  Is there any reason you’d want to use `translate()` instead of `absolute` positioning,
 
 *  `translate()` is a value of CSS `transform`. Changing `transform` or `opacity` does not trigger browser reflow or repaint, only compositions, whereas changing the absolute positioning triggers `reflow`
 *  Hence `translate()` is more efficient and will result in shorter paint times for smoother animations.
@@ -1009,7 +1040,7 @@ p::after{
 
 ## How browser renders the website
 
-![](.gitbook/assets/image%20%2868%29.png)
+![](.gitbook/assets/image%20%2869%29.png)
 
 1. When the user enters the URL, It will fetch the HTML source code from the server
 2. Browser Parse the HTML source code and convert into the Tokens &lt;, TagName, Attribute, AttributeValue, &gt;
