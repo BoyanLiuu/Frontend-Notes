@@ -666,7 +666,7 @@ background:lightblue;
 
   * position: absolute or position: fixed 绝对定位元素
 * 应用场景
-  * **防止浮动导致父元素高度塌陷，** ![](.gitbook/assets/image%20%2867%29.png) 
+  * **防止浮动导致父元素高度塌陷，** ![](.gitbook/assets/image%20%2869%29.png) 
   * **外边框塌陷问题 （上面有解决办法）**
   * **阻止普通文档流元素被浮动元素覆盖** ![](.gitbook/assets/image%20%2862%29.png) 创建了BFC 之后 ![](.gitbook/assets/image%20%2864%29.png) 
   * 
@@ -746,7 +746,20 @@ background:lightblue;
 }
 
 
+@media print{
+ body{
+ color:black;
+ }
+}
+
 ```
+
+* all - for all media type device
+* print - for printers
+* speech - for screenreader that reads the page out loud
+* screen for computer screens, tablets, phone
+
+
 
 
 
@@ -771,6 +784,8 @@ background:lightblue;
   * When you use a unitless number, that declared value is inherited, meaning its computed value is recalculated for each inheriting child element
 
 
+
+## 
 
 ## 等高布局
 
@@ -812,7 +827,7 @@ overflow:hidden;
   -webkit-line-clamp: 5;
 ```
 
-![](.gitbook/assets/image%20%2865%29.png)
+![](.gitbook/assets/image%20%2866%29.png)
 
 ### 私有属性
 
@@ -856,9 +871,9 @@ p::after{
 
 ### 另外一种省略方法
 
-![](.gitbook/assets/image%20%2868%29.png)
+![](.gitbook/assets/image%20%2870%29.png)
 
-![](.gitbook/assets/image%20%2866%29.png)
+![](.gitbook/assets/image%20%2867%29.png)
 
 * 创建一个渐变颜色方块 遮挡住最后的文字， 接着 把 这个方块放到右下角的位置
 * 然后 把渐变颜色的后面部分改成和背景颜色一样即可
@@ -932,13 +947,39 @@ p::after{
 
 3.如果pc，移动要兼容，而且要求很高那么响应式布局还是最好的选择，前提是设计根据不同的高宽做不同的设计，响应式根据媒体查询做不同的布局
 
+## Explain how browser determines what elements match a css selctor?
+
+* Browsers match selectors from rightmost \(key selector\) to left. Browsers filter out elements in the DOM according to the key selector and traverse up its parent elements to determine matches. The shorter the length of the selector chain, the faster the browser can determine if that element matches the selector.
+* For example with this selector `p span`, browsers firstly find all the &lt;span&gt; elements and traverse up its parent all the way up to the root to find the &lt;p&gt; element.
+
+## How would you approach fixing browser-specific styling issues?
+
+* After identifying the issue and the offending browser, use a separate style sheet that only loads when that specific browser is being used. This technique requires server-side rendering though.
+* Use libraries like Bootstrap that already handles these styling issues for you.
+* Use **autoprefixer** to automatically add vendor prefixes to your code.
+* Use  Normalize.css.
+
 ##  Writing efficient CSS
 
-* Firstly, understand that browsers match selectors from rightmost \(key selector\) to left. Browsers filter out elements in the DOM according to the key selector and traverse up its parent elements to determine matches. The shorter the length of the selector chain, the faster the browser can determine if that element matches the selector. Hence avoid key selectors that are tag and universal selectors. They match a large number of elements and browsers will have to do more work in determining if the parents do match
-* **Everything should has a single class.**
+* Firstly, understand that browsers match selectors from rightmost \(key selector\) to left. Browsers filter out elements in the DOM according to the key selector and traverse up its parent elements to determine matches. **The shorter the length of the selector chain, the faster the browser can determine if that element matches the selector**. Hence avoid key selectors that are tag and universal selectors. They match a large number of elements and browsers will have to do more work in determining if the parents do match
+* **BEM\(Block element modifier \) recommends that everything should has a single class.**
 * Be aware of which CSS properties trigger reflow, repaint, and compositing. Avoid writing styles that change the layout \(trigger reflow\) where possible.
 
 
+
+## What are the advantages/disadvantages of using CSS preprocessors?
+
+* CSS is made more maintainable.
+* Easy to write nested selectors.
+* Variables for consistent theming. Can share theme files across different projects.
+* Mixins to generate repeated CSS.
+* Splitting your code into multiple files. CSS files can be split up too but doing so will require a HTTP request to download each CSS file.
+*  **Disadvantages:** Requires tools for preprocessing. Re-compilation time can be slow.
+
+## Is there any reason you’d want to use `translate()` instead of `absolute` positioning,
+
+*  `translate()` is a value of CSS `transform`. Changing `transform` or `opacity` does not trigger browser reflow or repaint, only compositions, whereas changing the absolute positioning triggers `reflow`
+*  Hence `translate()` is more efficient and will result in shorter paint times for smoother animations.
 
 ## 图片 与 图片之间产生间隙
 
@@ -959,6 +1000,157 @@ p::after{
 * 如果把父元素 `font-size: 0;`  **它的底部就不会有间隙了， 但是这种情况是没有考虑父元素里面的字体的**
 * 因为我们知道 字体是基线对齐才会导致底部有间隙， 所以我们可以让字体 不以 baseline 对齐
   * 我们更改 父元素 `vertical-align:bottom`
+
+## Can you explain the difference between coding a website to be responsive versus using a mobile-first strategy?
+
+* Making a website responsive means the some elements will respond by adapting its size or other functionality according to the device's screen size, typically the viewport width, through CSS media queries, for example, making the font size smaller on smaller devices.
+* A mobile-first strategy is also responsive, however it agrees we should default and define all the styles for mobile devices, and only add specific responsive rules to other devices later. Following the previous example:
+  * It's more performant on mobile devices, since all the rules applied for them don't have to be validated against any media queries.
+
+## How browser renders the website
+
+![](.gitbook/assets/image%20%2868%29.png)
+
+1. When the user enters the URL, It will fetch the HTML source code from the server
+2. Browser Parse the HTML source code and convert into the Tokens &lt;, TagName, Attribute, AttributeValue, &gt;
+3. The Tokens will convert into the nodes and will construct the DOM Tree
+4. The CSSOM Tree will generate from the CSS rules
+5. The DOM and CSSOM tree will combine into the RenderTree
+6. The RenderTree are constructed as below:
+   1. Start from the root of the dom tree and compute which elements are visible and their computed styles
+   2. RenderTree will ignore the not visible elements like \(meta, script, link\) and display:none
+   3. It will match the visible node to the appropriate CSSOM rules and apply them
+7. Reflow\(回流\): Calculate the position and size of each visible node
+8. Repaint\(重绘\):now, the browser will paint the renderTree on the screen
+
+
+
+## 浏览器的回流与重绘 \(Reflow & Repaint\)
+
+* 回流必将引起重绘，重绘不一定会引起回流。
+* 回流比重绘的代价要更高。
+* 有时即使仅仅回流一个单一的元素，它的父元素以及任何跟随它的元素也会产生回流。
+
+### 回流 Reflow:
+
+* Reflow means re-calculating the positions and geometries of elements in the document. The Reflow happens when changes are made to the elements, that affect the layout of the partial or whole page. The Reflow of the element will cause the subsequent reflow of all the child and ancestor elements in the DOM
+  * **Reflows are very expensive in terms of performance**, and is one of the main causes of slow DOM scripts, especially on devices with low
+
+    processing power, such as phones. In many cases, they are equivalent to laying out the entire page again.
+*  当`Render Tree`中部分或全部元素的尺寸、结构、或某些属性发生改变时，浏览器重新渲染部分或全部文档的过程称为回流。
+* **会导致回流的操作：**
+  * 页面首次渲染
+  * Reflow will happen when Adding, Removing, Updating the DOM nodes
+    * 元素内容变化（文字数量或图片大小等等
+  * Hiding DOM Element with display: none will cause both reflow and repaint
+  * Moving, animating a DOM node will trigger reflow and repaint
+  * Resizing the window will trigger reflow
+  * Changing font-style
+  * 激活CSS伪类（例如：:hover）
+  * Adding or removing Stylesheet will cause the reflow/repaint
+  * 查询某些属性或调用某些方法
+    * Script manipulating the DOM is the expensive operation because they have recalculated each time the document, or part of the document modified. As we have seen from all the many things that trigger a reflow, it can occur thousands and thousands of times per second
+
+![](.gitbook/assets/image%20%2865%29.png)
+
+### 
+
+### 重绘 Repaint:
+
+* 当页面中元素样式的改变并不影响它在文档流中的位置时（例如：color、background-color、visibility等），浏览器会将新样式赋予给元素并重新绘制它，这个过程称为重绘。The Repaint occurs when changes are made to the appearance of the elements that change the visibility, but doesn't affect the layout
+
+### Minimizing repaints and reflows
+
+
+
+**CSS：**
+
+* 如果想设定元素的样式，通过改变元素的 class 名 \(尽可能在 DOM 树的最末端\)（Change classes on the element you wish to style \(as low in the dom tree as possible\)）
+  * 回流可以自上而下，或自下而上的回流的信息传递给周围的节点。回流是不可避免的，但可以减少其影响。尽可能在DOM树的里面改变class，可以限制了回流的范围，使其影响尽可能少的节点。例如，你应该避免通过改变对包装元素类去影响子节点的显示。面向对象的CSS始终尝试获得它们影响的类对象（DOM节点或节点），但在这种情况下，它已尽可能的减少了回流的影响，增加性能优势
+* 避免设置多项内联样式（Avoid setting multiple inline styles）
+  * 因为每个都会造成回流，样式应该合并在一个外部类，这样当该元素的class属性可被操控时仅会产生一个reflow。
+* 应用元素的动画，使用 position 属性的 fixed 值或 absolute 值（Apply animations to elements that are position fixed or absolute）
+* 避免使用table布局（Avoid tables for layout）
+
+```text
+// bad
+var left = 10,
+    top = 10;
+el.style.left = left + "px";
+el.style.top  = top  + "px";
+
+// better 
+el.className += " theclassname";
+
+// or when top and left are calculated dynamically...
+
+// better
+el.style.cssText += "; left: " + left + "px; top: " + top + "px;";
+```
+
+**Don't change individual styles, one by one**. Best for sanity and maintainability is to change the class names, not the styles. If the styles are dynamic, edit the **cssText** property
+
+**Batch DOM Changes**
+
+1. 使元素脱离文档流
+2. 对其进行多次修改
+3. 将元素带回到文档中
+
+该过程的第一步和第三步可能会引起回流，但是经过第一步之后，对DOM的所有修改都不会引起回流重绘，因为它已经不在渲染树了
+
+有三种方式可以让DOM脱离文档流：
+
+**一： 使用文档片段\(document fragment\)在当前DOM之外构建一个子树，再把它拷贝回文档。**
+
+* Use a `documentFragment` to hold temp changes
+
+```text
+function appendDataToElement(appendToElement, data) {
+    let li;
+    for (let i = 0; i < data.length; i++) {
+    	li = document.createElement('li');
+        li.textContent = 'text';
+        appendToElement.appendChild(li);
+    }
+}
+const ul = document.getElementById('list');
+const fragment = document.createDocumentFragment();
+appendDataToElement(fragment, data);
+ul.appendChild(fragment);
+```
+
+
+
+二：**隐藏元素，应用修改，重新显示**
+
+* 这个会在展示和隐藏节点的时候，产生两次回流
+* Hide the element with display: none \(1 reflow, 1 repaint\), add 100 changes, restore the display \(total 2 reflow, 2 repaint\)
+
+```text
+function appendDataToElement(appendToElement, data) {
+    let li;
+    for (let i = 0; i < data.length; i++) {
+    	li = document.createElement('li');
+        li.textContent = 'text';
+        appendToElement.appendChild(li);
+    }
+}
+const ul = document.getElementById('list');
+ul.style.display = 'none';
+appendDataToElement(ul, data);
+ul.style.display = 'block';
+```
+
+**三**：**隐藏元素，应用修改，重新显示**
+
+* Clone, update, replace the node
+
+```text
+const ul = document.getElementById('list');
+const clone = ul.cloneNode(true);
+appendDataToElement(clone, data);
+ul.parentNode.replaceChild(clone, ul);
+```
 
 ## 使用CSS绘制几何图形
 
