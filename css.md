@@ -596,19 +596,76 @@ background:lightblue;
 
 ## BFC
 
-* A block formatting context itself is part of the surrounding document flow, **but it isolates its contents from   the outside context,** This isolation does three things for the element that establishes the BFC:
+```text
+//防止浮动导致父元素高度塌陷
+
+  <div class="container">
+    <div class="inner"></div>
+  </div>
+ .container {
+    border: 10px solid red;
+     overflow: hidden;// 父元素变成BFC 解决元素塌陷问题
+  }
+
+.inner {
+    float: left;
+    background: #08BDEB;
+    height: 100px;
+    width: 100px;
+  }
+  
+  
+  //阻止普通文档流元素被浮动元素覆盖
+  
+  <div class="demo">
+    <div class="demo1">我是一个左侧浮动元素</div>
+    <div class="demo2">我是一个没有设置浮动, 也没有触发BFC的元素</div>
+</div>
+
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .demo1 {
+        width: 100px;
+        height: 100px;
+        float: left;
+        background: pink
+    }
+    .demo2 {
+        width: 200px;
+        height: 200px;
+        background: blue;
+        overflow: hidden; // 创建BFC
+    }
+    
+    
+```
+
+* A block formatting context itself is part of the surrounding document flow, **but it isolates its contents from   the outside context,** This isolation does three things for the element that establishes the BFC\(原理\):
   * It contains the top and bottom margins of all elements within it. They won’t collapse with margins of elements outside of the block formatting context. **不会出现外边距塌陷**
-  * It contains all floated elements within it.
-  * _**It doesn’t overlap with floated elements outside the BFC.**_
+  * **It contains internal floats**.
+    * Make float content and alongside content the same height.
+  * **It excludes external floats.**
+    * because an element in the normal flow that establishes a new BFC must not overlap the margin box of any floats in the same bfc as the element itself. **The BFC area will not overlap with the float box.**
+  * **When calculating the height of the BFC, floating elements also participate in the calculation**
+* BFC是一个独立的容器，外面的元素不会影响里面的元素
 * the contents inside a block formatting context will not overlap or interact with elements on the outside as you would normally expect
 * How to establish a new BFC:
-  * float: left or float: right—anything but none
+  * 根元素\(\)
+  * float: left or float: right—anything but none 浮动元素
   * overflow: hidden, auto, or scroll—anything but visible
-  * display: inline-block, table-cell, table-caption, flex, inline-flex,
+  * display: inline-block, table-cell, table-caption, flex, inline-flex, 
 
     grid, or inline-grid—these are called block containers
 
-  * position: absolute or position: fixed
+  * position: absolute or position: fixed 绝对定位元素
+* 应用场景
+  * **防止浮动导致父元素高度塌陷，** ![](.gitbook/assets/image%20%2864%29.png) 
+  * **外边框塌陷问题 （上面有解决办法）**
+  * **阻止普通文档流元素被浮动元素覆盖** ![](.gitbook/assets/image%20%2862%29.png) 创建了BFC 之后 ![](.gitbook/assets/image%20%2863%29.png) 
+  * 
 
 ## 掌握一套完整的响应式布局方案
 
