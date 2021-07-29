@@ -1203,7 +1203,7 @@ ul.parentNode.replaceChild(clone, ul);
 
 ### 圣杯布局
 
-![](.gitbook/assets/image%20%2873%29.png)
+![](.gitbook/assets/image%20%2875%29.png)
 
 ```text
 // 基础 结构
@@ -1215,7 +1215,7 @@ ul.parentNode.replaceChild(clone, ul);
     </head>
     <body>
         <header> header</header>
-        <div class="clearfix">
+        <div class="clearfix wrapper">
             <div class="center">
                 Main content
             </div>
@@ -1260,7 +1260,7 @@ footer , header{
 }
 ```
 
-![](.gitbook/assets/image%20%2874%29.png)
+![](.gitbook/assets/image%20%2876%29.png)
 
 1.中间需要优先加载， 所以会把 中间的 div 紧跟着header 放
 
@@ -1276,7 +1276,40 @@ footer , header{
 
 3. 页脚也跑了上来 因为 float产生了 塌陷， 所以 我们需要再中间区域 清除浮动
 
+![](.gitbook/assets/image%20%2873%29.png)
 
+```text
+.clearfix::after{
+  content: "";
+  display:block;
+  clear: both;
+}
+```
+
+4. 现在内容 不正确 ， 使用 negative margin 负外边距
+
+![](.gitbook/assets/image%20%2874%29.png)
+
+```text
+.wrapper{
+  padding: 0 100px; // 添加内边距 就不会产生被覆盖的情况了
+}
+
+.left,.right{
+  width:100px;
+}
+.left{
+  margin-left:-100%;
+}
+.center{
+  width:100%;
+}
+.right{
+  margin-left:-100px;
+}
+```
+
+5. 上面的问题是 左右区域会挡住 主区域的内容， 如果主区域是 1000 px 左右分别是100px的话， 我们就只能展示出来  800px
 
 
 
