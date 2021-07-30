@@ -785,7 +785,265 @@ background:lightblue;
 
 
 
+## stacking context 层叠上下文
+
+_Groups of elements with a common parent that move forward or backward together in the stacking order make up what is known as a stacking context_
+
+*  `z-index`属性值并不是在任何元素上都有效果。它**仅在**定位元素（定义了`position`属性，且属性值为非`static`值的元素）上有效果。
+* when you add a z-index to a positioned element that element becomes the root of a new stacking context
+* 判断元素在`Z轴`上的堆叠顺序，不仅仅是直接比较两个元素的`z-index`值的大小，这个堆叠顺序实际由元素的**层叠上下文**、**层叠等级\(stacking level\)**共同决定。
+* 普通元素的层叠等级优先由其所在的层叠上下文决定。
+* 层叠等级的比较只有在当前层叠上下文元素中才有意义。不同层叠上下文中比较层叠等级是没有意义的
+* 如何产生  stacking context
+  * HTML中的根元素&lt;html&gt;&lt;/html&gt;本身j就具有层叠上下文，称为“根层叠上下文
+  * 普通元素设置position属性为非static值并设置z-index属性为具体数值，产生层叠上下文， **z-index: auto 不会产生 stacking context**
+  * CSS3中的新属性也可以产生层叠上下文, 只要满足以下条件， 就会产生 层叠 上下文
+
+    * 父元素的display属性值为flex\|inline-flex，子元素z-index属性值不为auto的时候，子元素为层叠上下文元素；
+    *  元素的`opacity`属性值不是`1`
+    * 元素的`transform`属性值不是`none`；
+    * 元素`mix-blend-mode属性值不是`normal\`；
+    * 元素的`filter`属性值不是`none`；
+    * 元素的`isolation`属性值是`isolate`；
+    * `will-change`指定的属性值为上面任意一个；
+    * 元素的`-webkit-overflow-scrolling`属性值设置为`touch`。
+
+
+
+### 例子 1
+
+{% embed url="https://jsfiddle.net/Boyanliuu/yLr2150m/9/" %}
+
+
+
+```text
+  <div>  
+    <p class="a">a</p>  
+    <p class="b">b</p>  
+  </div> 
+
+  <div>  
+    <p class="c">c</p>  
+  </div>  
+
+
+// CSS
+* {
+     margin: 0;
+     padding: 0;
+}
+ div {
+     position: relative;
+     width: 100px;
+     height: 100px;
+}
+ p {
+     position: absolute;
+     font-size: 20px;
+     width: 100px;
+     height: 100px;
+}
+ .a {
+     background-color: blue;
+     z-index: 1;
+}
+ .b {
+     background-color: green;
+     z-index: 2;
+     top: 20px;
+     left: 20px;
+}
+ .c {
+     background-color: red;
+     z-index: 3;
+     top: -20px;
+     left: 40px;
+}
+```
+
+![](.gitbook/assets/image%20%2880%29.png)
+
+*  因为p.a、p.b、p.c三个的父元素div都没有设置`z-index`，所以不会产生层叠上下文，所以.a、.b、.c都处于由`<html></html>`标签产生的“根层叠上下文”中，属于同一个层叠上下文，此时谁的`z-index`值大，谁在上面。
+
+### 例子2
+
+![](.gitbook/assets/image%20%2883%29.png)
+
+```text
+<body>
+  <div class="box1">
+    <p class="a">a</p>
+    <p class="b">b</p>
+  </div>
+
+  <div class="box2">
+    <p class="c">c</p>
+  </div>
+  
+  
+  // CSS
+ div {
+     width: 100px;
+     height: 100px;
+     position: relative;
+}
+ .box1 {
+     z-index: 2;
+}
+ .box2 {
+     z-index: 1;
+}
+ p {
+     position: absolute;
+     font-size: 20px;
+     width: 100px;
+     height: 100px;
+}
+ .a {
+     background-color: blue;
+     z-index: 100;
+}
+ .b {
+     background-color: green;
+     top: 20px;
+     left: 20px;
+     z-index: 200;
+}
+ .c {
+     background-color: red;
+     top: -20px;
+     left: 40px;
+     z-index: 9999;
+}
+```
+
+* 我们发下，虽然`p.c`元素的`z-index`值为9999，远大于`p.a`和`p.b`的`z-index`值，但是由于`p.a`、`p.b`的父元素`div.box1`产生的层叠上下文的`z-index`的值为2，`p.c`的父元素`div.box2`所产生的层叠上下文的`z-index`值为1，所以`p.c`永远在`p.a`和`p.b`下面。
+*  同时，如果我们只更改`p.a`和`p.b`的`z-index`值，由于这两个元素都在父元素`div.box1`产生的层叠上下文中，所以，谁的`z-index`值大，谁在上面。
+
+
+
+### 层叠顺序
+
+![](.gitbook/assets/image%20%2885%29.png)
+
+
+
+1. 首先先看要比较的两个元素是否处于同一个层叠上下文中：
+   1. 如果是，谁的层叠等级大，谁在上面（怎么判断层叠等级大小呢？——看“层叠顺序”图）
+   2. 如果两个元素不在统一层叠上下文中，请先比较他们所处的层叠上下文的层叠等级
+2. 当两个元素层叠等级相同、层叠顺序相同时，在DOM结构中后面的元素层叠等级在前面元素之上。
+
+### 例子3
+
+![](.gitbook/assets/image%20%2878%29.png)
+
+```text
+  <div class="box1">
+    <div class="child1"></div>
+  </div>
+
+  <div class="box2">
+    <div class="child2"></div>
+  </div>
+  
+  // css
+    .box1, .box2 {
+    position: relative;
+   z-index: auto;
+  }
+  .child1 {
+    width: 200px;
+    height: 100px;
+    background: #168bf5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+  }
+  .child2 {
+    width: 100px;
+    height: 200px;
+    background: #32c292;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+```
+
+* `.box1/.box2`虽然设置了`position: relative`，但是`z-index: auto`的情况下，这两个`div`还是普通元素，并没有产生层叠上下文。所以，`child1/.child2`属于`<html></html>`元素的“根层叠上下文”中，此时，**谁的`z-index`值大，谁在上面**
+
+### 例子4
+
+![](.gitbook/assets/image%20%2882%29.png)
+
+*  上面例子 把 `z-index:auto` 改成 `z-index: 0;`
+* 因为设置`z-index: 0`后，`.box1/.box2`产生了各自的层叠上下文，这时候要比较`.child1/.child2`的层叠关系完全由父元素`.box1/.box2`的层叠关系决定。但是`.box1/.box2`的`z-index`值都为`0`，都是块级元素（所以它们的层叠等级，层叠顺序是相同的），这种情况下，在`DOM`结构中**后面的覆盖前面的**，所以`.child2`就在上面。
+
+
+
+### 例子5 ， css 属性导致的 stacking context
+
+
+
+![](.gitbook/assets/image%20%2879%29.png)
+
+{% embed url="https://jsfiddle.net/Boyanliuu/81mLhb79/12/" %}
+
+```text
+  
+   <div class="box">
+    <div class="parent">
+      parent
+      <div class="child">child</div>
+    </div>
+  </div>
+  
+  
+  //css
+  .box {
+    display: flex;
+  }
+  .parent {
+    width: 200px;
+    height: 100px;
+    background: #168bf5;
+    /* 虽然设置了z-index，但是没有设置position，z-index无效，.parent还是普通元素，没有产生层叠上下文 */
+    z-index: 1;
+  }
+  .child {
+    width: 100px;
+    height: 200px;
+    background: #32d19c;
+    position: relative;
+    z-index: -1;
+  }
+```
+
+* 当给`.box`设置`display: flex`时，`.parent`就变成层叠上下文元素，根据层叠顺序规则，层叠上下文元素的`background/border`的层叠等级小于`z-index`值小于`0`的元素的层叠等级，所以`z-index`值为`-1`的`.child`在`.parent`上面 
+
+###  例子6
+
+{% embed url="https://jsfiddle.net/Boyanliuu/tsovLxqr/5/" %}
+
+
+
+* parent 创建了一个新的 stacking context， 然后 根据 上面的 stacking order 判断的话， 他的颜色是最低级的所以 它在 child2 后面，
+* 同理 child2 也创建了一个新的 stacking order， 然后 它也是最低级的 在它的2个children 后面
+
 ## 
+
+  
+
+
+
+
+  
+
+
+  
+
 
 ## 等高布局
 
@@ -1199,7 +1457,7 @@ ul.parentNode.replaceChild(clone, ul);
 
 ### 品字布局
 
-![](.gitbook/assets/image%20%2879%29.png)
+![](.gitbook/assets/image%20%2884%29.png)
 
 {% embed url="https://jsfiddle.net/Boyanliuu/45adzu3q/10/" %}
 
@@ -1497,7 +1755,7 @@ body{
 
 ### 粘连布局
 
-![](.gitbook/assets/image%20%2878%29.png)
+![](.gitbook/assets/image%20%2881%29.png)
 
 * 有一块内容&lt;main&gt;，当&lt;main&gt;的高康足够长的时候，紧跟在&lt;main&gt;后面的元素&lt;footer&gt;会跟在&lt;main&gt;元素的后面。
 * 当&lt;main&gt;元素比较短的时候\(比如小于屏幕的高度\),我们期望这个&lt;footer&gt;元素能够“粘连”在屏幕的底部
