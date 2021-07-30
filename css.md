@@ -1197,9 +1197,21 @@ ul.parentNode.replaceChild(clone, ul);
 
 ## 使用CSS实现常用布局
 
-### 三栏
-
 ### 品字布局
+
+![](.gitbook/assets/image%20%2879%29.png)
+
+{% embed url="https://jsfiddle.net/Boyanliuu/45adzu3q/10/" %}
+
+* 使用float 把2，3 放在一行 然后 使用 margin-left + translateX\(\)
+
+
+
+
+
+
+
+
 
 ### 圣杯布局
 
@@ -1387,21 +1399,115 @@ footer , header{
 
 
 
-
-
-
-
-
-
-
-
 ### 双飞翼
 
-### 吸顶
+{% embed url="https://jsfiddle.net/Boyanliuu/4bq2Losh/8/" %}
+
+* 多加了一层 dom 树节点2， 增加了 渲染树生产的计算量， center 被 另外一个 div 包裹了
+* 跟圣杯布局很类似
+* 两种布局方式都是把主列放在文档流最前面，使主列优先加载。
+* 两种布局方式在实现上也有相同之处，都是让三列浮动，然后通过负外边距形成三列布局。
+* 两种布局方式的不同之处在于如何处理中间主列的位置： 圣杯布局是利用父容器的左、右内边距+两个从列相对定位； 双飞翼布局是把主列嵌套在一个新的父级块中利用主列的左、右外边距进行布局调整
+
+### 两列布局
+
+* 左列定宽， 右列自适应
+
+#### float  + margin
+
+{% embed url="https://jsfiddle.net/Boyanliuu/n4u7eg8c/10/" %}
 
 
 
 
+
+```text
+ * {
+     margin: 0;
+     padding: 0;
+}
+ #left {
+     background-color: #f00;
+     float: left;
+     width: 100px;
+     height: 500px;
+}
+ #right {
+     background-color: #0f0;
+     height: 500px;
+     margin-left: 100px;
+    /*大于等于#left的宽度*/
+}
+```
+
+#### float +  BFC
+
+```text
+#left {
+    background-color: #f00;
+    float: left;
+    width: 100px;
+    height: 500px;
+}
+
+#right{
+   overflow:hidden;
+   background-color: #0f0;
+   height: 500px;
+}
+```
+
+#### flex 布局
+
+```text
+body{
+  display:flex;
+}
+#left {
+    background-color: #f00;
+    width: 100px;
+    height: 500px;
+}
+
+#right{
+   flex:1;
+   background-color: #0f0;
+   height: 500px;
+}
+
+```
+
+#### grid 布局
+
+```text
+body{
+  display:grid;
+  grid-template-columns:100px 1fr;
+}
+#left {
+    background-color: #f00;
+    height: 500px;
+}
+
+#right{
+   background-color: #0f0;
+   height: 500px;
+}
+```
+
+### 粘连布局
+
+![](.gitbook/assets/image%20%2878%29.png)
+
+* 有一块内容&lt;main&gt;，当&lt;main&gt;的高康足够长的时候，紧跟在&lt;main&gt;后面的元素&lt;footer&gt;会跟在&lt;main&gt;元素的后面。
+* 当&lt;main&gt;元素比较短的时候\(比如小于屏幕的高度\),我们期望这个&lt;footer&gt;元素能够“粘连”在屏幕的底部
+
+{% embed url="https://jsfiddle.net/Boyanliuu/qhmgd45t/6/" %}
+
+* footer必须是一个独立的结构，与wrap没有任何嵌套关系
+* wrap区域的高度通过设置min-height，变为视口高度
+* footer要使用margin为负来确定自己的位置
+* 在main区域需要设置 padding-bottom。这也是为了防止负 margin 导致 footer 覆盖任何实际内容。
 
 ### 
 
