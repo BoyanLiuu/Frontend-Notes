@@ -861,13 +861,13 @@ _Groups of elements with a common parent that move forward or backward together 
 }
 ```
 
-![](.gitbook/assets/image%20%2880%29.png)
+![](.gitbook/assets/image%20%2881%29.png)
 
 *  因为p.a、p.b、p.c三个的父元素div都没有设置`z-index`，所以不会产生层叠上下文，所以.a、.b、.c都处于由`<html></html>`标签产生的“根层叠上下文”中，属于同一个层叠上下文，此时谁的`z-index`值大，谁在上面。
 
 ### 例子2
 
-![](.gitbook/assets/image%20%2883%29.png)
+![](.gitbook/assets/image%20%2884%29.png)
 
 ```text
 <body>
@@ -924,7 +924,7 @@ _Groups of elements with a common parent that move forward or backward together 
 
 ### 层叠顺序
 
-![](.gitbook/assets/image%20%2885%29.png)
+![](.gitbook/assets/image%20%2886%29.png)
 
 
 
@@ -976,18 +976,18 @@ _Groups of elements with a common parent that move forward or backward together 
 
 ### 例子4
 
-![](.gitbook/assets/image%20%2882%29.png)
+![](.gitbook/assets/image%20%2883%29.png)
 
 *  上面例子 把 `z-index:auto` 改成 `z-index: 0;`
 * 因为设置`z-index: 0`后，`.box1/.box2`产生了各自的层叠上下文，这时候要比较`.child1/.child2`的层叠关系完全由父元素`.box1/.box2`的层叠关系决定。但是`.box1/.box2`的`z-index`值都为`0`，都是块级元素（所以它们的层叠等级，层叠顺序是相同的），这种情况下，在`DOM`结构中**后面的覆盖前面的**，所以`.child2`就在上面。
 
 
 
-### 例子5 ， css 属性导致的 stacking context
+### 例子5 display flex
 
 
 
-![](.gitbook/assets/image%20%2879%29.png)
+![](.gitbook/assets/image%20%2880%29.png)
 
 {% embed url="https://jsfiddle.net/Boyanliuu/81mLhb79/12/" %}
 
@@ -1023,7 +1023,27 @@ _Groups of elements with a common parent that move forward or backward together 
 
 * 当给`.box`设置`display: flex`时，`.parent`就变成层叠上下文元素，根据层叠顺序规则，层叠上下文元素的`background/border`的层叠等级小于`z-index`值小于`0`的元素的层叠等级，所以`z-index`值为`-1`的`.child`在`.parent`上面 
 
-###  例子6
+### 例子6 opacity
+
+![](.gitbook/assets/image%20%2879%29.png)
+
+```text
+<div class="box">
+    <img src="mm1.jpg">
+</div>
+
+//css
+.box { background-color: blue; opacity: 0.5; }
+.box > img { 
+  position: relative; z-index: -1; right: -150px;
+}
+```
+
+* box 创建了一个 stacking context 后 它就变为 最低等级的 stacking order，
+
+
+
+###  例子7
 
 {% embed url="https://jsfiddle.net/Boyanliuu/tsovLxqr/5/" %}
 
@@ -1457,7 +1477,7 @@ ul.parentNode.replaceChild(clone, ul);
 
 ### 品字布局
 
-![](.gitbook/assets/image%20%2884%29.png)
+![](.gitbook/assets/image%20%2885%29.png)
 
 {% embed url="https://jsfiddle.net/Boyanliuu/45adzu3q/10/" %}
 
@@ -1755,7 +1775,7 @@ body{
 
 ### 粘连布局
 
-![](.gitbook/assets/image%20%2881%29.png)
+![](.gitbook/assets/image%20%2882%29.png)
 
 * 有一块内容&lt;main&gt;，当&lt;main&gt;的高康足够长的时候，紧跟在&lt;main&gt;后面的元素&lt;footer&gt;会跟在&lt;main&gt;元素的后面。
 * 当&lt;main&gt;元素比较短的时候\(比如小于屏幕的高度\),我们期望这个&lt;footer&gt;元素能够“粘连”在屏幕的底部

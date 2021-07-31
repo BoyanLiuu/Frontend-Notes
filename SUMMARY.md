@@ -14,7 +14,7 @@
   * [Write better code](javascript/write-better-code.md)
 * [React](react.md)
 * [Write your own component](write-your-own-component.md)
-* [HTTP 协议](http-xie-yi.md)
+* [计算机网络](http-xie-yi.md)
 * [浏览器](liu-lan-qi.md)
 * [Webpack](webpack.md)
 * [Testing](testing.md)
