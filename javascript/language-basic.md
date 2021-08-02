@@ -907,6 +907,7 @@ console.log(person2.getName()); // 'Michael'
 ## 13.Closure
 
 * It is when an inner function has access to variables in the outer scope That all functions are closures in javascript
+* 闭包是什么时候被销毁的？当它不被任何其他的对象引用的时候。
 * Common use of closure
   * For object Data Privacy， have private variable, private method
   * In event Handlers
@@ -967,13 +968,28 @@ for(var i = 1;i <= array.length;i++){
 }
 
 // end of solution for Q2
-// Solution 3
+// Solution 3 
 
 for(var i=1;i<= array.length;i++){
   setTimeout(function timer(local_i){
      console.log('Element: ' + array[local_i] + ', at index: ' + local_i);
   }, 0, i)
+}// i 被当作新的 argument 传进去了
+
+// Solution 4 JS 中 基本类型是 pass by value
+var output = function (i) {
+    setTimeout(function() {
+        console.log(i);
+    }, 1000);
+};
+
+for (var i = 0; i < 5; i++) {
+    output(i);  // 这里传过去的 i 值被复制了
 }
+
+
+
+
 ```
 
 ### 解析
@@ -984,7 +1000,73 @@ for(var i=1;i<= array.length;i++){
    1. Using Es6 featre, **let**   It  creates a new binding for each loop iteration, each i refers to the binding of one specific iteration and preserves the value that was current at that time
    2. **Using IFFE**: That function takes the parameter local\_i, that is the variable i. It calls another function in return, an anonymous function that displays the value of i stored in the variable local\_i
    3. 给定时器传入第三个参数, 作为timer函数的第一个函数参数
-      1. 
+   4. JS 中 基本类型是 pass by value
+
+### 每一秒输出数字题目
+
+```text
+// Method 1
+for (var i = 0; i < 5; i++) {
+    (function(j) {
+        setTimeout(function() {
+            console.log(new Date, j);
+        }, 1000 * j);  // 这里修改 0~4 的定时器时间
+    })(i);
+}
+
+setTimeout(function() { // 这里增加定时器，超时设置为 5 秒
+    console.log(new Date, i);
+}, 1000 * i);
+
+
+
+
+// ==== Method 2 better 写法 ====
+const tasks = []; // 这里存放异步操作的 Promise
+const output = (i) => new Promise((resolve) => {
+    setTimeout(() => {
+        console.log(new Date, i);
+        resolve();
+    }, 1000 * i);
+});
+
+// 生成全部的异步操作
+for (var i = 0; i < 5; i++) {
+    tasks.push(output(i));
+}
+
+// 异步操作完成之后，输出最后的 i
+Promise.all(tasks).then(() => {
+    setTimeout(() => {
+        console.log(new Date, i);
+    }, 1000);
+});
+
+
+// ==== Method3 使用 asaync/await ====
+
+
+const sleep = (timeountMS) => new Promise((resolve) => {
+    setTimeout(resolve, timeountMS);
+});
+
+(async () => {  // 声明即执行的 async 函数表达式
+    for (var i = 0; i < 5; i++) {
+        if (i > 0) {
+            await sleep(1000);
+        }
+        console.log(new Date, i);
+    }
+
+    await sleep(1000);
+    console.log(new Date, i);
+})();
+
+
+
+```
+
+
 
 ## 14.This object
 
@@ -2886,6 +2968,27 @@ readFilePromise('1.json').then(data => {
   * 回调函数延迟绑定 use `.then()`  回调函数不是直接声明的，而是在通过后面的 then 方法传入的，即延迟传入。这就是回调函数延迟绑定。
   * 返回值穿透: 我们会根据 then 中回调函数的传入值创建不同类型的Promise, 然后把返回的 Promise 穿透到外层, 以供后续的调用。这里的 x 指的就是内部返回的 Promise，然后在 x 后面可以依次完成链式调用
   * 错误冒泡  use .catch\(\)
+
+## 31： Execution Context & Execution stack
+
+### Execution Context 
+
+* an execution context is an abstract concept of an environment where the Javascript code is evaluated and executed. Whenever any code is run in JavaScript, it’s run inside an execution context.
+* **Types of Execution Context:**
+  * Global Execution Context 
+    * This is the default or base execution context. The code that is not inside any function is in the global execution context. It performs two things: it creates a global object which is a window object \(in the case of browsers\) and sets the value of this to equal to the global object. There can only be one global execution context in a program
+  * Functional Execution Context
+    * Every time a function is invoked, a brand new execution context is created for that function
+  * Eval Function Execution Context
+    * Code executed inside an eval function also gets its own execution context
+
+
+
+### Execution stack\(FILO\)
+
+* which is used to store all the execution context created during the code execution
+
+### 
 
 
 
