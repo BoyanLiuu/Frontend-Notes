@@ -1467,7 +1467,16 @@ appendDataToElement(clone, data);
 ul.parentNode.replaceChild(clone, ul);
 ```
 
-## 使用CSS绘制几何图形
+## CSS 性能优化
+
+* 建立公共样式类，把相同样式提取出来作为公共类使用。
+* 减少通配符\*或者类似\[hidden="true"\]这类选择器的使用
+* 巧妙运用css的继承机制，如果父节点定义了，子节点就无需定义
+*  去除无用CSS
+  * 不同元素或者其他情况下的重复代码，
+  * 整个页面内没有生效的CSS代码
+* 使用normolize.css
+* 减少css嵌套，最好不要嵌套三层以上
 
 
 
