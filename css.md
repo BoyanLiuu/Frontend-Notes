@@ -1787,7 +1787,176 @@ body{
 * footer要使用margin为负来确定自己的位置
 * 在main区域需要设置 padding-bottom。这也是为了防止负 margin 导致 footer 覆盖任何实际内容。
 
-### 
+
+
+
+
+## 画CSS图形
+
+### border radius 意思
+
+![](.gitbook/assets/image%20%2890%29.png)
+
+* 水平半径 和垂直半径
+* 顺序依次是： top-left， top-right， bottom-left， bottom-right
+
+```text
+border-radius: 12px
+//等于
+border-top-left-radius: 12px 12px
+border-top-right-radius: 12px 12px
+border-bottom-left-radius: 12px 12px
+border-bottom-right-radius: 12px 12px
+
+
+border-radius: 10px / 5px 20px;
+// 等于 
+border-radius:10px 10px 10px 10px / 5px 20px
+5px 20px
+```
+
+### 半椭圆
+
+![](.gitbook/assets/image%20%2895%29.png)
+
+```text
+width:200px;
+height:100px;
+border-radius: 50% / 100% 100% 0 0;
+```
+
+* 这个形状是垂直对称的，这意味着左上角和右上角的半径值应该是
+
+  相同的；与此类似，左下角和右下角的半径值也应该是相同的。
+
+* 顶部边缘并没有平直的部分（也就是说，整个顶边都是曲线），这意
+
+  味着左上角和右上角的半径之和应该等于整个形状的宽度。
+
+* 基于前两条观察，我们可以推断出，左半径和右半径在水平方向上
+
+  的值应该均为 50%
+
+* 再看看垂直方向，似乎顶部的两个圆角占据了整个元素的高度，而
+
+  且底部完全没有任何圆角。因此，在垂直方向上 border-radius 的
+
+  合理值似乎就是 100% 100% 0 0。
+
+### 四分之一椭圆
+
+![](.gitbook/assets/image%20%2889%29.png)
+
+```text
+  border-radius:100% 0 0 0 / 100% 0 0 0;
+```
+
+### 平行四边形
+
+![](.gitbook/assets/image%20%2892%29.png)
+
+```text
+  // Method 1
+  width:200px;
+  height:100px;
+  background:lightblue;
+  transform: skewX(-45deg);
+  
+  // Method 2
+  .button{
+  width: 100px;
+  position: relative; 
+}
+
+.button::before {
+ content: ''; /* 用伪元素来生成一个矩形 */
+ position: absolute;
+ top: 0; right: 0; bottom: 0; left: 0;
+ z-index: -1;
+ background: #58a;
+ transform: skew(-45deg);
+}
+```
+
+1. Method 1 也会把 内容skew ， 我们可以给内容反向 skew 变形 从而抵消容器的变形
+
+   效果，最终产生我们所期望的结果，不幸的是，这意味着我们将不得不使用
+
+   一层额外的 HTML 元素来包裹内容，比如用一个 div： **额外的 HTML 元素**
+
+2. Method 2更好的方案 ，使用 伪元素,_**还适用于其他任何变形样式，**_
+
+   _**当我们想变形一个元素而不想变形它的内容时就可以用到它**_
+
+   1. 我们希望伪元素保持良好的灵活性，可以自动继承其宿主元素的尺寸，
+
+      甚至当宿主元素的尺寸是由其内容来决定时仍然如此。一个简单的办法是
+
+      给宿主元素应用 position: relative 样式，并为伪元素设置 position:
+
+      absolute，然后再把所有偏移量设置为零，以便让它在水平和垂直方向上都
+
+      被拉伸至宿主元素的尺寸
+
+### 三角形
+
+![](.gitbook/assets/image%20%2893%29.png)
+
+```text
+.div1{
+  width:0;
+  height:0;
+  border-top: 100px solid #f6d365;
+  border-left: 100px solid #a4d7e1;
+  border-bottom: 100px solid #ed1250;
+  border-right: 100px solid #414141;
+}
+
+// 变成三角形
+.div1{
+  width:0;
+  height:0;
+  border-top: 100px solid transparent;
+  border-left: 100px solid transparent;
+  border-bottom: 100px solid #ed1250;
+  border-right: 100px solid transparent;
+}
+// 优化，缩小代码数量
+.div1{
+  width:0;
+  height:0;
+  border: 100px solid transparent;
+  border-bottom: 100px solid #ed1250;
+}
+```
+
+* 使用的就是对角切，所以我们隐藏其余的三角形就好了 使用 `transparent`
+
+####        Talk Bubble（聊天框） <a id="Talk-Bubble%EF%BC%88%E8%81%8A%E5%A4%A9%E6%A1%86%EF%BC%89"></a>
+
+![](.gitbook/assets/image%20%2888%29.png)
+
+```text
+  #talkBubble{
+      width: 120px;
+      height: 80px;
+      background: #81cfa2;
+      position: relative;
+      border-radius: 10px;
+
+ }
+#talkBubble:before{
+     content: "";
+     position: absolute;
+     right: 100%;
+     top: 26px;
+     width: 0;
+     height: 0;
+     border-top: 13px solid transparent;
+     border-right: 26px solid #81cfa2;
+     border-bottom: 13px solid transparent;
+ }
+```
 
 
 
