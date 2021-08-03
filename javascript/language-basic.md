@@ -1111,11 +1111,58 @@ let func = obj.a;
 func();  // this is window
 obj.a(); // this represent object
 
+
+
+// 情况1: 全局上下文
+console.log(window === this); // true
+var a = 1;
+this.b = 2;
+window.c = 3;
+console.log(a + b + c); // 6
+
+// 情况2: 函数上下文
+// 直接调用
+function foo(){
+  return this;
+}
+console.log(foo() === window); // true
+
+// 箭头函数
+function Person(name){
+  this.name = name;
+  this.say = () => {
+    var name = "xb";
+    return this.name;
+  }
+}
+var person = new Person("axuebin");
+console.log(person.say()); // axuebin
+
+// 情况3:   this指向调用函数的对象
+var person = {
+  name: "axuebin",
+  getName: function(){
+    return this.name;
+  }
+}
+console.log(person.getName()); // axuebin
+
 ```
 
-* When a function is not   defined using the arrow syntax, the this object is bound at runtime based on the context in which   a function is executed: 
-  * when used inside global functionsm, this is equal to **window in nonstrict** mode     and **undefined in strict mode**
+**总共5种情况**
+
+* **情况1: 全局上下文**
+  * `var` === `this.` === `winodw.`
+* **情况2: 函数上下文**  When a function is not   defined using the arrow syntax, the this object is bound at runtime based on the context in which   a function is executed: 
+  * **直接调用** when used inside global functions, this is equal to **window in nonstrict** mode     and **undefined in strict mode**  
+  * **call, apply, this 指向 绑定的对象上**
+  * **箭头函数**
+    * **箭头函数会捕获其所在上下文的this值，作为自己的this值。**
+    * 箭头函数并不绑定 this，arguments，super\(ES6\)，抑或 new.target\(ES6\)。
+* **情况3:   this指向调用函数的对象。**
   * this is equal to the object when called as an object method   `obj.a();`
+* **情况4: this被绑定到正在构造的新对象。**
+* **情况5: 作为一个DOM事件处理函数**
   * Dom 事件绑定, onclick和addEventerListener中 this 默认指向绑定事件的元素。
 * **Ex1:**  getIdentityFunc\(\) returns a function, so calling this function immediately call the function that is returned.
   * Each function automatically gets two special variables as soon as the function is
@@ -1124,6 +1171,47 @@ obj.a(); // this represent object
 
   * Before     defining the anonymous function, a variable named that is assigned equal to the this object. When     the closure is defined, it has access to that because it is a uniquely named variable in the containing     function. Even after the function is returned, that is still bound to object, so calling object.getIdentityFunc\(\)  returns 'My Object'.
 * Both **this and arguments** behave in this way. If you want access to a   containing scope’s arguments object, you’ll need to save a reference into another   variable that the closure can access.
+
+### this 优先级
+
+就需要找到这个函数的直接调用位置。 找到之后 就可以顺序应用下面这四条规则来判断 this 的绑定对象
+
+1.  `new` 调用：绑定到新创建的对象，注意：显示`return`函数或对象，返回值不是新创建的对象，而是显式返回的函数或对象
+2. `call` 或者 `apply`（ 或者 `bind`） 调用：严格模式下，绑定到指定的第一个参数。非严格模式下，`null`和`undefined`，指向全局对象（浏览器中是`window`），其余值指向被`new Object()`包装的对象。
+3. 对象上的函数调用：绑定到那个对象。
+4. 普通函数调用： 在严格模式下绑定到 undefined，否则绑定到全局对象。
+
+ES6 中的箭头函数：不会使用上文的四条标准的绑定规则，
+
+DOM事件函数：一般指向绑定事件的DOM元素，但有些情况绑定到全局对象（比如IE6~IE8的attachEvent）
+
+### 相关问题
+
+```text
+// 问题 1
+var name = 'window';
+var person = {
+    name: 'person',
+}
+var doSth = function(){
+    console.log(this.name);
+    return function(){
+        console.log('return:', this.name);
+    }
+}
+var Student = {
+    name: '若川',
+    doSth: doSth,
+}
+// 普通函数调用
+doSth(); // window
+// 对象上的函数调用
+Student.doSth(); // '若川'
+// call、apply 调用
+Student.doSth.call(person); // 'person'
+```
+
+
 
 
 
