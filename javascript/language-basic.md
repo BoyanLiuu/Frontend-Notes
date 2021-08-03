@@ -785,10 +785,36 @@ function sayColor() {
 }
 let objectSayColor = sayColor.bind(o);
 objectSayColor(); // blue
+
+
+var obj = {
+    name: '若川',
+};
+function original(a, b){
+    console.log(this.name);
+    console.log([a, b]);
+    return false;
+}
+var bound = original.bind(obj, 1);
+var boundResult = bound(2); // '若川', [1, 2]
+console.log(boundResult); // false
+console.log(original.bind.name); // 'bind'
+console.log(original.bind.length); // 1
+console.log(original.bind().length); // 2 返回original函数的形参个数
+console.log(bound.name); // 'bound original'
+console.log((function(){}).bind().name); // 'bound '
+console.log((function(){}).bind().length); // 0
+
+
+
 ```
 
 * Definded in the ECMAScript 5, It create a new function instance whose this value is bound to the value that was passed into bind\(\);
 * a new function called objectSayColor\(\) is created from sayColor\(\) by calling bind\(\) and   passing in the object o. The objectSayColor\(\) function has a this value equivalent to o,
+*  `bind`本身是一个函数名为`bind`的函数，返回值也是函数，函数名是`bound`。（打出来就是`bound加上一个空格`）
+*  传给`bind()`的其他参数接收处理了，`bind()`之后返回的函数的参数也接收处理了，也就是说合并处理了
+*  并且`bind()`后的`name`为`bound + 空格 + 调用bind的函数名`。如果是匿名函数则是`bound + 空格`。
+*  `bind`后的返回值函数，执行后返回值是原函数（`original`）的返回值。
 
 ### call
 
