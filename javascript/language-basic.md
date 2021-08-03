@@ -827,7 +827,7 @@ sayColor.call(window); // red
 sayColor.call(o); // blue
 ```
 
-* The first argument is the this value, but the remaining arguments are passed directly into the   function. 
+* The first argument is the **this** value, but the remaining arguments are passed directly into the   function. 
 
 ### apply
 
@@ -852,9 +852,12 @@ console.log(callSum2(10, 10)); // 20
 
   array of arguments, the second argument can be an array or arguments
 
+* apply只接收两个参数，第二个参数可以是数组也可以是类数组，其实也可以是对象，后续的参数忽略不计
+
 ### What is difference between call apply?
 
 * apply requires an array as its second argument wheres call requires the parameters to be listed explicitly.
+* **thisArg ,**如果这个函数处于非严格模式下，则指定为 null 或 undefined 时会自动替换为指向全局对象，原始值会被包装。
 
 
 
