@@ -137,6 +137,17 @@ function display(){
 };
 display();
 
+
+
+//===== EG2  =====
+console.log(x);//输出：function x(){}
+var x=1;
+function x(){}
+//变成
+var x;
+function x(){}
+console.log(x);
+x=1;
 ```
 
 ### 解析：
@@ -147,6 +158,38 @@ display();
 * At compile time, the var temp is hoisted to the top of the display\(\) function.
 
 ![](../.gitbook/assets/image%20%283%29.png)
+
+### Order of precedence
+
+```text
+// Variable assignment takes precedence over function declaration
+var double = 22;
+
+function double(num) {
+  return (num*2);
+}
+
+console.log(typeof double); // Output: number
+
+
+// Variable assignment takes precedence over function declaration
+var double;
+
+function double(num) {
+  return (num*2);
+}
+
+console.log(typeof double); // Output: function
+```
+
+* Variable assignment takes precedence over function declaration
+* Function declarations take precedence over variable declarations
+
+
+
+
+
+
 
 
 
@@ -1158,6 +1201,11 @@ console.log(person.getName()); // axuebin
   * **call, apply, this 指向 绑定的对象上**
   * **箭头函数**
     * **箭头函数会捕获其所在上下文的this值，作为自己的this值。**
+    * **箭头函数中没有this绑定，必须通过查找作用域链来决定其值。 如果箭头函数被非箭头函数包含，则this绑定的是最近一层非箭头函数的this，否则this的值则被设置为全局对象**
+    * 其实就是相当于箭头函数外的this是缓存的该箭头函数上层的普通函数的this。如果没有普通函数，则是全局对象（浏览器中则是window）。
+
+      也就是说**无法通过call、apply、bind绑定箭头函数的this\(它自身没有this\)**。而call、apply、bind可以绑定缓存箭头函数上层的普通函数的this
+
     * 箭头函数并不绑定 this，arguments，super\(ES6\)，抑或 new.target\(ES6\)。
 * **情况3:   this指向调用函数的对象。**
   * this is equal to the object when called as an object method   `obj.a();`
@@ -1172,16 +1220,18 @@ console.log(person.getName()); // axuebin
   * Before     defining the anonymous function, a variable named that is assigned equal to the this object. When     the closure is defined, it has access to that because it is a uniquely named variable in the containing     function. Even after the function is returned, that is still bound to object, so calling object.getIdentityFunc\(\)  returns 'My Object'.
 * Both **this and arguments** behave in this way. If you want access to a   containing scope’s arguments object, you’ll need to save a reference into another   variable that the closure can access.
 
+
+
 ### this 优先级
 
-就需要找到这个函数的直接调用位置。 找到之后 就可以顺序应用下面这四条规则来判断 this 的绑定对象
+_**如果要判断一个运行中函数的 this 绑定， 就需要找到这个函数的直接调用位置**_。 找到之后 就可以顺序应用下面这四条规则来判断 this 的绑定对象
 
 1.  `new` 调用：绑定到新创建的对象，注意：显示`return`函数或对象，返回值不是新创建的对象，而是显式返回的函数或对象
 2. `call` 或者 `apply`（ 或者 `bind`） 调用：严格模式下，绑定到指定的第一个参数。非严格模式下，`null`和`undefined`，指向全局对象（浏览器中是`window`），其余值指向被`new Object()`包装的对象。
 3. 对象上的函数调用：绑定到那个对象。
 4. 普通函数调用： 在严格模式下绑定到 undefined，否则绑定到全局对象。
 
-ES6 中的箭头函数：不会使用上文的四条标准的绑定规则，
+ES6 中的箭头函数：不会使用上文的四条标准的绑定规则，**而是箭头函数的this指向的是谁调用箭头函数的外层function，箭头函数的this就是指向该对象，如果箭头函数没有外层函数，则指向window**
 
 DOM事件函数：一般指向绑定事件的DOM元素，但有些情况绑定到全局对象（比如IE6~IE8的attachEvent）
 
@@ -1211,7 +1261,92 @@ Student.doSth(); // '若川'
 Student.doSth.call(person); // 'person'
 ```
 
+{% embed url="https://www.cnblogs.com/xxcanghai/p/5189353.html" %}
 
+{% embed url="https://segmentfault.com/a/1190000010981003" %}
+
+
+
+```text
+/**
+ * Question 1
+ */
+
+var name = 'window'
+
+var person1 = {
+  name: 'person1',
+  show1: function () {
+    console.log(this.name)
+  },
+  show2: () => console.log(this.name),
+  show3: function () {
+    return function () {
+      console.log(this.name)
+    }
+  },
+  show4: function () {
+    return () => console.log(this.name)
+  }
+}
+var person2 = { name: 'person2' }
+
+person1.show1() //person1
+person1.show1.call(person2)// person2
+
+person1.show2()//window
+person1.show2.call(person2) //window
+
+person1.show3()()//window
+person1.show3().call(person2)//person2
+person1.show3.call(person2)()//window
+
+person1.show4()()// person1
+person1.show4().call(person2)// person1
+person1.show4.call(person2)()// person2
+
+
+
+/**
+ * Question 2
+ */
+var name = 'window'
+
+function Person (name) {
+  this.name = name;
+  this.show1 = function () {
+    console.log(this.name)
+  }
+  this.show2 = () => console.log(this.name)
+  this.show3 = function () {
+    return function () {
+      console.log(this.name)
+    }
+  }
+  this.show4 = function () {
+    return () => console.log(this.name)
+  }
+}
+
+var personA = new Person('personA')
+var personB = new Person('personB')
+
+personA.show1() // personA
+personA.show1.call(personB) // personB
+
+personA.show2() // personA
+personA.show2.call(personB) // personA
+
+personA.show3()() // window
+personA.show3().call(personB) // personB
+personA.show3.call(personB)() // window
+
+personA.show4()() // personA
+personA.show4().call(personB) // personA
+personA.show4.call(personB)() // personB
+
+
+```
 
 
 
@@ -3075,6 +3210,42 @@ readFilePromise('1.json').then(data => {
 ### Execution stack\(FILO\)
 
 * which is used to store all the execution context created during the code execution
+
+
+
+## 32 : Js Operator\_Precedence
+
+{% embed url="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator\_Precedence" %}
+
+```text
+// eg1
+new Foo.getName();
+//变成了
+new （Foo.getName）();
+
+// eg2
+ new Foo().getName();
+//变成了
+(new Foo()).getName();
+
+// eg3
+new new Foo().getName();
+// 变成了
+new ((new Foo()).getName)();
+//这里确实是(new Foo()).getName()，但是跟括号优先级高于成员访问没关系，
+实际上这里成员访问的优先级是最高的，因此先执行了 .getName，但是在进行左侧取值的时候， 
+new Foo() 可以理解为两种运算：new 带参数（即 new Foo()）和函数调用（即 先 Foo() 
+取值之后再 new），而 new 带参数的优先级是高于函数调用的，因此先执行了 new Foo()，
+或得 Foo 类的实例对象，再进行了成员访问 .getName。
+```
+
+1. \(\) --&gt; 分组
+2. obj.a --&gt; 成员访问
+3. obj\["hello "\] --&gt; 需计算的成员访问
+4. new（带参数列表）new … \( … \)  `const car1 = new Car('Eagle', 'Talon TSi', 1993);`
+5. 函数调用\(\)   `myFunc(mycar);`
+6. ？.
+7. new（无参数列表）new …
 
 ### 
 
