@@ -389,6 +389,12 @@ console.log(sum(2, 6));
 
 ### bind\(\)
 
+{% embed url="https://github.com/mqyqingfeng/Blog/issues/12" %}
+
+{% embed url="https://juejin.cn/post/6844903718089916429\#heading-6" %}
+
+
+
 _**第一版**_
 
 ```text
