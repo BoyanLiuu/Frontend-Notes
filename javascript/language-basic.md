@@ -259,7 +259,10 @@ console.log(typeof x);   //"bigint"
 
 ### The typeof Operator:
 
-* It tell the type of a given variable, used them for **primitive type**  data
+* It tell the type of a given variable, used them for **primitive type**  data 数据类型
+* new 创建的都是 object
+
+![](../.gitbook/assets/image%20%2899%29.png)
 
 ```text
 let message = "some string";
@@ -442,6 +445,10 @@ console.log(str1 instanceof Object) //false
 
 * str1 is string literal, and is not created using the **String** object, Hence even though its type is string , it is not an instance of String
 
+### typeof 和 instanceof 区别
+
+![](../.gitbook/assets/image%20%2898%29.png)
+
 ### Object.is和===的区别？
 
 ![](../.gitbook/assets/image%20%2823%29.png)
@@ -472,6 +479,8 @@ NaN === NaN                      //false
 
 * == check for value equality with coercion allowed,
 * === checks for both value equality without coercion allowed, This is often called strict equality
+
+
 
 ## 5.equal and not equal
 
@@ -2482,218 +2491,11 @@ let newArr = [...arr];//跟arr.slice()是一样的效果
 4. slice浅拷贝
 5. ...展开运算符
 
-## 31.实现一个 深拷贝
-
-```text
-//Solution 1
-JSON.parse(JSON.stringify());
-
-//问题 1
-//拷贝a会出现系统栈溢出，因为出现了无限递归的情况。
-let obj = {
-  name:'boyan',
-  age:15
-}
-
-obj.name = obj;
-//"TypeError: Converting circular structure to JSON
-JSON.parse(JSON.stringify(obj));
-
-// 问题 3
-let obj = {
-  name:'boyan',
-  age:15,
-  getName: function() {
-    return this.name;
-  }
-}
-
-let objB = JSON.parse(JSON.stringify(obj));
-console.log(objB.getName());
-//"TypeError: objB.getName is not a function
-// ======================================
-
-// Solution 2 简易版本
-
-const deepClone = (target) => {
-  if (typeof target === 'object' && target !== null) {
-    const cloneTarget = Array.isArray(target) ? []: {};
-    for (let prop in target) {
-      if (target.hasOwnProperty(prop)) {
-          //recursive call to copy every object 
-          cloneTarget[prop] = deepClone(target[prop]);
-      }
-    }
-    return cloneTarget;
-  } else {
-    return target;
-  }
-}
-
-//Solution 3 解决了 循环应用问题
-const isObject = (target) => (typeof target === 'object' || typeof target === 'function') && target !== null;
-//const deepClone = (target, map = new WeakMap()) 
-const deepClone = (target, map = new Map()) => { 
-  if(map.get(target))  
-    return target; 
- 
- 
-  if (isObject(target)) { 
-    map.set(target, true); 
-    const cloneTarget = Array.isArray(target) ? []: {}; 
-    for (let prop in target) { 
-      if (target.hasOwnProperty(prop)) { 
-          cloneTarget[prop] = deepClone(target[prop],map); 
-      } 
-    } 
-    return cloneTarget; 
-  } else { 
-    return target; 
-  } 
-  
-}
-const a = {val:2};
-a.target = a;
-let newA = deepClone(a);
-console.log(newA)//{ val: 2, target: { val: 2, target: [Circular] } }
 
 
-// Solution 4
-// 解决 特殊对象
+## 31 Document.write\(\)和 innerHtml 区别
 
-const getType = obj => Object.prototype.toString.call(obj);
-
-const isObject = (target) => (typeof target === 'object' || typeof target === 'function') && target !== null;
-
-const canTraverse = {
-  '[object Map]': true,
-  '[object Set]': true,
-  '[object Array]': true,
-  '[object Object]': true,
-  '[object Arguments]': true,
-};
-// 不可遍历的对象
-const mapTag = '[object Map]';
-const setTag = '[object Set]';
-const boolTag = '[object Boolean]';
-const numberTag = '[object Number]';
-const stringTag = '[object String]';
-const symbolTag = '[object Symbol]';
-const dateTag = '[object Date]';
-const errorTag = '[object Error]';
-const regexpTag = '[object RegExp]';
-const funcTag = '[object Function]';
-
-const handleRegExp = (target) => {
-  const { source, flags } = target;
-  return new target.constructor(source, flags);
-}
-
-const handleFunc = (func) => {
-  // 箭头函数直接返回自身
-  if(!func.prototype) return func;
-  const bodyReg = /(?<={)(.|\n)+(?=})/m;
-  const paramReg = /(?<=\().+(?=\)\s+{)/;
-  const funcString = func.toString();
-  // 分别匹配 函数参数 和 函数体
-  const param = paramReg.exec(funcString);
-  const body = bodyReg.exec(funcString);
-  if(!body) return null;
-  if (param) {
-    const paramArr = param[0].split(',');
-    return new Function(...paramArr, body[0]);
-  } else {
-    return new Function(body[0]);
-  }
-}
-
-const handleNotTraverse = (target, tag) => {
-  const Ctor = target.constructor;
-  switch(tag) {
-    case boolTag:
-      return new Object(Boolean.prototype.valueOf.call(target));
-    case numberTag:
-      return new Object(Number.prototype.valueOf.call(target));
-    case stringTag:
-      return new Object(String.prototype.valueOf.call(target));
-    case symbolTag:
-      return new Object(Symbol.prototype.valueOf.call(target));
-    case errorTag: 
-    case dateTag:
-      return new Ctor(target);
-    case regexpTag:
-      return handleRegExp(target);
-    case funcTag:
-      return handleFunc(target);
-    default:
-      return new Ctor(target);
-  }
-}
-
-const deepClone = (target, map = new WeakMap()) => {
-  if(!isObject(target)) 
-    return target;
-  let type = getType(target);
-  let cloneTarget;
-  if(!canTraverse[type]) {
-    // 处理不能遍历的对象
-    return handleNotTraverse(target, type);
-  }else {
-    // 这波操作相当关键，可以保证对象的原型不丢失！
-    let ctor = target.constructor;
-    cloneTarget = new ctor();
-  }
-
-  if(map.get(target)) 
-    return target;
-  map.set(target, true);
-
-  if(type === mapTag) {
-    //处理Map
-    target.forEach((item, key) => {
-      cloneTarget.set(deepClone(key, map), deepClone(item, map));
-    })
-  }
-  
-  if(type === setTag) {
-    //处理Set
-    target.forEach(item => {
-      cloneTarget.add(deepClone(item, map));
-    })
-  }
-
-  // 处理数组和对象
-  for (let prop in target) {
-    if (target.hasOwnProperty(prop)) {
-        cloneTarget[prop] = deepClone(target[prop], map);
-    }
-  }
-  return cloneTarget;
-}
-
-
-
-```
-
-1.  `JSON.parse()`
-   1. 问题: 无法解决循环引用的问题。举个例子：
-   2. 无法拷贝一写特殊的对象，诸如 RegExp, Date, Set, Map等。
-   3. 无法拷贝**函数\(function\)**。
-2. 简易版本
-3. 解决循环应用：
-   1. 创建一个Map。记录下已经拷贝过的对象，如果说已经拷贝过，那直接返回它行了。
-   2. **这里有一个潜在的坑**： 就是map 上的 key 和 map 构成了强引用关系，这是相当危险的
-      1. 被弱引用的对象可以在任何时候被回收，而对于强引用来说，只要这个强引用还在，那么对象无法被回收。拿上面的例子说，map 和 a一直是强引用的关系， 在程序结束之前，a 所占的内存空间一直**不会被释放**
-      2. **解决办法：**让 map 的 key 和 map 构成弱引用即可。ES6给我们提供了这样的数据结构，它的名字叫WeakMap，它是一种特殊的Map, 其中的键是弱引用的。其键必须是对象，而值可以是任意的。`const deepClone = (target, map = new WeakMap())` 
-4. 解决特殊对象：
-   1. 对于特殊的对象，我们使用以下方式来鉴别:`Object.prototype.toString.call(obj);`
-   2. 然后 分别处理 可继续遍历的， 和 不可遍历的对象
-   3. 不可遍历对象 ， 不同对象有不同的处理
-5. 解决拷贝函数问题
-   1. 一种是普通函数，另一种是箭头函数。每个普通函数都是 Function的实例，而箭头函数不是任何类的实例，每次调用都是不一样的引用。那我们只需要 处理普通函数的情况，箭头函数直接返回它本身就好了。
-   2. 那么如何来区分两者呢？
-      1. 利用原型。箭头函数是不存在原型的。
-6. [别人的 post](https://juejin.cn/post/6975880204447121422/#heading-15)
+![](../.gitbook/assets/image%20%2897%29.png)
 
 
 
