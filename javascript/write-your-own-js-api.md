@@ -818,7 +818,7 @@ const deepClone = (target, map = new WeakMap()) => {
 
 ## 防抖\(debounce\)
 
-![](../.gitbook/assets/image%20%28102%29.png)
+![](../.gitbook/assets/image%20%28103%29.png)
 
 * 输入框连续输入的请求次数控制
 * 防止表单多次提交
@@ -860,7 +860,7 @@ button.addEventListener('click',debounce(PayMoney,1000));
 
 ## 节流\(throttle\)
 
-![](../.gitbook/assets/image%20%28103%29.png)
+![](../.gitbook/assets/image%20%28105%29.png)
 
 * 如果我们需要统计用户滚动屏幕的行为来做出相应的网页反应我们就需要节流
 * 因为如果用户不断进行滚动就会不断产生请求， 容易导致网络的堵塞
@@ -934,7 +934,67 @@ window.addEventListener('resize',throttle2(coloring,2000));
 
 异步串行 \| 异步并行
 
-图片懒加载
+## 图片懒加载
+
+* 滚动到地方才加载出来所对应的图片 鼠标滚动到才会触发
+
+{% embed url="https://jsfiddle.net/Boyanliuu/7395k1rv/14/" %}
 
 
+
+第一种方法 
+
+![](../.gitbook/assets/image%20%28104%29.png)
+
+```text
+// 这个情况下 滚动会触发很多次
+//即使图片已经加载了 还是回不断触发事件
+//    <img data-src ="https://cdn.pixabay.com/photo/2018/01/05/02/47/fishing-3062034_960_720.jpg">
+window.addEventListener('scroll', (e) =>{
+		images.forEach(image =>{
+    	const imageTop =  image.getBoundingClientRect().top;
+      //图片可以开始加载了, html 使用了 data-src 这样子他就不会提前加载图片了
+      if(imageTop < window.innerHeight){
+      	const data_src = image.getAttribute('data-src');
+        image.setAttribute('src',data_src);
+      }
+      console.log('触发')
+      
+    });
+})
+```
+
+
+
+更好的 方法 使用 IntersectionObserver
+
+* 前提条件是浏览器需要支持， 目标元素与可视窗口会产生交叉区域
+
+![](../.gitbook/assets/image%20%28107%29.png)
+
+```text
+// 回调函数接受一个参数
+const callback = (entries) =>{
+		entries.forEach(entry =>{
+    		//为true 证明 正在观察这个 element我们可以把它展示出来了
+    		if(entry.isIntersecting){
+        	const image = entry.target;
+          const data_src = image.getAttribute('data-src');
+        	image.setAttribute('src',data_src);
+          // 如果已经加载了  就不再触发 观察了
+          observer.unobserve(image);
+          console.log('触发')
+        
+        }
+    });
+
+};
+
+const observer =  new IntersectionObserver(callback);
+
+// 每一个元素都需要被观察着
+images.forEach(image =>{
+	observer.observe(image);
+});
+```
 
