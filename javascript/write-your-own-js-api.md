@@ -816,7 +816,7 @@ const deepClone = (target, map = new WeakMap()) => {
 
 
 
-## 防抖
+## 防抖\(debounce\)
 
 ![](../.gitbook/assets/image%20%28102%29.png)
 
@@ -858,7 +858,71 @@ function debounce(func,delay){
 button.addEventListener('click',debounce(PayMoney,1000));
 ```
 
-## 节流
+## 节流\(throttle\)
+
+![](../.gitbook/assets/image%20%28103%29.png)
+
+* 如果我们需要统计用户滚动屏幕的行为来做出相应的网页反应我们就需要节流
+* 因为如果用户不断进行滚动就会不断产生请求， 容易导致网络的堵塞
+* 我们就可以在触发时间时候 马上处理任务 然后 设定时间间隔限制，在这段时间内不管用户如何进行滚动都忽视操作
+* 在时间到了以后如果检测到用户有滚动行为再次执行任务 并且重新设置时间间隔
+
+{% embed url="https://jsfiddle.net/Boyanliuu/ptg8xvej/13/" %}
+
+
+
+例子： 更改页面尺寸大小时候 更改颜色
+
+```text
+function coloring(){
+		let r = Math.floor(Math.random() * 255);
+    let g = Math.floor(Math.random() * 255);
+        
+    let b = Math.floor(Math.random() * 255);
+    
+    document.body.style.background = `rgb(${r},${g},${b})`;
+}
+
+// 第一种方法 使用 set time out
+function throttle(func,delay){
+let timer;
+	return function(){
+  	let context = this;
+    let args =  arguments;
+  	// 如果 timer 被赋值了， 那就是在等待时间间隔内， 就不执行
+  	if(timer){
+    	return;
+    }
+  	timer = setTimeout(function(){
+    	func.apply(context,args);
+      timer = null;
+    },delay);
+  
+  }
+}
+
+
+// 使用 date 相减
+function throttle2(func,delay){
+let prev = 0;
+	return function(){
+  	let context = this;
+    let args =  arguments;
+    let now = new Date();
+  	if(now - prev > delay){
+			func.apply(context,args);
+      prev = now;
+    }
+      
+  }
+}
+
+window.addEventListener('resize',throttle2(coloring,2000));
+```
+
+
+
+
 
 ## 事件总线 \| 发布订阅模式
 
