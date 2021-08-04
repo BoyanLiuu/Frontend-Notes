@@ -58,6 +58,10 @@ function is(x, y) {
 4.  通过`new`创建的每个对象将最终被`[[Prototype]]`链接到这个函数的`prototype`对象上
 5.  如果函数没有返回对象类型`Object`\(包含`Functoin`, `Array`, `Date`, `RegExg`, `Error`\)，那么`new`表达式中的函数调用会自动返回这个新的对象
 
+`student.constructor === Student;` 
+
+`Student.prototype.constructor === Student;`
+
 ```text
 /**
  * 模拟实现 new 操作符
@@ -100,7 +104,8 @@ function objectFactory() {
     Constructor = [].shift.call(arguments);
     //这个对象会被执行[[Prototype]]（也就是__proto__）链接。
     obj.__proto__ = Constructor.prototype;
-    //借用外部传入的构造器给obj设置属性
+    //使用 apply，改变构造函数 this 的指向到新建的对象，
+    //这样 obj 就可以访问到构造函数中的属性
     var ret = Constructor.apply(obj, arguments);
     //确保构造器总是返回一个对象
     return typeof ret === 'object' ? ret : obj;
