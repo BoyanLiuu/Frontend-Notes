@@ -22,10 +22,10 @@ we use &lt;script&gt; to inserting Javascript into an HTML page
 
 * **&lt;script&gt;** - HTML parsing is blocked, the script is fetched and executed immediately, HTML parsing resumes after the script is executed.
 * 
-  **&lt;script async&gt;** - The script will be fetched in parallel to HTML parsing and executed as soon as it is available. Use async when the script is independent of any other scripts on the page, It  should not prevent other actions on the page such as downloading resources or   waiting for other scripts to load.
+  **&lt;script async&gt;** - The script will be fetched in parallel to HTML parsing and executed as soon as it is available. Use async when the script is independent of any other scripts on the page, It  should not prevent other actions on the page such as downloading resources or   waiting for other scripts to load.**适合第三方脚本**
 
 * 
-  **&lt;script defer&gt;** - The script will be fetched in parallel to HTML parsing and executed when the page has finished parsing.If there are multiple of them, each deferred script is executed in the order they were encoun­tered in the document
+  **&lt;script defer&gt;** - The script will be fetched in parallel to HTML parsing and executed when the page has finished parsing.If there are multiple of them, each deferred script is executed in the order they were encoun­tered in the document。 都会等到html解析完再执行脚本
 
 ## 3.Inline code vs external files:
 
