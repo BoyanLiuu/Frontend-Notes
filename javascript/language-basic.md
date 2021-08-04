@@ -637,7 +637,9 @@ let triple = (x) => 3 * x;
 
 * Implicitly returns values, the return keyword can be avoided
 * Is anonymous,There is no need for a name or the function keyword in an arrow function
-* Inherits the value of this from enclosing scope, meaning since they don’t have their own context in which they execute, this gets inherited from the parent function. Hence, they don’t have their own this value.
+* Inherits the value of **this** from enclosing scope, meaning since they don’t have their own context in which they execute, this gets inherited from the parent function. Hence, they don’t have their own this value.
+* 没有 new 和 原型
+* 也不能使用 call apply bind 修改 this
 
 ### Which of the following are an arrow function's uses cases?
 
