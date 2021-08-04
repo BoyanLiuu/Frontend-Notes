@@ -816,3 +816,61 @@ const deepClone = (target, map = new WeakMap()) => {
 
 
 
+## 防抖
+
+![](../.gitbook/assets/image%20%28102%29.png)
+
+* 输入框连续输入的请求次数控制
+* 防止表单多次提交
+
+{% embed url="https://jsfiddle.net/Boyanliuu/oznt71e4/25/" %}
+
+
+
+```text
+const button  = document.querySelector('button');
+
+function PayMoney(){
+console.log('Paid!')
+}
+
+
+function debounce(func,delay){
+	// 使用 closure 
+	let timer;
+  // 使用 高阶函数， high order function， 这样子 就只会在点击时候 
+  // 才执行
+	return function(){
+
+  		let context = this;
+      // 清楚上一个定义的延时
+  		clearTimeout(timer);
+      let args = arguments;
+  		timer = setTimeout(function(){
+      		//使用 apply 解决参数问题
+          //保证this 指向正确
+      		func.apply(context,arguments);
+      }, delay);
+  }
+}
+
+
+button.addEventListener('click',debounce(PayMoney,1000));
+```
+
+## 节流
+
+## 事件总线 \| 发布订阅模式
+
+## 柯里化
+
+### es5 实现继承
+
+异步并发数限制
+
+异步串行 \| 异步并行
+
+图片懒加载
+
+
+

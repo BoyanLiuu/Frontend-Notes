@@ -16,6 +16,7 @@
 * [ES6 入门教程](https://es6.ruanyifeng.com/)
 * [Javascript 教程](https://wangdoc.com/javascript/)
 * [https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblLUxZFqOA2vI2F&view=vew0lbb2R4](https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblLUxZFqOA2vI2F&view=vew0lbb2R4)
+* [https://zh.javascript.info/](https://zh.javascript.info/)
 
 
 
