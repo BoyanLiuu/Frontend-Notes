@@ -48,7 +48,65 @@ function is(x, y) {
 
 ## Write your own Promise
 
-[https://juejin.cn/post/6844904004007247880\#heading-52](https://juejin.cn/post/6844904004007247880#heading-52)
+{% embed url="https://juejin.cn/post/6844904004007247880\#heading-52" %}
+
+## JS new 操作符
+
+1. 创建了一个全新的对象。
+2. 这个对象会被执行`[[Prototype]]`（也就是`__proto__`）链接。
+3. 生成的新对象会绑定到函数调用的`this`。
+4.  通过`new`创建的每个对象将最终被`[[Prototype]]`链接到这个函数的`prototype`对象上
+5.  如果函数没有返回对象类型`Object`\(包含`Functoin`, `Array`, `Date`, `RegExg`, `Error`\)，那么`new`表达式中的函数调用会自动返回这个新的对象
+
+```text
+/**
+ * 模拟实现 new 操作符
+ * @param  {Function} ctor [构造函数]
+ * @return {Object|Function|Regex|Date|Error}      [返回结果]
+ */
+function newOperator(ctor){
+    if(typeof ctor !== 'function'){
+      throw 'newOperator function the first param must be a function';
+    }
+    // ES6 new.target 是指向构造函数
+    newOperator.target = ctor;
+    // 1.创建一个全新的对象，
+    // 2.并且执行[[Prototype]]链接
+    // 4.通过`new`创建的每个对象将最终被`[[Prototype]]`链接到这个函数的`prototype`对象上。
+    var newObj = Object.create(ctor.prototype);
+    // ES5 arguments转成数组 当然也可以用ES6 [...arguments], Aarry.from(arguments);
+    // 除去ctor构造函数的其余参数
+    var argsArr = [].slice.call(arguments, 1);
+    // 3.生成的新对象会绑定到函数调用的`this`。
+    // 获取到ctor函数返回结果
+    var ctorReturnResult = ctor.apply(newObj, argsArr);
+    // 小结4 中这些类型中合并起来只有Object和Function两种类型 typeof null 也是'object'所以要不等于null，排除null
+    var isObject = typeof ctorReturnResult === 'object' && ctorReturnResult !== null;
+    var isFunction = typeof ctorReturnResult === 'function';
+    if(isObject || isFunction){
+        return ctorReturnResult;
+    }
+    // 5.如果函数没有返回对象类型`Object`(包含`Functoin`, `Array`, `Date`, `RegExg`, `Error`)，那么`new`表达式中的函数调用会自动返回这个新的对象。
+    return newObj;
+}
+
+
+
+// 另外一种
+function objectFactory() {
+    //创建一个新的 object
+    var obj = new Object(),
+    //得到 constructor 
+    Constructor = [].shift.call(arguments);
+    //这个对象会被执行[[Prototype]]（也就是__proto__）链接。
+    obj.__proto__ = Constructor.prototype;
+    //借用外部传入的构造器给obj设置属性
+    var ret = Constructor.apply(obj, arguments);
+    //确保构造器总是返回一个对象
+    return typeof ret === 'object' ? ret : obj;
+
+};
+```
 
 ## Apply & Call & Bind
 
@@ -326,10 +384,125 @@ console.log(sum(2, 6));
 
 ### bind\(\)
 
-* 
+_**第一版**_
+
+```text
+// 第一版 修改this指向，合并参数
+Function.prototype.bindFn = function bind(thisArg){
+    if(typeof this !== 'function'){
+        throw new TypeError(this + 'must be a function');
+    }
+    // 存储函数本身
+    var self = this;
+    // 去除thisArg的其他参数 转成数组
+    var args = [].slice.call(arguments, 1);
+    var bound = function(){
+        // bind返回的函数 的参数转成数组
+        var boundArgs = [].slice.call(arguments);
+        // apply修改this指向，把两个函数的参数合并传给self函数，并执行self函数，返回执行结果
+        return self.apply(thisArg, args.concat(boundArgs));
+    }
+    return bound;
+}
+// 测试
+var obj = {
+    name: '若川',
+};
+function original(a, b){
+    console.log(this.name);
+    console.log([a, b]);
+}
+var bound = original.bindFn(obj, 1);
+bound(2); // '若川', [1, 2]
 
 
-### 
+```
+
+#### 但我们知道函数是可以用new来实例化的。那么bind\(\)返回值函数会是什么表现呢?
+
+从例子种可以看出this指向了**new bound\(\)生成的新对象。**
+
+例子
+
+```text
+var obj = {
+    name: '若川',
+};
+function original(a, b){
+    console.log('this', this); // original {}
+    console.log('typeof this', typeof this); // object
+    this.name = b;
+    console.log('name', this.name); // 2
+    console.log('this', this);  // original {name: 2}
+    console.log([a, b]); // 1, 2
+}
+var bound = original.bind(obj, 1);
+var newBoundResult = new bound(2);
+console.log(newBoundResult, 'newBoundResult'); // original {name: 2}
+
+
+```
+
+#### 所以相当于new调用时，bind的返回值函数bound内部要模拟实现new实现的操作
+
+_**第二版**_
+
+```text
+// 第二版 实现new调用
+Function.prototype.bindFn = function bind(thisArg){
+    if(typeof this !== 'function'){
+        throw new TypeError(this + ' must be a function');
+    }
+    // 存储调用bind的函数本身
+    var self = this;
+    // 去除thisArg的其他参数 转成数组
+    var args = [].slice.call(arguments, 1);
+    var bound = function(){
+        // bind返回的函数 的参数转成数组
+        var boundArgs = [].slice.call(arguments);
+        var finalArgs = args.concat(boundArgs);
+        // new 调用时，其实this instanceof bound判断也不是很准确。es6 new.target就是解决这一问题的。
+        if(this instanceof bound){
+            // 这里是实现上文描述的 new 的第 1, 2, 4 步
+            // 1.创建一个全新的对象
+            // 2.并且执行[[Prototype]]链接
+            // 4.通过`new`创建的每个对象将最终被`[[Prototype]]`链接到这个函数的`prototype`对象上。
+            // self可能是ES6的箭头函数，没有prototype，所以就没必要再指向做prototype操作。
+            if(self.prototype){
+                // ES5 提供的方案 Object.create()
+                // bound.prototype = Object.create(self.prototype);
+                // 但 既然是模拟ES5的bind，那浏览器也基本没有实现Object.create()
+                // 所以采用 MDN ployfill方案 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create
+                function Empty(){}
+                Empty.prototype = self.prototype;
+                bound.prototype = new Empty();
+            }
+            // 这里是实现上文描述的 new 的第 3 步
+            // 3.生成的新对象会绑定到函数调用的`this`。
+            var result = self.apply(this, finalArgs);
+            // 这里是实现上文描述的 new 的第 5 步
+            // 5.如果函数没有返回对象类型`Object`(包含`Functoin`, `Array`, `Date`, `RegExg`, `Error`)，
+            // 那么`new`表达式中的函数调用会自动返回这个新的对象。
+            var isObject = typeof result === 'object' && result !== null;
+            var isFunction = typeof result === 'function';
+            if(isObject || isFunction){
+                return result;
+            }
+            return this;
+        }
+        else{
+            // apply修改this指向，把两个函数的参数合并传给self函数，并执行self函数，返回执行结果
+            return self.apply(thisArg, finalArgs);
+        }
+    };
+    return bound;
+}
+
+作者：若川
+链接：https://juejin.cn/post/6844903718089916429
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
 
 ## Array API:
 
