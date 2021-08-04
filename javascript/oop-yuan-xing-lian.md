@@ -355,21 +355,7 @@ _**是指Object 对象自身的方法**_
 5. `getOwnPropertyNames`    返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名。
 6. `Object.prototype.hasOwnProperty()`用于判断某个属性定义在对象自身，还是定义在原型链上。 `Date.length`（构造函数`Date`可以接受多少个参数）是`Date`自身的属性，`Date.toString`是继承的属性。
 
-### 生成的新对象方法
-
-```text
-var obj1 = Object.create({});
-var obj2 = Object.create(Object.prototype);
-var obj3 = new Object();
-
-var obj = Object.create(null);
-
-obj.valueOf()
-// TypeError: Object [object Object] has no method 'valueOf'
-```
-
-* 这些都是等价的
-*  如果想要生成一个不继承任何属性（比如没有`toString()`和`valueOf()`方法）的对象，可以将`Object.create()`的参数设为`null`。
+### 
 
 ###  获取实例对象`obj`的原型对象 
 
@@ -966,9 +952,71 @@ console.log(dest.a === src.a); // true
 * If multiple source objects have the same property defined, the **last one to b**e copied will be the ultimate value
 * 已经做过的copy出错后也不会 重置，所以就会有 partially copy
 * 
+### 创建Object的多种方法
+
+```text
+// Method 1 
+let mlt =  new Object();
+mlt.meat = [];
+mlt.vegetable = [];
 
 
+// Method 2
+let mlt ={
+    meat: [],
+    vegetable:[]
+}
 
+// Method 3 factory pattern
+// 这种方式  instaceof 没链接
+function createMlt (meat,vegetable,ingredient){
+    let obj =  new Object();
+    obj.meat = meat;
+    obj.vegetable = vegetable;
+    obj.ingredient = ingredient;
+    return obj;
+}
+
+let mlt1 = createMlt(meat1,vegetable1,ingredient1);
+
+// Method 4 构造函数
+
+function Mlt (meat,vegetable,ingredient){
+    
+    this.meat = meat;
+    this.vegetable = vegetable;
+    this.ingredient = ingredient;
+}
+let mlt1 = new Mlt(meat1,vegetable1,ingredient1);
+
+
+// Method 5 Object create
+let mlt1 =  Object.create(obj);
+
+var obj1 = Object.create({});
+var obj2 = Object.create(Object.prototype);
+var obj3 = new Object();
+
+var obj = Object.create(null);
+
+obj.valueOf()
+// TypeError: Object [object Object] has no method 'valueOf'
+
+
+// class 
+class MLT {
+    constructor(meat,vegetable,ingredient){
+        this.meat = meat;
+        this.vegetable = vegetable;
+        this.ingredient = ingredient;
+    }
+}
+```
+
+* Object.creat\(\)
+  * 这些都是等价的
+  *  如果想要生成一个不继承任何属性（比如没有`toString()`和`valueOf()`方法）的对象，可以将`Object.create()`的参数设为`null`。
+  * 你修改对象属性也会修改原型的属性
 
 ## Object creation
 
