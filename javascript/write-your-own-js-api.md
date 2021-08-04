@@ -117,6 +117,12 @@ function objectFactory() {
 
 ### apply\(\)
 
+func.apply\(thisArg, \[argsArray\]\)
+
+**thisArg:**  可选的。在 `func` 函数运行时使用的 `this` 值。请注意，`this`可能不是该方法看到的实际值：如果这个函数处于**非严格模式**下，则指定为 `null` 或 `undefined` 时会自动替换为指向全局对象，原始值会被包装
+
+**argsArray:**  可选的。一个数组或者类数组对象，其中的数组元素将作为单独的参数传给 `func` 函数。如果该参数的值为 `null` 或 `undefined`，则表示不需要传入任何参数
+
 我们只需要模拟实现apply，call可以根据参数个数都放在一个数组中，给到apply即可。
 
 ES5规范
@@ -178,6 +184,12 @@ Function.prototype.apply2 = function (context, arr) {
 
 
 ### call\(\) 
+
+`fun.call(thisArg, arg1, arg2, ...)`
+
+thisArg 值为原始值\(数字，字符串，布尔值\)的this会指向该原始值的自动包装对象
+
+ 返回值是你调用的方法的返回值，若该方法没有返回值，则返回`undefined`。
 
 **第一步 更改 call 的this 指向**
 
@@ -393,6 +405,24 @@ console.log(sum(2, 6));
 
 {% embed url="https://juejin.cn/post/6844903718089916429\#heading-6" %}
 
+ The **`bind()`** method creates a new function that, when called, has its `this` keyword set to the provided value, with a given sequence of arguments preceding any provided when the new function is called.
+
+* `bind`是`Functoin`原型链中`Function.prototype`的一个属性，每个函数都可以调用它。
+* `bind`本身是一个函数名为`bind`的函数，返回值也是函数，函数名是`bound`。（打出来就是`bound加上一个空格`）
+* 调用`bind`的函数中的`this`指向`bind()`函数的第一个参数
+*  传给`bind()`的其他参数接收处理了，`bind()`之后返回的函数的参数也接收处理了，也就是说合并处理了
+*  并且`bind()`后的`name`为`bound + 空格 + 调用bind的函数名`。如果是匿名函数则是`bound + 空格`
+*  `bind`后的返回值函数，执行后返回值是原函数（`original`）的返回值
+
+  
+ 
+
+ 
+
+
+
+
+
 
 
 _**第一版**_
@@ -406,10 +436,10 @@ Function.prototype.bindFn = function bind(thisArg){
     // 存储函数本身
     var self = this;
     // 去除thisArg的其他参数 转成数组
-    var args = [].slice.call(arguments, 1);
+    var args = Array.prototype.slice.call(arguments, 1);
     var bound = function(){
         // bind返回的函数 的参数转成数组
-        var boundArgs = [].slice.call(arguments);
+        var boundArgs = Array.prototype.slice.call(arguments);
         // apply修改this指向，把两个函数的参数合并传给self函数，并执行self函数，返回执行结果
         return self.apply(thisArg, args.concat(boundArgs));
     }
@@ -452,14 +482,20 @@ var newBoundResult = new bound(2);
 console.log(newBoundResult, 'newBoundResult'); // original {name: 2}
 
 
+
+
+
+
 ```
+
+#### 我们目前的code 实例和原型对象 没有联系
 
 #### 所以相当于new调用时，bind的返回值函数bound内部要模拟实现new实现的操作
 
-_**第二版**_
+**最终版 方案一**
 
 ```text
-// 第二版 实现new调用
+
 Function.prototype.bindFn = function bind(thisArg){
     if(typeof this !== 'function'){
         throw new TypeError(this + ' must be a function');
@@ -510,6 +546,38 @@ Function.prototype.bindFn = function bind(thisArg){
 }
 
 
+```
+
+#### 另外一个版本的最终版（看这个）
+
+* `this instanceof fNOP`  用来判断是否使用了 new 构造函数，如果是 我们就需要把 this绑定到新实例上面
+* 把fNop的 原型对象修改为this（person）的原型对象
+* 再把 返还的函数对象 作为空函数fNop的实例进行串联
+
+```text
+
+
+
+Function.prototype.bind2 = function (context) {
+
+    if (typeof this !== "function") {
+      throw new Error("Function.prototype.bind - what is trying to be bound is not callable");
+    }
+
+    var self = this;
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    var fNOP = function () {};
+
+    var fBound = function () {
+        var bindArgs = Array.prototype.slice.call(arguments);
+        return self.apply(this instanceof fNOP ? this : context, args.concat(bindArgs));
+    }
+
+    fNOP.prototype = this.prototype;
+    fBound.prototype = new fNOP();
+    return fBound;
+}
 ```
 
 ## Array API:
