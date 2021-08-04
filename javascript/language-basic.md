@@ -1960,7 +1960,7 @@ document.domain = "company.com"
 
 
 
-## 19. The client side storage
+## 20. The client side storage
 
 ### cookies
 
@@ -2055,7 +2055,7 @@ sessionStorage.clear();
 * Permanent storage
 * In order to access the same localStorage object, pages must   be served  followed same origin policy
 
-## 19 Client Detection
+## 21 Client Detection
 
 ```text
  function isIOS() {
@@ -2072,7 +2072,7 @@ sessionStorage.clear();
 
 * The Navigator userAgent property is used for returning the user-agent header’s value sent to the server by the browser. It returns a string representing values such as the name, version, and platform of the browser.
 
-## **20.** The Document Object Model
+## **22.** The Document Object Model
 
 * Api that treats HTML and XML documents as tree structures with nodes
 * The DOM is constructed in the browser as the page loads
@@ -2199,18 +2199,18 @@ div.classList.toggle('dsiabled');
 
 
 
-## 21.Pure functions
+## 23.Pure functions
 
 * Functions must be highly predictable, Given the same input, it should always return the same output.
 * Functions must return exactly value which is determined solely by its input.
 * Has no side effects.
 
-## 22. Higher Order Functions
+## 24. Higher Order Functions
 
 * Higher-Order functions accept functions as parameters or return a function as an output.
 * setTimeout, map, reduce
 
-## 23. Currying functions
+## 25. Currying functions
 
 ```text
 // Basic example 1
@@ -2271,7 +2271,7 @@ function currying(func) {
 
 
 
-## 24. Partial functions
+## 26. Partial functions
 
 * Partial functions allow taking a function as an argument and along with it takes arguments of other types too. It then uses some of the arguments passed and returns a function that will take the remaining arguments. The function returned when invoked will call the parent function with the original and its own set of arguments.
 
@@ -2298,7 +2298,7 @@ function test(customers){
 
 
 
-## 25. forEach中return有效果吗？如何中断forEach循环？
+## 27. forEach中return有效果吗？如何中断forEach循环？
 
 ```text
 let nums = [1, 2, 3];
@@ -2336,7 +2336,7 @@ For each 用 r二turn 不会返回, 函数会继续执行
 
 
 
-## 26.JS判断数组中是否包含某个值
+## 28.JS判断数组中是否包含某个值
 
 ```text
 //SOLUTION 1
@@ -2377,7 +2377,7 @@ console.log(result);
 
 
 
-## 27.JS中flat---数组扁平化
+## 29.JS中flat---数组扁平化
 
 ```text
 需求:多维数组=>一维数组
@@ -2429,7 +2429,7 @@ ary = ary.flat(Infinity);
 5. 利用reduce函数迭代
 6. 扩展运算符
 
-## 28. JS中浅拷贝的手段有哪些?
+## 30. JS中浅拷贝的手段有哪些?
 
 ```text
 // Solution 1
@@ -2482,7 +2482,7 @@ let newArr = [...arr];//跟arr.slice()是一样的效果
 4. slice浅拷贝
 5. ...展开运算符
 
-## 29.实现一个 深拷贝
+## 31.实现一个 深拷贝
 
 ```text
 //Solution 1
@@ -2697,7 +2697,7 @@ const deepClone = (target, map = new WeakMap()) => {
 
 
 
-## 30. Asynchronous Callbacks
+## 32. Asynchronous Callbacks
 
 ### 异步编程 有哪些方案
 
