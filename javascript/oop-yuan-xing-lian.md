@@ -355,21 +355,7 @@ _**是指Object 对象自身的方法**_
 5. `getOwnPropertyNames`    返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名。
 6. `Object.prototype.hasOwnProperty()`用于判断某个属性定义在对象自身，还是定义在原型链上。 `Date.length`（构造函数`Date`可以接受多少个参数）是`Date`自身的属性，`Date.toString`是继承的属性。
 
-### 生成的新对象方法
-
-```text
-var obj1 = Object.create({});
-var obj2 = Object.create(Object.prototype);
-var obj3 = new Object();
-
-var obj = Object.create(null);
-
-obj.valueOf()
-// TypeError: Object [object Object] has no method 'valueOf'
-```
-
-* 这些都是等价的
-*  如果想要生成一个不继承任何属性（比如没有`toString()`和`valueOf()`方法）的对象，可以将`Object.create()`的参数设为`null`。
+### 
 
 ###  获取实例对象`obj`的原型对象 
 
@@ -966,9 +952,71 @@ console.log(dest.a === src.a); // true
 * If multiple source objects have the same property defined, the **last one to b**e copied will be the ultimate value
 * 已经做过的copy出错后也不会 重置，所以就会有 partially copy
 * 
+### 创建Object的多种方法
+
+```text
+// Method 1 
+let mlt =  new Object();
+mlt.meat = [];
+mlt.vegetable = [];
 
 
+// Method 2
+let mlt ={
+    meat: [],
+    vegetable:[]
+}
 
+// Method 3 factory pattern
+// 这种方式  instaceof 没链接
+function createMlt (meat,vegetable,ingredient){
+    let obj =  new Object();
+    obj.meat = meat;
+    obj.vegetable = vegetable;
+    obj.ingredient = ingredient;
+    return obj;
+}
+
+let mlt1 = createMlt(meat1,vegetable1,ingredient1);
+
+// Method 4 构造函数
+
+function Mlt (meat,vegetable,ingredient){
+    
+    this.meat = meat;
+    this.vegetable = vegetable;
+    this.ingredient = ingredient;
+}
+let mlt1 = new Mlt(meat1,vegetable1,ingredient1);
+
+
+// Method 5 Object create
+let mlt1 =  Object.create(obj);
+
+var obj1 = Object.create({});
+var obj2 = Object.create(Object.prototype);
+var obj3 = new Object();
+
+var obj = Object.create(null);
+
+obj.valueOf()
+// TypeError: Object [object Object] has no method 'valueOf'
+
+
+// class 
+class MLT {
+    constructor(meat,vegetable,ingredient){
+        this.meat = meat;
+        this.vegetable = vegetable;
+        this.ingredient = ingredient;
+    }
+}
+```
+
+* Object.creat\(\)
+  * 这些都是等价的
+  *  如果想要生成一个不继承任何属性（比如没有`toString()`和`valueOf()`方法）的对象，可以将`Object.create()`的参数设为`null`。
+  * 你修改对象属性也会修改原型的属性
 
 ## Object creation
 
@@ -1109,17 +1157,13 @@ function _new(/* 构造函数 */ constructor, /* 构造函数参数 */ params) {
 var actor = _new(Person, '张三', 28);
 ```
 
+## 原型&原型链（prototype & prototype chain）
+
+![](../.gitbook/assets/image%20%28111%29.png)
 
 
-## 原型链继承（prototype pattern）
 
-### 基础概念
-
-* By default, all prototypes automatically get a property called constructor that points back
-
-  to the function on which it is a property. In the previous example, for instance, Person.prototype.
-
-  constructor points to Person
+![](../.gitbook/assets/image%20%2831%29.png)
 
 ```text
 function Person() {}
@@ -1149,40 +1193,10 @@ console.log(person1.__proto__ === Person.prototype); // true
 conosle.log(person1.__proto__.constructor === Person); // true
 ```
 
-![](../.gitbook/assets/image%20%2831%29.png)
+`person1.__proto__ === Person.prototype  
+person1.__proto__.constructor === Person.prototype.constructor === Person`
 
-* Note that Person.prototype points to the prototype object but Person.prototype.constructor points back to Person **理解图**
-
-### **Prototypes 的缺点**
-
-* , it negates the ability to pass initialization   ****arguments into the constructor, meaning that all instances get the same property values by default. 
-* The main problem comes with their shared nature. The real problem occurs when a property contains a reference value.， 你更改其中一个 field 所有的 instance都会得到更改过后的值
-
-
-
-### 构造函数的缺点\(constructor function\)
-
-```text
-function Cat(name, color) {
-  this.name = name;
-  this.color = color;
-  this.meow = function () {
-    console.log('喵喵');
-  };
-}
-
-var cat1 = new Cat('大毛', '白色');
-var cat2 = new Cat('二毛', '黑色');
-
-cat1.meow === cat2.meow
-// false
-```
-
-* 同一个构造函数的多个实例之间，无法共享属性，从而造成对系统资源的浪费
-*  上面代码中，`cat1`和`cat2`是同一个构造函数的两个实例，它们都具有`meow`方法。由于`meow`方法是生成在每个实例对象上面，所以两个实例就生成了两次。也就是说，每新建一个实例，就会新建一个`meow`方法
-* 解决办法 JavaScript 的原型对象（prototype）
-
-### prototype 属性的作用 
+### prototype， 原型 属性的作用
 
 ```text
 function f() {}
@@ -1232,10 +1246,12 @@ mine.length // 3
 mine instanceof Array // true
 ```
 
+
+
 * 所有对象都有自己的原型对象（prototype）。一方面，任何一个对象，都可以充当其他对象的原型；另一方面，由于原型对象也是对象，所以它也有自己的原型。因此，就会形成一个“原型链”（prototype chain）：对象到原型，再到原型的原型……
 *  所有对象的原型最终都可以上溯到`Object.prototype`
 *  即`Object`构造函数的`prototype`属性。也就是说，所有对象都继承了`Object.prototype`的属性
-*  `bject.prototype`的原型是`null  ,` 原型链的尽头就是`null`。
+*  `object.prototype`的原型是`null  ,` **原型链的尽头就是`null`。**
 
 #### constructor 属性 <a id="constructor-&#x5C5E;&#x6027;"></a>
 
@@ -1261,7 +1277,7 @@ function Person(name) {
 }
 
 Person.prototype.constructor === Person // true
-
+// 修改了 原型对象 但是没有更改 constructor
 Person.prototype = {
   method: function () {}
 };
@@ -1274,9 +1290,39 @@ Person.prototype.constructor === Object // true
 * `prototype`对象有一个`constructor`属性，默认指向`prototype`对象所在的构造函数\(function\)
 *  由于`constructor`属性定义在`prototype`对象上面，意味着可以被所有实例对象继承。
 *  `constructor`属性的作用是，可以得知某个实例对象，到底是哪一个构造函数产生的。
-* `constructor`属性表示原型对象与构造函数之间的关联关系，如果修改了原型对象，一般会同时修改`constructor`属性，防止引用的时候出错。 **修改原型对象时，一般要同时修改`constructor`属性的指向。**
-
+* `constructor`属性表示**原型对象与构造函数之间的关联关系**，如果修改了原型对象，一般会同时修改`constructor`属性，防止引用的时候出错。 **修改原型对象时，一般要同时修改`constructor`属性的指向。**
   *  上面代码中，构造函数`Person`的原型对象改掉了，但是没有修改`constructor`属性，导致这个属性不再指向`Person`。由于`Person`的新原型是一个普通对象，而普通对象的`constructor`属性指向`Object`构造函数，导致`Person.prototype.constructor`变成了`Object`
+
+## 继承
+
+### **Prototypes 继承的缺点**
+
+* , it negates the ability to pass initialization   ****arguments into the constructor, meaning that all instances get the same property values by default. 
+* The main problem comes with their shared nature. The real problem occurs when a property contains a reference value.， 你更改其中一个 field 所有的 instance都会得到更改过后的值
+
+
+
+### 构造函数的缺点\(constructor function\)
+
+```text
+function Cat(name, color) {
+  this.name = name;
+  this.color = color;
+  this.meow = function () {
+    console.log('喵喵');
+  };
+}
+
+var cat1 = new Cat('大毛', '白色');
+var cat2 = new Cat('二毛', '黑色');
+
+cat1.meow === cat2.meow
+// false
+```
+
+* 同一个构造函数的多个实例之间，无法共享属性，从而造成对系统资源的浪费
+*  上面代码中，`cat1`和`cat2`是同一个构造函数的两个实例，它们都具有`meow`方法。由于`meow`方法是生成在每个实例对象上面，所以两个实例就生成了两次。也就是说，每新建一个实例，就会新建一个`meow`方法
+* 解决办法 JavaScript 的原型对象（prototype）
 
 ### 构造函数的继承 <a id="&#x6784;&#x9020;&#x51FD;&#x6570;&#x7684;&#x7EE7;&#x627F;"></a>
 
