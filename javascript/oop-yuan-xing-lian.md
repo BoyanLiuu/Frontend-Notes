@@ -1159,6 +1159,8 @@ var actor = _new(Person, '张三', 28);
 
 ## 原型&原型链（prototype & prototype chain）
 
+![](../.gitbook/assets/image%20%28115%29.png)
+
 ![](../.gitbook/assets/image%20%28111%29.png)
 
 
@@ -1194,9 +1196,18 @@ conosle.log(person1.__proto__.constructor === Person); // true
 ```
 
 `person1.__proto__ === Person.prototype  
-person1.__proto__.constructor === Person.prototype.constructor === Person`
+person1.__proto__.constructor === Person.prototype.constructor === Person  
+person1.constructor === Person`
 
-### prototype， 原型 属性的作用
+ 1️⃣`__proto__`和`constructor`是**对象**独有的。2️⃣`prototype`属性是**函数**独有的；
+
+ `__proto__`属性既不能被 `for in` 遍历出来，也不能被 `Object.keys(obj)` 查找出来。
+
+![](../.gitbook/assets/image%20%28118%29.png)
+
+### prototype原型
+
+![](../.gitbook/assets/image%20%28117%29.png)
 
 ```text
 function f() {}
@@ -1221,14 +1232,24 @@ cat1.color // "yellow"
 cat2.color // "yellow"
 ```
 
-* 原型对象的所有属性和方法，都能被实例对象共享。也就是说，如果属性和方法定义在原型上，那么所有实例对象就能共享，不仅节省了内存，还体现了实例对象之间的联系。
+* **每一个对象都会从原型"继承"属性。** ``原型对象的所有属性和方法，都能被实例对象共享。也就是说，如果属性和方法定义在原型上，那么所有实例对象就能共享，不仅节省了内存，还体现了实例对象之间的联系。
 *  每个函数都有一个`prototype`属性，指向一个对象。
 * EG 1 
   * 生成实例的时候，该属性会自动成为实例对象的原型
   *  只要修改原型对象，变动就立刻会体现在**所有**实例对象上。
   * 当实例对象本身没有某个属性或方法的时候，它会到原型对象去寻找该属性或方法
 
+### \_\__proto\_\__
+
+_**所有函数对象的 \_\_proto\_\_ 都指向 Function.prototype，它是一个空函数（Empty function）**_
+
+_**对象\_\_proto\_\_属性的值就是它所对应的原型对象：**_
+
+![](../.gitbook/assets/image%20%28116%29.png)
+
 ### 原型链
+
+它的作用就是当你在访问一个对象属性的时候，如果该对象内部不存在这个属性，那么就回去它的\_\_proto\_\_属性所指向的对象（父类对象）上查找
 
 ```text
 Object.getPrototypeOf(Object.prototype)
@@ -1246,14 +1267,18 @@ mine.length // 3
 mine instanceof Array // true
 ```
 
-
-
 * 所有对象都有自己的原型对象（prototype）。一方面，任何一个对象，都可以充当其他对象的原型；另一方面，由于原型对象也是对象，所以它也有自己的原型。因此，就会形成一个“原型链”（prototype chain）：对象到原型，再到原型的原型……
 *  所有对象的原型最终都可以上溯到`Object.prototype`
 *  即`Object`构造函数的`prototype`属性。也就是说，所有对象都继承了`Object.prototype`的属性
 *  `object.prototype`的原型是`null  ,` **原型链的尽头就是`null`。**
 
-#### constructor 属性 <a id="constructor-&#x5C5E;&#x6027;"></a>
+### constructor 属性
+
+**`prototype`对象有一个`constructor`属性**，默认指向`prototype`对象所在的构造函数\(function\)
+
+当获取 person.constructor 时，其实 person 中并没有 constructor 属性,当不能读取到constructor 属性时，会从 person 的原型也就是 Person.prototype 中读取，正好原型中有该属性，所以：
+
+![](../.gitbook/assets/image%20%28119%29.png)
 
 ```text
 function P() {}
@@ -1287,47 +1312,81 @@ Person.prototype.constructor === Object // true
 ```
 
 *  **`f.constructor.name`**  可以得到 构造函数的名称。
-* `prototype`对象有一个`constructor`属性，默认指向`prototype`对象所在的构造函数\(function\)
 *  由于`constructor`属性定义在`prototype`对象上面，意味着可以被所有实例对象继承。
 *  `constructor`属性的作用是，可以得知某个实例对象，到底是哪一个构造函数产生的。
 * `constructor`属性表示**原型对象与构造函数之间的关联关系**，如果修改了原型对象，一般会同时修改`constructor`属性，防止引用的时候出错。 **修改原型对象时，一般要同时修改`constructor`属性的指向。**
   *  上面代码中，构造函数`Person`的原型对象改掉了，但是没有修改`constructor`属性，导致这个属性不再指向`Person`。由于`Person`的新原型是一个普通对象，而普通对象的`constructor`属性指向`Object`构造函数，导致`Person.prototype.constructor`变成了`Object`
 
-## 继承
-
-### **Prototypes 继承的缺点**
-
-* , it negates the ability to pass initialization   ****arguments into the constructor, meaning that all instances get the same property values by default. 
-* The main problem comes with their shared nature. The real problem occurs when a property contains a reference value.， 你更改其中一个 field 所有的 instance都会得到更改过后的值
 
 
+## 
 
-### 构造函数的缺点\(constructor function\)
+### Prototypes 继承
+
+**1 显示原型继承**
+
+* 就是指我们亲自将某个对象设置为另一个对象的原型
+* 如下，通过调用 Object.setPrototypeOf 方法，我们将 obj\_a 设置为 obj\_b 的原型
 
 ```text
-function Cat(name, color) {
-  this.name = name;
-  this.color = color;
-  this.meow = function () {
-    console.log('喵喵');
-  };
-}
+const obj_a = {a:1}
+const obj_b = {b:2}
 
-var cat1 = new Cat('大毛', '白色');
-var cat2 = new Cat('二毛', '黑色');
-
-cat1.meow === cat2.meow
-// false
+Object.setPrototypeOf(obj_b,obj_a);
 ```
 
-* 同一个构造函数的多个实例之间，无法共享属性，从而造成对系统资源的浪费
-*  上面代码中，`cat1`和`cat2`是同一个构造函数的两个实例，它们都具有`meow`方法。由于`meow`方法是生成在每个实例对象上面，所以两个实例就生成了两次。也就是说，每新建一个实例，就会新建一个`meow`方法
-* 解决办法 JavaScript 的原型对象（prototype）
+* 还有一种是 Object.create\(\);直接继承另一个对象,Object.create，给我一个对象，它将作为我创建的新对象的原型
 
-### 构造函数的继承 <a id="&#x6784;&#x9020;&#x51FD;&#x6570;&#x7684;&#x7EE7;&#x627F;"></a>
+#### 2 隐式原型继承
+
+* 创建空对象
+* 设置该空对象的原型为另一个对象或者 null
+* 填充该对象，增加属性或方法。
+
+![](../.gitbook/assets/image%20%28114%29.png)
+
+
+
+ 3 .constructor 构造函数，在使用 new 关键字实例化时，会自动继承 constructor 的 prototype 对象，作为实例的原型。
+
+4. 在 ES2015 中提供了 class 的风格，背后跟 constructor 工作方式一样，写起来更内聚一些。
+
+## 继承
+
+### _Prototype Chain 继承_
 
 ```text
-// 第一种写法，记这个把
+function SuperType() {
+ this.property = true;
+}
+
+SuperType.prototype.getSuperValue = function() {
+ return this.property;
+};
+
+function SubType() {
+ this.subproperty = false;
+}
+
+// inherit from SuperType
+SubType.prototype = new SuperType();
+
+SubType.prototype.getSubValue = function () {
+ return this.subproperty;
+};
+
+let instance = new SubType();
+console.log(instance.getSuperValue()); // true
+```
+
+**缺点**
+
+* that all instances get the same property values by default. 
+* The main problem comes with their shared nature. The real problem occurs when a property contains a reference value.， 你更改其中一个 field 所有的 instance都会得到更改过后的值
+
+### 借用构造函数\(constructor stealing\)
+
+```text
 function SuperType(name){
  this.name = name;
  this.colors = ["red", "blue", "green"];
@@ -1360,106 +1419,168 @@ instance1.sayAge(); // 29
 let instance2 = new SubType("Greg", 27);
 console.log(instance2.colors); // "red,blue,green"
 instance2.sayName(); // "Greg";
-instance2.sayAge(); // 27
+instance2.sayAge(); // 
 
-
-
-
-// 第二种写法
-// Step 1
-function Sub(value) {
-  // this is constructor stealing,it call super type constructor 
-  // within sub stype
-  Super.call(this);
-  this.prop = value;
-}
-
-// step 2
-Sub.prototype = Object.create(Super.prototype);
-Sub.prototype.constructor = Sub;
-
-
-
-
-//例子：
-
-function Shape() {
-  this.x = 0;
-  this.y = 0;
-}
-
-Shape.prototype.move = function (x, y) {
-  this.x += x;
-  this.y += y;
-  console.info('Shape moved.');
-};
-
-// 第一步，子类继承父类的实例
-function Rectangle() {
-  Shape.call(this); // 调用父类构造函数
-}
-
-// 第二步，子类继承父类的原型
-Rectangle.prototype = Object.create(Shape.prototype);
-Rectangle.prototype.constructor = Rectangle;
-
-var rect = new Rectangle();
-
-rect instanceof Rectangle  // true
-rect instanceof Shape  // true
-
-
-//如果只是想继承父类的一个 method
-ClassB.prototype.print = function() {
-  ClassA.prototype.print.call(this);
-  // some code
-}
 ```
 
-1. 第一步是在子类的构造函数中，调用父类的构造函数 `Sub`是子类的构造函数，`this`是子类的实例。在实例上调用父类的构造函数`Super`，就会让子类实例具有父类实例的属性
-2. 第二步是让子类的原型指向父类的原型，这样子类就可以继承父类原型。
-   1.  上面代码中，`Sub.prototype`是子类的原型，要将它赋值为`Object.create(Super.prototype)`，而不是直接等于`Super.prototype`。否则后面两行对`Sub.prototype`的操作，会连父类的原型`Super.prototype`一起修改掉。
+**优点**
 
-* 另一种写法也有继承的效果，但是子类会具有父类实例的方法。有时，这可能不是我们需要的
-*  采用这样的写法以后，`instanceof`运算符会对子类和父类的构造函数，都返回`true`
-* 上面代码中，子类是整体继承父类。有时只需要单个方法的继承，这时可以采用下面的写法。
-* 如果只是想继承父类的一个 method
+* 可以pass argument
 
-### 多重继承  <a id="&#x591A;&#x91CD;&#x7EE7;&#x627F;"></a>
+#### 缺点
 
 ```text
-function M1() {
-  this.hello = 'hello';
+function Cat(name, color) {
+  this.name = name;
+  this.color = color;
+  this.meow = function () {
+    console.log('喵喵');
+  };
 }
 
-function M2() {
-  this.world = 'world';
-}
+var cat1 = new Cat('大毛', '白色');
+var cat2 = new Cat('二毛', '黑色');
 
-function S() {
-  M1.call(this);
-  M2.call(this);
-}
-
-// 继承 M1
-S.prototype = Object.create(M1.prototype);
-// 继承链上加入 M2
-Object.assign(S.prototype, M2.prototype);
-
-// 指定构造函数
-S.prototype.constructor = S;
-
-var s = new S();
-s.hello // 'hello'
-s.world // 'world'
+cat1.meow === cat2.meow
+// false
 ```
 
-* JavaScript 不提供多重继承功能，即不允许一个对象同时继承多个对象。但是，可以通过变通方法，实现这个功能
-*  子类`S`同时继承了父类`M1`和`M2`。这种模式又称为 Mixin（混入）
+* 同一个构造函数的多个实例之间，无法共享属性，从而造成对系统资源的浪费
+*  上面代码中，`cat1`和`cat2`是同一个构造函数的两个实例，它们都具有`meow`方法。由于`meow`方法是生成在每个实例对象上面，所以两个实例就生成了两次。也就是说，**每新建一个实例，就会新建一个`meow`方法**
+* 解决办法 JavaScript 的原型对象（prototype）
+* `SuperClass.call(this,id)`当然就是构造函数继承的核心语句了.由于父类中给this绑定属性，因此子类自然也就继承父类的共有属性。由于这种类型的继承没有涉及到原型`prototype`，所以父类的原型方法自然不会被子类继承，而如果想被子类继承，就必须放到构造函数中，这样创建出来的每一个实例都会单独的拥有一份而不能共用，这样就违背了代码复用的原则，所以综合上述两种，我们提出了组合式继承方法
+
+### combination inheritance（原型链继承和经典继承双剑合璧。） <a id="&#x6784;&#x9020;&#x51FD;&#x6570;&#x7684;&#x7EE7;&#x627F;"></a>
+
+```text
+function Parent (name) {
+    this.name = name;
+    this.colors = ['red', 'blue', 'green'];
+}
+
+Parent.prototype.getName = function () {
+    console.log(this.name)
+}
+
+function Child (name, age) {
+
+    Parent.call(this, name);//
+    
+    this.age = age;
+
+}
+
+Child.prototype = new Parent();
+
+var child1 = new Child('kevin', '18');
+
+child1.colors.push('black');
+
+console.log(child1.name); // kevin
+console.log(child1.age); // 18
+console.log(child1.colors); // ["red", "blue", "green", "black"]
+
+var child2 = new Child('daisy', '20');
+
+console.log(child2.name); // daisy
+console.log(child2.age); // 20
+console.log(child2.colors); // ["red", "blue", "green"]
+```
+
+#### 缺点:
+
+* 调用了 两次 父类constructor `Child.prototype = new Parent();   var child1 = new Child('kevin', '18');`
+
+### 原型式继承Prototypal Inheritance
+
+```text
+function object(o) {
+ function F() {}
+ F.prototype = o;
+ return new F();
+}
+
+let person = {
+ name: "Nicholas",
+ friends: ["Shelby", "Court", "Van"]
+};
+
+let anotherPerson = object(person);
+anotherPerson.name = "Greg";
+anotherPerson.friends.push("Rob");
+
+let yetAnotherPerson = object(person);
+yetAnotherPerson.name = "Linda";
+yetAnotherPerson.friends.push("Barbie");
+
+console.log(person.friends); // "Shelby,Court,Van,Rob,Barbie"
+
+```
+
+#### 缺点
+
+包含引用类型的属性值始终都会共享相应的值，这点跟原型链继承一样。
+
+* 注意：修改`person1.name`的值，`person2.name`的值并未发生改变，并不是因为`person1`和`person2`有独立的 name 值，而是因为`person1.name = 'person1'`，给`person1`添加了 name 值，并非修改了原型上的 name 值。
+
+### 寄生式继承Parasitic Inheritance
+
+创建一个仅用于封装继承过程的函数，该函数在内部以某种形式来做增强对象，最后返回对象。
+
+```text
+function createObj (o) {
+    var clone = Object.create(o);
+    clone.sayName = function () {
+        console.log('hi');
+    }
+    return clone;
+}
+```
+
+#### 缺点
+
+* 跟借用构造函数模式一样，每次创建对象都会创建一遍方法。
+
+### 寄生组合式继承
+
+```text
+function object(o) {
+ function F() {}
+ F.prototype = o;
+ return new F();
+}
 
 
 
+function inheritPrototype(subType, superType) {
+ let prototype = object(superType.prototype); // create object
+ prototype.constructor = subType; // augment object
+ subType.prototype = prototype; // assign object
+}
 
+function SuperType(name) {
+ this.name = name;
+ this.colors = ["red", "blue", "green"];
+}
+
+SuperType.prototype.sayName = function() {
+ console.log(this.name);
+};
+
+function SubType(name, age) {
+ SuperType.call(this, name);
+
+ this.age = age;
+}
+
+inheritPrototype(SubType, SuperType);
+
+SubType.prototype.sayAge = function() {
+ console.log(this.age);
+}; 
+```
+
+**开发人员普遍认为寄生组合式继承是引用类型最理想的继承范式。**
 
 
 
