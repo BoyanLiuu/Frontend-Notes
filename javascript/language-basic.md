@@ -172,12 +172,12 @@ function double(num) {
 console.log(typeof double); // Output: number
 
 
-// Variable assignment takes precedence over function declaration
-var double;
+// Function declarations over variable declarations
 
 function double(num) {
   return (num*2);
 }
+var double;
 
 console.log(typeof double); // Output: function
 ```
