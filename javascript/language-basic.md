@@ -148,6 +148,20 @@ var x;
 function x(){}
 console.log(x);
 x=1;
+
+
+// ==== =EG3 ======
+console.log(foo);
+var foo = 1;
+console.log(foo);
+function foo(){};
+// 变成了
+
+foo() 			  //函数提升
+var foo			  //和函数重名了，被忽略
+console.log(foo);	  //打印函数
+foo = 1;		  //全局变量foo
+console.log(foo);	  //打印1，事实上函数foo已经不存在了，变成了1
 ```
 
 ### 解析：
@@ -180,7 +194,27 @@ function double(num) {
 var double;
 
 console.log(typeof double); // Output: function
+
+
+
+// 例子 
+console.log(foo);
+
+function foo(){
+    console.log("foo");
+}
+
+var foo = 1;
+// 变成了
+function foo(){// 函数提升
+    console.log("foo");
+}
+var foo;// 变量提升
+console.log(foo);
+foo = 1;
 ```
+
+具体原因看 32 小结的变量对象
 
 * Variable assignment takes precedence over function declaration
 * Function declarations take precedence over variable declarations
@@ -995,12 +1029,60 @@ console.log(person2.getName()); // 'Michael'
 ## 13.Closure
 
 * It is when an inner function has access to variables in the outer scope That all functions are closures in javascript
-* 闭包是什么时候被销毁的？当它不被任何其他的对象引用的时候。
 * Common use of closure
   * For object Data Privacy， have private variable, private method
   * In event Handlers
   * In callback Functions
   * Currying
+
+```text
+//展示了 data privacy
+function createStack() {
+  const items = [];
+  return {
+    push(item) {
+      items.push(item);
+    },
+    pop() {
+      return items.pop();
+    }
+  };
+}
+
+
+```
+
+
+
+### 闭包是什么时候被销毁的？
+
+* 在 Javascript 中，局部变量会随着函数的执行完毕而被销毁，除非还有指向他们的引用。当闭包本身也被垃圾回收之后，这些闭包中的私有状态随后也会被垃圾回收。通常我们可以通过切断闭包的引用来达到这一目的
+
+```text
+let add = (function createAddClosure(){
+    let arr = [];
+    return function(obj){
+       arr.push(obj);
+    }
+})();
+
+function addALotOfObjects(){
+    for(let i=1; i<=10000;i++) {
+       add(new Todo(i));
+    }
+}
+function clearAllObjects(){
+    if(add){
+       add = null; // 切断闭包引用，防止内存泄露
+    }
+}
+$("#add").click(addALotOfObjects);
+$("#clear").click(clearAllObjects);
+
+
+```
+
+### 
 
 ### Immediately invoked function expression
 
@@ -1015,7 +1097,7 @@ console.log(person2.getName()); // 'Michael'
 
 * An anonymous function that is called immediately
 
-### 问题
+### 问题 1
 
 ```text
 //Q1
@@ -1076,21 +1158,36 @@ for (var i = 0; i < 5; i++) {
 }
 
 
+// Method 4
+
+
+var output = function (i) {
+    setTimeout(function() {
+        console.log(new Date, i);
+    }, 1000);
+};
+
+for (var i = 0; i < 5; i++) {
+    output(i);  // 这里传过去的 i 值被复制了
+}
+
+console.log(new Date, i);
+
 
 
 ```
 
-### 解析
+#### 解析
 
 1. Output:  Element: undefined, at index:4     乘4
    1. on each iteration, the setTimeout will be triggered,since it’s an asynchronous web API, the command enters the event queue, after which the next loop iteration occurs. Hence, the event queue waits for the loop commands to execute first and call stack to get empty, after which the four setTimeout commands move from the event queue to call stack and execute.
-2.  There are 3 possible solution:
+2.  There are 4  possible solution:
    1. Using Es6 featre, **let**   It  creates a new binding for each loop iteration, each i refers to the binding of one specific iteration and preserves the value that was current at that time
    2. **Using IFFE**: That function takes the parameter local\_i, that is the variable i. It calls another function in return, an anonymous function that displays the value of i stored in the variable local\_i
    3. 给定时器传入第三个参数, 作为timer函数的第一个函数参数
    4. JS 中 基本类型是 pass by value
 
-### 每一秒输出数字题目
+### 问题2 ：每一秒输出数字题目
 
 ```text
 // Method 1
@@ -1154,7 +1251,23 @@ const sleep = (timeountMS) => new Promise((resolve) => {
 
 ```
 
+### 问题 3
 
+```text
+// 3.1
+let x = 1
+function A(y) {
+  let x = 2
+  function B(z) {
+    console.log(x + y + z)
+  }
+  return B
+}
+let C = A(2)
+C(3)
+
+// 3.1 ： 7
+```
 
 ## 14.This object
 
@@ -3034,6 +3147,10 @@ readFilePromise('1.json').then(data => {
 
 ### Execution Context 
 
+![](../.gitbook/assets/image%20%28121%29.png)
+
+![](../.gitbook/assets/image%20%28122%29.png)
+
 * an execution context is an abstract concept of an environment where the Javascript code is evaluated and executed. Whenever any code is run in JavaScript, it’s run inside an execution context.
 * **Types of Execution Context:**
   * Global Execution Context 
@@ -3043,13 +3160,92 @@ readFilePromise('1.json').then(data => {
   * Eval Function Execution Context
     * Code executed inside an eval function also gets its own execution context
 
+### 变量对象
+
+* 变量对象是与执行上下文相关的数据作用域，存储了在上下文中定义的变量和函数声明。
+* 全局上下文中的变量对象就是全局对象
+
+#### 活动对象
+
+* 在函数上下文中，我们用活动对象\(activation object, AO\)来表示变量对象。
+* 不可在 JavaScript 环境中访问，只有到当进入一个执行上下文中，这个执行上下文的变量对象才会被激活，所以才叫 activation object 呐，而只有被激活的变量对象，也就是活动对象上的各种属性才能被访问。
+
+![](../.gitbook/assets/image%20%28120%29.png)
+
+```text
+function bar(a) {
+  console.log(a);// function
+  function a(){
+    console.log('????');
+  }
+}
+bar(); 
+
+//第二题
+console.log(foo);
+
+function foo(){
+    console.log("foo");
+}
+
+var foo = 1;
+
+// 变量提升完的样子
+function foo(){// 函数提升
+    console.log("foo");
+}
+var foo;// 变量提升
+console.log(foo);
+foo = 1;
 
 
-### Execution stack\(FILO\)
 
-* which is used to store all the execution context created during the code execution
+```
 
 
+
+* 因为在进入执行上下文时，首先会处理函数声明，其次会处理变量声明，如果变量名称跟已经声明的形式参数或函数相同，则变量声明不会干扰已经存在的这类属性。在console log 时候 会 print function
+
+```text
+VO = {
+    foo: reference to function foo(){},
+}
+```
+
+### 执行上下文栈 Execution context stack
+
+* 每一个函数执行时候都会创建一个 execution context 我们把他们放到 stack 管理
+
+{% embed url="https://github.com/mqyqingfeng/Blog/issues/4" %}
+
+
+
+```text
+比较下面两段代码，试述两段代码的不同之处
+// A--------------------------
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f();
+}
+checkscope();
+
+// B---------------------------
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f;
+}
+checkscope()();
+```
+
+![](../.gitbook/assets/image%20%28123%29.png)
 
 ## 32 : Js Operator\_Precedence
 
