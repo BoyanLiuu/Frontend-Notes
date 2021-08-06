@@ -162,6 +162,30 @@
 
 
 
+## 计划
+
+{% embed url="https://juejin.cn/post/6844904116339261447?utm\_source=gold\_browser\_extension\#heading-13" %}
+
+{% embed url="https://github.com/mqyqingfeng/Blog" %}
+
+{% embed url="https://juejin.cn/post/6844904103504527374" %}
+
+{% embed url="https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblEnSV2PNAajtWE&view=vewJHSwJVd" %}
+
+
+
+8/6： 看完1.1， 剩余时间 复习 原型和原型链
+
+
+
+8/7 学会 Promise
+
+
+
+8/8 学会深浅拷贝
+
+8/9 事件机制
+
 
 
 
