@@ -1046,7 +1046,7 @@ let timer;
 }
 
 
-// 使用 date 相减
+//第二种方法 使用 date 相减
 function throttle2(func,delay){
 let prev = 0;
 	return function(){
