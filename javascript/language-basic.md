@@ -3331,9 +3331,33 @@ setInterval 函数 理论上是每隔 1秒执行 但是 函数里面的 需要�
 
 
 
+## 35 .  参数传递
+
+* 所有函数的参数都是按值传递的。就和把值从一个变量复制到另一个变量一样。
+* 但是如果是 object 就是共享传递，传递对象的引用的副本，obj里面的 复杂类型就会是 引用传递 ，基本类型是 按置传递
+
+```text
+var obj = {
+    value: 1
+};
+function foo(o) {
+    o.value = 2;
+    console.log(o.value); //2
+}
+foo(obj);
+console.log(obj.value) // 2
 
 
-
+var obj = {
+    value: 1
+};
+function foo(o) {
+    o = 2;
+    console.log(o); //2
+}
+foo(obj);
+console.log(obj.value) // 1
+```
 
 
 
