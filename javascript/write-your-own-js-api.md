@@ -825,7 +825,7 @@ const deepClone = (target, map = new WeakMap()) => {
 
 {% embed url="https://jsfiddle.net/Boyanliuu/oznt71e4/25/" %}
 
-
+### 没返回值版本
 
 ```text
 const button  = document.querySelector('button');
@@ -856,6 +856,150 @@ function debounce(func,delay){
 
 
 button.addEventListener('click',debounce(PayMoney,1000));
+
+
+// 立刻执行
+// 意思是触发事件后函数会立即执行，然后 n 秒内不触发事件才能继续执行函数的效果。
+// 我不希望非要等到事件停止触发后才执行，我希望立刻执行函数，
+// 然后等到停止触发 n 秒后，才可以重新触发执行。
+
+function debounce(func, wait, immediate) {
+
+    var timeout;
+
+    return function () {
+        var context = this;
+        var args = arguments;
+
+        if (timeout) clearTimeout(timeout);
+        if (immediate) {
+            // 如果已经执行过，不再执行
+            var callNow = !timeout;
+            timeout = setTimeout(function(){
+                timeout = null;
+            }, wait)
+            if (callNow) func.apply(context, args)
+        }
+        else {
+            timeout = setTimeout(function(){
+                func.apply(context, args)
+            }, wait);
+        }
+    }
+}
+
+// 取消
+// 我希望能取消 debounce 函数，比如说我 debounce 的时间间隔是 10 秒钟，
+// immediate 为 true，这样的话，我只有等 10 秒后才能重新触发事件，现在我希望有一个按钮，
+// 点击后，取消防抖，这样我再去触发，就可以又立刻执行
+
+
+function debounce(func, wait, immediate) {
+
+    var timeout, result;
+
+    var debounced = function () {
+        var context = this;
+        var args = arguments;
+
+        if (timeout) clearTimeout(timeout);
+        if (immediate) {
+            // 如果已经执行过，不再执行
+            var callNow = !timeout;
+            timeout = setTimeout(function(){
+                timeout = null;
+            }, wait)
+            if (callNow) result = func.apply(context, args)
+        }
+        else {
+            timeout = setTimeout(function(){
+                func.apply(context, args)
+            }, wait);
+        }
+        return result;
+    };
+
+    debounced.cancel = function() {
+        clearTimeout(timeout);
+        timeout = null;
+    };
+
+    return debounced;
+}
+
+
+```
+
+### 有返回值的版本
+
+```text
+// 有返回值的版本， 使用 promise 处理
+function debounce(method, wait, immediate) {
+  let timeout, result
+  let debounced = function(...args) {
+    let context = this
+    // 返回一个Promise，以便可以使用then或者Async/Await语法拿到原函数返回值
+    return new Promise(resolve => {
+      if (timeout) {
+        clearTimeout(timeout)
+      }
+      if (immediate) {
+        let callNow = !timeout
+        timeout = setTimeout(() => {
+          timeout = null
+        }, wait)
+        if (callNow) {
+          result = method.apply(context, args)
+          // 将原函数的返回值传给resolve
+          resolve(result)
+        }
+      } else {
+        timeout = setTimeout(() => {
+          result = method.apply(context, args)
+          // 将原函数的返回值传给resolve
+          resolve(result)
+        }, wait)
+      }
+    })
+  }
+
+  debounced.cancel = function() {
+    clearTimeout(timeout)
+    timeout = null
+  }
+
+  return debounced
+}
+// 使用方法一：在调用防抖后的函数时，使用then拿到原函数的返回值
+function square(num) {
+  return Math.pow(num, 2)
+}
+
+let debouncedFn = debounce(square, 1000, false)
+
+window.addEventListener('resize', () => {
+  debouncedFn(4).then(val => {
+    console.log(`原函数的返回值为：${val}`)
+  })
+}, false)
+
+// 使用方法二：调用防抖后的函数的外层函数使用Async/Await语法等待执行结果返回
+
+function square(num) {
+  return Math.pow(num, 2)
+}
+
+let debouncedFn = debounce(square, 1000, false)
+
+window.addEventListener('resize', async () => {
+  let val
+  try {
+    val = await debouncedFn(4)
+  } catch (err) {
+    console.error(err)
+  }
+  console.log(`原函数返回值为${val}`)
+}, false)
 ```
 
 ## 节流\(throttle\)
