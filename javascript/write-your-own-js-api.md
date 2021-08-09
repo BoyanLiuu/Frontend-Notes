@@ -998,5 +998,3 @@ images.forEach(image =>{
 });
 ```
 
-用
-

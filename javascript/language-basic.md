@@ -3359,7 +3359,23 @@ foo(obj);
 console.log(obj.value) // 1
 ```
 
+## 36.类数组
 
+拥有一个 length 属性和若干索引属性的对象
+
+### 将类数组转换成数组
+
+```text
+var arrayLike = {0: 'name', 1: 'age', 2: 'sex', length: 3 }
+// 1. slice
+Array.prototype.slice.call(arrayLike); // ["name", "age", "sex"] 
+// 2. splice
+Array.prototype.splice.call(arrayLike, 0); // ["name", "age", "sex"] 
+// 3. ES6 Array.from
+Array.from(arrayLike); // ["name", "age", "sex"] 
+// 4. apply
+Array.prototype.concat.apply([], arrayLike)
+```
 
 
 
