@@ -969,6 +969,7 @@ let mlt ={
 
 // Method 3 factory pattern
 // 这种方式  instaceof 没链接
+// 对象无法识别，因为所有的实例都指向一个原型
 function createMlt (meat,vegetable,ingredient){
     let obj =  new Object();
     obj.meat = meat;
@@ -980,7 +981,8 @@ function createMlt (meat,vegetable,ingredient){
 let mlt1 = createMlt(meat1,vegetable1,ingredient1);
 
 // Method 4 构造函数
-
+// 优点：实例可以识别为一个特定的类型
+// 缺点：每次创建实例时，每个方法都要被创建一次
 function Mlt (meat,vegetable,ingredient){
     
     this.meat = meat;
@@ -988,6 +990,27 @@ function Mlt (meat,vegetable,ingredient){
     this.ingredient = ingredient;
 }
 let mlt1 = new Mlt(meat1,vegetable1,ingredient1);
+
+
+// 4.1 构造函数模式优化
+// 优点：解决了每个方法都要被重新创建的问题
+
+// 缺点：这叫啥封装……
+function Person(name) {
+    this.name = name;
+    this.getName = getName;
+}
+
+function getName() {
+    console.log(this.name);
+}
+
+var person1 = new Person('kevin');
+
+
+
+
+
 
 
 // Method 5 Object create
@@ -1003,6 +1026,37 @@ obj.valueOf()
 // TypeError: Object [object Object] has no method 'valueOf'
 
 
+// Method 6 原型模式
+//优点：方法不会重新创建
+
+// 缺点：1. 所有的属性和方法都共享 2. 不能初始化参数
+function Person(name) {
+
+}
+
+Person.prototype.name = 'keivn';
+Person.prototype.getName = function () {
+    console.log(this.name);
+};
+
+var person1 = new Person();
+
+// Method 7 组合模式
+// 优点：该共享的共享，该私有的私有，使用最广泛的方式
+
+// 缺点：有的人就是希望全部都写在一起，即更好的封装性
+function Person(name) {
+    this.name = name;
+}
+
+Person.prototype = {
+    constructor: Person,
+    getName: function () {
+        console.log(this.name);
+    }
+};
+
+var person1 = new Person();
 // class 
 class MLT {
     constructor(meat,vegetable,ingredient){
