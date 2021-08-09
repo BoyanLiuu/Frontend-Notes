@@ -1937,7 +1937,27 @@ console.log(4);
 * **第二轮事件循环**
   * 先执行宏任务里面的，也就是setTimeout的回调，输出【5】。resovle不会生效，因为p这个Promise的状态一旦改变就不会在改变了。 所以最终的输出顺序是3、7、4、1、2、5。
 
+### 问题2
 
+```text
+process.nextTick(() => {
+  console.log('nextTick')
+})
+Promise.resolve()
+  .then(() => {
+    console.log('then')
+  })
+setImmediate(() => {
+  console.log('setImmediate')
+})
+console.log('end')
+// end
+// nextTick
+// then
+// setImmediate
+```
+
+* `process.nextTick` 和 `promise.then` 都属于 microtask，而 `setImmediate` 属于 macrotask，在事件循环的 check 阶段执行。事件循环的每个阶段（macrotask）之间都会执行 microtask，事件循环的开始会先执行一次 microtask。 
 
 
 
@@ -3006,7 +3026,26 @@ new Promise((resolve, reject) => {
 
 ### Promise.prototype.then\(\) <a id="Promise-prototype-then"></a>
 
+```text
+Promise.resolve()
+  .then(function success (res) {
+    throw new Error('error')
+  }, function fail1 (e) {
+    console.error('fail1: ', e)
+  })
+  .catch(function fail2 (e) {
+    console.error('fail2: ', e)
+  })
+
+
+```
+
 *  它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，`then`方法的第一个参数是`resolved`状态的回调函数，第二个参数是`rejected`状态的回调函数，它们都是可选的。 `then`方法返回的是一个新的`Promise`实例, 
+* .then 的第二个处理错误的函数捕获不了第一个处理成功的函数抛出的错误，而后续的 .catch 可以捕获之前的错误
+
+
+
+
 
 ```text
 getJSON("/post/1.json").then(function(post) {
