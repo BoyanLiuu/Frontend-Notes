@@ -411,11 +411,11 @@ var d = 0;
 console.log(a+b); //420
 ```
 
-![](../.gitbook/assets/image%20%28127%29.png)
-
 ![](../.gitbook/assets/image%20%28128%29.png)
 
 ![](../.gitbook/assets/image%20%28129%29.png)
+
+![](../.gitbook/assets/image%20%28130%29.png)
 
  
 
@@ -529,6 +529,12 @@ NaN === NaN                      //false
 
 * == check for value equality with coercion allowed,
 * === checks for both value equality without coercion allowed, This is often called strict equality
+
+#### [https://github.com/mqyqingfeng/Blog/issues/164](https://github.com/mqyqingfeng/Blog/issues/164)
+
+#### 
+
+
 
 ### 原始值转布尔
 
