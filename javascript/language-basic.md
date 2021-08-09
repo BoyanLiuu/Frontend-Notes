@@ -2888,7 +2888,8 @@ const promise = new Promise(function(resolve, reject) {
 *  `Promise`对象代表一个异步操作， 有三种状态：`pending`（进行中）、`fulfilled`（已成功）和`rejected`（已失败）
 * 一旦状态改变，就不会再变，任何时候都可以得到这个结果
 *  `Promise`实例生成以后，可以用`then`方法分别指定`resolved`状态和`rejected`状态的回调函数,
-*  `then`方法可以接受两个回调函数作为参数。第一个回调函数是`Promise`对象的状态变为`resolved`时调用，第二个回调函数是`Promise`对象的状态变为`rejected`时调用。这两个函数都是可选的，不一定要提供。它们都接受`Promise`对象传出的值作为参数。 **但是我们通常不是不使用 then 第二个 参数 写法**
+
+
 
 ```text
 function timeout(ms) {
@@ -2963,7 +2964,8 @@ new Promise((resolve, reject) => {
 
 ### Promise.prototype.then\(\) <a id="Promise-prototype-then"></a>
 
-*  它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，`then`方法的第一个参数是`resolved`状态的回调函数，第二个参数是`rejected`状态的回调函数，它们都是可选的。 `then`方法返回的是一个新的`Promise`实例
+*  它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，`then`方法的第一个参数是`resolved`状态的回调函数，第二个参数是`rejected`状态的回调函数，它们都是可选的。 `then`方法返回的是一个新的`Promise`实例, 
+* **如果返还的不是 promise object， 他就会返还 auto resolved promise  with value 10, 如果没有return 数据 它会返还 undefined**
 
 ```text
 getJSON("/post/1.json").then(function(post) {
@@ -2988,7 +2990,8 @@ getJSON('/posts.json').then(function(posts) {
 });
 ```
 
-* 用于指定发生错误时的回调函数， 上面代码中，`getJSON()`方法返回一个 Promise 对象，如果该对象状态变为`resolved`，则会调用`then()`方法指定的回调函数；如果异步操作抛出错误，状态就会变为`rejected`，就会调用`catch()`方法指定的回调函数，处理这个错误。另外，`then()`方法指定的回调函数，如果运行中抛出错误，也会被`catch()`方法捕获。
+* **接下来是到 then。 如果没有return promise object， 会把包装进入 promise返还到 ,If there is no return statement  undefined gets returned in the next them** 
+* 如果异步操作抛出错误，状态就会变为`rejected`，就会调用`catch()`方法指定的回调函数，处理这个错误。另外，`then()`方法指定的回调函数，如果运行中抛出错误，也会被`catch()`方法捕获。
 *  **如果 Promise 状态已经变成`resolved`，再抛出错误是无效的。**
 
 ```text
@@ -3260,9 +3263,154 @@ readFilePromise('1.json').then(data => {
 * 每种任务的处理结果存在两种可能性（成功或失败），那么需要在每种任务执行结束后分别处理这两种可能性。
 * each and every callback takes an argument that is a result of the previous callbacks.
 * 使用 3大手段 解决 callback hell
+
   * 回调函数延迟绑定 use `.then()`  回调函数不是直接声明的，而是在通过后面的 then 方法传入的，即延迟传入。这就是回调函数延迟绑定。
   * 返回值穿透: 我们会根据 then 中回调函数的传入值创建不同类型的Promise, 然后把返回的 Promise 穿透到外层, 以供后续的调用。这里的 x 指的就是内部返回的 Promise，然后在 x 后面可以依次完成链式调用
   * 错误冒泡  use .catch\(\)
+
+### 题目1
+
+```text
+var promise = func1();
+
+promise
+
+.then(function(result1) {
+    console.log(result1);
+    return func2();
+})
+
+.then(function(result2) {
+    console.log(result2);
+    return result2%10;
+})
+
+.then(function(result3) {
+    console.log(result3);
+});
+
+function func1() {
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve("Hello");
+        }, 1000);
+    });
+}
+
+function func2() {
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve(50);
+        }, 1000);
+    });
+}
+
+
+// Output: "hello" 50 0
+```
+
+* 如果返还的不是 promise object， 他就会返还 auto resolved promise  with value 10, 所以就返还了 0
+
+### 题目2
+
+```text
+function exam(arg) {
+    return new Promise(function(resolve, reject) {
+        if (arg>50) {
+            resolve('Pass');
+        } else {
+            reject('Fail');
+        }
+    });
+}
+
+let promise = exam(60);
+
+promise.then(function(result) {
+    console.log(result);
+
+    return exam(20);
+})
+
+.catch(function(error) {
+    console.log(error);
+
+    return 'Error';
+})
+
+.then(function(result) {
+    console.log(result);
+
+    return exam(80);
+})
+
+.catch(function(error) {
+    console.log(error);
+});
+
+// 结果：Pass Fail Error
+```
+
+### 题目3
+
+```text
+function func1(){
+  return new Promise(function(resolve,reject){
+    setTimeout(function(){
+      resolve("Func1")
+    },1000)
+  })
+}
+
+function func2(){
+  return new Promise(function(resolve,reject){
+    setTimeout(function(){
+      resolve("Func2")
+    },2000)
+  })
+}
+
+
+func1()
+  .then(func2())
+  .then(function(result) {
+    console.log(result);
+  });
+  
+  // output: Func1
+```
+
+*  The `.then` function takes _two arguments_, the two callback functions that execute when a promise resolves or rejects, and it returns a _promise_. However, as you can see on **line 19**, the `.then`statement is missing both these callback functions. We can refer these functions as _handlers_. Instead, `func2()`function is being called. **For the promise returned from `func1`, `.then` has no handler.** Hence, the first `.then` is skipped and the second `.then` statement executes for this promise
+
+### 题目4
+
+```text
+function func1(){
+  return new Promise(function(resolve,reject){
+    setTimeout(function(){
+      resolve("Func1")
+    },1000)
+  })
+}
+
+function func2(){
+  console.log("Func2")
+}
+
+
+func1()
+  .then(function(result){
+      console.log(result)
+      func2()
+  })
+  .then(function(result){
+      console.log(result)
+  })
+  
+  // Func1,Func2,undefined
+```
+
+*  Since there is no return statement in the first `.then` handler, `undefined` gets returned which the second `.then`displays.
 
 ## 31： Execution Context & Execution stack
 
