@@ -379,7 +379,7 @@ console.log(isNaN("blue")); // true - cannot be converted to a number
 console.log(isNaN(true)); // false - can be converted to number 1
 ```
 
-###  Type Conversion/ Concatenate:
+###  Type conversion:
 
 ![https://juejin.cn/post/6844903974378668039\#heading-14](../.gitbook/assets/image%20%2822%29.png)
 
@@ -391,8 +391,17 @@ console.log(isNaN(true)); // false - can be converted to number 1
   * Null -&gt; 0
 * new Boolean\(\),转换成布尔值
   * false value will return false;
-* **concatenate:**
-  * 如果+的 其中一个操作数时字符串， 则 concatenate， 否则 数字加法
+
+### **Type concatenate:**
+
+当计算 value1 + value2时：
+
+1. lprim = ToPrimitive\(value1\)
+2. rprim = ToPrimitive\(value2\)
+3. 如果 lprim 是字符串或者 rprim 是字符串，那么返回 ToString\(lprim\) 和 ToString\(rprim\)的拼接结果
+4. 返回 ToNumber\(lprim\) 和 ToNumber\(rprim\)的运算结果
+
+* 如果+的 其中一个操作数时字符串， 则 concatenate， 否则 数字加法
 
 ```text
 var a = '42';
@@ -401,6 +410,12 @@ var c = 42;
 var d = 0;
 console.log(a+b); //420
 ```
+
+![](../.gitbook/assets/image%20%28127%29.png)
+
+![](../.gitbook/assets/image%20%28128%29.png)
+
+![](../.gitbook/assets/image%20%28129%29.png)
 
  
 
@@ -427,10 +442,6 @@ var obj = {
 }
 console.log(obj + 1); // 输出7
 
-作者：神三元
-链接：https://juejin.cn/post/6844903974378668039
-来源：掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 ```
 
 ### 如何让if\(a == 1 && a == 2\)条件成立？
@@ -518,6 +529,110 @@ NaN === NaN                      //false
 
 * == check for value equality with coercion allowed,
 * === checks for both value equality without coercion allowed, This is often called strict equality
+
+### 原始值转布尔
+
+```text
+console.log(Boolean()) // false
+
+console.log(Boolean(false)) // false
+
+console.log(Boolean(undefined)) // false
+console.log(Boolean(null)) // false
+console.log(Boolean(+0)) // false
+console.log(Boolean(-0)) // false
+console.log(Boolean(NaN)) // false
+console.log(Boolean("")) // false
+```
+
+* 使用Boolean 函数将类型转换成boolean
+
+### 原始值转数字
+
+![](../.gitbook/assets/image%20%28125%29.png)
+
+* 我们可以使用 Number 函数将类型转换成数字类型，如果参数无法被转换为数字，则返回 NaN。
+* 调用了ToNumber\(\)
+
+```text
+console.log(Number()) // +0
+
+console.log(Number(undefined)) // NaN
+console.log(Number(null)) // +0
+
+console.log(Number(false)) // +0
+console.log(Number(true)) // 1
+
+console.log(Number("123")) // 123
+console.log(Number("-123")) // -123
+console.log(Number("1.2")) // 1.2
+console.log(Number("000123")) // 123
+console.log(Number("-000123")) // -123
+
+console.log(Number("0x11")) // 17
+
+console.log(Number("")) // 0
+console.log(Number(" ")) // 0
+
+console.log(Number("123 123")) // NaN
+console.log(Number("foo")) // NaN
+console.log(Number("100a")) // NaN
+
+
+
+console.log(parseInt("3 abc")) // 3
+console.log(parseFloat("3.14 abc")) // 3.14
+console.log(parseInt("-12.34")) // -12
+console.log(parseInt("0xFF")) // 255
+console.log(parseFloat(".1")) // 0.1
+console.log(parseInt("0.1")) // 0
+```
+
+* 如果通过 Number 转换函数传入一个字符串，它会试图将其转换成一个整数或浮点数，而且会忽略所有前导的 0，如果有一个字符不是数字，结果都会返回 NaN，鉴于这种严格的判断，我们一般还会使用更加灵活的 parseInt 和 parseFloat 进行转换。
+* parseInt 只解析整数，parseFloat 则可以解析整数和浮点数，如果字符串前缀是 "0x" 或者"0X"，parseInt 将其解释为十六进制数，parseInt 和 parseFloat 都会跳过任意数量的前导空格，尽可能解析更多数值字符，并忽略后面的内容。如果第一个非空格字符是非法的数字直接量，将最终返回 NaN：
+
+### 原始值转字符
+
+![](../.gitbook/assets/image%20%28126%29.png)
+
+* 我们使用 String 函数将类型转换成字符串类型,调用了ToString\(）
+
+```text
+console.log(String()) // 空字符串
+
+console.log(String(undefined)) // undefined
+console.log(String(null)) // null
+
+console.log(String(false)) // false
+console.log(String(true)) // true
+
+console.log(String(0)) // 0
+console.log(String(-0)) // 0
+console.log(String(NaN)) // NaN
+console.log(String(Infinity)) // Infinity
+console.log(String(-Infinity)) // -Infinity
+console.log(String(1)) // 1
+```
+
+### 原始值转对象
+
+* 原始值通过调用 String\(\)、Number\(\) 或者 Boolean\(\) 构造函数，转换为它们各自的包装对象。
+
+### ToPrimitive
+
+```text
+ToPrimitive(input[, PreferredType])
+```
+
+第一个参数是 input，表示要处理的输入值。
+
+第二个参数是 PreferredType，非必填，表示希望转换成的类型，有两个值可以选，Number 或者 String。
+
+当不传入 PreferredType 时，如果 input 是日期类型，相当于传入 String，否则，都相当于传入 Number。
+
+如果传入的 input 是 Undefined、Null、Boolean、Number、String 类型，直接返回该值。
+
+![](../.gitbook/assets/image%20%28124%29.png)
 
 
 
