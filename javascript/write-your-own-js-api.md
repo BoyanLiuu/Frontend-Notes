@@ -4,6 +4,8 @@
 
 {% embed url="https://juejin.cn/post/6946022649768181774" %}
 
+{% embed url="https://juejin.cn/post/6844903809206976520" %}
+
 
 
 ## instanceof 

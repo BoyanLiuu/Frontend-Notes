@@ -2883,11 +2883,33 @@ const promise = new Promise(function(resolve, reject) {
     reject(error);
   }
 });
+
+//Promise 对象抛出的错误不会传递到外层代码
+const someAsyncThing = function() {
+  return new Promise(function(resolve, reject) {
+    // 下面一行会报错，因为x没有声明
+    resolve(x + 2);
+  });
+};
+
+someAsyncThing().then(function() {
+  console.log('everything is great');
+});
+
+setTimeout(() => { console.log(123) }, 2000);
 ```
 
 *  `Promise`对象代表一个异步操作， 有三种状态：`pending`（进行中）、`fulfilled`（已成功）和`rejected`（已失败）
-* 一旦状态改变，就不会再变，任何时候都可以得到这个结果
-*  `Promise`实例生成以后，可以用`then`方法分别指定`resolved`状态和`rejected`状态的回调函数,
+* **一旦状态改变，就不会再变，任何时候都可以得到这个结果**， promise 内部状态一经改变，并且有了一个值，那么后续每次调用 .then 或者 .catch 都会直接拿到该值
+*  `Promise`实例生成以后，可以用`then`方法分别指定`resolved`状态和`rejected`状态的回调函数,构造函数中的 resolve 或 reject 只有第一次执行有效，多次调用没有任何作用
+* **then 和 catch 中 如果 return 处理**
+  * 返回任意一个非 promise 的值都会被包裹成 promise 对象
+  * 即 return new Error\('error!!!'\) 等价于 `return Promise.resolve(new Error('error!!!'))`
+* 怎么在 catch 和 then 中 报错 并且被后面 catch 捕获
+  * `return Promise.reject(new Error('error!!!'))`
+
+    `throw new Error('error!!!')`
+*  如果没有使用`catch()`方法指定错误处理的回调函数,Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。
 
 
 
@@ -2965,7 +2987,6 @@ new Promise((resolve, reject) => {
 ### Promise.prototype.then\(\) <a id="Promise-prototype-then"></a>
 
 *  它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，`then`方法的第一个参数是`resolved`状态的回调函数，第二个参数是`rejected`状态的回调函数，它们都是可选的。 `then`方法返回的是一个新的`Promise`实例, 
-* **如果返还的不是 promise object， 他就会返还 auto resolved promise  with value 10, 如果没有return 数据 它会返还 undefined**
 
 ```text
 getJSON("/post/1.json").then(function(post) {
@@ -2990,7 +3011,6 @@ getJSON('/posts.json').then(function(posts) {
 });
 ```
 
-* **接下来是到 then。 如果没有return promise object， 会把包装进入 promise返还到 ,If there is no return statement  undefined gets returned in the next them** 
 * 如果异步操作抛出错误，状态就会变为`rejected`，就会调用`catch()`方法指定的回调函数，处理这个错误。另外，`then()`方法指定的回调函数，如果运行中抛出错误，也会被`catch()`方法捕获。
 *  **如果 Promise 状态已经变成`resolved`，再抛出错误是无效的。**
 
@@ -3003,25 +3023,6 @@ promise
   .then(function(value) { console.log(value) })
   .catch(function(error) { console.log(error) });
 // ok
-```
-
-*  跟传统的`try/catch`代码块不同的是，如果没有使用`catch()`方法指定错误处理的回调函数，Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。 `someAsyncThing()`函数产生的 Promise 对象，内部有语法错误。浏览器运行到这一行，会打印出错误提示`ReferenceError: x is not defined`，但是不会退出进程、终止脚本执行，2 秒之后还是会输出`123`。这就是说，**Promise 内部的错误不会影响到 Promise 外部的代码**，通俗的说法就是“Promise 会吃掉错误”。
-
-```text
-const someAsyncThing = function() {
-  return new Promise(function(resolve, reject) {
-    // 下面一行会报错，因为x没有声明
-    resolve(x + 2);
-  });
-};
-
-someAsyncThing().then(function() {
-  console.log('everything is great');
-});
-
-setTimeout(() => { console.log(123) }, 2000);
-// Uncaught (in promise) ReferenceError: x is not defined
-// 123
 ```
 
 * Promise 指定在下一轮“事件循环”再抛出错误。到了那个时候，Promise 的运行已经结束了，所以这个错误是在 Promise 函数体外抛出的，会冒泡到最外层，成了未捕获的错误， 所以都建议使用 catch
