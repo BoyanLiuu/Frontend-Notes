@@ -2897,6 +2897,24 @@ someAsyncThing().then(function() {
 });
 
 setTimeout(() => { console.log(123) }, 2000);
+
+
+// .then 或 .catch 返回的值不能是 promise 本身，否则会造成死循环
+const promise = Promise.resolve()
+  .then(() => {
+    return promise
+  })
+promise.catch(console.error)
+// TypeError: Chaining cycle detected for promise #<Promise>
+
+
+
+// .then 或者 .catch 的参数期望是函数，传入非函数则会发生值穿透。
+Promise.resolve(1)
+  .then(2)
+  .then(Promise.resolve(3))
+  .then(console.log)
+  // 1
 ```
 
 *  `Promise`对象代表一个异步操作， 有三种状态：`pending`（进行中）、`fulfilled`（已成功）和`rejected`（已失败）
@@ -2910,6 +2928,8 @@ setTimeout(() => { console.log(123) }, 2000);
 
     `throw new Error('error!!!')`
 *  如果没有使用`catch()`方法指定错误处理的回调函数,Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。
+*  `.then` 或 `.catch` 返回的值不能是 promise 本身，否则会造成死循环
+*  `.then` 或者 `.catch` 的参数期望是函数，传入非函数则会发生值穿透。
 
 
 
