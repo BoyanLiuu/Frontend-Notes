@@ -3886,7 +3886,65 @@ Array.from(arrayLike); // ["name", "age", "sex"]
 Array.prototype.concat.apply([], arrayLike)
 ```
 
+## 38. async/await 遇上 forEach
 
+```text
+// 有问题的 code 我们想每隔一秒 output一个数字
+var getNumbers = () => {
+  return Promise.resolve([1, 2, 3])
+}
+var multi = num => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (num) {
+        resolve(num * num)
+      } else {
+        reject(new Error('num not specified'))
+      }
+    }, 1000)
+  })
+}
+async function test () {
+  var nums = await getNumbers()
+  nums.forEach(async x => {
+    var res = await multi(x)
+    console.log(res)
+  })
+}
+test()
+
+
+// 解决办法
+var getNumbers = () => {
+  return Promise.resolve([1, 2, 3])
+}
+var multi = num => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (num) {
+        resolve(num * num)
+      } else {
+        reject(new Error('num not specified'))
+      }
+    }, 1000)
+  })
+}
+async function test () {
+var nums = await getNumbers();
+
+for(let i = 0; i < nums.length; i += 1) {
+var res = await multi(nums[i]);
+
+console.log(res)
+
+}
+}
+test();
+
+```
+
+* 原因 在 foreach 里面we are not waiting for the callback to be done, so using a function that returns a promise won't wait for the promise to resolve everytime.但是实际却是并行执行了。
+* **解决办法 使用 普通 for** 
 
 
 
