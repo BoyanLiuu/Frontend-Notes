@@ -2894,6 +2894,11 @@ async function test() {
 ### 基础
 
 ```text
+let promise = new Promise(resolve => {
+  setTimeout(() => resolve("done!"), 1000);
+});
+
+
 const promise = new Promise(function(resolve, reject) {
   // ... some code
 
@@ -2950,6 +2955,7 @@ Promise.resolve(1)
 *  如果没有使用`catch()`方法指定错误处理的回调函数,Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。
 *  `.then` 或 `.catch` 返回的值不能是 promise 本身，否则会造成死循环
 *  `.then` 或者 `.catch` 的参数期望是函数，传入非函数则会发生值穿透。
+* 异步行为应该始终返回一个 promise。这样就可以使得之后我们计划后续的行为成为可能。即使我们现在不打算对链进行扩展
 
 
 
@@ -3038,10 +3044,42 @@ Promise.resolve()
   })
 
 
+
+
+// 返回 promise
+new Promise(function(resolve, reject) {
+
+  setTimeout(() => resolve(1), 1000);
+
+}).then(function(result) {
+
+  alert(result); // 1
+
+  return new Promise((resolve, reject) => { // (*)
+    setTimeout(() => resolve(result * 2), 1000);
+  });
+
+}).then(function(result) { // (**)
+
+  alert(result); // 2
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(result * 2), 1000);
+  });
+
+}).then(function(result) {
+
+  alert(result); // 4
+
+});
 ```
 
-*  它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，`then`方法的第一个参数是`resolved`状态的回调函数，第二个参数是`rejected`状态的回调函数，它们都是可选的。 `then`方法返回的是一个新的`Promise`实例, 
-* .then 的第二个处理错误的函数捕获不了第一个处理成功的函数抛出的错误，而后续的 .catch 可以捕获之前的错误
+* 它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，`then`方法的第一个参数是`resolved`状态的回调函数，第二个参数是`rejected`状态的回调函数，它们都是可选的。 `then`方法返回的是一个新的`Promise`实例, 
+* .then 的第二个处理错误的函数捕获不了第一个处理成功的函数抛出的错误，而后续的 .catch 可以捕获之前的错误\
+
+![](../.gitbook/assets/image%20%28131%29.png)
+
+* .then 也可以返回promise
 
 
 
@@ -3062,12 +3100,36 @@ getJSON("/post/1.json").then(function(post) {
 ### Promise.prototype.catch\(\)  <a id="Promise-prototype-catch"></a>
 
 ```text
+window.addEventListener('unhandledrejection', function(event) {
+  // 这个事件对象有两个特殊的属性：
+  alert(event.promise); // [object Promise] - 生成该全局 error 的 promise
+  alert(event.reason); // Error: Whoops! - 未处理的 error 对象
+});
+
+new Promise(function() {
+  throw new Error("Whoops!");
+}); // 没有用来处理 error 的 catch
+```
+
+* 如果我们没有 处理 promise 中的 rejection 可以用 unhandledrejection 捕获
+
+```text
 getJSON('/posts.json').then(function(posts) {
   // ...
 }).catch(function(error) {
   // 处理 getJSON 和 前一个回调函数运行时发生的错误
   console.log('发生错误！', error);
 });
+
+
+new Promise((resolve, reject) => {
+  throw new Error("Whoops!");
+}).catch(alert); // Error: Whoops!
+
+// 跟这个相等
+new Promise((resolve, reject) => {
+  reject(new Error("Whoops!"));
+}).catch(alert); // Error: Whoops!
 ```
 
 * 如果异步操作抛出错误，状态就会变为`rejected`，就会调用`catch()`方法指定的回调函数，处理这个错误。另外，`then()`方法指定的回调函数，如果运行中抛出错误，也会被`catch()`方法捕获。
@@ -3084,17 +3146,19 @@ promise
 // ok
 ```
 
-* Promise 指定在下一轮“事件循环”再抛出错误。到了那个时候，Promise 的运行已经结束了，所以这个错误是在 Promise 函数体外抛出的，会冒泡到最外层，成了未捕获的错误， 所以都建议使用 catch
+* 函数代码周围有个“隐式的 try..catch”。所以，所有同步错误都会得到处理。, 但是这里的错误并不是在 executor 运行时生成的，而是在稍后生成的。因此，promise 无法处理它。
 
 ```text
-const promise = new Promise(function (resolve, reject) {
-  resolve('ok');
-  setTimeout(function () { throw new Error('test') }, 0)
-});
-promise.then(function (value) { console.log(value) });
-// ok
-// Uncaught Error: test， 会报错
+new Promise(function(resolve, reject) {
+  setTimeout(() => {
+    throw new Error("Whoops!");
+  }, 1000);
+}).catch(alert);
 ```
+
+###  <a id="Promise-prototype-finally"></a>
+
+###  <a id="Promise-prototype-finally"></a>
 
 ### Promise.prototype.finally <a id="Promise-prototype-finally"></a>
 
@@ -3124,6 +3188,7 @@ Promise.all([promise1, promise2, promise3]).then((values) => {
 ```
 
 * 方法用于将多个 Promise 实例，包装成一个新的 Promise 实例。 `p1`、`p2`、`p3`都是 Promise 实例，如果不是，就会先调用下面讲到的`Promise.resolve`方法，将参数转为 Promise 实例，再进一步处理。另外，`Promise.all()`方法的参数可以不是数组，但必须具有 Iterator 接口，且返回的每个成员都是 Promise 实例
+* **如果其中一个 promise 被 reject，Promise.all 就会立即被 reject，完全忽略列表中其他的 promise。它们的结果也被忽略**
 *  `p`的状态由`p1`、`p2`、`p3`决定，分成两种情况。
   *  只有`p1`、`p2`、`p3`的状态都变成`fulfilled`，`p`的状态才会变成`fulfilled`，此时`p1`、`p2`、`p3`的返回值组成一个数组，传递给`p`的回调函数
   *  只要`p1`、`p2`、`p3`之中有一个被`rejected`，`p`的状态就变成`rejected`，此时第一个被`reject`的实例的返回值，会传递给`p`的回调函
@@ -3167,6 +3232,22 @@ Promise.all([p1, p2])
 
 *  上面这个 例子 `p1`会`resolved`，`p2`首先会`rejected`，但是`p2`有自己的`catch`方法，该方法返回的是一个新的 Promise 实例，`p2`指向的实际上是这个实例。该实例执行完`catch`方法后，也会变成`resolved`，导致`Promise.all()`方法参数里面的两个实例都会`resolved`，因此会调用`then`方法指定的回调函数，而不会调用`catch`方法指定的回调函数。
 *  **如果`p2`没有自己的`catch`方法，就会调用`Promise.all()`的`catch`方法。**
+
+**Promise.all\(iterable\) 允许在 iterable 中使用 non-promise 的“常规”值**
+
+```text
+Promise.all([
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve(1), 1000)
+  }),
+  2,
+  3
+]).then(alert); // 1, 2, 3
+```
+
+* 通常，Promise.all\(...\) 接受含有 promise 项的可迭代对象（大多数情况下是数组）作为参数。但是，如果这些对象中的任何一个不是 promise，那么它将被“按原样”传递给结果数组
+
+\*\*\*\*
 
 ### Promise.race\(\) <a id="Promise-race"></a>
 
@@ -3226,9 +3307,12 @@ Promise.any([
 
 *  只要参数实例有一个变成`fulfilled`状态，包装实例就会变成`fulfilled`状态；如果所有参数实例都变成`rejected`状态，包装实例就会变成`rejected`状态。
 
-### Promise.resolve\(\)  <a id="Promise-resolve"></a>
+### Promise.resolve\(\)**/reject\(\)** <a id="Promise-resolve"></a>
 
 ```text
+let promise = new Promise(resolve => resolve(value));
+
+
 Promise.resolve('foo')
 // 等价于
 new Promise(resolve => resolve('foo'))
@@ -3255,7 +3339,9 @@ p.then(function (s) {
 // 不带任何参数
 ```
 
-*  `Promise.resolve()`方法的参数分成四种情况。
+*  `Promise.resolve(value)` **用结果 value 创建一个 resolved 的 promise。**
+* `Promise.resolve()`方法的参数分成四种情况。
+
   *  **参数是一个 Promise 实例**
     * 如果参数是 Promise 实例，那么Promise.resolve将不做任何修改、原封不动地返回这个实例。
   *  **参数是一个`thenable`对象**
@@ -3268,7 +3354,7 @@ p.then(function (s) {
 
     \*\*\*\*
 
-  * \*\*\*\*
+  \*\*\*\*
 
 ### 
 
@@ -3472,7 +3558,101 @@ func1()
 
 *  Since there is no return statement in the first `.then` handler, `undefined` gets returned which the second `.then`displays.
 
-## 31： Execution Context & Execution stack
+## 31： Async/await
+
+```text
+async function f() {
+  return 1;
+}
+
+f().then(alert); // 1
+
+//我们也可以显式地返回一个 promise，结果是一样的：
+async function f() {
+  return Promise.resolve(1);
+}
+
+f().then(alert); // 1
+
+
+// await 接受 “thenables”
+class Thenable {
+  constructor(num) {
+    this.num = num;
+  }
+  then(resolve, reject) {
+    alert(resolve);
+    // 1000ms 后使用 this.num*2 进行 resolve
+    setTimeout(() => resolve(this.num * 2), 1000); // (*)
+  }
+}
+
+async function f() {
+  // 等待 1 秒，之后 result 变为 2
+  let result = await new Thenable(1);
+  alert(result);
+}
+
+f();
+
+// error 处理例子
+async function f() {
+  await Promise.reject(new Error("Whoops!"));
+}
+
+async function f() {
+  throw new Error("Whoops!");
+}
+
+// 捕获 error 错误 case1
+async function f() {
+
+  try {
+    let response = await fetch('http://no-such-url');
+  } catch(err) {
+    alert(err); // TypeError: failed to fetch
+  }
+}
+
+f()
+
+
+
+// case 2
+async function f() {
+  let response = await fetch('http://no-such-url');
+}
+
+// f() 变成了一个 rejected 的 promise
+f().catch(alert); // TypeError: failed to fetch // (*)
+
+
+// 在非 async 函数中调用 async 函数
+async function wait() {
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
+  return 10;
+}
+
+function f() {
+  // 1 秒后显示 10
+  wait().then(result => alert(result));
+}
+
+f();
+```
+
+* async 这个function 总是返回一个 promise,其他值将自动被包装在一个 resolved 的 promise 中。
+* await
+  *  await 让 JavaScript 引擎等待直到 promise 完成（settle）并返回结果。
+  * 相比于 promise.then，它只是获取 promise 的结果的一个更优雅的语法，同时也更易于读写。
+  * await 接受 “thenables”,像 promise.then 那样，await 允许我们使用 thenable 对象（那些具有可调用的 then 方法的对象）。这里的想法是，第三方对象可能不是一个 promise，但却是 promise 兼容的：如果这些对象支持 .then，那么就可以对它们使用 await。
+*  `async/await` 可以和 `Promise.all` 一起使用
+* error 处理
+  * 如果一个 promise 正常 resolve，await promise 返回的就是其结果。但是如果 promise 被 reject，它将 throw 这个 error，就像在这一行有一个 throw 语句那样
+  * 然后使用try catch捕获上面的错误
+* 
+## 32： Execution Context & Execution stack
 
 ### Execution Context 
 
@@ -3576,7 +3756,7 @@ checkscope()();
 
 ![](../.gitbook/assets/image%20%28123%29.png)
 
-## 32 : Js Operator\_Precedence
+## 33 : Js Operator\_Precedence
 
 {% embed url="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator\_Precedence" %}
 
@@ -3610,7 +3790,7 @@ new Foo() 可以理解为两种运算：new 带参数（即 new Foo()）和函�
 6. ？.
 7. new（无参数列表）new …
 
-## 33 正则表达式
+## 34 正则表达式
 
 $ 表示以什么结尾
 
@@ -3648,7 +3828,7 @@ g 代表全局模式找出所有的手机号
 
 
 
-## 34: setTimeout 模拟setInterval\(\):
+## 35: setTimeout 模拟setInterval\(\):
 
 setInterval 函数 理论上是每隔 1秒执行 但是 函数里面的 需要花费3秒, 这里需要等到前面执行完才可以执行下一个回调函数，不会按照间隔时间来执行了， 也就是说 他不是真正的间隔一段时间来执行
 
@@ -3660,7 +3840,7 @@ setInterval 函数 理论上是每隔 1秒执行 但是 函数里面的 需要�
 
 
 
-## 35 .  参数传递
+## 36 .  参数传递
 
 * 所有函数的参数都是按值传递的。就和把值从一个变量复制到另一个变量一样。
 * 但是如果是 object 就是共享传递，传递对象的引用的副本，obj里面的 复杂类型就会是 引用传递 ，基本类型是 按置传递
@@ -3688,7 +3868,7 @@ foo(obj);
 console.log(obj.value) // 1
 ```
 
-## 36.类数组
+## 37.类数组
 
 拥有一个 length 属性和若干索引属性的对象
 
