@@ -1640,10 +1640,24 @@ personA.show4.call(personB)() // personB
 * event loop:
   * Itt is responsible for keeping check of both the call stack and the event queue. It keeps checking if all the statements from the call stack have finished execution; that is, if the call stack is empty. If so, it pops the statement from the event queue \(if present\) to the call stack to execute.
 
+### event loop 执行顺序
+
+* 一开始整个脚本作为一个宏任务执行
+* 执行过程中同步代码直接执行，宏任务进入宏任务队列，微任务进入微任务队列
+* 当前宏任务执行完出队，检查微任务列表，有则依次执行，直到全部执行完
+* 执行浏览器UI线程的渲染工作
+* 检查是否有Web Worker任务，有则执行
+  * Web Workers 可以与主线程交换消息，但是它们具有自己的变量和事件循环。
+  * Web Workers are a simple means for web content to run scripts in background thread
+* 执行完本轮的宏任务，回到2，依此循环，直到宏任务和微任务队列都为空
+
 ### 执行机制
 
 ![](../.gitbook/assets/image%20%2828%29.png)
 
+![](../.gitbook/assets/image%20%28132%29.png)
+
+* 微任务会在执行任何其他事件处理，或渲染，或执行任何其他宏任务之前完成。
 * 对于每一个 宏任务而言， 其内部都有一个微任务队列，当该宏任务执行完成，会检查其中的微任务队列，如果为空则直接执行下一个宏任务，如果不为空，则依次执行微任务，执行完成才去执行下一个宏任务
 * Macro task queue:宏任务
   * script，setTimeout，setImmediate，promise中的executor
@@ -1651,7 +1665,7 @@ personA.show4.call(personB)() // personB
   * MutationObserver，process.nextTick    、Promise.then\(或.reject\) 以及以 Promise 为基础开发的其他技术\(比如fetch API\)，
 * **process.nextTick优先级高于Promise.then**
 
-### 问题：
+### 问题 1 ：
 
 ```text
 //Q1
@@ -1662,8 +1676,11 @@ setTimeout(function(){
 console.log("After Function")
 // Q1 answer: 
 //Before function, After Function , Inside Function
+```
 
+### 问题 2 ：
 
+```text
 // Q2
 console.log('start');
 setTimeout(() => {
@@ -1673,9 +1690,17 @@ Promise.resolve().then(() => {
   console.log('resolve');
 });
 console.log('end');
+```
 
+1. 一开始整个脚本 都作为第一个宏任务执行先打印 start 和 end
+2. setTimeout 作为一个宏任务放入宏任务队列（MacroTask）
+3. Promise.then作为一个为微任务放入到微任务队列
+4. 当本次宏任务执行完，检查微任务队列，发现一个Promise.then, 执行
+5. 接下来进入到下一个宏任务——setTimeout, 执行
 
+### 问题 3：
 
+```text
 // Question 3:
 
 Promise.resolve().then(()=>{
@@ -1692,16 +1717,66 @@ setTimeout(()=>{
 },0);
 console.log('start');
 
+// 答案
 // start
 // Promise1
 // setTimeout1
 // Promise2
 // setTimeout2
+```
 
+第一轮
+
+Print:  start
+
+Micro queue: promise1
+
+Macro queue:settimeout1
+
+第二轮
+
+Print:  start promise
+
+Micro queue: 
+
+Macro queue:settimeout1 settimeout2
+
+第三轮
+
+micro已经没了 们执行下一个 macro,并且 把 Promise2 放进micro
+
+Print:  start promise1 settimeout1
+
+Micro queue: promise2
+
+Macro queue: settimeout2
+
+第四轮
+
+Print:  start promise1 settimeout1promise2
+
+Micro queue: 
+
+Macro queue: settimeout2
+
+第五轮
+
+执行settimout2
+
+Print:  start promise1 settimeout1promise2 setTimeout2
+
+Micro queue: 
+
+Macro queue: 
+
+### 问题 4：
+
+```text
 // Question 4
 setTimeout(()=>{
    console.log(1) 
 },0)
+
 let a=new Promise((resolve)=>{
     console.log(2)
     resolve()
@@ -1713,9 +1788,13 @@ let a=new Promise((resolve)=>{
 console.log(5)
 
 //2 -> 5 -> 3 -> 4 -> 1
+```
 
-// Solution 5 
+* **Promise的executor是一个同步函数，即非异步，立即执行的一个函数，因此他应该是和当前的任务一起执行的**
 
+### 问题 5：
+
+```text
 new Promise((resolve,reject)=>{
     console.log("promise1")
     resolve()
@@ -1733,6 +1812,8 @@ new Promise((resolve,reject)=>{
     console.log("then12")
 })
 
+// Solution 5 
+
 // "promise1"
 // "then11"
 // "promise2"
@@ -1740,9 +1821,35 @@ new Promise((resolve,reject)=>{
 // "then12"
 // "then23"
 
+```
 
 
-// Solution 6
+
+第一轮:
+
+* current task: promise1是当之无愧的立即执行的一个函数，参考上一章节的executor，立即执行输出`[promise1]`
+* micro task queue: \[promise1的第一个then\]
+
+第二轮
+
+* current task: then1执行中，立即输出了**then11**以及新promise2的**promise2**
+* micro task queue: \[新promise2的then函数,以及promise1的第二个then函数\]
+
+第三轮
+
+* current task: 新promise2的then函数输出then21和promise1的第二个then函数输出then12
+* micro task queue: \[新promise2的第二then函数\]
+
+
+
+第四轮
+
+* current task: 新promise2的第二then函数输出then23
+* micro task queue: \[\]
+
+###  问题 6：
+
+```text
 new Promise((resolve,reject)=>{
     console.log("promise1")
     resolve()
@@ -1760,15 +1867,24 @@ new Promise((resolve,reject)=>{
     console.log("then12")
 })
 
+// Solution 6
+
+
 // "promise1"
 // "then11"
 // "promise2"
 // "then21"
 // "then23"
 // "then12"
+```
 
+* 这个考的重点在于Promise而非Eventloop了。这里就很好理解为何then12会在then23之后执行，这里Promise的第二个then相当于是挂在新Promise的最后一个then的返回值上
 
-//7. 多个 promise
+### 问题 7：
+
+```text
+
+//多个 promise
 new Promise((resolve,reject)=>{
     console.log("promise1")
     resolve()
@@ -1792,13 +1908,36 @@ new Promise((resolve,reject)=>{
     console.log("then31")
 })
 
+// solution
+
 //[promise1,promise3,then11,promise2,then31,then21,then12,then23]
+```
 
+第一轮:
 
-//8. 
+* current task: promise1，promise3
+* micro task queue: \[promise1的第一个then，promise3的第一个then\]
 
+第二轮
+
+* current task: then11，promise2，then31
+* micro task queue: \[promise2的第一个then，promise1的第二个then\]
+
+第三轮
+
+* current task: then21，then12
+* micro task queue: \[promise2的第二个then\]
+
+第四轮
+
+* current task: then23
+* micro task queue: \[\]
+
+### 问题 8：
+
+```text
 console.log('1');
-
+// settimout1
 setTimeout(function() {
     console.log('2');
     process.nextTick(function() {
@@ -1821,6 +1960,7 @@ new Promise(function(resolve) {
     console.log('8')
 })
 
+// settimout2
 setTimeout(function() {
     console.log('9');
     process.nextTick(function() {
@@ -1834,8 +1974,14 @@ setTimeout(function() {
     })
 })
 
+//1，7，6，8，2，4，3，5，9，11，10，12
+```
 
-// 9
+{% embed url="https://juejin.cn/post/6844903512845860872\#heading-4" %}
+
+### 问题 9：
+
+```text
 const first = () => (new Promise((resolve,reject)=>{
     console.log(3);
     let p = new Promise((resolve, reject)=>{
@@ -1861,83 +2007,26 @@ console.log(4);
 // 3-7-4-1-2-5
 ```
 
-### 解析：
-
-1. 不需要解释什么
-2. 解释
-
-   1. 先打印 start 和 end
-   2. setTimeout 作为一个宏任务放入宏任务队列（MacroTask）
-   3. Promise.then作为一个为微任务放入到微任务队列
-   4. 当本次宏任务执行完，检查微任务队列，发现一个Promise.then, 执行
-   5. 接下来进入到下一个宏任务——setTimeout, 执行
-
-![](../.gitbook/assets/image%20%2826%29.png)
-
-4. 解释
-
-* Promise的executor是一个同步函数，即非异步，立即执行的一个函数，因此他应该是和当前的任务一起执行的。而Promise的链式调用then，每次都会在内部生成一个新的Promise，然后执行then，在执行的过程中不断向微任务\(microtask\)推入新的函数，因此直至微任务\(microtask\)的队列清空后才会执行下一波的macrotask。
-
-5. 解释 **then中return一个promise的掌握**
-
-第一轮:
-
-* current task: promise1是当之无愧的立即执行的一个函数，参考上一章节的executor，立即执行输出`[promise1]`
-* micro task queue: \[promise1的第一个then\]
-
-第二轮
-
-* current task: then1执行中，立即输出了**then11**以及新promise2的**promise2**
-* micro task queue: \[新promise2的then函数,以及promise1的第二个then函数\]
-
-第三轮
-
-* current task: 新promise2的then函数输出then21和promise1的第二个then函数输出then12
-* micro task queue: \[新promise2的第二then函数\]
-
-
-
-第四轮
-
-* current task: 新promise2的第二then函数输出then23
-* micro task queue: \[\]
-
-6. 解释 then中返还一个promise的掌握
-
-* 这个考的重点在于Promise而非Eventloop了。这里就很好理解为何then12会在then23之后执行，这里Promise的第二个then相当于是挂在新Promise的最后一个then的返回值上
-
-7. 如果有多个 promise
-
-第一轮:
-
-* current task: promise1，promise3
-* micro task queue: \[promise1的第一个then，promise3的第一个then\]
-
-第二轮
-
-* current task: then11，promise2，then31
-* micro task queue: \[promise2的第一个then，promise1的第二个then\]
-
-第三轮
-
-* current task: then21，then12
-* micro task queue: \[promise2的第二个then\]
-
-第四轮
-
-* current task: then23
-* micro task queue: \[\]
-
-8.  [解析](https://juejin.cn/post/6844903512845860872)
-
-9.
-
 * **第一轮事件循环**
   * 先执行**宏任务**，主script ，new Promise立即执行，输出【3】，执行p这个new Promise 操作，输出【7】，发现setTimeout，将回调放入下一轮任务队列（Event Queue），p的then，姑且叫做then1，放入**微任务队列**，发现first的then，叫then2，放入**微任务队列**。执行console.log\(4\)，输出【4】,宏任务执行结束。再执行**微任务**，执行then1，输出【1】，执行then2，输出【2】。到此为止，第一轮事件循环结束。开始执行第二轮。
 * **第二轮事件循环**
   * 先执行宏任务里面的，也就是setTimeout的回调，输出【5】。resovle不会生效，因为p这个Promise的状态一旦改变就不会在改变了。 所以最终的输出顺序是3、7、4、1、2、5。
 
-### 问题2
+
+
+```text
+
+//8. 
+
+
+
+
+// 9
+
+
+```
+
+### 问题 10:
 
 ```text
 process.nextTick(() => {
