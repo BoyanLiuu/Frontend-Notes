@@ -1390,7 +1390,7 @@ C(3)
 // 3.1 ： 7
 ```
 
-## 14.This object
+## 14.This 指向
 
 ```text
 //Ex1
@@ -1473,6 +1473,10 @@ console.log(person.getName()); // axuebin
 
 **总共5种情况**
 
+不考虑 箭头函数时候  **this 永远指向最后调用它的那个对象**
+
+![](../.gitbook/assets/image%20%28134%29.png)
+
 * **情况1: 全局上下文**
   * `var` === `this.` === `winodw.`
 * **情况2: 函数上下文**  When a function is not   defined using the arrow syntax, the this object is bound at runtime based on the context in which   a function is executed: 
@@ -1514,7 +1518,7 @@ ES6 中的箭头函数：不会使用上文的四条标准的绑定规则，**�
 
 DOM事件函数：一般指向绑定事件的DOM元素，但有些情况绑定到全局对象（比如IE6~IE8的attachEvent）
 
-### 相关问题
+### 问题1
 
 ```text
 // 问题 1
@@ -1540,7 +1544,226 @@ Student.doSth(); // '若川'
 Student.doSth.call(person); // 'person'
 ```
 
-{% embed url="https://www.cnblogs.com/xxcanghai/p/5189353.html" %}
+### 问题 2：
+
+```text
+"use strict";
+var a = 10;
+function foo () {
+  console.log('this1', this)
+  console.log(window.a)
+  console.log(this.a)
+}
+console.log(window.foo)
+console.log('this2', this)
+foo();
+
+// 结果
+f foo() {...}
+'this2' Window{...}
+'this1' undefined
+10
+Uncaught TypeError: Cannot read property 'a' of undefined
+
+
+```
+
+* 开启了严格模式，只是说使得函数内的`this`指向`undefined`，它并不会改变全局中`this`的指向。因此`this1`中打印的是`undefined`，而`this2`还是`window`对象。
+
+### 问题 3：
+
+```text
+let a = 10
+const b = 20
+
+function foo () {
+  console.log(this.a)
+  console.log(this.b)
+}
+foo();
+console.log(window.a)
+
+// 结果
+undefined
+undefined
+undefined
+```
+
+*  如果把`var`改成了`let 或者 const`，变量是不会被绑定到`window`上的，所以此时会打印出三个`undefined`。
+
+### 问题 4：
+
+```text
+var a = 1
+function foo () {
+  var a = 2
+  console.log(this)
+  console.log(this.a)
+}
+
+foo()
+// 结果
+Window{...}
+1
+
+
+var a = 1
+function foo () {
+  var a = 2
+  function inner () { 
+    console.log(this.a)
+  }
+  inner()
+}
+
+foo()
+// 结果 1
+
+```
+
+* this指向的还是window
+
+### 问题 5：隐式绑定
+
+```text
+function foo () {
+  console.log(this.a)
+}
+var obj = { a: 1, foo }
+var a = 2
+obj.foo()
+
+```
+
+* 函数`foo()`虽然是定义在`window`下，但是我在`obj`对象中引用了它，并将它重新赋值到`obj.foo`上。
+
+  且调用它的是`obj`对象，因此打印出来的`this.a`应该是`obj`中的`a`
+
+\`\`
+
+### 问题 6：隐式绑定的隐式丢失的问题
+
+* 隐式丢失其实就是被隐式绑定的函数在特定的情况下会丢失绑定对象。
+* 有两种情况容易发生隐式丢失问题：
+  * 使用另一个变量来给函数取别名
+  * 将函数作为参数传递时会被隐式赋值，回调函数丢失this绑定
+
+```text
+function foo () {
+  console.log(this.a)
+};
+var obj = { a: 1, foo };
+var a = 2;
+var foo2 = obj.foo;
+
+obj.foo();
+foo2();
+// 1，2
+
+```
+
+* foo2指向的是obj.foo函数，不过调用它的却是window对象，所以它里面this的指向是为window。
+
+
+
+  其实也就相当于是window.foo2\(\)
+
+```text
+function foo () {
+  console.log(this.a)
+};
+var obj = { a: 1, foo };
+var a = 2;
+var foo2 = obj.foo;
+var obj2 = { a: 3, foo2: obj.foo }
+
+obj.foo();
+foo2();
+obj2.foo2();
+
+// 1
+2
+3
+
+```
+
+* `obj.foo()`中的`this`指向调用者`obj`
+* `foo2()`发生了隐式丢失，调用者是`window`，使得`foo()`中的`this`指向`window`
+* `foo3()`发生了隐式丢失，调用者是`obj2`，使得`foo()`中的`this`指向`obj2`
+
+```text
+function foo () {
+  console.log(this.a)
+}
+function doFoo (fn) {
+  console.log(this)
+  fn()
+}
+var obj = { a: 1, foo }
+var a = 2
+doFoo(obj.foo)
+// Window{...}
+// 2
+
+```
+
+* 这里我们将obj.foo当成参数传递到doFoo函数中，在传递的过程中，obj.foo\(\)函数内的this发生了改变，指向了window
+
+```text
+function foo () {
+  console.log(this.a)
+}
+function doFoo (fn) {
+  console.log(this)
+  fn()
+}
+var obj = { a: 1, foo }
+var a = 2
+var obj2 = { a: 3, doFoo }
+
+obj2.doFoo(obj.foo)
+
+// 结果
+{ a:3, doFoo: f }
+2
+
+```
+
+ **所以说，如果你把一个函数当成参数传递到另一个函数的时候，也会发生隐式丢失的问题，且与包裹着它的函数的this指向无关。在非严格模式下，会把该函数的this绑定到window上，严格模式下绑定到undefined。**
+
+
+
+
+
+
+
+
+
+
+
+
+
+```text
+function Foo() {
+    getName = function () { alert (1); };
+    return this;
+}
+Foo.getName = function () { alert (2);};
+Foo.prototype.getName = function () { alert (3);};
+var getName = function () { alert (4);};
+function getName() { alert (5);}
+
+//请写出以下输出结果：
+Foo.getName();
+getName();
+Foo().getName();
+getName();
+new Foo.getName();
+new Foo().getName();
+new new Foo().getName();
+```
+
+
 
 {% embed url="https://segmentfault.com/a/1190000010981003" %}
 
