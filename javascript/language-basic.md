@@ -2279,15 +2279,376 @@ setTimeout(() => {
 * 打印出`'promise1'`，且此时`promise1`的状态为`resolved`
 * 打印出`'promise2'`，且此时`promise2`的状态为`rejected`
 
+###  题目 19：
+
+```text
+const promise = new Promise((resolve, reject) => {
+  resolve("success1");
+  reject("error");
+  resolve("success2");
+});
+promise
+.then(res => {
+    console.log("then: ", res);
+  }).catch(err => {
+    console.log("catch: ", err);
+  }
+
+// "then: success1"
+
+```
+
+* 构造函数中的 resolve 或 reject 只有第一次执行有效，多次调用没有任何作用 
+
+### 题目 20：
+
+```text
+const promise = new Promise((resolve, reject) => {
+  reject("error");
+  resolve("success2");
+});
+promise
+.then(res => {
+    console.log("then1: ", res);
+  }).then(res => {
+    console.log("then2: ", res);
+  }).catch(err => {
+    console.log("catch: ", err);
+  }).then(res => {
+    console.log("then3: ", res);
+  })
+
+// "catch: " "error"
+// "then3: " undefined
+
+```
+
+* catch不管被连接到哪里，都能捕获上层未捕捉过的错误
+
+### 题目 21：
+
+```text
+Promise.resolve(1)
+  .then(res => {
+    console.log(res);
+    return 2;
+  })
+  .catch(err => {
+    return 3;
+  })
+  .then(res => {
+    console.log(res);
+  });
+// 1
+// 2
+
+```
+
+* Promise可以链式调用，不过promise 每次调用 .then 或者 .catch 都会返回一个新的 promise
+
+### 题目 22：
+
+```text
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    console.log('timer')
+    resolve('success')
+  }, 1000)
+})
+const start = Date.now();
+promise.then(res => {
+  console.log(res, Date.now() - start)
+})
+promise.then(res => {
+  console.log(res, Date.now() - start)
+})
+
+// 'timer'
+// 'success' 1001
+// 'success' 1002
+
+```
+
+* Promise 的 .then 或者 .catch 可以被调用多次，但这里 Promise 构造函数只执行一次。或者说 promise 内部状态一经改变，并且有了一个值，那么后续每次调用 .then 或者 .catch 都会直接拿到该值
+
+### 题目 23：
+
+```text
+Promise.resolve().then(() => {
+  return new Error('error!!!')
+}).then(res => {
+  console.log("then: ", res)
+}).catch(err => {
+  console.log("catch: ", err)
+})
+// "then: " "Error: error!!!"
+
+
+```
+
+*  返回任意一个非 `promise` 的值都会被包裹成 `promise` 对象，因此这里的`return new Error('error!!!')`也被包裹成了`return Promise.resolve(new Error('error!!!'))`
+
+### 题目 24：
+
+```text
+Promise.resolve(1)
+  .then(2)
+  .then(Promise.resolve(3))
+  .then(console.log)
+// 1
+```
+
+* .then 或者 .catch 的参数期望是函数，传入非函数则会发生值透传。
+
+### 题目 25：
+
+```text
+Promise.resolve('1')
+  .then(res => {
+    console.log(res)
+  })
+  .finally(() => {
+    console.log('finally')
+  })
+Promise.resolve('2')
+  .finally(() => {
+    console.log('finally2')
+  	return '我是finally2返回的值'
+  })
+  .then(res => {
+    console.log('finally2后面的then函数', res)
+  })
+
+// "1"
+// "finally2"
+// "finally"
+// "finally2后面的then函数"
+// "2"
+
+```
+
+1. 它最终返回的默认会是一个**上一次的Promise对象值**，不过如果抛出的是一个异常则返回异常的`Promise`对象。
+2. finally\(\)会等promise1\(\).then\(\)执行完才会将finally\(\)加入微任务队列，其实
+
+### 题目 26：
+
+```text
+function promise1 () {
+  let p = new Promise((resolve) => {
+    console.log('promise1');
+    resolve('1')
+  })
+  return p;
+}
+function promise2 () {
+  return new Promise((resolve, reject) => {
+    reject('error')
+  })
+}
+promise1()
+  .then(res => console.log(res))
+  .catch(err => console.log(err))
+  .finally(() => console.log('finally1'))
+
+promise2()
+  .then(res => console.log(res))
+  .catch(err => console.log(err))
+  .finally(() => console.log('finally2'))
+
+// "promise1"
+// "1"
+// "error"
+// "finally1"
+// "finally2"
+```
+
+首先定义了两个函数`promise1`和`promise2`，先不管接着往下看。
+
+`promise1`函数先被调用了，然后执行里面`new Promise`的同步代码打印出`promise1`
+
+之后遇到了`resolve(1)`，将`p`的状态改为了`resolved`并将结果保存下来。
+
+此时`promise1`内的函数内容已经执行完了，跳出该函数
+
+碰到了`promise1().then()`，由于`promise1`的状态已经发生了改变且为`resolved`因此将`promise1().then()`这条微任务加入本轮的微任务列表\(**这是第一个微任务**\)
+
+这时候要注意了，代码并不会接着往链式调用的下面走，也就是不会先将`.finally`加入微任务列表，那是因为`.then`本身就是一个微任务，它链式后面的内容必须得等当前这个微任务执行完才会执行，因此这里我们先不管`.finally()`
+
+再往下走碰到了`promise2()`函数，其中返回的`new Promise`中并没有同步代码需要执行，所以执行`reject('error')`的时候将`promise2`函数中的`Promise`的状态变为了`rejected`
+
+跳出`promise2`函数，遇到了`promise2().catch()`，将其加入当前的微任务队列\(**这是第二个微任务**\)，且链式调用后面的内容得等该任务执行完后才执行，和`.then()`一样。
+
+OK， 本轮的宏任务全部执行完了，来看看微任务列表，存在`promise1().then()`，执行它，打印出`1`，然后遇到了`.finally()`这个微任务将它加入微任务列表\(**这是第三个微任务**\)等待执行
+
+再执行`promise2().catch()`打印出`error`，执行完后将`finally2`加入微任务加入微任务列表\(**这是第四个微任务**\)
+
+OK， 本轮又全部执行完了，但是微任务列表还有两个新的微任务没有执行完，因此依次执行`finally1`和`finally2`。
+
+
+
+### 题目 27： 
+
+```text
+async function async1() {
+  console.log("async1 start");
+  await async2();
+  console.log("async1 end");
+}
+async function async2() {
+  console.log("async2");
+}
+async1();
+console.log('start')
+
+// 'async1 start'
+// 'async2'
+// 'start'
+// 'async1 end'
+
+
+//变成了
+
+async function async1() {
+  console.log("async1 start");
+  // 原来代码
+  // await async2();
+  // console.log("async1 end");
   
-  
+  // 转换后代码
+  new Promise(resolve => {
+    console.log("async2")
+    resolve()
+  }).then(res => console.log("async1 end"))
+}
+async function async2() {
+  console.log("async2");
+}
+async1();
+console.log("start")
 
 
+```
+
+* 首先一进来是创建了两个函数的，我们先不看函数的创建位置，而是看它的调用位置发现`async1`函数被调用了，然后去看看调用的内容
+* 执行函数中的同步代码`async1 start`，之后碰到了`await`，它会阻塞`async1`后面代码的执行，因此会先去执行`async2`中的同步代码`async2`，然后跳出`async1`
+* 跳出`async1`函数后，执行同步代码`start`
+* 在一轮宏任务全部执行完之后，再来执行刚刚`await`后面的内容`async1 end`
+* 在这里，你可以理解为「紧跟着await后面的语句相当于放到了new Promise中，下一行及之后的语句相当于放在Promise.then中」
+
+### 题目 28：
+
+```text
+async function async1() {
+  console.log("async1 start");
+  await async2();
+  console.log("async1 end");
+}
+async function async2() {
+  setTimeout(() => {
+    console.log('timer')
+  }, 0)
+  console.log("async2");
+}
+async1();
+console.log("start")
+// "async1 start"
+// "async2"
+// "start"
+// "async1 end"
+// "timer"
+```
+
+* **定时器始终还是最后执行的，它被放到下一条宏任务的延迟队列中。**
+
+### 题目 29：当时写错了
+
+```text
+async function async1() {
+  console.log("async1 start");
+  await async2();
+  console.log("async1 end");
+  setTimeout(() => {
+    console.log('timer1')
+  }, 0)
+}
+async function async2() {
+  setTimeout(() => {
+    console.log('timer2')
+  }, 0)
+  console.log("async2");
+}
+async1();
+setTimeout(() => {
+  console.log('timer3')
+}, 0)
+console.log("start")
+
+// "async1 start"
+// "async2"
+// "start"
+// "async1 end"
+// "timer2"
+// "timer3"
+// "timer1"
+```
+
+###  题目 30：
+
+```text
+async function async1 () {
+  console.log('async1 start');
+  await new Promise(resolve => {
+    console.log('promise1')
+    
+  })
+  console.log('async1 success');
+  return 'async1 end'
+}
+console.log('srcipt start')
+async1().then(res => console.log(res))
+console.log('srcipt end')
+
+// "srcipt start"
+// "async1 start"
+// "promise1"
+// "srcipt end"
 
 
+```
 
+*  在`async1`中`await`后面的`Promise`是没有返回值的，也就是它的状态始终是`pending`状态，因此相当于一直在`await`，`await`，`await`却始终没有响应...
 
+### 题目 31：
 
+```text
+async function async1 () {
+  console.log('async1 start');
+  await new Promise(resolve => {
+    console.log('promise1')
+    resolve('promise resolve')
+  })
+  console.log('async1 success');
+  return 'async1 end'
+}
+console.log('srcipt start')
+async1().then(res => {
+  console.log(res)
+})
+new Promise(resolve => {
+  console.log('promise2')
+  setTimeout(() => {
+    console.log('timer')
+  })
+})
+
+// "srcipt start"
+// "async1 start"
+// "promise1"
+// "promise2"
+// "async1 success"
+// "async1 end"
+// "timer"
+```
 
 
 
@@ -3484,7 +3845,7 @@ new Promise(function(resolve, reject) {
 
 ###  <a id="Promise-prototype-finally"></a>
 
-### Promise.prototype.finally <a id="Promise-prototype-finally"></a>
+### Promise.prototype.finally\(\) <a id="Promise-prototype-finally"></a>
 
 ```text
 promise
@@ -3494,6 +3855,7 @@ promise
 ```
 
 * 不管 Promise 对象最后状态如何，都会执行的操作
+*  它最终返回的默认会是一个**上一次的Promise对象值**，不过如果抛出的是一个异常则返回异常的`Promise`对象
 
 ### Promise.all\(\) <a id="Promise-all"></a>
 
@@ -3567,11 +3929,22 @@ Promise.all([
   2,
   3
 ]).then(alert); // 1, 2, 3
+
+
+function runAsync (x) {
+    const p = new Promise(r => setTimeout(() => r(x, console.log(x)), 1000))
+    return p
+}
+Promise.all([runAsync(1), runAsync(2), runAsync(3)])
+  .then(res => console.log(res))
+  
+  // 在间隔一秒后，控制台会同时打印出1, 2, 3，还有一个数组[1, 2, 3]。
+
 ```
 
 * 通常，Promise.all\(...\) 接受含有 promise 项的可迭代对象（大多数情况下是数组）作为参数。但是，如果这些对象中的任何一个不是 promise，那么它将被“按原样”传递给结果数组
 
-\*\*\*\*
+
 
 ### Promise.race\(\) <a id="Promise-race"></a>
 
@@ -3589,9 +3962,28 @@ const p = Promise.race([
 p
 .then(console.log)
 .catch(console.error);
+
+
+
+
+
+function runAsync (x) {
+  const p = new Promise(r => setTimeout(() => r(x, console.log(x)), 1000))
+  return p
+}
+Promise.race([runAsync(1), runAsync(2), runAsync(3)])
+  .then(res => console.log('result: ', res))
+  .catch(err => console.log(err))
+// 1
+// 'result: ' 1
+// 2
+// 3
+
+
 ```
 
-*  `Promise.race()`方法同样是将多个 Promise 实例，包装成一个新的 Promise 实例。 只要`p1`、`p2`、`p3`之中有一个实例率先改变状态，`p`的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给`p`的回调函数
+*  它只会获取最先执行完成的那个结果，其它的异步任务虽然也会继续进行下去，不过race已经不管那些任务的结果了
+* `Promise.race()`方法同样是将多个 Promise 实例，包装成一个新的 Promise 实例。 只要`p1`、`p2`、`p3`之中有一个实例率先改变状态，`p`的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给`p`的回调函数
 * 上面的 例子2 如果指定时间内没有获得结果，就将 Promise 的状态变为`reject`，否则变为`resolve`。
 
 ### Promise.allSettled\(\) <a id="Promise-allSettled"></a>
