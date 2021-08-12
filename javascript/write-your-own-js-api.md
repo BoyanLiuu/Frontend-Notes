@@ -6,6 +6,10 @@
 
 {% embed url="https://juejin.cn/post/6844903809206976520" %}
 
+## JSON.stringfy
+
+## JSON.parse
+
 
 
 ## instanceof 
@@ -1144,5 +1148,19 @@ images.forEach(image =>{
 });
 ```
 
-用
+### Promises/A+规范的promise
+
+{% embed url="https://juejin.cn/post/6844903625769091079\#heading-0" %}
+
+
+
+### 
+
+### 
+
+
+
+
+
+
 

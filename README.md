@@ -165,6 +165,19 @@
 
 ## 计划
 
+ 
+
+* [x] CSS
+* [ ] JS
+* [ ] HTML & 浏览器
+* [ ] 性能
+* [ ] 计算机网络
+* [ ] React 框架
+* [ ] 工程化
+* [ ] typescript
+
+
+
 {% embed url="https://juejin.cn/post/6844904116339261447?utm\_source=gold\_browser\_extension\#heading-13" %}
 
 {% embed url="https://github.com/mqyqingfeng/Blog" %}
@@ -175,21 +188,29 @@
 
 
 
-8/6： 看完1.1， 剩余时间 复习 原型和原型链
 
 
+深浅拷贝
 
-8/7 学会 Promise
-
-
-
-8/8 学会深浅拷贝
-
-8/9 事件机制
+{% embed url="https://juejin.cn/post/6844904116339261447?utm\_source=gold\_browser\_extension\#heading-6" %}
 
 
 
 
+
+函数式编程
+
+{% embed url="https://juejin.cn/post/6844904116339261447?utm\_source=gold\_browser\_extension\#heading-8" %}
+
+常用方法
+
+{% embed url="https://juejin.cn/post/6844904116339261447?utm\_source=gold\_browser\_extension\#heading-11" %}
+
+
+
+垃圾回收机制
+
+{% embed url="https://juejin.cn/post/6844904016325902344?from=from\_parent\_mindnote" %}
 
 
 
