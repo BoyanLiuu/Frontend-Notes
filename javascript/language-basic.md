@@ -2650,7 +2650,246 @@ new Promise(resolve => {
 // "timer"
 ```
 
+###  题目 32
 
+```text
+async function async1() {
+  console.log("async1 start");
+  await async2();
+  console.log("async1 end");
+}
+
+async function async2() {
+  console.log("async2");
+}
+
+console.log("script start");
+
+setTimeout(function() {
+  console.log("setTimeout");
+}, 0);
+
+async1();
+
+new Promise(function(resolve) {
+  console.log("promise1");
+  resolve();
+}).then(function() {
+  console.log("promise2");
+});
+console.log('script end')
+
+// "script start"
+// "async1 start"
+// "async2"
+// "promise1"
+// "script end"
+// "async1 end"
+// "promise2"
+// "setTimeout"
+```
+
+### 题目 33：当时错了
+
+```text
+async function testSometing() {
+  console.log("执行testSometing");
+  return "testSometing";
+}
+
+async function testAsync() {
+  console.log("执行testAsync");
+  return Promise.resolve("hello async");
+}
+
+async function test() {
+  console.log("test start...");
+  const v1 = await testSometing();
+  console.log(v1);
+  const v2 = await testAsync();
+  console.log(v2);
+  console.log(v1, v2);
+}
+
+test();
+
+var promise = new Promise(resolve => {
+  console.log("promise start...");
+  resolve("promise");
+});
+promise.then(val => console.log(val));
+
+console.log("test end...");
+
+
+// "test start..."
+// "执行testSometing"
+// "promise start..."
+// "test end..."
+// "testSometing"
+// "执行testAsync"
+// "promise"
+// "hello async"
+// "testSometing"
+// "hello async"
+```
+
+### 题目 34：async处理错误
+
+```text
+async function async1 () {
+  await async2();
+  console.log('async1');
+  return 'async1 success'
+}
+async function async2 () {
+  return new Promise((resolve, reject) => {
+    console.log('async2')
+    reject('error')
+  })
+}
+async1().then(res => console.log(res))
+
+// 'async1'
+// Uncaught (in promise) Error: error!!!
+```
+
+* 如果在async函数中抛出了错误，则终止错误结果，不会继续向下执行。
+
+### 题目 35： 重点
+
+```text
+const first = () => (new Promise((resolve, reject) => {
+    console.log(3);
+    let p = new Promise((resolve, reject) => {
+        console.log(7);
+        setTimeout(() => {
+            console.log(5);
+            resolve(6);
+            console.log(p)
+        }, 0)
+        resolve(1);
+    });
+    resolve(2);
+    p.then((arg) => {
+        console.log(arg);
+    });
+}));
+first().then((arg) => {
+    console.log(arg);
+});
+console.log(4);
+
+
+// 解析
+3
+7
+4
+1
+2
+5
+[object Promise] { ... }
+```
+
+第一段代码定义的是一个函数，所以我们得看看它是在哪执行的，发现它在`4`之前，所以可以来看看`first`函数里面的内容了。\(这一步有点类似于题目`1.5`\)
+
+函数`first`返回的是一个`new Promise()`，因此先执行里面的同步代码`3`
+
+接着又遇到了一个`new Promise()`，直接执行里面的同步代码`7`
+
+执行完`7`之后，在`p`中，遇到了一个定时器，先将它放到下一个宏任务队列里不管它，接着向下走
+
+碰到了`resolve(1)`，这里就把`p`的状态改为了`resolved`，且返回值为`1`，不过这里也先不执行
+
+跳出`p`，碰到了`resolve(2)`，这里的`resolve(2)`，表示的是把`first`函数返回的那个`Promise`的状态改了，也先不管它。
+
+然后碰到了`p.then`，将它加入本次循环的微任务列表，等待执行
+
+跳出`first`函数，遇到了`first().then()`，将它加入本次循环的微任务列表\(`p.then`的后面执行\)
+
+然后执行同步代码`4`
+
+本轮的同步代码全部执行完毕，查找微任务列表，发现`p.then`和`first().then()`，依次执行，打印出`1和2`
+
+本轮任务执行完毕了，发现还有一个定时器没有跑完，接着执行这个定时器里的内容，执行同步代码`5`
+
+然后又遇到了一个`resolve(6)`，它是放在`p`里的，但是`p`的状态在之前已经发生过改变了，因此这里就不会再改变，也就是说`resolve(6)`相当于没任何用处，因此打印出来的`p`为`Promise{<resolved>: 1}`。\(这一步类似于题目`3.1`\)
+
+### 题目 36：重点
+
+```text
+const async1 = async () => {
+  console.log('async1');
+  setTimeout(() => {
+    console.log('timer1')
+  }, 2000)
+  await new Promise(resolve => {
+    console.log('promise1')
+  })
+  console.log('async1 end')
+  return 'async1 success'
+} 
+
+console.log('script start');
+async1().then(res => console.log(res));
+console.log('script end');
+Promise.resolve(1)
+  .then(2)
+  .then(Promise.resolve(3))
+  .catch(4)
+  .then(res => console.log(res))
+setTimeout(() => {
+  console.log('timer2')
+}, 1000)
+
+// 结果
+"script start"
+"async1"
+"promise1"
+"script end"
+1
+"timer2"
+"timer1"
+```
+
+### 题目 37： 重点
+
+```text
+const p1 = new Promise((resolve) => {
+  setTimeout(() => {
+    resolve('resolve3');
+    console.log('timer1')
+  }, 0)
+  resolve('resovle1');
+  resolve('resolve2');
+}).then(res => {
+  console.log(res)
+  setTimeout(() => {
+    console.log(p1)
+  }, 1000)
+}).finally(res => {
+  
+  console.log('finally', res)
+})
+// 解析
+'resolve1'
+'finally' undefined
+'timer1'
+Promise{<resolved>: undefined}
+
+```
+
+`Promise`的状态一旦改变就无法改变
+
+`finally`不管`Promise`的状态是`resolved`还是`rejected`都会执行，且它的回调函数是接收不到`Promise`的结果的，所以`finally()`中的`res`是一个迷惑项\(类似`3.10`\)。
+
+最后一个定时器打印出的`p1`其实是`.finally`的返回值，我们知道`.finally`的返回值如果在没有抛出错误的情况下默认会是上一个`Promise`的返回值\(`3.10`中也有提到\), 而这道题中`.finally`上一个`Promise`是`.then()`，但是这个`.then()`并没有返回值，所以`p1`打印出来的`Promise`的值会是`undefined`，如果你在定时器的**下面**加上一个`return 1`，则值就会变成`1`
+
+
+
+###  
+
+ 
 
 ## 16.Array splice\(\) & slice\(\):
 
@@ -4333,6 +4572,26 @@ async function f() {
 f()
 
 
+// Error 处理
+async function async1 () {
+  // try {
+  //   await Promise.reject('error!!!')
+  // } catch(e) {
+  //   console.log(e)
+  // }
+  await Promise.reject('error!!!')
+    .catch(e => console.log(e))
+  console.log('async1');
+  return Promise.resolve('async1 success')
+}
+async1().then(res => console.log(res))
+console.log('script start')
+
+
+
+
+
+
 
 // case 2
 async function f() {
@@ -4358,15 +4617,15 @@ function f() {
 f();
 ```
 
-* async 这个function 总是返回一个 promise,其他值将自动被包装在一个 resolved 的 promise 中。
+* async 这个function 总是返回一个 promise,其他值将自动被包装在一个 `Promise.resolve()` 的 promise 中。
 * await
   *  await 让 JavaScript 引擎等待直到 promise 完成（settle）并返回结果。
   * 相比于 promise.then，它只是获取 promise 的结果的一个更优雅的语法，同时也更易于读写。
   * await 接受 “thenables”,像 promise.then 那样，await 允许我们使用 thenable 对象（那些具有可调用的 then 方法的对象）。这里的想法是，第三方对象可能不是一个 promise，但却是 promise 兼容的：如果这些对象支持 .then，那么就可以对它们使用 await。
 *  `async/await` 可以和 `Promise.all` 一起使用
 * error 处理
-  * 如果一个 promise 正常 resolve，await promise 返回的就是其结果。但是如果 promise 被 reject，它将 throw 这个 error，就像在这一行有一个 throw 语句那样
-  * 然后使用try catch捕获上面的错误
+  * 如果一个 promise 正常 resolve，await promise 返回的就是其结果。但是如果 promise 被 reject，它将 throw 这个 error，**接一个 catch**
+  * **或者try catch捕获上面的错误**
 * 
 ## 32： Execution Context & Execution stack
 
