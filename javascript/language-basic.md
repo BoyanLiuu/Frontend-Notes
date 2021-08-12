@@ -4371,147 +4371,133 @@ readFilePromise('1.json').then(data => {
 
 ### 题目1
 
+使用Promise实现红绿灯交替重复亮
+
+红灯3秒亮一次，黄灯2秒亮一次，绿灯1秒亮一次；如何让三个灯不断交替重复亮灯？（用Promise实现）三个亮灯函数已经存在：
+
 ```text
-var promise = func1();
-
-promise
-
-.then(function(result1) {
-    console.log(result1);
-    return func2();
-})
-
-.then(function(result2) {
-    console.log(result2);
-    return result2%10;
-})
-
-.then(function(result3) {
-    console.log(result3);
-});
-
-function func1() {
-    return new Promise(function(resolve, reject) {
-        setTimeout(function() {
-            resolve("Hello");
-        }, 1000);
-    });
+function red() {
+  console.log("red");
+}
+function green() {
+  console.log("green");
+}
+function yellow() {
+  console.log("yellow");
+}
+const light = function (timer, cb) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      cb()
+      resolve()
+    }, timer)
+  })
+}
+const step = function () {
+  Promise.resolve().then(() => {
+    return light(3000, red)
+  }).then(() => {
+    return light(2000, green)
+  }).then(() => {
+    return light(1000, yellow)
+  }).then(() => {
+    return step()// recursive call
+  })
 }
 
-function func2() {
-    return new Promise(function(resolve, reject) {
-        setTimeout(function() {
-            resolve(50);
-        }, 1000);
-    });
-}
+step();
 
 
-// Output: "hello" 50 0
 ```
-
-* 如果返还的不是 promise object， 他就会返还 auto resolved promise  with value 10, 所以就返还了 0
 
 ### 题目2
 
+封装一个异步加载图片的方法
+
 ```text
-function exam(arg) {
-    return new Promise(function(resolve, reject) {
-        if (arg>50) {
-            resolve('Pass');
-        } else {
-            reject('Fail');
-        }
-    });
-}
+function loadImg(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = function() {
+      console.log("一张图片加载完成");
+      resolve(img);
+    };
+    img.onerror = function() {
+    	reject(new Error('Could not load image at' + url));
+    };
+    img.src = url;
+  });
 
-let promise = exam(60);
-
-promise.then(function(result) {
-    console.log(result);
-
-    return exam(20);
-})
-
-.catch(function(error) {
-    console.log(error);
-
-    return 'Error';
-})
-
-.then(function(result) {
-    console.log(result);
-
-    return exam(80);
-})
-
-.catch(function(error) {
-    console.log(error);
-});
-
-// 结果：Pass Fail Error
+作者：LinDaiDai_霖呆呆
+链接：https://juejin.cn/post/6844904077537574919
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 ```
 
 ### 题目3
 
-```text
-function func1(){
-  return new Promise(function(resolve,reject){
-    setTimeout(function(){
-      resolve("Func1")
-    },1000)
-  })
-}
-
-function func2(){
-  return new Promise(function(resolve,reject){
-    setTimeout(function(){
-      resolve("Func2")
-    },2000)
-  })
-}
-
-
-func1()
-  .then(func2())
-  .then(function(result) {
-    console.log(result);
-  });
-  
-  // output: Func1
-```
-
-*  The `.then` function takes _two arguments_, the two callback functions that execute when a promise resolves or rejects, and it returns a _promise_. However, as you can see on **line 19**, the `.then`statement is missing both these callback functions. We can refer these functions as _handlers_. Instead, `func2()`function is being called. **For the promise returned from `func1`, `.then` has no handler.** Hence, the first `.then` is skipped and the second `.then` statement executes for this promise
+{% embed url="https://juejin.cn/post/6844904077537574919\#heading-56" %}
 
 ### 题目4
 
 ```text
-function func1(){
-  return new Promise(function(resolve,reject){
-    setTimeout(function(){
-      resolve("Func1")
-    },1000)
+const time = (timer) => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve()
+    }, timer)
   })
 }
+const ajax1 = () => time(2000).then(() => {
+  console.log(1);
+  return 1
+})
+const ajax2 = () => time(1000).then(() => {
+  console.log(2);
+  return 2
+})
+const ajax3 = () => time(1000).then(() => {
+  console.log(3);
+  return 3
+})
 
-function func2(){
-  console.log("Func2")
+function mergePromise (ajaxArray) {
+  // 存放每个ajax的结果
+  const data = [];
+  let promise = Promise.resolve();
+  ajaxArray.forEach(ajax => {
+  	// 第一次的then为了用来调用ajax
+  	// 第二次的then是为了获取ajax的结果
+    promise = promise.then(ajax).then(res => {
+      data.push(res);
+      return data; // 把每次的结果返回
+    })
+  })
+  // 最后得到的promise它的值就是data
+  return promise;
 }
 
+mergePromise([ajax1, ajax2, ajax3]).then(data => {
+  console.log("done");
+  console.log(data); // data 为 [1, 2, 3]
+});
 
-func1()
-  .then(function(result){
-      console.log(result)
-      func2()
-  })
-  .then(function(result){
-      console.log(result)
-  })
-  
-  // Func1,Func2,undefined
+// 要求分别输出
+// 1
+// 2
+// 3
+// done
+// [1, 2, 3]
+
+
 ```
 
-*  Since there is no return statement in the first `.then` handler, `undefined` gets returned which the second `.then`displays.
+* 定义一个数组`data`用于保存所有异步操作的结果
+* 初始化一个`const promise = Promise.resolve()`，然后循环遍历数组，在`promise`后面添加执行`ajax`任务，同时要将添加的结果重新赋值到`promise`上。
+
+
+
+
 
 ## 31： Async/await
 
