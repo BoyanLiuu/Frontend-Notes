@@ -1481,7 +1481,7 @@ console.log(person.getName()); // axuebin
   * `var` === `this.` === `winodw.`
 * **情况2: 函数上下文**  When a function is not   defined using the arrow syntax, the this object is bound at runtime based on the context in which   a function is executed: 
   * **直接调用** when used inside global functions, this is equal to **window in nonstrict** mode     and **undefined in strict mode**  
-  * **call, apply, this 指向 绑定的对象上**
+  * **call, apply, this 指向 绑定的对象上,如果call、apply、bind接收到的第一个参数是空或者null、undefined的话，则会忽略这个参数。**
   * **箭头函数**
     * **箭头函数会捕获其所在上下文的this值，作为自己的this值。**
     * **箭头函数中没有this绑定，必须通过查找作用域链来决定其值。 如果箭头函数被非箭头函数包含，则this绑定的是最近一层非箭头函数的this，否则this的值则被设置为全局对象**
@@ -1731,6 +1731,238 @@ obj2.doFoo(obj.foo)
 
  **所以说，如果你把一个函数当成参数传递到另一个函数的时候，也会发生隐式丢失的问题，且与包裹着它的函数的this指向无关。在非严格模式下，会把该函数的this绑定到window上，严格模式下绑定到undefined。**
 
+### 问题 7：显示绑定
+
+```text
+function foo () {
+  console.log(this.a)
+}
+var obj = { a: 1 }
+var a = 2
+
+foo()
+foo.call(obj)
+foo.apply(obj)
+foo.bind(obj)
+
+// 2
+// 1
+// 1
+
+function foo () {
+  console.log(this.a)
+}
+var a = 2
+foo.call()
+foo.call(null)
+foo.call(undefined)
+// 2
+// 2
+// 2
+
+```
+
+*  如果`call、apply、bind`接收到的第一个参数是空或者`null、undefined`的话，则会忽略这个参数。
+
+```text
+var obj1 = {
+  a: 1
+}
+var obj2 = {
+  a: 2,
+  foo1: function () {
+    console.log(this.a)
+  },
+  foo2: function () {
+    setTimeout(function () {
+      console.log(this)
+      console.log(this.a)
+    }, 0)
+  }
+}
+var a = 3
+
+obj2.foo1()
+obj2.foo2()
+
+// 2
+// Window{...}
+// 3
+
+
+// 使用 call 绑定了 this
+var obj1 = {
+  a: 1
+}
+var obj2 = {
+  a: 2,
+  foo1: function () {
+    console.log(this.a)
+  },
+  foo2: function () {
+    setTimeout(function () {
+      console.log(this)
+      console.log(this.a)
+    }.call(obj1), 0)
+  }
+}
+var a = 3
+obj2.foo1()
+obj2.foo2()
+// 2
+// { a: 1 }
+// 1
+
+
+
+```
+
+*   谁调用的函数，函数内的`this`指向的就是谁。,而对于`setTimeout`中的函数，这里存在隐式绑定的隐式丢失，也就是当我们将函数作为参数传递时会被隐式赋值，回调函数丢失`this`绑定，因此这时候`setTimeout`中的函数内的`this`是指向`window`的。
+* `obj2.foo2.call(obj1) ,` 我改变的就是`foo2`函数内的`this`的指向了
+
+```text
+function foo () {
+  console.log(this.a)
+}
+var obj = { a: 1 }
+var a = 2
+
+foo()
+foo.call(obj)
+foo().call(obj)
+
+// 2
+// 1
+// 2
+Uncaught TypeError: Cannot read property 'call' of undefined
+
+```
+
+* `foo().call(obj)`开始会执行`foo()`函数，打印出`2`，但是会对`foo()`函数的返回值执行`.call(obj)`操作，可是我们可以看到`foo()`函数的返回值是`undefined`，因此就会报错了。
+*  所以我们可以看到`foo.call()`和`foo().call()`的区别了，一个是针对于函数，一个是针对于函数的返回值。
+
+```text
+function foo () {
+  console.log(this.a)
+  return function () {
+    console.log(this.a)
+  }
+}
+var obj = { a: 1 }
+var a = 2
+
+foo()
+foo.call(obj)
+foo().call(obj)
+// 2
+// 1
+// 2
+// 1
+```
+
+```text
+function foo () {
+  console.log(this.a)
+  return function () {
+    console.log(this.a)
+  }
+}
+var obj = { a: 1 }
+var a = 2
+
+foo()
+foo.bind(obj)// 它没output
+foo().bind(obj)
+
+// 2
+// 2
+
+```
+
+* 但是`foo.bind(obj)`却不会执行，它返回的是一个新函数。
+* `foo().bind(obj)`只会执行前面的`foo()`函数，打印出`2`，`.bind(obj)`只是将`foo()`返回的匿名函数显式绑定`this`而已，并没有调用。
+
+
+
+```text
+function foo () {
+  console.log(this.a)
+  return function () {
+    console.log(this.a)
+  }
+}
+var obj = { a: 1 }
+var a = 2
+
+foo.call(obj)()
+// 1
+// 2
+
+```
+
+*  最后调用匿名函数的却是`window`。
+
+```text
+var obj = {
+  a: 'obj',
+  foo: function () {
+    console.log('foo:', this.a)
+    return function () {
+      console.log('inner:', this.a)
+    }
+  }
+}
+var a = 'window'
+var obj2 = { a: 'obj2' }
+
+obj.foo()()
+obj.foo.call(obj2)()
+obj.foo().call(obj2)
+
+// obj
+// window
+
+// obj2
+// window
+
+// obj
+// obj2
+
+// foo: obj
+// inner: window
+// foo: obj2
+// inner: window
+// foo: obj
+// inner: obj2
+```
+
+```text
+var obj = {
+  a: 1,
+  foo: function (b) {
+    b = b || this.a
+    return function (c) {
+      console.log(this.a + b + c)
+    }
+  }
+}
+var a = 2
+var obj2 = { a: 3 }
+
+obj.foo(a).call(obj2, 1)
+obj.foo.call(obj2)(1)
+
+
+// 6
+// 6
+```
+
+* 开始调用`obj.foo(a)`将`2`传入`foo`函数并赋值给型参`b`，并且由于闭包的原因，使得匿名函数内能访问到`b`，之后调用匿名函数的时候，用`call()`改变了`this`的指向，使得匿名函数内`this.a`为`3`，并传入最后一个参数`1`，所以第一行输出的应该是`3 + 2 + 1`，也就是`6`。
+* 而第二行，`obj.foo.call(obj2)`这里是将`foo`函数内的`this`指向了`obj2`，同时并没有传递任何参数，所以`b`开始是`undefined`的，但是又因为有一句`b = b || this.a`，使得`b`变为了`3`；同时最后一段代码`(1)`，是在调用匿名函数，且和这个匿名函数内的`this`应该是指向`window`的，因此输出也为`3+2+1`，为`6`
+
+\`\`
+
+  
 
 
 
