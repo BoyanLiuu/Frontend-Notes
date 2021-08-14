@@ -1487,7 +1487,7 @@ console.log(person.getName()); // axuebin
     * **箭头函数中没有this绑定，必须通过查找作用域链来决定其值。 如果箭头函数被非箭头函数包含，则this绑定的是最近一层非箭头函数的this，否则this的值则被设置为全局对象**
     * 其实就是相当于箭头函数外的this是缓存的该箭头函数上层的普通函数的this。如果没有普通函数，则是全局对象（浏览器中则是window）。
 
-      也就是说**无法通过call、apply、bind绑定箭头函数的this\(它自身没有this\)**。而call、apply、bind可以绑定缓存箭头函数上层的普通函数的this
+      也就是说**无法通过call、apply、bind绑定箭头函数的this\(它自身没有this\)**。而call、apply、bind可以绑定缓存箭头函数上层的普通函数的this, 但是可以通过改变作用域中this的指向来间接修改。
 
     * 箭头函数并不绑定 this，arguments，super\(ES6\)，抑或 new.target\(ES6\)。
 * **情况3:   this指向调用函数的对象。**
@@ -1960,7 +1960,446 @@ obj.foo.call(obj2)(1)
 * 开始调用`obj.foo(a)`将`2`传入`foo`函数并赋值给型参`b`，并且由于闭包的原因，使得匿名函数内能访问到`b`，之后调用匿名函数的时候，用`call()`改变了`this`的指向，使得匿名函数内`this.a`为`3`，并传入最后一个参数`1`，所以第一行输出的应该是`3 + 2 + 1`，也就是`6`。
 * 而第二行，`obj.foo.call(obj2)`这里是将`foo`函数内的`this`指向了`obj2`，同时并没有传递任何参数，所以`b`开始是`undefined`的，但是又因为有一句`b = b || this.a`，使得`b`变为了`3`；同时最后一段代码`(1)`，是在调用匿名函数，且和这个匿名函数内的`this`应该是指向`window`的，因此输出也为`3+2+1`，为`6`
 
+```text
+function foo (item) {
+  console.log(item, this.a)
+}
+var obj = {
+  a: 'obj'
+}
+var a = 'window'
+var arr = [1, 2, 3]
+
+// arr.forEach(foo, obj)
+// arr.map(foo, obj)
+arr.filter(function (i) {
+  console.log(i, this.a)
+  return i > 2
+}, obj)
+
+// 1 "obj"
+// 2 "obj"
+// 3 "obj"
+
+```
+
+* forEach、map、filter都不陌生吧，它们是JS内置的一些函数，但是你知道它们的第二个参数也是能绑定this的
+
+### 题目 8：new 绑定
+
+* 使用new来调用一个函数，会构造一个新对象并把这个新对象绑定到调用函数中的this。
+
+```text
+function Person (name) {
+  this.name = name
+}
+var name = 'window'
+var person1 = new Person('LinDaiDai')
+console.log(person1.name)
+
+// 'LinDaiDai'
+
+```
+
+*  使用`new`来调用`Person`，构造了一个新对象`person1`并把它\(`person1`\)绑定到`Person`调用中的`this`。
+
+```text
+var name = 'window'
+function Person (name) {
+  this.name = name
+  this.foo = function () {
+    console.log(this.name)
+    return function () {
+      console.log(this.name)
+    }
+  }
+}
+var person2 = {
+  name: 'person2',
+  foo: function() {
+    console.log(this.name)
+    return function () {
+      console.log(this.name)
+    }
+  }
+}
+  
+var person1 = new Person('person1')
+person1.foo()()
+person2.foo()()
+// 'person1'
+// 'window'
+// 'person2'
+// 'window'
+
+```
+
+```text
+var name = 'window'
+function Person (name) {
+  this.name = name
+  this.foo = function () {
+    console.log(this.name)
+    return function () {
+      console.log(this.name)
+    }
+  }
+}
+var person1 = new Person('person1')
+var person2 = new Person('person2')
+
+person1.foo.call(person2)()
+person1.foo().call(person2)
+// person 2
+// window
+// person1
+// person2
+```
+
+* `person1.foo.call(person2)()`将`foo()`函数内的`this`指向了`person2`，所以打印出`person2`，而内部返回的匿名函数是由`window`调用的，所以打印出`window`。\(类似题目`4.9`\)`person1.foo().call(person2)`是将匿名函数的`this`显式绑定到了`person2`上，所以打印出来的会是`person2`
+
 \`\`
+
+### 题目 9：箭头函数绑定
+
+* 它里面的this是由外层作用域来决定的，且指向函数定义时的this而非执行时。
+
+```text
+var obj = {
+  name: 'obj',
+  foo1: () => {
+    console.log(this.name)
+  },
+  foo2: function () {
+    console.log(this.name)
+    return () => {
+      console.log(this.name)
+    }
+  }
+}
+var name = 'window'
+obj.foo1()
+obj.foo2()()
+
+//"window"
+// "obj"
+// "obj"
+```
+
+* obj.foo2\(\)\(\)，首先会执行obj.foo2\(\)，这不是个箭头函数，所以它里面的this是调用它的obj对象，因此打印出obj，而返回的匿名函数是一个箭头函数，它的this由外层作用域决定，那也就是函数foo2咯，那也就是它的this会和foo2函数里的this一样，就也打印出了obj。
+
+```text
+var name = 'window'
+var obj1 = {
+  name: 'obj1',
+  foo: function () {
+    console.log(this.name)
+    return function () {
+      console.log(this.name)
+    }
+  }
+}
+var obj2 = {
+  name: 'obj2',
+  foo: function () {
+    console.log(this.name)
+    return () => {
+      console.log(this.name)
+    }
+  }
+}
+var obj3 = {
+  name: 'obj3',
+  foo: () => {
+    console.log(this.name)
+    return function () {
+      console.log(this.name)
+    }
+  }
+}
+var obj4 = {
+  name: 'obj4',
+  foo: () => {
+    console.log(this.name)
+    return () => {
+      console.log(this.name)
+    }
+  }
+}
+
+obj1.foo()() // 'obj1' 'window'
+obj2.foo()() // 'obj2' 'obj2'
+obj3.foo()() // 'window' 'window'
+obj4.foo()() // 'window' 'window'
+
+```
+
+\`\`
+
+* `obj1.foo()()`两层都是普通函数，类似于题目`4.6`，分别打印出`obj1`和`window`。
+* `obj2.foo()()`外层为普通函数，内层为箭头，类似于题目`7.1`，都是打印出`obj2`。
+* `obj3.foo()()`外层为箭头函数，内层为普通函数，箭头函数的`this`由外层作用域决定，因此为`window`，内层普通函数由调用者决定，调用它的是`window`，因此也为`window`。
+* `obj4.foo()()`两层都是箭头函数，第一个箭头函数的`this`由外层作用域决定，因此为`window`，第二个箭头函数的`this`也由外层作用域决定，它的外层作用域是第一个箭头函数，而第一个箭头函数的`this`是`window`，因此内层的`this`也是`window`
+
+```text
+var name = 'window'
+function Person (name) {
+  this.name = name
+  this.foo1 = function () {
+    console.log(this.name)
+  }
+  this.foo2 = () => {
+    console.log(this.name)
+  }
+}
+var person2 = {
+  name: 'person2',
+  foo2: () => {
+    console.log(this.name)
+  }
+}
+var person1 = new Person('person1')
+person1.foo1() // person
+person1.foo2() // "person1"
+person2.foo2() // window
+
+
+```
+
+\`\`
+
+* `person1.foo1()`是个普通函数，**this由最后调用它的对象决定**，即`person1`。
+* `person1.foo2()`为箭头函数，**this由外层作用域决定，且指向函数定义时的this而非执行时**，在这里它的外层作用域是函数`Person`，且这个是构造函数，并且使用了`new`来生成了对象`person1`，所以此时`this`的指向是为`person1`。
+* `person2.foo2()`字面量创建的的对象`person2`中的`foo2`是个箭头函数，由于`person2`是直接在`window`下创建的，你可以理解为它所在的作用域就是在`window`下，因此`person2.foo2()`内的`this`应该是`window`。
+
+```text
+var name = 'window'
+function Person (name) {
+  this.name = name
+  this.foo1 = function () {
+    console.log(this.name)
+    return function () {
+      console.log(this.name)
+    }
+  }
+  this.foo2 = function () {
+    console.log(this.name)
+    return () => {
+      console.log(this.name)
+    }
+  }
+  this.foo3 = () => {
+    console.log(this.name)
+    return function () {
+      console.log(this.name)
+    }
+  }
+  this.foo4 = () => {
+    console.log(this.name)
+    return () => {
+      console.log(this.name)
+    }
+  }
+}
+var person1 = new Person('person1')
+person1.foo1()() //person1  window
+person1.foo2()() //person1  person1
+person1.foo3()() //person1  window
+person1.foo4()() //person1 person1
+```
+
+`person1.foo1()()`两层都是普通函数，这个不再重复说了，打印出`person1`和`window`。\(类似题目`6.2`\)
+
+`person1.foo2()()`第一层普通函数，它的`this`是由最后调用它的对象决定也就是`person1`，第二层为箭头函数，它的`this`由外层作用域决定，也就是`foo2`这个函数，因此也为`person1`。
+
+`person1.foo3()()`第一层为箭头函数，`this`由外层作用域决定，因此为`person1`，第二层为普通函数，由最后调用者决定，因此为`window`。
+
+`person1.foo4()()`两层都是箭头函数，`this`由外层作用域决定，所以都是`person1`。
+
+```text
+var name = 'window'
+var obj1 = {
+  name: 'obj1',
+  foo1: function () {
+    console.log(this.name)
+    return () => {
+      console.log(this.name)
+    }
+  },
+  foo2: () => {
+    console.log(this.name)
+    return function () {
+      console.log(this.name)
+    }
+  }
+}
+var obj2 = {
+  name: 'obj2'
+}
+obj1.foo1.call(obj2)() // obj2 obj2
+obj1.foo1().call(obj2) // obj1 obj1
+obj1.foo2.call(obj2)() // window window
+obj1.foo2().call(obj2) // window obj2
+
+
+
+```
+
+* `obj1.foo1.call(obj2)()`第一层为普通函数，并且通过`.call`改变了`this`指向为`obj2`，所以会打印出`obj2`，第二层为箭头函数，它的`this`和外层作用域中的`this`相同，因此也是`obj2`。
+* `obj1.foo().call(obj2)`第一层打印出`obj1`，第二层为箭头函数，使用了`.call`想要修改`this`的指向，但是并不能成功，因此`.call(obj2)`对箭头函数无效，还是打印出`obj1`。
+* `obj1.foo2.call(obj2)()`第一层为箭头函数，并且想要通过`.call(obj2)`改变`this`指向，但是无效，且它的外层作用域是`window`，所以会打印出`window`，第二层为普通函数，`this`是最后调用者`window`，所以也会打印出`window`。
+* `obj1.foo2().call(obj2)`第一层为箭头函数，外层作用域是`window`，打印出`window`，第二层为普通函数，且使用了`.call(obj2)`来改变`this`指向，所以打印出了`obj2`。
+
+  
+
+### 综合题
+
+#### 综合题1
+
+```text
+var name = 'window'
+var person1 = {
+  name: 'person1',
+  foo1: function () {
+    console.log(this.name)
+  },
+  foo2: () => console.log(this.name),
+  foo3: function () {
+    return function () {
+      console.log(this.name)
+    }
+  },
+  foo4: function () {
+    return () => {
+      console.log(this.name)
+    }
+  }
+}
+var person2 = { name: 'person2' }
+
+person1.foo1()//person1
+person1.foo1.call(person2) // person2
+
+person1.foo2() // window
+person1.foo2.call(person2)// window
+
+person1.foo3()() //window
+person1.foo3.call(person2)() // window
+person1.foo3().call(person2) // person2
+
+person1.foo4()() //person1
+person1.foo4.call(person2)() // person2
+person1.foo4().call(person2) //person1
+```
+
+####  综合题2
+
+```text
+var name = 'window'
+function Person (name) {
+  this.name = name
+  this.foo1 = function () {
+    console.log(this.name)
+  },
+  this.foo2 = () => console.log(this.name),
+  this.foo3 = function () {
+    return function () {
+      console.log(this.name)
+    }
+  },
+  this.foo4 = function () {
+    return () => {
+      console.log(this.name)
+    }
+  }
+}
+var person1 = new Person('person1')
+var person2 = new Person('person2')
+
+person1.foo1()//person1
+person1.foo1.call(person2) // person2
+
+person1.foo2()// person1
+person1.foo2.call(person2)// person1
+
+person1.foo3()() // window
+person1.foo3.call(person2)() // window
+person1.foo3().call(person2) // person2
+
+person1.foo4()() //person1
+person1.foo4.call(person2)() //person2
+person1.foo4().call(person2) //person1
+
+```
+
+#### 综合题3
+
+```text
+var name = 'window'
+function Person (name) {
+  this.name = name
+  this.obj = {
+    name: 'obj',
+    foo1: function () {
+      return function () {
+        console.log(this.name)
+      }
+    },
+    foo2: function () {
+      return () => {
+        console.log(this.name)
+      }
+    }
+  }
+}
+var person1 = new Person('person1')
+var person2 = new Person('person2')
+
+
+person1.obj.foo1()() //window
+person1.obj.foo1.call(person2)() // window
+person1.obj.foo1().call(person2) //person2
+
+person1.obj.foo2()() //obj
+person1.obj.foo2.call(person2)() //person2
+person1.obj.foo2().call(person2) //obj
+
+```
+
+* `person1.obj.foo1()()`返回的是一个普通的匿名函数，调用它的是`window`，所以打印出`window`。
+* `person1.obj.foo1.call(person2)()`中是使用`.call(person2)`改变第一层函数中的`this`，匿名函数和它没关系，依旧是`window`调用的，所以打印出`window`。
+* `person1.obj.foo1().call(person2)`是通过`.call(person2)`改变匿名函数内的`this`，所以绑定有效，因此打印出`person2`。
+* `person1.obj.foo2()()`第一层为普通函数，第二层为匿名箭头函数。首先让我们明确匿名箭头函数内的`this`是由第一层普通函数决定的，所以我们只要知道第一层函数内的`this`是谁就可以了。而这里，第一层函数最后是由谁调用的呢 🤔️？是由`obj`这个对象，所以打印出`obj`
+* `person1.obj.foo2.call(person2)()`中使用`.call(person2)`改变了第一层函数中的`this`指向，所以第二层的箭头函数会打印出`person2`
+* `person1.obj.foo2().call(person2)`中使用`.call(person2)`想要改变内层箭头函数的`this`指向，但是失败了，所以还是为外层作用域里的`this`，打印出`obj`。
+
+#### 综合题 4
+
+```text
+function foo() {
+  console.log( this.a );
+}
+var a = 2;
+(function(){
+  "use strict";
+  foo();
+})();
+// 2
+
+```
+
+我们知道，使用了`"use strict"`开启严格模式会使得`"use strict"`以下代码的`this`为`undefined`，也就是这里的立即执行函数中的`this`是`undefined`。
+
+但是调用`foo()`函数的依然是`window`，所以`foo()`中的`this`依旧是`window`，所以会打印出`2`。
+
+
+
+####  
+
+####  
+
+  
+
 
   
 
@@ -1994,12 +2433,6 @@ new Foo.getName();
 new Foo().getName();
 new new Foo().getName();
 ```
-
-
-
-{% embed url="https://segmentfault.com/a/1190000010981003" %}
-
-
 
 ```text
 /**
