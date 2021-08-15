@@ -2,6 +2,11 @@
 
 {% embed url="https://juejin.cn/post/6873513007037546510" %}
 
+```text
+
+}
+```
+
 {% embed url="https://juejin.cn/post/6946022649768181774" %}
 
 {% embed url="https://juejin.cn/post/6844903809206976520" %}
@@ -610,12 +615,61 @@ Function.prototype.bind2 = function (context) {
 
 
 
-## 深拷贝
+## 
+
+## 拷贝
+
+### 浅拷贝
+
+* 浅拷贝的意思就是只复制引用，而未复制真正的值。
+* 其实就是遍历对象属性的问题
+
+#### 浅拷贝实现
 
 ```text
-//Solution 1
-JSON.parse(JSON.stringify());
+// 1
+function shallowClone(source) {
+    var target = {};
+    for(var i in source) {
+        if (source.hasOwnProperty(i)) {
+            target[i] = source[i];
+        }
+    }
 
+    return target;
+}
+
+// 2 Object.assign()
+var x = {
+  a: 1,
+  b: { f: { g: 1 } },
+  c: [ 1, 2, 3 ]
+};
+var y = Object.assign({}, x);
+console.log(y.b.f === x.b.f);     // true
+
+```
+
+#### 数组的浅拷贝
+
+```text
+var arr = ['old', 1, true, null, undefined];
+
+var new_arr = arr.concat();
+
+new_arr[0] = 'new';
+
+console.log(arr) // ["old", 1, true, null, undefined]
+console.log(new_arr) // ["new", 1, true, null, undefined]
+
+```
+
+### 深拷贝
+
+### 基础方法 1：
+
+```text
+JSON.parse(JSON.stringify());
 //问题 1
 //拷贝a会出现系统栈溢出，因为出现了无限递归的情况。
 let obj = {
@@ -639,51 +693,177 @@ let obj = {
 let objB = JSON.parse(JSON.stringify(obj));
 console.log(objB.getName());
 //"TypeError: objB.getName is not a function
-// ======================================
+```
 
-// Solution 2 简易版本
+* 这种方法使用较为简单，可以满足基本日常的深拷贝需求，而且能够处理JSON格式能表示的所有数据类型，但是有以下几个缺点：
+  * 问题: 无法解决循环引用的问题。举个例子：
+  * 无法拷贝一写特殊的对象，诸如 RegExp, Date, Set, Map等。
+  * 无法拷贝**函数\(function\)**。
+  * `undefined`、`任意函数`、`Symbol 值`，在序列化过程有两种不同的情况。若出现在非数组对象的属性值中，会被忽略；若出现在数组中，会转换成 `null`
 
-const deepClone = (target) => {
-  if (typeof target === 'object' && target !== null) {
-    const cloneTarget = Array.isArray(target) ? []: {};
-    for (let prop in target) {
-      if (target.hasOwnProperty(prop)) {
-          //recursive call to copy every object 
-          cloneTarget[prop] = deepClone(target[prop]);
-      }
+### 基础方法 2，简易版本
+
+*  就是对每一层的数据都实现一次 `创建对象->对象赋值` 的操作
+
+一个简单的深拷贝就完成了，但是这个实现还存在很多问题。
+
+
+
+*  没有对传入参数进行校验，传入 `null` 时应该返回 `null` 而不是 `{}`
+* 对于对象的判断逻辑不严谨，因为 typeof null === 'object'
+* 没有考虑数组的兼容
+
+```text
+
+// 木易杨
+function cloneDeep1(source) {
+    var target = {};
+    for(var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+            if (typeof source[key] === 'object') {
+                target[key] = cloneDeep1(source[key]); // 注意这里
+            } else {
+                target[key] = source[key];
+            }
+        }
     }
-    return cloneTarget;
-  } else {
     return target;
-  }
 }
 
-//Solution 3 解决了 循环应用问题
-const isObject = (target) => (typeof target === 'object' || typeof target === 'function') && target !== null;
-//const deepClone = (target, map = new WeakMap()) 
-const deepClone = (target, map = new Map()) => { 
-  if(map.get(target))  
-    return target; 
- 
- 
-  if (isObject(target)) { 
-    map.set(target, true); 
-    const cloneTarget = Array.isArray(target) ? []: {}; 
-    for (let prop in target) { 
-      if (target.hasOwnProperty(prop)) { 
-          cloneTarget[prop] = deepClone(target[prop],map); 
-      } 
-    } 
-    return cloneTarget; 
-  } else { 
-    return target; 
-  } 
-  
+// 使用上面测试用例测试一下
+var b = cloneDeep1(a);
+console.log(b);
+// { 
+//   name: 'muyiy', 
+//   book: { title: 'You Don\'t Know JS', price: '45' }, 
+//   a1: undefined,
+//   a2: {},
+//   a3: 123
+// }
+
+
+
+
+```
+
+### 完善版本1， 拷贝数组
+
+* 解决了数组兼容 并且 完成了 判断 object 的情况
+
+```text
+// 木易杨
+typeof null //"object"
+typeof {} //"object"
+typeof [] //"object"
+typeof function foo(){} //"function" (特殊情况)
+
+function isObject(obj) {
+	return typeof obj === 'object' && obj != null;
 }
-const a = {val:2};
-a.target = a;
-let newA = deepClone(a);
-console.log(newA)//{ val: 2, target: { val: 2, target: [Circular] } }
+
+
+// 木易杨
+function cloneDeep2(source) {
+
+    if (!isObject(source)) return source; // 非对象返回自身
+      
+    var target = Array.isArray(source) ? [] : {};
+    for(var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+            if (isObject(source[key])) {
+                target[key] = cloneDeep2(source[key]); // 注意这里
+            } else {
+                target[key] = source[key];
+            }
+        }
+    }
+    return target;
+}
+
+// 使用上面测试用例测试一下
+var b = cloneDeep2(a);
+console.log(b);
+// { 
+//   name: 'muyiy', 
+//   book: { title: 'You Don\'t Know JS', price: '45' },
+//   a1: undefined,
+//   a2: null,
+//   a3: 123
+// }
+```
+
+
+
+### 完善版本2，循环引用， 引用丢失
+
+1. 解决循环应用：
+   1. 创建一个Map。记录下已经拷贝过的对象，如果说已经拷贝过，那直接返回它行了。
+   2. **这里有一个潜在的坑**： 就是map 上的 key 和 map 构成了强引用关系，这是相当危险的
+      1. 被弱引用的对象可以在任何时候被回收，而对于强引用来说，只要这个强引用还在，那么对象无法被回收。拿上面的例子说，map 和 a一直是强引用的关系， 在程序结束之前，a 所占的内存空间一直**不会被释放**
+      2. **解决办法：**让 map 的 key 和 map 构成弱引用即可。ES6给我们提供了这样的数据结构，它的名字叫WeakMap，它是一种特殊的Map, 其中的键是弱引用的。其键必须是对象，而值可以是任意的。`const deepClone = (target, map = new WeakMap())` 
+
+```text
+// 引用丢失问题
+
+var obj1 = {};
+var obj2 = {a: obj1, b: obj1};
+
+obj2.a === obj2.b; 
+// true
+
+var obj3 = cloneDeep2(obj2);
+obj3.a === obj3.b; 
+// false
+//上面的对象 obj2，obj2 的键值 a 和 b 同时引用了同一个对象 obj1
+//，使用 cloneDeep2 进行深拷贝后就丢失了引用关系变成了两个不同的对象
+
+
+
+
+function isObject(obj) {
+	return typeof obj === 'object' && obj != null;
+}
+
+function cloneDeep3(source, hash = new WeakMap()) {
+
+    if (!isObject(source)) return source; 
+    if (hash.has(source)) return hash.get(source); // 新增代码，查哈希表
+      
+    var target = Array.isArray(source) ? [] : {};
+    hash.set(source, target); // 新增代码，哈希表设值
+    
+    for(var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+            if (isObject(source[key])) {
+                target[key] = cloneDeep3(source[key], hash); // 新增代码，传入哈希表
+            } else {
+                target[key] = source[key];
+            }
+        }
+    }
+    return target;
+}
+
+
+a.circleRef = a;
+
+var b = cloneDeep3(a);
+console.log(b);
+// {
+// 	name: "muyiy",
+// 	a1: undefined,
+//	a2: null,
+// 	a3: 123,
+// 	book: {title: "You Don't Know JS", price: "45"},
+// 	circleRef: {name: "muyiy", book: {…}, a1: undefined, a2: null, a3: 123, …}
+// }
+```
+
+### 完善版本3特殊对象
+
+
+
+```text
 
 
 // Solution 4
@@ -800,25 +980,12 @@ const deepClone = (target, map = new WeakMap()) => {
 }
 ```
 
-1.  `JSON.parse()`
-   1. 问题: 无法解决循环引用的问题。举个例子：
-   2. 无法拷贝一写特殊的对象，诸如 RegExp, Date, Set, Map等。
-   3. 无法拷贝**函数\(function\)**。
-2. 简易版本
-3. 解决循环应用：
-   1. 创建一个Map。记录下已经拷贝过的对象，如果说已经拷贝过，那直接返回它行了。
-   2. **这里有一个潜在的坑**： 就是map 上的 key 和 map 构成了强引用关系，这是相当危险的
-      1. 被弱引用的对象可以在任何时候被回收，而对于强引用来说，只要这个强引用还在，那么对象无法被回收。拿上面的例子说，map 和 a一直是强引用的关系， 在程序结束之前，a 所占的内存空间一直**不会被释放**
-      2. **解决办法：**让 map 的 key 和 map 构成弱引用即可。ES6给我们提供了这样的数据结构，它的名字叫WeakMap，它是一种特殊的Map, 其中的键是弱引用的。其键必须是对象，而值可以是任意的。`const deepClone = (target, map = new WeakMap())` 
-4. 解决特殊对象：
+1. 解决特殊对象：
    1. 对于特殊的对象，我们使用以下方式来鉴别:`Object.prototype.toString.call(obj);`
    2. 然后 分别处理 可继续遍历的， 和 不可遍历的对象
    3. 不可遍历对象 ， 不同对象有不同的处理
-5. 解决拷贝函数问题
-   1. 一种是普通函数，另一种是箭头函数。每个普通函数都是 Function的实例，而箭头函数不是任何类的实例，每次调用都是不一样的引用。那我们只需要 处理普通函数的情况，箭头函数直接返回它本身就好了。
-   2. 那么如何来区分两者呢？
-      1. 利用原型。箭头函数是不存在原型的。
-6. [别人的 post](https://juejin.cn/post/6975880204447121422/#heading-15)
+
+
 
 
 

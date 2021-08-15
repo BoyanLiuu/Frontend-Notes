@@ -2390,11 +2390,27 @@ var a = 2;
 
 我们知道，使用了`"use strict"`开启严格模式会使得`"use strict"`以下代码的`this`为`undefined`，也就是这里的立即执行函数中的`this`是`undefined`。
 
-但是调用`foo()`函数的依然是`window`，所以`foo()`中的`this`依旧是`window`，所以会打印出`2`
+但是调用`foo()`函数的依然是`window`，所以`foo()`中的`this`依旧是`window`，所以会打印出`2`。
 
-#### 综合题 5
 
-{% embed url="https://www.cnblogs.com/xxcanghai/p/5189353.html" %}
+
+####  
+
+####  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2417,8 +2433,6 @@ new Foo.getName();
 new Foo().getName();
 new new Foo().getName();
 ```
-
-#### 综合题 6
 
 ```text
 /**
