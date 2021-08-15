@@ -190,12 +190,6 @@
 
 
 
-深浅拷贝
-
-{% embed url="https://juejin.cn/post/6844904116339261447?utm\_source=gold\_browser\_extension\#heading-6" %}
-
-
-
 
 
 函数式编程
