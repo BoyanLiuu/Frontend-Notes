@@ -2,10 +2,7 @@
 
 {% embed url="https://juejin.cn/post/6873513007037546510" %}
 
-```text
 
-}
-```
 
 {% embed url="https://juejin.cn/post/6946022649768181774" %}
 
@@ -681,6 +678,13 @@ obj.name = obj;
 //"TypeError: Converting circular structure to JSON
 JSON.parse(JSON.stringify(obj));
 
+
+// 问题2： 引用同一个东西却返还不同的指向 引用丢失
+var obj2 = {a: obj1, b: obj1};
+
+var obj5 = JSON.parse(JSON.stringify(obj2));
+
+
 // 问题 3
 let obj = {
   name:'boyan',
@@ -696,294 +700,354 @@ console.log(objB.getName());
 ```
 
 * 这种方法使用较为简单，可以满足基本日常的深拷贝需求，而且能够处理JSON格式能表示的所有数据类型，但是有以下几个缺点：
-  * 问题: 无法解决循环引用的问题。举个例子：
+  * **无法解决循环引用的问题**
+  * **引用丢失**
+  * **NaN 和 Infinity 的数值及 null 都会当做 null，**
   * 无法拷贝一写特殊的对象，诸如 RegExp, Date, Set, Map等。
-  * 无法拷贝**函数\(function\)**。
+  * **这些对象 Map、Set、WeakMap、WeakSet 仅会序列化可枚举的属性**
+  * **无法拷贝函数\(function\)。**
   * `undefined`、`任意函数`、`Symbol 值`，在序列化过程有两种不同的情况。若出现在非数组对象的属性值中，会被忽略；若出现在数组中，会转换成 `null`
 
 ### 基础方法 2，简易版本
 
 *  就是对每一层的数据都实现一次 `创建对象->对象赋值` 的操作
+* 接下来会给予 json.stringfy\(\) 缺陷 一步一步改进
+* 
 
-一个简单的深拷贝就完成了，但是这个实现还存在很多问题。
-
-
-
-*  没有对传入参数进行校验，传入 `null` 时应该返回 `null` 而不是 `{}`
-* 对于对象的判断逻辑不严谨，因为 typeof null === 'object'
-* 没有考虑数组的兼容
 
 ```text
+const deepCopy = source => {
+  // 判断是否为数组
+  const isArray = arr => Object.prototype.toString.call(arr) === '[object Array]'
 
-// 木易杨
-function cloneDeep1(source) {
-    var target = {};
-    for(var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-            if (typeof source[key] === 'object') {
-                target[key] = cloneDeep1(source[key]); // 注意这里
-            } else {
-                target[key] = source[key];
-            }
-        }
+  // 判断是否为引用类型
+  const isObject = obj => obj !== null && (typeof obj === 'object' || typeof obj === 'function')
+
+  // 拷贝（递归思路）
+  const copy = input => {
+    //如果是 
+    if (typeof input === 'function' || !isObject(input)) return input
+
+    const output = isArray(input) ? [] : {}
+    for (let key in input) {
+      if (input.hasOwnProperty(key)) {
+        const value = input[key]
+        output[key] = copy(value)
+      }
     }
-    return target;
+
+    return output
+  }
+
+  return copy(source)
 }
-
-// 使用上面测试用例测试一下
-var b = cloneDeep1(a);
-console.log(b);
-// { 
-//   name: 'muyiy', 
-//   book: { title: 'You Don\'t Know JS', price: '45' }, 
-//   a1: undefined,
-//   a2: {},
-//   a3: 123
-// }
-
 
 
 
 ```
 
-### 完善版本1， 拷贝数组
+### 
 
-* 解决了数组兼容 并且 完成了 判断 object 的情况
+### 完善版本1， 针对布尔值、数值、字符串的包装对象的处理
+
+*  由于 [for...in](https://link.juejin.cn/?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FReference%2FStatements%2Ffor...in) 无法遍历**不可枚举**的属性。例如，包装对象的 `[[PrimitiveValue]]` 内部属性，因此需要我们特殊处理一下。
+*  包装对象的 `[[PrimitiveValue]]` 属性可通过 `valueOf()` 方法获取。
+* 其中的 PrimitiveValue 就没法copy进去 我们
+
+![](../.gitbook/assets/image%20%28136%29.png)
+
+![&#x4E4B;&#x524D;code&#x7684;&#x7ED3;&#x679C; &#x6CA1;&#x6709; PrimitiveValue](../.gitbook/assets/image%20%28137%29.png)
 
 ```text
-// 木易杨
-typeof null //"object"
-typeof {} //"object"
-typeof [] //"object"
-typeof function foo(){} //"function" (特殊情况)
+const deepCopy = source => {
+    // 获取数据类型（本次新增）
+    const getClass = x => Object.prototype.toString.call(x)
 
-function isObject(obj) {
-	return typeof obj === 'object' && obj != null;
-}
+    // 判断是否为数组
+    const isArray = arr => getClass(arr) === '[object Array]'
+
+    // 判断是否为引用类型
+    const isObject = obj => obj !== null && (typeof obj === 'object' || typeof obj === 'function')
+
+    // 判断是否为包装对象（本次新增）
+    const isWrapperObject = obj => {
+        const theClass = getClass(obj)
+        const isWrapper = ['[object Boolean]', '[object Number]', '[object String]', '[object Symbol]', '[object BigInt]']
+        return isWrapper.includes(theClass)
+    }
 
 
-// 木易杨
-function cloneDeep2(source) {
 
-    if (!isObject(source)) return source; // 非对象返回自身
-      
-    var target = Array.isArray(source) ? [] : {};
-    for(var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-            if (isObject(source[key])) {
-                target[key] = cloneDeep2(source[key]); // 注意这里
-            } else {
-                target[key] = source[key];
-            }
+    // 处理包装对象（本次新增）
+    const handleWrapperObject = obj => {
+        const type = getClass(obj)
+        switch (type) {
+            case '[object Boolean]':
+                return Object(Boolean.prototype.valueOf.call(obj))
+            case '[object Number]':
+                return Object(Number.prototype.valueOf.call(obj))
+            case '[object String]':
+                return Object(String.prototype.valueOf.call(obj))
+            case '[object Symbol]':
+                return Object(Symbol.prototype.valueOf.call(obj))
+            case '[object BigInt]':
+                return Object(BigInt.prototype.valueOf.call(obj))
+            default:
+                return undefined
         }
     }
-    return target;
+
+
+    // 拷贝（递归思路）
+    const copy = input => {
+        //如果是 
+        if (typeof input === 'function' || !isObject(input)) return input
+        // 处理包装对象（本次新增）
+        if (isWrapperObject(input)) {
+            return handleWrapperObject(input)
+        }
+        const output = isArray(input) ? [] : {}
+        for (let key in input) {
+            if (input.hasOwnProperty(key)) {
+                const value = input[key]
+                output[key] = copy(value)
+            }
+        }
+
+        return output
+    }
+
+    return copy(source)
 }
 
-// 使用上面测试用例测试一下
-var b = cloneDeep2(a);
-console.log(b);
-// { 
-//   name: 'muyiy', 
-//   book: { title: 'You Don\'t Know JS', price: '45' },
-//   a1: undefined,
-//   a2: null,
-//   a3: 123
-// }
+
+let a = {
+    bool: new Boolean(false),
+    num: new Number(123),
+    str: new String("xxx"),
+    symbol: Object(Symbol("desc"))
+}
+
+let b = deepCopy(a);
+console.log(b)
 ```
 
 
 
-### 完善版本2，循环引用， 引用丢失
+### 完善版本2，**针对函数的处理**
+
+* 直接返回就好了 通常不需要管
+
+\*\*\*\*
+
+```text
+const copy = input => {
+  if (typeof input === 'function' || !isObject(input)) return input
+}
+
+```
+
+### 完善版本3，**针对以 Symbol 值作为属性键的处理**
+
+*  由于以上 `for...in` 方法无法遍历 `Symbol` 的属性键，因此：
+
+```text
+const sym = Symbol('desc')
+const obj = {
+  [sym]: 'This is symbol value'
+}
+console.log(deepCopy(obj)) // {}，拷贝结果没有 [sym] 属性
+
+```
+
+* [Object.getOwnPropertySymbols\(\)](https://link.juejin.cn?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FReference%2FGlobal_Objects%2FObject%2FgetOwnPropertySymbols) 它返回一个对象自身的所有 Symbol 属性的数组，包括不可枚举的属性。
+* [Object.prototype.propertyIsEnumerable\(\)](https://link.juejin.cn?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FReference%2FGlobal_Objects%2FObject%2FpropertyIsEnumerable) 它返回一个布尔值，表示指定的属性是否可枚举。
+
+```text
+const deepCopy = source => {
+    // 获取数据类型（本次新增）
+    const getClass = x => Object.prototype.toString.call(x)
+
+    // 判断是否为数组
+    const isArray = arr => getClass(arr) === '[object Array]'
+
+    // 判断是否为引用类型
+    const isObject = obj => obj !== null && (typeof obj === 'object' || typeof obj === 'function')
+
+    // 判断是否为包装对象（本次新增）
+    const isWrapperObject = obj => {
+        const theClass = getClass(obj)
+        const isWrapper = ['[object Boolean]', '[object Number]', '[object String]', '[object Symbol]', '[object BigInt]']
+        return isWrapper.includes(theClass)
+    }
+
+
+
+    // 处理包装对象（本次新增）
+    const handleWrapperObject = obj => {
+        const type = getClass(obj)
+        switch (type) {
+            case '[object Boolean]':
+                return Object(Boolean.prototype.valueOf.call(obj))
+            case '[object Number]':
+                return Object(Number.prototype.valueOf.call(obj))
+            case '[object String]':
+                return Object(String.prototype.valueOf.call(obj))
+            case '[object Symbol]':
+                return Object(Symbol.prototype.valueOf.call(obj))
+            case '[object BigInt]':
+                return Object(BigInt.prototype.valueOf.call(obj))
+            default:
+                return undefined
+        }
+    }
+
+
+    // 拷贝（递归思路）
+    const copy = input => {
+        //如果是 
+        if (typeof input === 'function' || !isObject(input)) return input
+        // 处理包装对象（本次新增）
+        if (isWrapperObject(input)) {
+            return handleWrapperObject(input)
+        }
+        const output = isArray(input) ? [] : {}
+        for (let key in input) {
+            if (input.hasOwnProperty(key)) {
+                const value = input[key]
+                output[key] = copy(value)
+            }
+        }
+
+        return output
+    }
+
+    return copy(source)
+}
+
+
+const source = {}
+const sym1 = Symbol('1')
+const sym2 = Symbol('2')
+Object.defineProperties(source,
+  {
+    [sym1]: {
+      value: 'This is symbol value.',
+      enumerable: true
+    },
+    [sym2]: {
+      value: 'This is a non-enumerable property.',
+      enumerable: false
+    }
+  }
+)
+
+
+console.log(deepCopy(source))
+```
+
+![Output](../.gitbook/assets/image%20%28135%29.png)
+
+### 完善版本**3**，循环引用， 引用丢失
 
 1. 解决循环应用：
    1. 创建一个Map。记录下已经拷贝过的对象，如果说已经拷贝过，那直接返回它行了。
    2. **这里有一个潜在的坑**： 就是map 上的 key 和 map 构成了强引用关系，这是相当危险的
-      1. 被弱引用的对象可以在任何时候被回收，而对于强引用来说，只要这个强引用还在，那么对象无法被回收。拿上面的例子说，map 和 a一直是强引用的关系， 在程序结束之前，a 所占的内存空间一直**不会被释放**
+      1. 被弱引用的对象可以在任何时候被回收，而对于强引用来说，只要这个强引用还在，那么对象无法被回收。**假设我们使用的 Map，那么图中的 foo 对象和我们深拷贝内部的 const map = new Map\(\) 创建的 map 对象一直都是强引用关系，那么在程序结束之前，foo 不会被回收，其占用的内存空间一直不会被释放。**
       2. **解决办法：**让 map 的 key 和 map 构成弱引用即可。ES6给我们提供了这样的数据结构，它的名字叫WeakMap，它是一种特殊的Map, 其中的键是弱引用的。其键必须是对象，而值可以是任意的。`const deepClone = (target, map = new WeakMap())` 
+2. 解决引用丢失：
+   1. 因为只要存储已拷贝过的对象就可以了
 
 ```text
-// 引用丢失问题
+const deepCopy = source => {
+    // 创建一个 WeakMap 对象，记录已拷贝过的对象（本次新增）
+    const weakmap = new WeakMap()
+    // 获取数据类型（本次新增）
+    const getClass = x => Object.prototype.toString.call(x)
 
-var obj1 = {};
-var obj2 = {a: obj1, b: obj1};
+    // 判断是否为数组
+    const isArray = arr => getClass(arr) === '[object Array]'
 
-obj2.a === obj2.b; 
-// true
+    // 判断是否为引用类型
+    const isObject = obj => obj !== null && (typeof obj === 'object' || typeof obj === 'function')
 
-var obj3 = cloneDeep2(obj2);
-obj3.a === obj3.b; 
-// false
-//上面的对象 obj2，obj2 的键值 a 和 b 同时引用了同一个对象 obj1
-//，使用 cloneDeep2 进行深拷贝后就丢失了引用关系变成了两个不同的对象
+    // 判断是否为包装对象（本次新增）
+    const isWrapperObject = obj => {
+        const theClass = getClass(obj)
+        const isWrapper = ['[object Boolean]', '[object Number]', '[object String]', '[object Symbol]', '[object BigInt]']
+        return isWrapper.includes(theClass)
+    }
 
 
 
-
-function isObject(obj) {
-	return typeof obj === 'object' && obj != null;
-}
-
-function cloneDeep3(source, hash = new WeakMap()) {
-
-    if (!isObject(source)) return source; 
-    if (hash.has(source)) return hash.get(source); // 新增代码，查哈希表
-      
-    var target = Array.isArray(source) ? [] : {};
-    hash.set(source, target); // 新增代码，哈希表设值
-    
-    for(var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-            if (isObject(source[key])) {
-                target[key] = cloneDeep3(source[key], hash); // 新增代码，传入哈希表
-            } else {
-                target[key] = source[key];
-            }
+    // 处理包装对象（本次新增）
+    const handleWrapperObject = obj => {
+        const type = getClass(obj)
+        switch (type) {
+            case '[object Boolean]':
+                return Object(Boolean.prototype.valueOf.call(obj))
+            case '[object Number]':
+                return Object(Number.prototype.valueOf.call(obj))
+            case '[object String]':
+                return Object(String.prototype.valueOf.call(obj))
+            case '[object Symbol]':
+                return Object(Symbol.prototype.valueOf.call(obj))
+            case '[object BigInt]':
+                return Object(BigInt.prototype.valueOf.call(obj))
+            default:
+                return undefined
         }
     }
-    return target;
-}
 
 
-a.circleRef = a;
+    // 拷贝（递归思路）
+    const copy = input => {
+        //如果是 
+        if (typeof input === 'function' || !isObject(input)) return input
 
-var b = cloneDeep3(a);
-console.log(b);
-// {
-// 	name: "muyiy",
-// 	a1: undefined,
-//	a2: null,
-// 	a3: 123,
-// 	book: {title: "You Don't Know JS", price: "45"},
-// 	circleRef: {name: "muyiy", book: {…}, a1: undefined, a2: null, a3: 123, …}
-// }
-```
+        if (weakmap.has(input)) {
+            return weakmap.get(input)
+        }
+        // 处理包装对象（本次新增）
+        if (isWrapperObject(input)) {
+            return handleWrapperObject(input)
+        }
+        const output = isArray(input) ? [] : {}
+        // 记录每次拷贝的对象
+        weakmap.set(input, output)
+        for (let key in input) {
+            if (input.hasOwnProperty(key)) {
+                const value = input[key]
+                output[key] = copy(value)
+            }
+        }
 
-### 完善版本3特殊对象
-
-
-
-```text
-
-
-// Solution 4
-// 解决 特殊对象
-
-const getType = obj => Object.prototype.toString.call(obj);
-
-const isObject = (target) => (typeof target === 'object' || typeof target === 'function') && target !== null;
-
-const canTraverse = {
-  '[object Map]': true,
-  '[object Set]': true,
-  '[object Array]': true,
-  '[object Object]': true,
-  '[object Arguments]': true,
-};
-// 不可遍历的对象
-const mapTag = '[object Map]';
-const setTag = '[object Set]';
-const boolTag = '[object Boolean]';
-const numberTag = '[object Number]';
-const stringTag = '[object String]';
-const symbolTag = '[object Symbol]';
-const dateTag = '[object Date]';
-const errorTag = '[object Error]';
-const regexpTag = '[object RegExp]';
-const funcTag = '[object Function]';
-
-const handleRegExp = (target) => {
-  const { source, flags } = target;
-  return new target.constructor(source, flags);
-}
-
-const handleFunc = (func) => {
-  // 箭头函数直接返回自身
-  if(!func.prototype) return func;
-  const bodyReg = /(?<={)(.|\n)+(?=})/m;
-  const paramReg = /(?<=\().+(?=\)\s+{)/;
-  const funcString = func.toString();
-  // 分别匹配 函数参数 和 函数体
-  const param = paramReg.exec(funcString);
-  const body = bodyReg.exec(funcString);
-  if(!body) return null;
-  if (param) {
-    const paramArr = param[0].split(',');
-    return new Function(...paramArr, body[0]);
-  } else {
-    return new Function(body[0]);
-  }
-}
-
-const handleNotTraverse = (target, tag) => {
-  const Ctor = target.constructor;
-  switch(tag) {
-    case boolTag:
-      return new Object(Boolean.prototype.valueOf.call(target));
-    case numberTag:
-      return new Object(Number.prototype.valueOf.call(target));
-    case stringTag:
-      return new Object(String.prototype.valueOf.call(target));
-    case symbolTag:
-      return new Object(Symbol.prototype.valueOf.call(target));
-    case errorTag: 
-    case dateTag:
-      return new Ctor(target);
-    case regexpTag:
-      return handleRegExp(target);
-    case funcTag:
-      return handleFunc(target);
-    default:
-      return new Ctor(target);
-  }
-}
-
-const deepClone = (target, map = new WeakMap()) => {
-  if(!isObject(target)) 
-    return target;
-  let type = getType(target);
-  let cloneTarget;
-  if(!canTraverse[type]) {
-    // 处理不能遍历的对象
-    return handleNotTraverse(target, type);
-  }else {
-    // 这波操作相当关键，可以保证对象的原型不丢失！
-    let ctor = target.constructor;
-    cloneTarget = new ctor();
-  }
-
-  if(map.get(target)) 
-    return target;
-  map.set(target, true);
-
-  if(type === mapTag) {
-    //处理Map
-    target.forEach((item, key) => {
-      cloneTarget.set(deepClone(key, map), deepClone(item, map));
-    })
-  }
-  
-  if(type === setTag) {
-    //处理Set
-    target.forEach(item => {
-      cloneTarget.add(deepClone(item, map));
-    })
-  }
-
-  // 处理数组和对象
-  for (let prop in target) {
-    if (target.hasOwnProperty(prop)) {
-        cloneTarget[prop] = deepClone(target[prop], map);
+        return output
     }
-  }
-  return cloneTarget;
+
+    return copy(source)
 }
+
+// 循环引用
+const foo ={name:"ssss"}
+foo.bar =foo;
+console.log(deepCopy(foo))
+
+
+// 引用丢失
+const obj ={obj1:foo,obj2:foo}
+console.log(obj.obj1 ===obj.obj2)//true
+const copyObj = deepCopy(obj);
+console.log(copyObj.obj1 === copyObj.obj2);// 上一个版本 会返还false
+
+
 ```
 
-1. 解决特殊对象：
-   1. 对于特殊的对象，我们使用以下方式来鉴别:`Object.prototype.toString.call(obj);`
-   2. 然后 分别处理 可继续遍历的， 和 不可遍历的对象
-   3. 不可遍历对象 ， 不同对象有不同的处理
+{% embed url="https://juejin.cn/post/6975880204447121422/\#heading-10" %}
+
+{% embed url="https://juejin.cn/post/6844903692756336653\#heading-3" %}
+
+* 没有完全写完 还有一些细节 看上面这个link
 
 
 
