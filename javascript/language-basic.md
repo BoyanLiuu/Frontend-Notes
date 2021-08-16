@@ -5818,6 +5818,16 @@ const convert2Obj = compose(genObj('name'), capitalizeName)
 
 
 
+## 40.ES6语法知识点
+
+{% embed url="https://juejin.cn/post/6844903775329583112\#heading-31" %}
+
+{% embed url="https://juejin.cn/post/6844903959283367950" %}
+
+
+
+
+
 
 
 
