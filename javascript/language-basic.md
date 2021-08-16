@@ -5826,6 +5826,45 @@ const convert2Obj = compose(genObj('name'), capitalizeName)
 
 
 
+## 41.模块化 需要额外查
+
+* 解决命名冲突
+* 提供复用性
+* 提高代码可维护性
+
+### 立即执行函数
+
+在早期，使用立即执行函数实现模块化是常见的手段，通过函数作用域解决了命名冲突、污染全局作用域的问题
+
+```text
+(function(globalVariable){
+   globalVariable.test = function() {}
+   // ... 声明各种变量、函数都不会污染全局作用域
+})(globalVariable)
+```
+
+### AMD 和 CMD
+
+```text
+// AMD
+define(['./a', './b'], function(a, b) {
+  // 加载模块完毕可以使用
+  a.do()
+  b.do()
+})
+// CMD
+define(function(require, exports, module) {
+  // 加载模块
+  // 可以把 require 写在函数体的任意地方实现延迟加载
+  var a = require('./a')
+  a.doSomething()
+})
+```
+
+
+
+
+
 
 
 
