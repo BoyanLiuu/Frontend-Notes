@@ -5781,6 +5781,43 @@ test();
 * 原因 在 foreach 里面we are not waiting for the callback to be done, so using a function that returns a promise won't wait for the promise to resolve everytime.但是实际却是并行执行了。
 * **解决办法 使用 普通 for** 
 
+\*\*\*\*
+
+## **39.Functional Programming**
+
+**Functional programming \(often abbreviated FP\) is the process of building software by composing pure functions**
+
+### Functions as first - class objects
+
+```text
+const convert2Obj = compose(genObj('name'), capitalizeName)
+
+```
+
+* This means you can use functions as if they were variables or constants
+* You can combine functions with other functions and generate new functions in the process
+
+### Declarative Programming
+
+* 函数式编程大多时候都是在声明我需要做什么，而非怎么去做
+* ，因为声明式代码大多都是接近自然语言的，同时，它解放了大量的人力，因为它不关心具体的实现，因此它可以把优化能力交给具体的实现，这也方便我们进行分工协作。
+* SQL 语句就是声明式的，你无需关心 Select 语句是如何实现的，不同的数据库会去实现它自己的方法并且优化。React 也是声明式的，你只要描述你的 UI，接下来状态变化后 UI 如何更新，是 React 在运行时帮你处理的，而不是靠你自己去渲染和优化 diff 算法。 
+
+### Pure function
+
+{% embed url="https://boyanliu.hashnode.dev/the-core-feature-of-functional-programming-pure-function" %}
+
+### high Order Functions
+
+* functions like map, filter, reduce, etc
+*  They are functions that take other functions as parameters. They can either return a new function or a result based on the function that was passed to it
+
+### curry Functions
+
+* 25 Bullet point
+
+
+
 
 
 
