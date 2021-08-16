@@ -1,4 +1,4 @@
-# Write your own JS API
+# JS 手写
 
 {% embed url="https://juejin.cn/post/6873513007037546510" %}
 
