@@ -8,6 +8,22 @@ react技术栈,推荐阅读的源码是react,react-router,redux,react-redux,axio
 
 [若川的源码系列](https://juejin.cn/user/1415826704971918/posts)
 
+
+
+{% embed url="https://react.iamkasong.com/diff/prepare.html\#diff%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84" %}
+
+{% embed url="https://yuchengkai.cn/react/2019-07-29.html\#setstate-%E8%83%8C%E5%90%8E%E7%9A%84%E6%89%B9%E9%87%8F%E6%9B%B4%E6%96%B0%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0" %}
+
+{% embed url="https://juejin.cn/post/6844903830887366670\#heading-24" %}
+
+{% embed url="https://github.com/sl1673495/blogs/issues/52" %}
+
+{% embed url="https://juejin.cn/post/6844904103504527374\#heading-20" %}
+
+
+
+
+
 ## JSX
 
 ###  `createElement`  
