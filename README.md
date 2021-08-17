@@ -12,7 +12,6 @@
 * [原生JS 灵魂之问上](https://juejin.cn/post/6844903974378668039)
 * [原生JS 灵魂之问中](https://juejin.cn/post/6844903986479251464)
 * [原生JS 灵魂之问下](https://juejin.cn/post/6844904004007247880)
-* https://juejin.cn/book/6844733763675488269/section/6844733763742597127
 * [ES6 入门教程](https://es6.ruanyifeng.com/)
 * [Javascript 教程](https://wangdoc.com/javascript/)
 * [https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblLUxZFqOA2vI2F&view=vew0lbb2R4](https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblLUxZFqOA2vI2F&view=vew0lbb2R4)
