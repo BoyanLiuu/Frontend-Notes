@@ -17,11 +17,18 @@
 * [Javascript 教程](https://wangdoc.com/javascript/)
 * [https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblLUxZFqOA2vI2F&view=vew0lbb2R4](https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblLUxZFqOA2vI2F&view=vew0lbb2R4)
 * [https://zh.javascript.info/](https://zh.javascript.info/)
-* [https://github.com/LinDaiDai/niubility-coding-js](https://github.com/LinDaiDai/niubility-coding-js)
+
+
 
 
 
 ## 知识体系
+
+
+
+{% embed url="https://github.com/LinDaiDai/niubility-coding-js" %}
+
+
 
 {% embed url="https://juejin.cn/post/6844904103504527374" %}
 
@@ -58,56 +65,6 @@
 {% embed url="https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/async%20%26%20performance/ch3.md" %}
 
 
-
-{% embed url="https://wangdoc.com/javascript/async/promise.html" %}
-
-{% embed url="https://juejin.cn/post/6844903607968481287" %}
-
-
-
-* 看 红宝书
-
-
-
-## Promise 面试题：  
-
-{% embed url="https://juejin.cn/post/6844903808200343559" %}
-
-{% embed url="https://juejin.cn/post/6945319439772434469" %}
-
-{% embed url="https://juejin.cn/post/6844904077537574919" %}
-
-
-
-
-
-## 原型链
-
-{% embed url="https://juejin.cn/post/6844903475021627400" %}
-
-{% embed url="https://juejin.cn/post/6934498361475072014" %}
-
-
-
-{% embed url="https://juejin.cn/post/6844904093828251662" %}
-
-
-
-{% embed url="https://juejin.cn/post/6844903454599561230" %}
-
-
-
-{% embed url="https://juejin.cn/post/6844903567375990791" %}
-
-
-
-{% embed url="https://juejin.cn/post/6844903797039300615" %}
-
-{% embed url="https://juejin.cn/post/6844903782229213197" %}
-
-
-
-{% embed url="https://juejin.cn/post/6844903989088092174" %}
 
 
 
@@ -189,16 +146,6 @@
 
 
 
-
-
-
-函数式编程
-
-{% embed url="https://juejin.cn/post/6844904116339261447?utm\_source=gold\_browser\_extension\#heading-8" %}
-
-常用方法
-
-{% embed url="https://juejin.cn/post/6844904116339261447?utm\_source=gold\_browser\_extension\#heading-11" %}
 
 
 
