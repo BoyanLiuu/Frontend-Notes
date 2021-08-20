@@ -194,6 +194,35 @@ function ThemedButton() {
 
 * Context lets you “broadcast” such data, and changes to it, to all components below. Common examples where using context might be simpler than the alternatives include managing the current locale, theme, or a data cache
 
+#### 每次 Render 都有自己的事件处理
+
+```text
+const App = () => {
+  const [temp, setTemp] = React.useState(5);
+
+  const log = () => {
+    setTimeout(() => {
+      console.log("3 秒前 temp = 5，现在 temp =", temp);
+    }, 3000);
+  };
+
+  return (
+    <div
+      onClick={() => {
+        log();
+        setTemp(3);
+        // 3 秒前 temp = 5，现在 temp = 5
+      }}
+    >
+      xyz
+    </div>
+  );
+};
+
+```
+
+*  在 `log` 函数执行的那个 Render 过程里，`temp` 的值可以看作常量 `5`，**执行 `setTemp(3)` 时会交由一个全新的 Render 渲染**，所以不会执行 `log` 函数。**而 3 秒后执行的内容是由 `temp` 为 `5` 的那个 Render 发出的**，所以结果自然为 `5`。
+
 ### useReducer\(\):
 
 {% embed url="https://codesandbox.io/s/react-usereducer-redux-forked-m6wu4?file=/src/index.js" %}
@@ -339,6 +368,7 @@ function TextInputWithFocusButton() {
 
 *  The “ref” object is a generic container whose `current` property is mutable and can hold any value, similar to an instance property on a class
 * 普遍操作，用来操作dom
+*  **可以认为 `ref` 在所有 Render 过程中保持着唯一引用，因此所有对 `ref` 的赋值或取值，拿到的都只有一个最终状态**，而不会在每个 Render 间存在隔离。
 
 ### 自定义Hooks
 
