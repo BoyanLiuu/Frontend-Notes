@@ -233,3 +233,158 @@ const memoizedCallback = useCallback(
 
 
 
+### useMemo\(\):
+
+{% embed url="https://codesandbox.io/s/react-usememo-voelc?file=/src/index.js:0-1222" %}
+
+
+
+
+
+```text
+//基本样子
+const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+```
+
+* _useMemo is used to memoize values._
+* Pass a “create” function and an array of dependencies
+* If no array is provided, a new value will be computed on every render.
+*  `useMemo` invokes the provided function and caches its result.
+*  `useMemo` can cache a function value too. In other words, it is a generalised version of `useCallback` and can replace it as in the following example
+
+![](.gitbook/assets/image%20%28141%29.png)
+
+```text
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+import "./styles.css";
+
+const users = [
+  { id: "a", name: "Robin" },
+  { id: "b", name: "Dennis" }
+];
+
+const App = () => {
+  const [text, setText] = useState("");
+  const [search, setSearch] = useState("");
+  console.log("App is running");
+  const handleText = (event) => {
+    setText(event.target.value);
+  };
+
+  const handleSearch = () => {
+    setSearch(text);
+  };
+
+  const filteredUsers = users.filter((user) => {
+    console.log("Filter function is running ...");
+    return user.name.toLowerCase().includes(search.toLowerCase());
+  });
+
+  return (
+    <div>
+      <input type="text" value={text} onChange={handleText} />
+      <button type="button" onClick={handleSearch}>
+        Search
+      </button>
+
+      <List list={filteredUsers} />
+    </div>
+  );
+};
+
+const List = ({ list }) => {
+  return (
+    <ul>
+      {list.map((item) => (
+        <ListItem key={item.id} item={item} />
+      ))}
+    </ul>
+  );
+};
+
+const ListItem = ({ item }) => {
+  return <li>{item.name}</li>;
+};
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
+
+```
+
+* 这里的  filteredUsers function 在我们每次输入的时候 都会 run， 因为我们每次输入时候 都会 setText\(\) 然后导致App 重新 render
+*   However, if we would deal with a large set of data in this array and run the filter's callback function for every keystroke, we would maybe slow down the application. Therefore, you can use React's useMemo Hook to **memoize a functions return value\(s\)** and to run a function only if its dependencies \(here `search`\) have changed:
+
+![](.gitbook/assets/image%20%28142%29.png)
+
+*  Now, this function is only executed once the `search` state changes. It doesn't run if the `text` state changes, because that's not a dependency for this filter function and thus not a dependency in the dependency array for the useMemo hook
+
+### useRef
+
+```text
+function TextInputWithFocusButton() {
+  const inputEl = useRef(null);
+  const onButtonClick = () => {
+    // `current` points to the mounted text input element
+    inputEl.current.focus();
+  };
+  return (
+    <>
+      <input ref={inputEl} type="text" />
+      <button onClick={onButtonClick}>Focus the input</button>
+    </>
+  );
+}
+```
+
+*  The “ref” object is a generic container whose `current` property is mutable and can hold any value, similar to an instance property on a class
+* 普遍操作，用来操作dom
+
+### 自定义Hooks
+
+```text
+const usePerson = (personId) => {
+  const [loading, setLoading] = useState(true);
+  const [person, setPerson] = useState({});
+  useEffect(() => {
+    setLoading(true);
+    fetch(`https://swapi.co/api/people/${personId}/`)
+      .then(response => response.json())
+      .then(data => {
+        setPerson(data);
+        setLoading(false);
+      });
+  }, [personId]);  
+  return [loading, person];
+};
+
+// 在其余组件：
+const Person = ({ personId }) => {
+  const [loading, person] = usePerson(personId);
+
+  if (loading === true) {
+    return <p>Loading ...</p>;
+  }
+
+  return (
+    <div>
+      <p>You're viewing: {person.name}</p>
+      <p>Height: {person.height}</p>
+      <p>Mass: {person.mass}</p>
+    </div>
+  );
+};
+
+```
+
+### react 是怎么保证 多个 state 读取正确：
+
+* react是根据useState出现的顺序来定的
+* 所以我们没法usestate 写到 if else 里面
+
+
+
+
+
+
+
