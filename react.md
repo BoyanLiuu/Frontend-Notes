@@ -453,13 +453,195 @@ const Person = ({ personId }) => {
 
 
 
-React as a UI Runtime
+### More information on useEffect:
 
-{% embed url="https://overreacted.io/react-as-a-ui-runtime/" %}
+#### _1. Each Render Has Its Own Props and State_
 
+```text
+function Counter() {
+  const [count, setCount] = useState(0);
 
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+```
+
+ The first time our component renders, the `count` variable we get from `useState()` is `0`. When we call `setCount(1)`, React calls our component again. This time, `count` will be `1`. And so on:
+
+```text
+// During first render
+function Counter() {
+  const count = 0; // Returned by useState()
+  // ...
+  <p>You clicked {count} times</p>
+  // ...
+}
+
+// After a click, our function is called again
+function Counter() {
+  const count = 1; // Returned by useState()
+  // ...
+  <p>You clicked {count} times</p>
+  // ...
+}
+
+// After another click, our function is called again
+function Counter() {
+  const count = 2; // Returned by useState()
+  // ...
+  <p>You clicked {count} times</p>
+  // ...
+}
+```
+
+* **Whenever we update the state, React calls our component. Each render result “sees” its own `counter` state value which is a** _**constant**_ **inside our function.**
+
+#### _**2.** Each Render Has Its Own Event Handlers_
+
+{% embed url="https://codesandbox.io/s/use-effect-example-85vf6?file=/src/index.js" %}
+
+```text
+// During first render
+function Counter() {
+  const count = 0; // Returned by useState()
+  // ...
+  function handleAlertClick() {
+    setTimeout(() => {
+      alert('You clicked on: ' + count);
+    }, 3000);
+  }
+  // ...
+}
+
+// After a click, our function is called again
+function Counter() {
+  const count = 1; // Returned by useState()
+  // ...
+  function handleAlertClick() {
+    setTimeout(() => {
+      alert('You clicked on: ' + count);
+    }, 3000);
+  }
+  // ...
+}
+
+// After another click, our function is called again
+function Counter() {
+  const count = 2; // Returned by useState()
+  // ...
+  function handleAlertClick() {
+    setTimeout(() => {
+      alert('You clicked on: ' + count);
+    }, 3000);
+  }
+  // ...
+}
+```
+
+*  each render returns its own “version” of `handleAlertClick`. Each of those versions “remembers” its own `count`:
+* The alert will “capture” the state at the time I clicked the button
+* **our function gets called many times \(once per each render\), but every one of those times the count value inside of it is constant and set to a particular value \(state for that render\).**
+
+#### _3. Each Render Has Its Own Effects_
+
+```text
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    document.title = `You clicked ${count} times`;
+  });
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+```
+
+**how does the effect read the latest `count` state?** 
+
+* **It’s the effect function itself that’s different on every render.**
+
+```text
+// During first render
+function Counter() {
+  // ...
+  useEffect(
+    // Effect function from first render
+    () => {
+      document.title = `You clicked ${0} times`;
+    }
+  );
+  // ...
+}
+
+// After a click, our function is called again
+function Counter() {
+  // ...
+  useEffect(
+    // Effect function from second render
+    () => {
+      document.title = `You clicked ${1} times`;
+    }
+  );
+  // ...
+}
+
+// After another click, our function is called again
+function Counter() {
+  // ...
+  useEffect(
+    // Effect function from third render
+    () => {
+      document.title = `You clicked ${2} times`;
+    }
+  );
+  // ..
+}
+```
+
+*  So even if we speak of a single conceptual effect here \(updating the document title\), it is represented by a different function on every render — and each effect function “sees” props and state from the particular render it “belongs” to
+
+#### _4. How does clean up work?_ 
+
+* **The effect cleanup doesn’t read the “latest” props, whatever that means. It reads props that belong to the render it’s defined in:**
+
+```text
+ useEffect(() => {
+    ChatAPI.subscribeToFriendStatus(props.id, handleStatusChange);
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.id, handleStatusChange);
+    };
+  });
+  //Say props is {id: 10} on the first render, and {id: 20} on the second render.
+```
+
+*  React only runs the effects after letting the browser paint. This makes your app faster as most effects don’t need to block screen updates. Effect cleanup is also delayed. **The previous effect is cleaned up** _**after**_ **the re-render with new props:**
+  * **React renders UI for `{id: 20}`.**
+  * The browser paints. We see the UI for `{id: 20}` on the screen.
+  * **React cleans up the effect for `{id: 10}`.**
+  * React runs the effect for `{id: 20}`.
+
+#### _5. What happens when dependencies lies?_ 
+
+\_\_
 
 ## How does React tell a Class from a function?
+
+{% embed url="https://codesandbox.io/s/function-class-component-difference-1z0xt?file=/src/index.js" %}
+
+
 
 {% embed url="https://overreacted.io/how-does-react-tell-a-class-from-a-function/" %}
 
@@ -545,12 +727,15 @@ class ProfilePage extends React.Component {
 
 
 
-### Why you should use functional components at all? 
+## Why you should use functional components at all? 
 
 * Functional component are much **easier to read and test** because they are plain JavaScript functions without state or lifecycle-hooks
 * You end up with **less code**
-* **They help you to use best practices. It will get easier to separate container and presentational components because you need to think more about your component’s state if you don’t have access to setState\(\) in your component**
-* \*\*\*\*
+* They help you to use best practices. It will get easier to separate container and presentational components because you need to think more about your component’s state if you don’t have access to setState\(\) in your component
+
+
+
+\*\*\*\*
 
 
 
