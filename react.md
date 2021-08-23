@@ -75,6 +75,13 @@ react技术栈,推荐阅读的源码是react,react-router,redux,react-redux,axio
 
 ## Hooks:
 
+### The main rules of hooks:
+
+* Don’t call Hooks inside loops, conditions, or nested functions
+* Only Call Hooks from React Functions
+
+
+
 ### useState\(\):
 
 * Returns a stateful value, and a function to update it.
@@ -109,7 +116,29 @@ const [state, setState] = useState(() => {
 
 * **Lazy initial state**:The initialState argument is the state used during the initial render. In subsequent renders, it is disregarded. If the initial state is the result of an expensive computation, you may provide a function instead, which will be executed only on the initial render
 
+### How does useState\(\) work internally:
 
+{% embed url="https://medium.com/@ryardley/react-hooks-not-magic-just-arrays-cd4f1857236e" %}
+
+
+
+####  Initialisation:
+
+![](.gitbook/assets/image%20%28143%29.png)
+
+* Create two empty arrays: \`setters\` and \`state\`
+* Set a cursor to 0
+
+#### First render
+
+* Run the component function for the first time.
+*  Each `useState()` call, when first run, pushes a setter function \(bound to a cursor position\) onto the `setters` array and then pushes some state on to the `state` array.
+
+![](.gitbook/assets/image%20%28147%29.png)
+
+Each subsequent render the cursor is reset and those values are just read from each array.
+
+### 
 
 
 
@@ -149,6 +178,16 @@ useEffect(
   [props.source],
 );
 ```
+
+
+
+
+
+
+
+
+
+
 
 #### useContext\(\):
 
@@ -414,7 +453,104 @@ const Person = ({ personId }) => {
 
 
 
+React as a UI Runtime
 
+{% embed url="https://overreacted.io/react-as-a-ui-runtime/" %}
+
+
+
+## How does React tell a Class from a function?
+
+{% embed url="https://overreacted.io/how-does-react-tell-a-class-from-a-function/" %}
+
+*  React needs to call classes \(including Babel output\) _with_ `new` but it needs to call regular functions or arrow functions \(including Babel output\) _without_ `new`. And there is no reliable way to distinguish them.
+* We just detect only **React.Component** descendants
+
+```text
+// `extends` chain
+Greeting
+  → React.Component
+    → Object (implicitly)
+
+// `__proto__` chain
+new Greeting()
+  → Greeting.prototype
+    → React.Component.prototype
+      → Object.prototype
+console.log(Greeting.prototype instanceof React.Component);
+// greeting
+//   .__proto__ → Greeting.prototype (🕵️‍ We start here)
+//     .__proto__ → React.Component.prototype (✅ Found it!)
+//       .__proto__ → Object.prototype      
+```
+
+
+
+## How are function components different from classes?
+
+###  1: **Function components capture the rendered values.**
+
+```text
+function ProfilePage(props) {
+  const showMessage = () => {
+    alert('Followed ' + props.user);
+  };
+
+  const handleClick = () => {
+    setTimeout(showMessage, 3000);
+  };
+
+  return (
+    <button onClick={handleClick}>Follow</button>
+  );
+}
+
+
+class ProfilePage extends React.Component {
+  showMessage = () => {
+    alert('Followed ' + this.props.user);
+  };
+
+  handleClick = () => {
+    setTimeout(this.showMessage, 3000);
+  };
+
+  render() {
+    return <button onClick={this.handleClick}>Follow</button>;
+  }
+}
+```
+
+![Solution 2](.gitbook/assets/image%20%28144%29.png)
+
+![Solution 3 ](.gitbook/assets/image%20%28145%29.png)
+
+*  This class method reads from `this.props.user`. Props are immutable in React so they can never change. **However, `this`** _**is**_**, and has always been, mutable.**
+*  So if our component re-renders while the request is in flight, `this.props` will change, **the event handlers are a part of the render result — just like the visual output**. Our event handlers “belong” to a particular render with particular props and state.
+* How to fix this?
+  * Solution 1: Use functional components
+  * Solution 2: Another way to do it would be to read this.props early during the event, and then explicitly pass them through into the timeout completion handler:
+    * Disadvantages: make the code more verbose and error-prone with time.
+  * Solution 3 Another way is to use closure , we captured props at the time of render
+
+### 2. React lifecycle methods \(for example, componentDidMount\) cannot be used in functional components.
+
+### 3. There is no render method used in functional components.
+
+### 4. Functional Component or Stateless Component:
+
+* It is simple javascript functions that simply returns html UI
+* It is also called “stateless” components because they simply accept data and display them in some form that is they are mainly responsible for rendering UI.
+* These can be typically defined using arrow functions but can also be created with the regular function keyword.
+
+
+
+### Why you should use functional components at all? 
+
+* Functional component are much **easier to read and test** because they are plain JavaScript functions without state or lifecycle-hooks
+* You end up with **less code**
+* **They help you to use best practices. It will get easier to separate container and presentational components because you need to think more about your component’s state if you don’t have access to setState\(\) in your component**
+* \*\*\*\*
 
 
 
