@@ -633,9 +633,84 @@ function Counter() {
   * **React cleans up the effect for `{id: 10}`.**
   * React runs the effect for `{id: 20}`.
 
-#### _5. What happens when dependencies lies?_ 
+#### _5. Honest about dependencies_ 
 
-\_\_
+```text
+function Counter() {
+  const [count, setCount] = useState(0);
+  const [step, setStep] = useState(1);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCount(c => c + step);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [step]);
+
+  return (
+    <>
+      <h1>{count}</h1>
+      <input value={step} onChange={e => setStep(Number(e.target.value))} />
+    </>
+  );
+}
+```
+
+* include all the values inside the component that are used inside the effect. 
+* change our effect code so that it wouldn’t need a value that changes more often than we want
+*  **When setting a state variable depends on the current value of another state variable, you might want to try replacing them both with `useReducer`.**
+
+{% embed url="https://codesandbox.io/s/usereducer-tqv3p?file=/src/index.js" %}
+
+* Moving functions Inside effects  
+  * If we forget to update the deps of any effects that call these functions \(possibly, through other functions!\), our effects will fail to synchronize changes from our props and state.
+  * **Solution 1:**  Move functions inside effects,  **We no longer have to think about the “transitive dependencies.**
+  * **Solution 2:Wrap function into useCallBack\(\) Hook,** if we do not wrap and use that function as dependencies, it would change too often,  if `query` is the same, `getFetchUrl` also stays the same, and our effect doesn’t re-run
+
+```text
+// 有问题的 effect
+function SearchResults() {
+  const [query, setQuery] = useState('react');
+
+  // Imagine this function is also long
+  function getFetchUrl() {
+    return 'https://hn.algolia.com/api/v1/search?query=' + query;
+  }
+
+  // Imagine this function is also long
+  async function fetchData() {
+    const result = await axios(getFetchUrl());
+    setData(result.data);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // ...
+}
+
+// Solution 2: 
+function SearchResults() {
+  // ✅ Preserves identity when its own deps are the same
+  const getFetchUrl = useCallback((query) => {
+    return 'https://hn.algolia.com/api/v1/search?query=' + query;
+  }, []);  // ✅ Callback deps are OK
+
+  useEffect(() => {
+    const url = getFetchUrl('react');
+    // ... Fetch data and do something ...
+  }, [getFetchUrl]); // ✅ Effect deps are OK
+
+  useEffect(() => {
+    const url = getFetchUrl('redux');
+    // ... Fetch data and do something ...
+  }, [getFetchUrl]); // ✅ Effect deps are OK
+
+  // ...
+}
+```
+
+
 
 ## How does React tell a Class from a function?
 
