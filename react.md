@@ -810,6 +810,48 @@ class ProfilePage extends React.Component {
 
 
 
+## Understanding React's key prop
+
+{% embed url="https://zhuanlan.zhihu.com/p/112917118" %}
+
+
+
+*  React's `key` prop gives you the ability to control component instances. **Each time React renders your components, it's calling your functions to retrieve the new React elements that it uses to update the DOM**. If you return the same element types, it keeps those components/DOM nodes around, even if all\* the props changed.
+*  This allows you to return the exact same element type, but force React to unmount the previous instance, and mount a new one. This means that all state that had existed in the component at the time is completely removed and the component is "reinitialized" for all intents and purposes. For components, this means that React will run cleanup on effects \(or `componentWillUnmount`\), then it will run state initializers \(or the `constructor`\) and effect callbacks \(or `componentDidMount`\).
+* **设置了key能够提升渲染效率**
+
+\*\*\*\*
+
+## 提升React 性能
+
+### 方法 1
+
+{% embed url="https://kentcdodds.com/blog/optimize-react-re-renders" %}
+
+{% embed url="https://codesandbox.io/s/react-performance-1-slow-q9swc?file=/src/index.js" %}
+
+#### Problem:
+
+* When that's run, "counter rendered" will be logged to the console initially, and each time the count is incremented, "counter rendered" will be logged to the console.
+* This happens because when the button is clicked, state changes and React needs to get the new React elements to render based on that state change. When it gets those new elements, it renders and commits them to the DOM.
+* the label prop for the Logger element is unchanged. However the props object itself changes every render,React needs to re-run the Logger function to make sure that it doesn't get any new JSX based on the new props object \(in addition to effects that may need to be run based on the props change\)
+* **But  Logger component never changed so it should not rerender**
+
+{% embed url="https://codesandbox.io/s/react-performance-1-fast-sgz8f?file=/src/index.js" %}
+
+#### Solution:
+
+*  we prevent the props from changing between renders
+* We created JSX element once and re-uise that same one
+* "Lift" the expensive component to a parent where it will be rendered less often.
+* Then pass the expensive component down as a prop.
+
+
+
+
+
+
+
 \*\*\*\*
 
 
