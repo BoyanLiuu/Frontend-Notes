@@ -846,13 +846,85 @@ class ProfilePage extends React.Component {
 * "Lift" the expensive component to a parent where it will be rendered less often.
 * Then pass the expensive component down as a prop.
 
+## 为什么选择使用框架而不是原生?
+
+* 组件化: 其中以 React 的组件化最为彻底,甚至可以到函数级别的原子组件,高度的组件化可以是我们的工程易于维护、易于组合拓展。
+* 生态: 现在主流前端框架都自带生态,不管是数据流管理架构还是 UI 库都有成熟的解决方案。
+* 开发效率: 现代前端框架都默认自动更新DOM,而非我们手动操作,解放了开发者的手动DOM成本,提高开发效率,从根本上解决了UI 与状态同步问题.
+* **Large Community**
+  * React has more than 165K stars on Github and around 10 million npm downloads.
+* Reusable Components: Each React component that you have developed can be reused in other parts of the app, or you can create wrapper components that provide structure and reusability.
+* Unidirectional data flow:
+  * The downward directional binding makes the code stable and consistent as any child components’ changes won’t affect the siblings or parent components. To modify an object, you just have to update the state. ReactJS will automatically alter the valid details to maintain consistency
+
+## setState到底是异步还是同步?
+
+* 有时表现出异步,有时表现出同步
 
 
 
+##  
+
+## **how exactly browser renders a web page:**
+
+![](.gitbook/assets/image%20%28151%29.png)
+
+*  Rendering engines which are responsible for displaying or rendering the webpage on the browser screen parses the HTML page to create DOM. It also parses the CSS and applies the CSS to the HTML, thus creating a render tree, this process is called as _attachment_.
+* Layout process gives exact coordinates to each node of the render tree, where the node gets painted and displayed
+
+## **virtual dom in react:**
+
+Virtual DOM is an in-memory representation of real DOM**.** It is a lightweight JavaScript object which is a copy of Real DOM.
+
+### Updating virtual DOM in ReactJS is faster because ReactJS uses:
+
+* Efficient diff algorithm
+* Batched update operations
+* Efficient update of subtree only
+* Uses observable instead of dirty checking to detect the change
+
+Whenever setState\(\) method is called on any component, ReactJS makes that component dirty and re-renders it.Whenever setState\(\) method is called, ReactJS creates the whole Virtual DOM from scratch. Creating a whole tree is very fast so it does not affect the performance. At any given time, ReactJS maintains two virtual DOM, one with the updated state Virtual DOM and other with the previous state Virtual DOM.
+
+ReactJS using diff algorithm compares both the Virtual DOM to find the minimum number of steps to update the Real DOM
+
+Finding the minimum number of modifications between two trees have complexity in the order of **O\(n^3\)**. But react uses a heuristic approach with some assumptions which makes the problems to have complexity in the order of **O\(n\)**
+
+* 只对同级元素进行Diff。如果一个DOM节点在前后两次更新中跨越了层级，那么React不会尝试复用他。
+* 两个不同类型的元素会产生出不同的树。如果元素由div变为p，React会销毁div及其子孙节点，并新建p及其子孙节点。
+* 开发者可以通过 key prop来暗示哪些子元素在不同的渲染下能保持稳定。考虑如下例子：
+
+```text
+// 更新前
+<div>
+  <p key="ka">ka</p>
+  <h3 key="song">song</h3>
+</div>
+
+// 更新后
+<div>
+  <h3 key="song">song</h3>
+  <p key="ka">ka</p>
+</div>
+
+```
+
+如果没有`key`，`React`会认为`div`的第一个子节点由`p`变为`h3`，第二个子节点由`h3`变为`p`。这符合限制2的设定，会销毁并新建。
+
+但是当我们用`key`指明了节点前后对应关系后，`React`知道`key === "ka"`的`p`在更新后还存在，所以`DOM节点`可以复用，只是需要交换下顺序。
 
 
 
-\*\*\*\*
+### Diff 是如何实现的：
+
+
+
+### How to find  the difference in both the Virtual DOM’s:
+
+1. **Re-render all the children if parent state has changed**
+2. **Breadth First Search**
+3. **Reconciliation:** It is the process to determine which parts of the Real DOM need to be updated. It follows the below steps:
+   1. Two elements of different types will produce different trees.
+   2. The developer can hint at which child elements may be stable across different renders with a key prop.
 
 
 
