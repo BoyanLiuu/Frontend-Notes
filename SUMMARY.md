@@ -24,4 +24,5 @@
 * [设计模式](she-ji-mo-shi.md)
 * [Object Design Question](object-design-question.md)
 * [System Design question](system-design-question.md)
+* [Typescript](typescript.md)
 
