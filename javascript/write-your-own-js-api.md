@@ -1381,19 +1381,21 @@ images.forEach(image =>{
 });
 ```
 
-### Promises/A+规范的promise
+## Promises/A+规范的promise
 
 {% embed url="https://juejin.cn/post/6844903625769091079\#heading-0" %}
 
 
 
-### 
+## 实现一个sleep函数
 
-### 
-
-
+## EventEmitter实现事件发布、订阅
 
 
 
+## 手写下拉刷新
 
+## 手写上拉加载
+
+## 手写预加载
 
