@@ -21,4 +21,6 @@
 * [Testing](testing.md)
 * [遇到的面试问题](yu-dao-de-mian-shi-wen-ti.md)
 * [Accessibility](accessibility.md)
+* [设计模式](she-ji-mo-shi.md)
+* [Object Design Question](object-design-question.md)
 
