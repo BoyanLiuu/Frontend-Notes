@@ -26,4 +26,4 @@
 * [System Design question](system-design-question.md)
 * [Typescript](typescript.md)
 * [Testing](testing-1.md)
-
+* [Side note](side-note.md)

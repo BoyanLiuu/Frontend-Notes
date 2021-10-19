@@ -3,7 +3,7 @@
 ## 有用的website
 
 * [前端进阶之道](https://yuchengkai.cn/docs/frontend/)
-* [FE-Interview](http://interview.poetries.top/)
+* [FE-Interview](http://interview.poetries.top)
 * [木易杨前端进阶](https://muyiy.cn/question/)
 * [BFE](https://bigfrontend.dev/question)
 * [前端问题](https://github.com/paddingme/Front-end-Web-Development-Interview-Question)
@@ -12,10 +12,10 @@
 * [原生JS 灵魂之问上](https://juejin.cn/post/6844903974378668039)
 * [原生JS 灵魂之问中](https://juejin.cn/post/6844903986479251464)
 * [原生JS 灵魂之问下](https://juejin.cn/post/6844904004007247880)
-* [ES6 入门教程](https://es6.ruanyifeng.com/)
+* [ES6 入门教程](https://es6.ruanyifeng.com)
 * [Javascript 教程](https://wangdoc.com/javascript/)
-* [https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblLUxZFqOA2vI2F&view=vew0lbb2R4](https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblLUxZFqOA2vI2F&view=vew0lbb2R4)
-* [https://zh.javascript.info/](https://zh.javascript.info/)
+* [https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblLUxZFqOA2vI2F\&view=vew0lbb2R4](https://bytedance.feishu.cn/base/app8Ok6k9qafpMkgyRbfgxeEnet?table=tblLUxZFqOA2vI2F\&view=vew0lbb2R4)
+* [https://zh.javascript.info/](https://zh.javascript.info)
 
 
 
@@ -39,11 +39,11 @@
 
 
 
-{% embed url="https://juejin.cn/post/6844903830887366670\#heading-8" %}
+{% embed url="https://juejin.cn/post/6844903830887366670#heading-8" %}
 
-{% embed url="https://juejin.cn/post/6844903962529759239\#heading-26" %}
+{% embed url="https://juejin.cn/post/6844903962529759239#heading-26" %}
 
-{% embed url="https://juejin.cn/post/6844904116339261447?utm\_source=gold\_browser\_extension" %}
+{% embed url="https://juejin.cn/post/6844904116339261447?utm_source=gold_browser_extension" %}
 
 
 
@@ -123,7 +123,7 @@
 
 ## 计划
 
- 
+&#x20;
 
 * [x] CSS
 * [ ] JS
@@ -136,7 +136,7 @@
 
 
 
-{% embed url="https://juejin.cn/post/6844904116339261447?utm\_source=gold\_browser\_extension\#heading-13" %}
+{% embed url="https://juejin.cn/post/6844904116339261447?utm_source=gold_browser_extension#heading-13" %}
 
 {% embed url="https://github.com/mqyqingfeng/Blog" %}
 
@@ -152,7 +152,5 @@
 
 垃圾回收机制
 
-{% embed url="https://juejin.cn/post/6844904016325902344?from=from\_parent\_mindnote" %}
-
-
+{% embed url="https://juejin.cn/post/6844904016325902344?from=from_parent_mindnote" %}
 

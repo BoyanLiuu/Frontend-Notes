@@ -15,5 +15,3 @@
 2. What makes a good team member?
 3. The hardest technical question you had before?
 
-
-

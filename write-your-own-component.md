@@ -14,7 +14,7 @@
 
 ## Ant Design Steps
 
-![](.gitbook/assets/image%20%2829%29.png)
+![](<.gitbook/assets/image (29).png>)
 
 
 
@@ -30,7 +30,7 @@
 
 
 
-## Collapse\(Accordion\)
+## Collapse(Accordion)
 
 Without JS
 
@@ -48,7 +48,7 @@ Without JS
 
 ## Progress
 
-![](.gitbook/assets/image%20%2830%29.png)
+![](<.gitbook/assets/image (30).png>)
 
 
 
@@ -61,8 +61,6 @@ Without JS
 {% embed url="https://codepen.io/gaearon/pen/gWWZgR?editors=0010" %}
 
 {% embed url="https://reactjs.org/tutorial/tutorial.html" %}
-
-
 
 
 

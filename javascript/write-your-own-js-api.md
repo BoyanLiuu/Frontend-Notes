@@ -14,9 +14,9 @@
 
 
 
-## instanceof 
+## instanceof&#x20;
 
-```text
+```
 function myInstanceof(left, right) {
     //基本数据类型直接返回false
     if(typeof left !== 'object' || left === null) return false;
@@ -35,9 +35,9 @@ console.log(myInstanceof("111", String)); //false
 console.log(myInstanceof(new String("111"), String));//true
 ```
 
-## Object.is\(\)
+## Object.is()
 
-```text
+```
 function is(x, y) {
   
   if (x === y) {
@@ -56,21 +56,21 @@ function is(x, y) {
 
 ## Write your own Promise
 
-{% embed url="https://juejin.cn/post/6844904004007247880\#heading-52" %}
+{% embed url="https://juejin.cn/post/6844904004007247880#heading-52" %}
 
 ## JS new 操作符
 
 1. 创建了一个全新的对象。
 2. 这个对象会被执行`[[Prototype]]`（也就是`__proto__`）链接。
 3. 生成的新对象会绑定到函数调用的`this`。
-4.  通过`new`创建的每个对象将最终被`[[Prototype]]`链接到这个函数的`prototype`对象上
-5.  如果函数没有返回对象类型`Object`\(包含`Functoin`, `Array`, `Date`, `RegExg`, `Error`\)，那么`new`表达式中的函数调用会自动返回这个新的对象
+4. &#x20;通过`new`创建的每个对象将最终被`[[Prototype]]`链接到这个函数的`prototype`对象上
+5. &#x20;如果函数没有返回对象类型`Object`(包含`Functoin`, `Array`, `Date`, `RegExg`, `Error`)，那么`new`表达式中的函数调用会自动返回这个新的对象
 
-`student.constructor === Student;` 
+`student.constructor === Student; `
 
 `Student.prototype.constructor === Student;`
 
-```text
+```
 /**
  * 模拟实现 new 操作符
  * @param  {Function} ctor [构造函数]
@@ -123,11 +123,11 @@ function objectFactory() {
 
 ## Apply & Call & Bind
 
-### apply\(\)
+### apply()
 
-func.apply\(thisArg, \[argsArray\]\)
+func.apply(thisArg, \[argsArray])
 
-**thisArg:**  可选的。在 `func` 函数运行时使用的 `this` 值。请注意，`this`可能不是该方法看到的实际值：如果这个函数处于**非严格模式**下，则指定为 `null` 或 `undefined` 时会自动替换为指向全局对象，原始值会被包装
+**thisArg: ** 可选的。在 `func` 函数运行时使用的 `this` 值。请注意，`this`可能不是该方法看到的实际值：如果这个函数处于**非严格模式**下，则指定为 `null` 或 `undefined` 时会自动替换为指向全局对象，原始值会被包装
 
 **argsArray:**  可选的。一个数组或者类数组对象，其中的数组元素将作为单独的参数传给 `func` 函数。如果该参数的值为 `null` 或 `undefined`，则表示不需要传入任何参数
 
@@ -135,23 +135,23 @@ func.apply\(thisArg, \[argsArray\]\)
 
 ES5规范
 
-Function.prototype.apply \(thisArg, argArray\)
+Function.prototype.apply (thisArg, argArray)
 
-1.  如果 `IsCallable(func)` 是 `false`, 则抛出一个 `TypeError` 异常。
-2.  如果 `argArray` 是 `null` 或 `undefined`, 则返回提供 `thisArg` 作为 `this` 值并以空参数列表调用 `func` 的 `[[Call]]` 内部方法的结果。
-3.  返回提供 `thisArg` 作为 `this` 值并以空参数列表调用 `func` 的 `[[Call]]` 内部方法的结果。
-4.  如果 `Type(argArray)` 不是 `Object`, 则抛出一个 `TypeError` 异常。
+1. &#x20;如果 `IsCallable(func)` 是 `false`, 则抛出一个 `TypeError` 异常。
+2. &#x20;如果 `argArray` 是 `null` 或 `undefined`, 则返回提供 `thisArg` 作为 `this` 值并以空参数列表调用 `func` 的 `[[Call]]` 内部方法的结果。
+3. &#x20;返回提供 `thisArg` 作为 `this` 值并以空参数列表调用 `func` 的 `[[Call]]` 内部方法的结果。
+4. &#x20;如果 `Type(argArray)` 不是 `Object`, 则抛出一个 `TypeError` 异常。
 5. 略
 6. 略
 7. 略
 8. 略
-9. 提供 thisArg 作为 this 值并以 argList 作为参数列表，调用 func 的 \[\[Call\]\] 内部方法，返回结果。
+9. 提供 thisArg 作为 this 值并以 argList 作为参数列表，调用 func 的 \[\[Call]] 内部方法，返回结果。
 
- 在外面传入的 `thisArg` 值会修改并成为 `this` 值。`thisArg` 是 `undefined` 或 `null` 时它会被替换成全局对象，所有其他值会被应用 `ToObject` 并将结果作为 `this` 值，这是第三版引入的更改。
+&#x20;在外面传入的 `thisArg` 值会修改并成为 `this` 值。`thisArg` 是 `undefined` 或 `null` 时它会被替换成全局对象，所有其他值会被应用 `ToObject` 并将结果作为 `this` 值，这是第三版引入的更改。
 
 返还数值：The result of calling the function with the specified this value and arguments.
 
-```text
+```
 
 
 Function.prototype.apply2 = function (context, arr) {
@@ -191,17 +191,17 @@ Function.prototype.apply2 = function (context, arr) {
 
 
 
-### call\(\) 
+### call()&#x20;
 
 `fun.call(thisArg, arg1, arg2, ...)`
 
-thisArg 值为原始值\(数字，字符串，布尔值\)的this会指向该原始值的自动包装对象
+thisArg 值为原始值(数字，字符串，布尔值)的this会指向该原始值的自动包装对象
 
- 返回值是你调用的方法的返回值，若该方法没有返回值，则返回`undefined`。
+&#x20;返回值是你调用的方法的返回值，若该方法没有返回值，则返回`undefined`。
 
 **第一步 更改 call 的this 指向**
 
-```text
+```
 var foo = {
     value: 1,
     bar: function() {
@@ -214,7 +214,7 @@ foo.bar(); // 1
 
 再对象上面额外添加一个属性，然后 执行这个函数 然后 删除该函数
 
-```text
+```
 // 第一版
 Function.prototype.call2 = function(context) {
     // 首先要获取调用call的函数，用this可以获取
@@ -239,7 +239,7 @@ bar.call2(foo); // 1
 
 **第二步给定参数**
 
-```text
+```
 // 需要达成的
 var foo = {
     value: 1
@@ -260,7 +260,7 @@ bar.call(foo, 'kevin', 18);
 
 * 从arguments 对象中取值， 取出第二个到最后一个字1参数 然后 放到一个数组里面
 
-```text
+```
     for(var i = 1, len = arguments.length; i < len; i++) {
         args.push('arguments[' + i + ']');
     }
@@ -269,11 +269,11 @@ bar.call(foo, 'kevin', 18);
 
 * 我们接下来要把这个参数数组 放到要执行的 funciton 参数里面
 
-![](../.gitbook/assets/image%20%2896%29.png)
+![](<../.gitbook/assets/image (96).png>)
 
-因为数组和字符串相加时候 数组会调用 toString\(\) 方法
+因为数组和字符串相加时候 数组会调用 toString() 方法
 
-```text
+```
   // 字符串拼接
   var args = [];
     for(var i = 1, len = arguments.length; i < len; i++) {
@@ -295,7 +295,7 @@ bar.call(foo, 'kevin', 18);
     
 ```
 
-```text
+```
 // 第二版
 Function.prototype.call2 = function(context) {
     context.fn = this;
@@ -329,7 +329,7 @@ bar.call2(foo, 'kevin', 18);
 * this 参数可以传 null，当为 null 的时候，视为指向 window
 * 函数是可以有返回值的！
 
-```text
+```
 // 最终版
 Function.prototype.call2 = function (context) {
 
@@ -378,12 +378,12 @@ console.log(bar.call2(obj, 'kevin', 18));
 
 #### 目前版本中出现的问题
 
- 1： `fn` 同名覆盖问题，`thisArg`对象上有`fn`，那就被覆盖了然后被删除了。
+&#x20;1： `fn` 同名覆盖问题，`thisArg`对象上有`fn`，那就被覆盖了然后被删除了。
 
-*  解决方案一：采用ES6 Sybmol\(\) 独一无二的。可以本来就是模拟ES3的方法。如果面试官不允许用呢
-* 解决方案二：自己用Math.random\(\)模拟实现独一无二的 UUID key，面试时可以直接用生成时间戳即可。
+* &#x20;解决方案一：采用ES6 Sybmol() 独一无二的。可以本来就是模拟ES3的方法。如果面试官不允许用呢
+* 解决方案二：自己用Math.random()模拟实现独一无二的 UUID key，面试时可以直接用生成时间戳即可。
 
-```text
+```
 function generateGuid() {
   var result, i, j;
   result = '';
@@ -401,31 +401,31 @@ console.log(generateGuid());
 
 2： 万一不让使用 eval的话， 我们可以使用 new Function 来生产执行函数
 
-```text
+```
 简单例子：
 var sum = new Function('a', 'b', 'return a + b');
 console.log(sum(2, 6));
 ```
 
-### bind\(\)
+### bind()
 
 {% embed url="https://github.com/mqyqingfeng/Blog/issues/12" %}
 
-{% embed url="https://juejin.cn/post/6844903718089916429\#heading-6" %}
+{% embed url="https://juejin.cn/post/6844903718089916429#heading-6" %}
 
- The **`bind()`** method creates a new function that, when called, has its `this` keyword set to the provided value, with a given sequence of arguments preceding any provided when the new function is called.
+&#x20;The **`bind()`** method creates a new function that, when called, has its `this` keyword set to the provided value, with a given sequence of arguments preceding any provided when the new function is called.
 
 * `bind`是`Functoin`原型链中`Function.prototype`的一个属性，每个函数都可以调用它。
 * `bind`本身是一个函数名为`bind`的函数，返回值也是函数，函数名是`bound`。（打出来就是`bound加上一个空格`）
 * 调用`bind`的函数中的`this`指向`bind()`函数的第一个参数
-*  传给`bind()`的其他参数接收处理了，`bind()`之后返回的函数的参数也接收处理了，也就是说合并处理了
-*  并且`bind()`后的`name`为`bound + 空格 + 调用bind的函数名`。如果是匿名函数则是`bound + 空格`
-*  `bind`后的返回值函数，执行后返回值是原函数（`original`）的返回值
+* &#x20;传给`bind()`的其他参数接收处理了，`bind()`之后返回的函数的参数也接收处理了，也就是说合并处理了
+* &#x20;并且`bind()`后的`name`为`bound + 空格 + 调用bind的函数名`。如果是匿名函数则是`bound + 空格`
+* &#x20;`bind`后的返回值函数，执行后返回值是原函数（`original`）的返回值
 
-  
- 
+\
+&#x20;
 
- 
+&#x20;
 
 
 
@@ -435,7 +435,7 @@ console.log(sum(2, 6));
 
 _**第一版**_
 
-```text
+```
 // 第一版 修改this指向，合并参数
 Function.prototype.bindFn = function bind(thisArg){
     if(typeof this !== 'function'){
@@ -467,13 +467,13 @@ bound(2); // '若川', [1, 2]
 
 ```
 
-#### 但我们知道函数是可以用new来实例化的。那么bind\(\)返回值函数会是什么表现呢?
+#### 但我们知道函数是可以用new来实例化的。那么bind()返回值函数会是什么表现呢?
 
-从例子种可以看出this指向了**new bound\(\)生成的新对象。**
+从例子种可以看出this指向了**new bound()生成的新对象。**
 
 例子
 
-```text
+```
 var obj = {
     name: '若川',
 };
@@ -502,7 +502,7 @@ console.log(newBoundResult, 'newBoundResult'); // original {name: 2}
 
 **最终版 方案一**
 
-```text
+```
 
 Function.prototype.bindFn = function bind(thisArg){
     if(typeof this !== 'function'){
@@ -558,11 +558,11 @@ Function.prototype.bindFn = function bind(thisArg){
 
 #### 另外一个版本的最终版（看这个）
 
-* `this instanceof fNOP`  用来判断是否使用了 new 构造函数，如果是 我们就需要把 this绑定到新实例上面
+* `this instanceof fNOP  `用来判断是否使用了 new 构造函数，如果是 我们就需要把 this绑定到新实例上面
 * 把fNop的 原型对象修改为this（person）的原型对象
 * 再把 返还的函数对象 作为空函数fNop的实例进行串联
 
-```text
+```
 
 
 
@@ -590,29 +590,29 @@ Function.prototype.bind2 = function (context) {
 
 ## Array API:
 
-### splice\(\)
+### splice()
 
 
 
-### slice\(\)
+### slice()
 
-### map\(\)
+### map()
 
-### reduce\(\)
+### reduce()
 
-[https://juejin.cn/post/6844903986479251464\#heading-26](https://juejin.cn/post/6844903986479251464#heading-26)
+[https://juejin.cn/post/6844903986479251464#heading-26](https://juejin.cn/post/6844903986479251464#heading-26)
 
-### forEach\(\)
-
-
-
-### flat\(\)
-
-### from\(\)
+### forEach()
 
 
 
-## 
+### flat()
+
+### from()
+
+
+
+##
 
 ## 拷贝
 
@@ -623,7 +623,7 @@ Function.prototype.bind2 = function (context) {
 
 #### 浅拷贝实现
 
-```text
+```
 // 1
 function shallowClone(source) {
     var target = {};
@@ -649,7 +649,7 @@ console.log(y.b.f === x.b.f);     // true
 
 #### 数组的浅拷贝
 
-```text
+```
 var arr = ['old', 1, true, null, undefined];
 
 var new_arr = arr.concat();
@@ -665,7 +665,7 @@ console.log(new_arr) // ["new", 1, true, null, undefined]
 
 ### 基础方法 1：
 
-```text
+```
 JSON.parse(JSON.stringify());
 //问题 1
 //拷贝a会出现系统栈溢出，因为出现了无限递归的情况。
@@ -705,19 +705,20 @@ console.log(objB.getName());
   * **NaN 和 Infinity 的数值及 null 都会当做 null，**
   * 无法拷贝一写特殊的对象，诸如 RegExp, Date, Set, Map等。
   * **这些对象 Map、Set、WeakMap、WeakSet 仅会序列化可枚举的属性**
-  * **无法拷贝函数\(function\)。**
+  * **无法拷贝函数(function)。**
   * `undefined`、`任意函数`、`Symbol 值`，在序列化过程有两种不同的情况。若出现在非数组对象的属性值中，会被忽略；若出现在数组中，会转换成 `null`
 
-![](../.gitbook/assets/image%20%28138%29.png)
+![](<../.gitbook/assets/image (138).png>)
 
 ### 基础方法 2，简易版本
 
-*  就是对每一层的数据都实现一次 `创建对象->对象赋值` 的操作
-* 接下来会给予 json.stringfy\(\) 缺陷 一步一步改进
-* 
+* &#x20;就是对每一层的数据都实现一次 `创建对象->对象赋值` 的操作
+* 接下来会给予 json.stringfy() 缺陷 一步一步改进
+*
 
 
-```text
+
+```
 const deepCopy = source => {
   // 判断是否为数组
   const isArray = arr => Object.prototype.toString.call(arr) === '[object Array]'
@@ -748,19 +749,19 @@ const deepCopy = source => {
 
 ```
 
-### 
+###
 
 ### 完善版本1， 针对布尔值、数值、字符串的包装对象的处理
 
-*  由于 [for...in](https://link.juejin.cn/?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FReference%2FStatements%2Ffor...in) 无法遍历**不可枚举**的属性。例如，包装对象的 `[[PrimitiveValue]]` 内部属性，因此需要我们特殊处理一下。
-*  包装对象的 `[[PrimitiveValue]]` 属性可通过 `valueOf()` 方法获取。
+* &#x20;由于 [for...in](https://link.juejin.cn/?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FReference%2FStatements%2Ffor...in) 无法遍历**不可枚举**的属性。例如，包装对象的 `[[PrimitiveValue]]` 内部属性，因此需要我们特殊处理一下。
+* &#x20;包装对象的 `[[PrimitiveValue]]` 属性可通过 `valueOf()` 方法获取。
 * 其中的 PrimitiveValue 就没法copy进去 我们
 
-![](../.gitbook/assets/image%20%28136%29.png)
+![](<../.gitbook/assets/image (135).png>)
 
-![&#x4E4B;&#x524D;code&#x7684;&#x7ED3;&#x679C; &#x6CA1;&#x6709; PrimitiveValue](../.gitbook/assets/image%20%28137%29.png)
+![之前code的结果 没有 PrimitiveValue](<../.gitbook/assets/image (136).png>)
 
-```text
+```
 const deepCopy = source => {
     // 获取数据类型（本次新增）
     const getClass = x => Object.prototype.toString.call(x)
@@ -840,9 +841,9 @@ console.log(b)
 
 * 直接返回就好了 通常不需要管
 
-\*\*\*\*
+****
 
-```text
+```
 const copy = input => {
   if (typeof input === 'function' || !isObject(input)) return input
 }
@@ -851,9 +852,9 @@ const copy = input => {
 
 ### 完善版本3，**针对以 Symbol 值作为属性键的处理**
 
-*  由于以上 `for...in` 方法无法遍历 `Symbol` 的属性键，因此：
+* &#x20;由于以上 `for...in` 方法无法遍历 `Symbol` 的属性键，因此：
 
-```text
+```
 const sym = Symbol('desc')
 const obj = {
   [sym]: 'This is symbol value'
@@ -862,10 +863,10 @@ console.log(deepCopy(obj)) // {}，拷贝结果没有 [sym] 属性
 
 ```
 
-* [Object.getOwnPropertySymbols\(\)](https://link.juejin.cn?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FReference%2FGlobal_Objects%2FObject%2FgetOwnPropertySymbols) 它返回一个对象自身的所有 Symbol 属性的数组，包括不可枚举的属性。
-* [Object.prototype.propertyIsEnumerable\(\)](https://link.juejin.cn?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FReference%2FGlobal_Objects%2FObject%2FpropertyIsEnumerable) 它返回一个布尔值，表示指定的属性是否可枚举。
+* [Object.getOwnPropertySymbols()](https://link.juejin.cn/?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FReference%2FGlobal\_Objects%2FObject%2FgetOwnPropertySymbols) 它返回一个对象自身的所有 Symbol 属性的数组，包括不可枚举的属性。
+* [Object.prototype.propertyIsEnumerable()](https://link.juejin.cn/?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FReference%2FGlobal\_Objects%2FObject%2FpropertyIsEnumerable) 它返回一个布尔值，表示指定的属性是否可枚举。
 
-```text
+```
 const deepCopy = source => {
     // 获取数据类型（本次新增）
     const getClass = x => Object.prototype.toString.call(x)
@@ -948,19 +949,19 @@ Object.defineProperties(source,
 console.log(deepCopy(source))
 ```
 
-![Output](../.gitbook/assets/image%20%28135%29.png)
+![Output](<../.gitbook/assets/image (137).png>)
 
 ### 完善版本**3**，循环引用， 引用丢失
 
 1. 解决循环应用：
    1. 创建一个Map。记录下已经拷贝过的对象，如果说已经拷贝过，那直接返回它行了。
    2. **这里有一个潜在的坑**： 就是map 上的 key 和 map 构成了强引用关系，这是相当危险的
-      1. 被弱引用的对象可以在任何时候被回收，而对于强引用来说，只要这个强引用还在，那么对象无法被回收。**假设我们使用的 Map，那么图中的 foo 对象和我们深拷贝内部的 const map = new Map\(\) 创建的 map 对象一直都是强引用关系，那么在程序结束之前，foo 不会被回收，其占用的内存空间一直不会被释放。**
-      2. **解决办法：**让 map 的 key 和 map 构成弱引用即可。ES6给我们提供了这样的数据结构，它的名字叫WeakMap，它是一种特殊的Map, 其中的键是弱引用的。其键必须是对象，而值可以是任意的。`const deepClone = (target, map = new WeakMap())` 
+      1. 被弱引用的对象可以在任何时候被回收，而对于强引用来说，只要这个强引用还在，那么对象无法被回收。**假设我们使用的 Map，那么图中的 foo 对象和我们深拷贝内部的 const map = new Map() 创建的 map 对象一直都是强引用关系，那么在程序结束之前，foo 不会被回收，其占用的内存空间一直不会被释放。**
+      2. **解决办法：**让 map 的 key 和 map 构成弱引用即可。ES6给我们提供了这样的数据结构，它的名字叫WeakMap，它是一种特殊的Map, 其中的键是弱引用的。其键必须是对象，而值可以是任意的。`const deepClone = (target, map = new WeakMap()) `
 2. 解决引用丢失：
    1. 因为只要存储已拷贝过的对象就可以了
 
-```text
+```
 const deepCopy = source => {
     // 创建一个 WeakMap 对象，记录已拷贝过的对象（本次新增）
     const weakmap = new WeakMap()
@@ -1045,9 +1046,9 @@ console.log(copyObj.obj1 === copyObj.obj2);// 上一个版本 会返还false
 
 ```
 
-{% embed url="https://juejin.cn/post/6975880204447121422/\#heading-10" %}
+{% embed url="https://juejin.cn/post/6975880204447121422/#heading-10" %}
 
-{% embed url="https://juejin.cn/post/6844903692756336653\#heading-3" %}
+{% embed url="https://juejin.cn/post/6844903692756336653#heading-3" %}
 
 * 没有完全写完 还有一些细节 看上面这个link
 
@@ -1055,9 +1056,9 @@ console.log(copyObj.obj1 === copyObj.obj2);// 上一个版本 会返还false
 
 
 
-## 防抖\(debounce\)
+## 防抖(debounce)
 
-![](../.gitbook/assets/image%20%28103%29.png)
+![](<../.gitbook/assets/image (103).png>)
 
 * 输入框连续输入的请求次数控制
 * 防止表单多次提交
@@ -1066,7 +1067,7 @@ console.log(copyObj.obj1 === copyObj.obj2);// 上一个版本 会返还false
 
 ### 没返回值版本
 
-```text
+```
 const button  = document.querySelector('button');
 
 function PayMoney(){
@@ -1171,7 +1172,7 @@ function debounce(func, wait, immediate) {
 
 ### 有返回值的版本
 
-```text
+```
 // 有返回值的版本， 使用 promise 处理
 function debounce(method, wait, immediate) {
   let timeout, result
@@ -1241,9 +1242,9 @@ window.addEventListener('resize', async () => {
 }, false)
 ```
 
-## 节流\(throttle\)
+## 节流(throttle)
 
-![](../.gitbook/assets/image%20%28105%29.png)
+![](<../.gitbook/assets/image (104).png>)
 
 * 如果我们需要统计用户滚动屏幕的行为来做出相应的网页反应我们就需要节流
 * 因为如果用户不断进行滚动就会不断产生请求， 容易导致网络的堵塞
@@ -1256,7 +1257,7 @@ window.addEventListener('resize', async () => {
 
 例子： 更改页面尺寸大小时候 更改颜色
 
-```text
+```
 function coloring(){
 		let r = Math.floor(Math.random() * 255);
     let g = Math.floor(Math.random() * 255);
@@ -1307,7 +1308,7 @@ window.addEventListener('resize',throttle2(coloring,2000));
 
 
 
-## 事件总线 \| 发布订阅模式
+## 事件总线 | 发布订阅模式
 
 ## 柯里化
 
@@ -1315,7 +1316,7 @@ window.addEventListener('resize',throttle2(coloring,2000));
 
 异步并发数限制
 
-异步串行 \| 异步并行
+异步串行 | 异步并行
 
 ## 图片懒加载
 
@@ -1325,11 +1326,11 @@ window.addEventListener('resize',throttle2(coloring,2000));
 
 
 
-第一种方法 
+第一种方法&#x20;
 
-![](../.gitbook/assets/image%20%28104%29.png)
+![](<../.gitbook/assets/image (105).png>)
 
-```text
+```
 // 这个情况下 滚动会触发很多次
 //即使图片已经加载了 还是回不断触发事件
 //    <img data-src ="https://cdn.pixabay.com/photo/2018/01/05/02/47/fishing-3062034_960_720.jpg">
@@ -1353,9 +1354,9 @@ window.addEventListener('scroll', (e) =>{
 
 * 前提条件是浏览器需要支持， 目标元素与可视窗口会产生交叉区域
 
-![](../.gitbook/assets/image%20%28107%29.png)
+![](<../.gitbook/assets/image (107).png>)
 
-```text
+```
 // 回调函数接受一个参数
 const callback = (entries) =>{
 		entries.forEach(entry =>{
@@ -1383,7 +1384,7 @@ images.forEach(image =>{
 
 ## Promises/A+规范的promise
 
-{% embed url="https://juejin.cn/post/6844903625769091079\#heading-0" %}
+{% embed url="https://juejin.cn/post/6844903625769091079#heading-0" %}
 
 
 
@@ -1398,4 +1399,3 @@ images.forEach(image =>{
 ## 手写上拉加载
 
 ## 手写预加载
-

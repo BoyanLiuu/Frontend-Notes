@@ -3,12 +3,12 @@
 ## 1.Strict Mode
 
 * Using _**strict**_ enforces strict mode, which means stricter parsing and error handling of the JavaScript code. It allows you to catch errors in an erroneous code, whereas in a normal case.
-* to enable strict mode for an entire script, include `"use strict";`   at top.
+* to enable strict mode for an entire script, include` "use strict";`   at top.
 * **adhering to strict mode makes your code generally more optimizable by the engine**
 
 ### 题目：
 
-```text
+```
 //Question 1
 "use strict"
 var obj1 = {};
@@ -39,10 +39,10 @@ obj1.x = 9;
 
 #### Question 2:
 
-* use strict can either be used for an entire script or functions. It cannot be used for a block of code enclosed in {} alone. When used inside functions, _**it changes the value of this. It changes from window object to undefined**_
+* use strict can either be used for an entire script or functions. It cannot be used for a block of code enclosed in {} alone. When used inside functions,_** it changes the value of this. It changes from window object to undefined**_
   * When we call a function with apply, the value of this is set to some custom value that is the first parameter to the apply method.
 * undefined \* 2  return NaN since, result is not a number
-* null &gt;= 0 , so null \*0  return 0
+* null >= 0 , so null \*0  return 0
 * 1\*2  = 2
 
 
@@ -56,11 +56,11 @@ obj1.x = 9;
 * It can be hosited
 * It is function scoped, or the global scope if at the top level outside of any function. Wherever a var appears inside a scope, that declaration is taken to belong to the entire scope and accessible everywhere throughout.
 
-![](../.gitbook/assets/image%20%2812%29.png)
+![](<../.gitbook/assets/image (1).png>)
 
 * If you try to access a variable's value in a scope where it's not available, you'll get a ReferenceError thrown
 
-```text
+```
 function setWidth(){
   var width = 100;
 
@@ -71,10 +71,10 @@ con.log(width);
 
 ### let
 
-* **It is blocked scoped**,it scope does not extend outside the block, 
+* **It is blocked scoped**,it scope does not extend outside the block,&#x20;
 * **block scope**:It is defined as the nearest set of enclosing curly braces
 
-```text
+```
 if (true) {
  var name = 'Matt';
  console.log(name); // Matt
@@ -89,20 +89,20 @@ console.log(age); // ReferenceError: age is not defined
 
 * **It is not allowed hoisted**, Let declaration also does not allow any redundant declarations within a block scope
 
-![](../.gitbook/assets/image%20%2810%29.png)
+![](<../.gitbook/assets/image (2).png>)
 
 * **It will not attach to the window** object as they do with var
 
-![](../.gitbook/assets/image%20%281%29.png)
+![](<../.gitbook/assets/image (3).png>)
 
-![](../.gitbook/assets/image.png)
+![](<../.gitbook/assets/image (4).png>)
 
-* **let Declaration in for Loops**  
+* **let Declaration in for Loops **&#x20;
   * It will declare a new iterator variable for each loop iteration.
 
 ### const:
 
-* It behaves identically to that of let but with one important difference—it must be initialized   with a value, and that value cannot be redefined after declaration.
+* It behaves identically to that of let but with one important difference—it must be initialized  &#x20;with a value, and that value cannot be redefined after declaration.
 
 
 
@@ -110,15 +110,15 @@ console.log(age); // ReferenceError: age is not defined
 
 * A variable can be declared after it has been used. This is because variable declarations using var hoisted to the top of their functional scope at compile time.
 * **Only the declarations get hoisted to the top, not the initializations.**
-* **function declaration** are also hoisted, but function expression are not   function declaration
+* **function declaration **are also hoisted, but function expression are not  &#x20;function declaration
 
-![](../.gitbook/assets/image%20%2813%29.png)
+![](<../.gitbook/assets/image (6).png>)
 
-![Subsequent function declaration do override previous ones:](../.gitbook/assets/image%20%287%29.png)
+![Subsequent function declaration do override previous ones:](<../.gitbook/assets/image (7).png>)
 
 ### 题目
 
-```text
+```
 //=====EG1===== 
 text ='123';
 console.log(text);
@@ -166,16 +166,16 @@ console.log(foo);	  //打印1，事实上函数foo已经不存在了，变成了
 
 ### 解析：
 
-#### 1: 
+#### 1:&#x20;
 
 * Output 是 undefined
-* At compile time, the var temp is hoisted to the top of the display\(\) function.
+* At compile time, the var temp is hoisted to the top of the display() function.
 
-![](../.gitbook/assets/image%20%283%29.png)
+![](<../.gitbook/assets/image (8).png>)
 
 ### Order of precedence
 
-```text
+```
 // Variable assignment takes precedence over function declaration
 var double = 22;
 
@@ -229,25 +229,25 @@ foo = 1;
 
 ## 4.Data Type
 
-* There are **6 simple** data type\(primitive types\)
+* There are** 6 simple** data type(primitive types)
   * String, number, boolean,BigInt, Undefined, symbol
-* 1 complex data type, **Object**
+* 1 complex data type,** Object**
   * **3 wrapper Object**
     * Boolean  Number, String
-  * null:  null is considered to be      an empty object reference 
-  * **4 subtype of Object**
+  * null:  null is considered to be    &#x20; an empty object reference&#x20;
+  *   **4 subtype of Object**
 
-    * Function, Array,Date,RegExp
+      * Function, Array,Date,RegExp
 
-    ****
+      **      **
 
-![](../.gitbook/assets/image%20%286%29.png)
+![](<../.gitbook/assets/image (9).png>)
 
-![typeof can not deter](../.gitbook/assets/image%20%284%29.png)
+![typeof can not deter](<../.gitbook/assets/image (10).png>)
 
 ### 如何理解bigint：
 
-```text
+```
 // 第一种创建 方法
 console.log( 9007199254740995n );    // → 9007199254740995n	
 console.log( 9007199254740995 );     // → 9007199254740996
@@ -277,28 +277,28 @@ console.log(typeof x);   //"bigint"
 ```
 
 * 在JS中，所有的数字都以双精度64位浮点格式表示，那这会带来什么问题呢？
-* 这导致JS中的Number无法精确表示非常大的整数，它会将非常大的整数四舍五入，确切地说，JS中的Number类型只能安全地表示-9007199254740991\(-\(2^53-1\)\)和9007199254740991（\(2^53-1\)），任何超出此范围的整数值都可能失去精度。
+* 这导致JS中的Number无法精确表示非常大的整数，它会将非常大的整数四舍五入，确切地说，JS中的Number类型只能安全地表示-9007199254740991(-(2^53-1))和9007199254740991（(2^53-1)），任何超出此范围的整数值都可能失去精度。
 * `console.log(9999999999999999);  //=>10000000000000000`
-* 有一定安全性问题： `9007199254740992 === 9007199254740993;    // → true 居然是true!`
+* 有一定安全性问题：` 9007199254740992 === 9007199254740993;    // → true 居然是true!`
 * 如何创建并使用BigInt？
   * 要创建BigInt，只需要在数字末尾追加n即可。
-  * 另一种创建BigInt的方法是用BigInt\(\)构造函数
+  * 另一种创建BigInt的方法是用BigInt()构造函数
 * 值得警惕的点：
-  * 因为隐式类型转换可能丢失信息，所以不允许在bigint和 Number 之间进行混合操作。当混合使用大整数和浮点数时，结果值可能无法由BigInt或Number精确表示。 
+  * 因为隐式类型转换可能丢失信息，所以不允许在bigint和 Number 之间进行混合操作。当混合使用大整数和浮点数时，结果值可能无法由BigInt或Number精确表示。&#x20;
     * `10 + 10n;    // → TypeError`
   * 不能将BigInt传递给Web api和内置的 JS 函数，这些函数需要一个 Number 类型的数字。尝试这样做会报TypeError错误。
-    * Math.max\(2n, 4n, 6n\);    // → TypeError
+    * Math.max(2n, 4n, 6n);    // → TypeError
   * 元素都为BigInt的数组可以进行sort。
-  * BigInt可以正常地进行位运算，如\|、&、&lt;&lt;、&gt;&gt;和^
+  * BigInt可以正常地进行位运算，如|、&、<<、>>和^
 
 ### The typeof Operator:
 
-* It tell the type of a given variable, used them for **primitive type**  data 数据类型
+* It tell the type of a given variable, used them for** primitive type**  data 数据类型
 * new 创建的都是 object
 
-![](../.gitbook/assets/image%20%2899%29.png)
+![](<../.gitbook/assets/image (99).png>)
 
-```text
+```
 let message = "some string";
 let str = new String('hello world);
 console.log(typeof message); // "string"
@@ -311,16 +311,16 @@ typeof null ===> object
 
 ### What values converted to true?
 
-![](../.gitbook/assets/image%20%285%29.png)
+![](<../.gitbook/assets/image (11).png>)
 
-### \[\] == !\[\]结果是什么？为什么？
+### \[] == !\[]结果是什么？为什么？
 
-* == 中，左右两边都需要转换为数字然后进行比较。
-* \[\]转换为数字为0。  !\[\] 首先是转换为布尔值，由于\[\]作为一个引用类型转换为布尔值为true,
+* \== 中，左右两边都需要转换为数字然后进行比较。
+*   \[]转换为数字为0。    !\[] 首先是转换为布尔值，由于\[]作为一个引用类型转换为布尔值为true,
 
 
 
-  因此!\[\]为false，进而在转换成数字，变为0。0 == 0 ， 结果为true
+    因此!\[]为false，进而在转换成数字，变为0。0 == 0 ， 结果为true
 
 
 
@@ -339,11 +339,11 @@ typeof null ===> object
 * **不要直接比较两个浮点的大小**：
 * **JS中如何进入浮点数运算 :**
 
-![](../.gitbook/assets/image%20%28100%29.png)
+![](<../.gitbook/assets/image (100).png>)
 
 #### 解决办法
 
-```text
+```
 
 // 方法 1
 {
@@ -359,7 +359,7 @@ typeof null ===> object
 parseFloat((0.1+ 0.2).toFixed(5))
 ```
 
-\*\*\*\*
+****
 
 
 
@@ -367,11 +367,11 @@ parseFloat((0.1+ 0.2).toFixed(5))
 
 * Not a number
 * Any operation involving with NaN  always return NaN
-* NaN is not equal to any value, use isNaN\(\) to check
+* NaN is not equal to any value, use isNaN() to check
 * `console.log(NaN == NaN)   // false`
-* **isNaN\(\)**: when passed a value, it will try to convert it to a number
+* **isNaN()**: when passed a value, it will try to convert it to a number
 
-```text
+```
 console.log(isNaN(NaN)); // true
 console.log(isNaN(10)); // false - 10 is a number
 console.log(isNaN("10")); // false - can be converted to number 10
@@ -379,31 +379,31 @@ console.log(isNaN("blue")); // true - cannot be converted to a number
 console.log(isNaN(true)); // false - can be converted to number 1
 ```
 
-###  Type conversion:
+### &#x20;Type conversion:
 
-![https://juejin.cn/post/6844903974378668039\#heading-14](../.gitbook/assets/image%20%2822%29.png)
+![https://juejin.cn/post/6844903974378668039#heading-14](<../.gitbook/assets/image (23).png>)
 
-* toString\(\),转换成字符串
+* toString(),转换成字符串
 * parseInt,转换成数字
-  * True -&gt; 1
-  * False -&gt; 0
+  * True -> 1
+  * False -> 0
   * Undefined, 或者失误转换为 NaN
-  * Null -&gt; 0
-* new Boolean\(\),转换成布尔值
+  * Null -> 0
+* new Boolean(),转换成布尔值
   * false value will return false;
 
 ### **Type concatenate:**
 
 当计算 value1 + value2时：
 
-1. lprim = ToPrimitive\(value1\)
-2. rprim = ToPrimitive\(value2\)
-3. 如果 lprim 是字符串或者 rprim 是字符串，那么返回 ToString\(lprim\) 和 ToString\(rprim\)的拼接结果
-4. 返回 ToNumber\(lprim\) 和 ToNumber\(rprim\)的运算结果
+1. lprim = ToPrimitive(value1)
+2. rprim = ToPrimitive(value2)
+3. 如果 lprim 是字符串或者 rprim 是字符串，那么返回 ToString(lprim) 和 ToString(rprim)的拼接结果
+4. 返回 ToNumber(lprim) 和 ToNumber(rprim)的运算结果
 
 * 如果+的 其中一个操作数时字符串， 则 concatenate， 否则 数字加法
 
-```text
+```
 var a = '42';
 var b ='0';
 var c = 42;
@@ -411,23 +411,23 @@ var d = 0;
 console.log(a+b); //420
 ```
 
-![](../.gitbook/assets/image%20%28128%29.png)
+![](<../.gitbook/assets/image (127).png>)
 
-![](../.gitbook/assets/image%20%28129%29.png)
+![](<../.gitbook/assets/image (128).png>)
 
-![](../.gitbook/assets/image%20%28130%29.png)
+![](<../.gitbook/assets/image (129).png>)
 
- 
+&#x20;
 
 ### 对象转原始类型是根据什么流程运行的？
 
-* 对象转原始类型，会调用内置的\[ToPrimitive\]函数，对于该函数而言，其逻辑如下：
-  * 如果Symbol.toPrimitive\(\)方法，优先调用再返回
-  * 调用valueOf\(\)，如果转换为原始类型，则返回
-  * 调用toString\(\)，如果转换为原始类型，则返回
+* 对象转原始类型，会调用内置的\[ToPrimitive]函数，对于该函数而言，其逻辑如下：
+  * 如果Symbol.toPrimitive()方法，优先调用再返回
+  * 调用valueOf()，如果转换为原始类型，则返回
+  * 调用toString()，如果转换为原始类型，则返回
   * 如果都没有返回原始类型，会报错
 
-```text
+```
 var obj = {
   value: 3,
   valueOf() {
@@ -444,11 +444,11 @@ console.log(obj + 1); // 输出7
 
 ```
 
-### 如何让if\(a == 1 && a == 2\)条件成立？
+### 如何让if(a == 1 && a == 2)条件成立？
 
 * 其实就是上个知识点的应用
 
-```text
+```
 var a = {
   value: 0,
   valueOf: function() {
@@ -467,12 +467,12 @@ console.log(a == 1 && a == 2);//true
 ### Instance of:
 
 * It checks whether the type of the left object belong to the right object in its prototype chain.
-* f instanceof foo 
+* f instanceof foo&#x20;
   * f 的 \_\_proto\_\_ 一层一层往上， 能否对应到 Foo.prototype
 
 #### 题目：
 
-```text
+```
 // #####Q1#####
 var names = ["Tom","Anna",2,true]
 console.log(names instanceof String) // false
@@ -497,16 +497,16 @@ console.log(str1 instanceof Object) //false
 
 ### typeof 和 instanceof 区别
 
-![](../.gitbook/assets/image%20%2898%29.png)
+![](<../.gitbook/assets/image (98).png>)
 
 ### Object.is和===的区别？
 
-![](../.gitbook/assets/image%20%2823%29.png)
+![](<../.gitbook/assets/image (22).png>)
 
 * Object在严格等于的基础上修复了一些特殊情况下的失误，具体来说就是+0和-0，NaN和NaN。 源码如下：
-* The Object.is\(\) method determines whether two values are the same value.
+* The Object.is() method determines whether two values are the same value.
 
-```text
+```
 // Case 2: Signed zero
 Object.is(0, -0);                 // false
 Object.is(+0, -0);                // false
@@ -527,18 +527,18 @@ NaN === NaN                      //false
 
 ### ==  and ===
 
-* == check for value equality with coercion allowed,
-* === checks for both value equality without coercion allowed, This is often called strict equality
+* \== check for value equality with coercion allowed,
+* \=== checks for both value equality without coercion allowed, This is often called strict equality
 
 #### [https://github.com/mqyqingfeng/Blog/issues/164](https://github.com/mqyqingfeng/Blog/issues/164)
 
-#### 
+####
 
 
 
 ### 原始值转布尔
 
-```text
+```
 console.log(Boolean()) // false
 
 console.log(Boolean(false)) // false
@@ -555,12 +555,12 @@ console.log(Boolean("")) // false
 
 ### 原始值转数字
 
-![](../.gitbook/assets/image%20%28125%29.png)
+![](<../.gitbook/assets/image (124).png>)
 
 * 我们可以使用 Number 函数将类型转换成数字类型，如果参数无法被转换为数字，则返回 NaN。
-* 调用了ToNumber\(\)
+* 调用了ToNumber()
 
-```text
+```
 console.log(Number()) // +0
 
 console.log(Number(undefined)) // NaN
@@ -599,11 +599,11 @@ console.log(parseInt("0.1")) // 0
 
 ### 原始值转字符
 
-![](../.gitbook/assets/image%20%28126%29.png)
+![](<../.gitbook/assets/image (125).png>)
 
-* 我们使用 String 函数将类型转换成字符串类型,调用了ToString\(）
+* 我们使用 String 函数将类型转换成字符串类型,调用了ToString(）
 
-```text
+```
 console.log(String()) // 空字符串
 
 console.log(String(undefined)) // undefined
@@ -622,11 +622,11 @@ console.log(String(1)) // 1
 
 ### 原始值转对象
 
-* 原始值通过调用 String\(\)、Number\(\) 或者 Boolean\(\) 构造函数，转换为它们各自的包装对象。
+* 原始值通过调用 String()、Number() 或者 Boolean() 构造函数，转换为它们各自的包装对象。
 
 ### ToPrimitive
 
-```text
+```
 ToPrimitive(input[, PreferredType])
 ```
 
@@ -638,7 +638,7 @@ ToPrimitive(input[, PreferredType])
 
 如果传入的 input 是 Undefined、Null、Boolean、Number、String 类型，直接返回该值。
 
-![](../.gitbook/assets/image%20%28124%29.png)
+![](<../.gitbook/assets/image (126).png>)
 
 
 
@@ -646,17 +646,17 @@ ToPrimitive(input[, PreferredType])
 
 * Convert equal to 0 or 1 and then compare
 * If one is string and another one is number, convert string to number first
-* 
-  If one is object another one is not, then it will use valueOf\(\)
+*
 
-  * If both are object, they will check if they are the same object,
+    If one is object another one is not, then it will use valueOf()
 
+    * If both are object, they will check if they are the same object,
 * Values of null and undefined are equal.
-* Values of null and undefined cannot be converted into any other values for equality checking.
+*   Values of null and undefined cannot be converted into any other values for equality checking.
 
 
 
-![](../.gitbook/assets/image%20%289%29.png)
+![](<../.gitbook/assets/image (12).png>)
 
 
 
@@ -664,7 +664,7 @@ ToPrimitive(input[, PreferredType])
 
 ## 6.Detecting array
 
-```text
+```
 //Method 1
 const a = [];
 console.log(a instanceof Array);//true
@@ -711,12 +711,12 @@ Array.isArray(a);//true
 Array.isArray(b);//false
 ```
 
-1.  使用 instanceof 判断
+1. &#x20;使用 instanceof 判断
 2. 使用 constructor 判断
    1. 但是这个 方法 前提条件是 **constructor 没有被改写**
-3. 用Object的toString方法判断， 每一个 继承自 Object的对象都拥有 toString\(\) 方法
-   1. 前提条件是 toString\(\) 没有被改写  
-   2. 如果一个对象的toString方法没有被重写过的话，那么toString方法将会返回"\[object type\]"，其中的type代表的是对象的类型，根据type的值，我们就可以判断这个疑似数组的对象到底是不是数组了。 **我们不能直接调用 数组的toString 方法**
+3. 用Object的toString方法判断， 每一个 继承自 Object的对象都拥有 toString() 方法
+   1. 前提条件是 toString() 没有被改写 &#x20;
+   2. 如果一个对象的toString方法没有被重写过的话，那么toString方法将会返回"\[object type]"，其中的type代表的是对象的类型，根据type的值，我们就可以判断这个疑似数组的对象到底是不是数组了。** 我们不能直接调用 数组的toString 方法**
    3. 从Method3 例子当中，除了对象之外，其他的数据类型的toString返回的都是内容的字符创，只有对象的toString方法会返回对象的类型。所以要判断除了对象之外的数据的数据类型，我们需要“借用”对象的toString方法，所以我们需要使用call或者apply方法来改变toString方法的执行上下文
 4. 用Array对象的isArray方法判断, 最靠谱的方法了
 
@@ -727,7 +727,7 @@ Array.isArray(b);//false
 * toFixed: 是从小数点后开始判断
 * toPrecision: 判断是从最开始判断
 
-```text
+```
 var a = 46.39
 console.log(a.toFixed(0))//"46"
 console.log(a.toFixed(1))//"46.4"
@@ -737,7 +737,7 @@ console.log(a.toPrecision(3))//"46.4"
 
 ## 8.How to empty an array
 
-```text
+```
 //Method 1
 var ary = [1,2,3];
 
@@ -773,7 +773,7 @@ console.log(ary);
 
 ### Syntax
 
-```text
+```
 //Function with no parameter
 const identifierName = () => {codeForFunction}
 //Function with single parameter
@@ -805,7 +805,7 @@ let triple = (x) => 3 * x;
 
 ### What will be the result of clicking on the button?
 
-```text
+```
 const button = document.querySelector('#pushy');
 button.addEventListener('click', () => {
     this.classList.toggle('on');
@@ -821,7 +821,7 @@ button.addEventListener('click', () => {
 
 ## 10. Understanding function arguments:
 
-```text
+```
 //Basic
 function sayHi() {
  console.log("Hello " + arguments[0] + ", " + arguments[1]);
@@ -830,11 +830,10 @@ function sayHi() {
 sayHi('OO','XXX') //"Hello OO, XXX"
 ```
 
-* when a function is defined using the **function** keyword \(meaning a non-arrow function\), there actually is an **arguments object** that can be accessed while inside a function to retrieve the values of each
+*   when a function is defined using the** function **keyword (meaning a non-arrow function), there actually is an **arguments object** that can be accessed while inside a function to retrieve the values of each
 
-  argument that was passed in.
-
-* The arguments object acts like an array \(though it isn’t an instance of Array\)
+    argument that was passed in.
+* The arguments object acts like an array (though it isn’t an instance of Array)
 * can use `arguments.length`
 
 
@@ -843,7 +842,7 @@ sayHi('OO','XXX') //"Hello OO, XXX"
 
 ### Rest parameter:
 
-```text
+```
 function getSum(...values) {
  // Sequentially sum all elements in 'values'
  // Initial total = 0
@@ -851,7 +850,7 @@ function getSum(...values) {
 }
 ```
 
-*  It allows us to represent an indefinite number of arguments as an array, It has to be the last formal parameter
+* &#x20;It allows us to represent an indefinite number of arguments as an array, It has to be the last formal parameter
 * **values becomes an array**
 
 
@@ -860,7 +859,7 @@ function getSum(...values) {
 
 ### Spread parameter:
 
-```text
+```
 let values = [1, 2, 3, 4];
 function getSum() {
  let sum = 0;
@@ -877,14 +876,15 @@ console.log(getSum(...values, ...[5,6,7])); // 28
 ```
 
 * It break array into  individually and pass each value as a separate argument
-* there are no restrictions on other parameters appearing before   or after the spread operator
+* there are no restrictions on other parameters appearing before  &#x20;or after the spread operator
 
 ### How is rest parameter different with spread syntax?
 
 * It collects values in the form of an array
 * Where spread is used to create copies of arrays/objects, rest is used to collect all the remaining values into an array.
-* 
-  Works in function argument
+*
+
+    Works in function argument
 
 ### What are the benefits of using spread syntax?
 
@@ -898,7 +898,7 @@ console.log(getSum(...values, ...[5,6,7])); // 28
 
 ### new.target in function
 
-```text
+```
 function King() {
  if (!new.target) {
  throw 'King must be instantiated using "new"'
@@ -909,15 +909,14 @@ new King(); // King instantiated using "new"
 King(); // Error: King must be instantiated using "new"
 ```
 
-* Functions have always been able to behave as both a constructor to instantiate a new object, and
+*   Functions have always been able to behave as both a constructor to instantiate a new object, and
 
-  as a normal callable function
-
-*  New in ECMAScript 6 is the ability to determine if a function was   invoked with the new keyword using _**new.target**_ If a function is called normally, new.target will   be undefined. 
+    as a normal callable function
+* &#x20;New in ECMAScript 6 is the ability to determine if a function was  &#x20;invoked with the new keyword using _**new.target**_ If a function is called normally, new.target will  &#x20;be undefined.&#x20;
 
 ### Function properties
 
-```text
+```
 function sayName(name) {
  console.log(name);
 }
@@ -936,16 +935,16 @@ console.log(sayHi.length); // 0
 console.log(sayHi.name);// "sayHi"
 ```
 
-* Each function has 3 properties: **length and prototype, name**. The **length property** indicates   the number of named arguments that the function expects, **name give its name**
-* In strict mode, the this value of a function called without a context   object is not coerced to window. Instead, this becomes undefined unless explicitly set by either attaching the function to an object or using apply\(\) or call\(\).
+* Each function has 3 properties: **length and prototype, name**. The **length property** indicates  &#x20;the number of named arguments that the function expects, **name give its name**
+* In strict mode, the this value of a function called without a context  &#x20;object is not coerced to window. Instead, this becomes undefined unless explicitly set by either attaching the function to an object or using apply() or call().
 
-### Function method :bind,call & apply 
+### Function method :bind,call & apply&#x20;
 
 * Both call the function with a specific **this** value,  effective setting the value of this object inside the function body.
 
 ### bind:
 
-```text
+```
 window.color = 'red';
 var o = {
  color: 'blue'
@@ -980,16 +979,16 @@ console.log((function(){}).bind().length); // 0
 
 ```
 
-* Definded in the ECMAScript 5, It create a new function instance whose this value is bound to the value that was passed into bind\(\);
-* a new function called objectSayColor\(\) is created from sayColor\(\) by calling bind\(\) and   passing in the object o. The objectSayColor\(\) function has a this value equivalent to o,
-*  `bind`本身是一个函数名为`bind`的函数，返回值也是函数，函数名是`bound`。（打出来就是`bound加上一个空格`）
-*  传给`bind()`的其他参数接收处理了，`bind()`之后返回的函数的参数也接收处理了，也就是说合并处理了
-*  并且`bind()`后的`name`为`bound + 空格 + 调用bind的函数名`。如果是匿名函数则是`bound + 空格`。
-*  `bind`后的返回值函数，执行后返回值是原函数（`original`）的返回值。
+* Definded in the ECMAScript 5, It create a new function instance whose this value is bound to the value that was passed into bind();
+* a new function called objectSayColor() is created from sayColor() by calling bind() and  &#x20;passing in the object o. The objectSayColor() function has a this value equivalent to o,
+* &#x20;`bind`本身是一个函数名为`bind`的函数，返回值也是函数，函数名是`bound`。（打出来就是`bound加上一个空格`）
+* &#x20;传给`bind()`的其他参数接收处理了，`bind()`之后返回的函数的参数也接收处理了，也就是说合并处理了
+* &#x20;并且`bind()`后的`name`为`bound + 空格 + 调用bind的函数名`。如果是匿名函数则是`bound + 空格`。
+* &#x20;`bind`后的返回值函数，执行后返回值是原函数（`original`）的返回值。
 
 ### call
 
-```text
+```
 function Product(name, price) {
   this.name = name;
   this.price = price;
@@ -1024,11 +1023,11 @@ sayColor.call(window); // red
 sayColor.call(o); // blue
 ```
 
-* The first argument is the **this** value, but the remaining arguments are passed directly into the   function. 
+* The first argument is the** this** value, but the remaining arguments are passed directly into the  &#x20;function.&#x20;
 
 ### apply
 
-```text
+```
 function sum(num1, num2) {
  return num1 + num2;
 }
@@ -1045,10 +1044,9 @@ console.log(callSum1(10, 10)); // 20
 console.log(callSum2(10, 10)); // 20
 ```
 
-* It accepts two arguments: the value of this inside the function and an
+*   It accepts two arguments: the value of this inside the function and an
 
-  array of arguments, the second argument can be an array or arguments
-
+    array of arguments, the second argument can be an array or arguments
 * apply只接收两个参数，第二个参数可以是数组也可以是类数组，其实也可以是对象，后续的参数忽略不计
 
 ### What is difference between call apply?
@@ -1060,7 +1058,7 @@ console.log(callSum2(10, 10)); // 20
 
 ### Private Variables:
 
-```text
+```
 function MyObject() {
  // private variables and functions
  let privateVariable = 10;
@@ -1080,15 +1078,16 @@ let a = new MyObject();
 console.log(a.privateVariable);// undefined
 ```
 
-* publicMethod: This is one way to create privileged methods on object\(inside a constructor\) 
-* 
+* publicMethod: This is one way to create privileged methods on object(inside a constructor)&#x20;
+*
+
 ### StaticPrivateVariables:
 
-* Here is another way to create privileged methods , using private scope to define the private variables or   functions.
-* In this pattern, a private scope is created to **enclose the constructor and its methods**. The private   variables and functions are defined first, followed by the constructor and the public methods. Public methods are defined on the prototype, as in the typical **prototype pattern**
+* Here is another way to create privileged methods , using private scope to define the private variables or  &#x20;functions.
+* In this pattern, a private scope is created to** enclose the constructor and its methods**. The private  &#x20;variables and functions are defined first, followed by the constructor and the public methods. Public methods are defined on the prototype, as in the typical **prototype pattern**
 * This would create static private variables for better code reuse through prototype., although each instance doesn't have its own private variable.
 
-```text
+```
 (function() {
  // private variables and functions
  let privateVariable = 10;
@@ -1114,10 +1113,10 @@ console.log(a.privateVariable);//undefined
 ```
 
 * publicMethod is defined on its prototype,
-* Initializaing an undeclared variable always creates a global variable, so MyObject becomes global and available   outside the private scope
-* **publicMethod**: being a closure, always holds a reference to the containing scope. so that is why he can access privateVariable 
+* Initializaing an undeclared variable always creates a global variable, so MyObject becomes global and available  &#x20;outside the private scope
+* **publicMethod**: being a closure, always holds a reference to the containing scope. so that is why he can access privateVariable&#x20;
 
-```text
+```
 (function() {
  let name = '';
 
@@ -1156,7 +1155,7 @@ console.log(person2.getName()); // 'Michael'
   * In callback Functions
   * Currying
 
-```text
+```
 //展示了 data privacy
 function createStack() {
   const items = [];
@@ -1179,7 +1178,7 @@ function createStack() {
 
 * 在 Javascript 中，局部变量会随着函数的执行完毕而被销毁，除非还有指向他们的引用。当闭包本身也被垃圾回收之后，这些闭包中的私有状态随后也会被垃圾回收。通常我们可以通过切断闭包的引用来达到这一目的
 
-```text
+```
 let add = (function createAddClosure(){
     let arr = [];
     return function(obj){
@@ -1203,11 +1202,11 @@ $("#clear").click(clearAllObjects);
 
 ```
 
-### 
+###
 
 ### Immediately invoked function expression
 
-```text
+```
 // IIFE
 (function () {
  for (var i = 0; i < count; i++) {
@@ -1220,7 +1219,7 @@ $("#clear").click(clearAllObjects);
 
 ### 问题 1
 
-```text
+```
 //Q1
 const array = [5, 11, 18, 25];
 for (var i = 0; i < array.length; i++) {
@@ -1302,15 +1301,15 @@ console.log(new Date, i);
 
 1. Output:  Element: undefined, at index:4     乘4
    1. on each iteration, the setTimeout will be triggered,since it’s an asynchronous web API, the command enters the event queue, after which the next loop iteration occurs. Hence, the event queue waits for the loop commands to execute first and call stack to get empty, after which the four setTimeout commands move from the event queue to call stack and execute.
-2.  There are 4  possible solution:
-   1. Using Es6 featre, **let**   It  creates a new binding for each loop iteration, each i refers to the binding of one specific iteration and preserves the value that was current at that time
+2. &#x20;There are 4  possible solution:
+   1. Using Es6 featre,** let   **It  creates a new binding for each loop iteration, each i refers to the binding of one specific iteration and preserves the value that was current at that time
    2. **Using IFFE**: That function takes the parameter local\_i, that is the variable i. It calls another function in return, an anonymous function that displays the value of i stored in the variable local\_i
    3. 给定时器传入第三个参数, 作为timer函数的第一个函数参数
    4. JS 中 基本类型是 pass by value
 
 ### 问题2 ：每一秒输出数字题目
 
-```text
+```
 // Method 1
 for (var i = 0; i < 5; i++) {
     (function(j) {
@@ -1374,7 +1373,7 @@ const sleep = (timeountMS) => new Promise((resolve) => {
 
 ### 问题 3
 
-```text
+```
 // 3.1
 let x = 1
 function A(y) {
@@ -1392,7 +1391,7 @@ C(3)
 
 ## 14.This 指向
 
-```text
+```
 //Ex1
 window.identity = 'The Window';
                    
@@ -1475,33 +1474,31 @@ console.log(person.getName()); // axuebin
 
 不考虑 箭头函数时候  **this 永远指向最后调用它的那个对象**
 
-![](../.gitbook/assets/image%20%28134%29.png)
+![](<../.gitbook/assets/image (134).png>)
 
 * **情况1: 全局上下文**
   * `var` === `this.` === `winodw.`
-* **情况2: 函数上下文**  When a function is not   defined using the arrow syntax, the this object is bound at runtime based on the context in which   a function is executed: 
-  * **直接调用** when used inside global functions, this is equal to **window in nonstrict** mode     and **undefined in strict mode**  
+* **情况2: 函数上下文**  When a function is not  &#x20;defined using the arrow syntax, the this object is bound at runtime based on the context in which  &#x20;a function is executed:&#x20;
+  * **直接调用** when used inside global functions, this is equal to** window in nonstrict **mode    &#x20;and **undefined in strict mode  **
   * **call, apply, this 指向 绑定的对象上,如果call、apply、bind接收到的第一个参数是空或者null、undefined的话，则会忽略这个参数。**
   * **箭头函数**
     * **箭头函数会捕获其所在上下文的this值，作为自己的this值。**
     * **箭头函数中没有this绑定，必须通过查找作用域链来决定其值。 如果箭头函数被非箭头函数包含，则this绑定的是最近一层非箭头函数的this，否则this的值则被设置为全局对象**
-    * 其实就是相当于箭头函数外的this是缓存的该箭头函数上层的普通函数的this。如果没有普通函数，则是全局对象（浏览器中则是window）。
+    *   其实就是相当于箭头函数外的this是缓存的该箭头函数上层的普通函数的this。如果没有普通函数，则是全局对象（浏览器中则是window）。
 
-      也就是说**无法通过call、apply、bind绑定箭头函数的this\(它自身没有this\)**。而call、apply、bind可以绑定缓存箭头函数上层的普通函数的this, 但是可以通过改变作用域中this的指向来间接修改。
-
-    * 箭头函数并不绑定 this，arguments，super\(ES6\)，抑或 new.target\(ES6\)。
+        也就是说**无法通过call、apply、bind绑定箭头函数的this(它自身没有this)**。而call、apply、bind可以绑定缓存箭头函数上层的普通函数的this, 但是可以通过改变作用域中this的指向来间接修改。
+    * 箭头函数并不绑定 this，arguments，super(ES6)，抑或 new.target(ES6)。
 * **情况3:   this指向调用函数的对象。**
-  * this is equal to the object when called as an object method   `obj.a();`
+  * this is equal to the object when called as an object method  ` obj.a();`
 * **情况4: this被绑定到正在构造的新对象。**
 * **情况5: 作为一个DOM事件处理函数**
   * Dom 事件绑定, onclick和addEventerListener中 this 默认指向绑定事件的元素。
-* **Ex1:**  getIdentityFunc\(\) returns a function, so calling this function immediately call the function that is returned.
-  * Each function automatically gets two special variables as soon as the function is
+* **Ex1:**  getIdentityFunc() returns a function, so calling this function immediately call the function that is returned.
+  *   Each function automatically gets two special variables as soon as the function is
 
-    called: **this and arguments.** An inner function can never access these variables directly from an outer     function
-
-  * Before     defining the anonymous function, a variable named that is assigned equal to the this object. When     the closure is defined, it has access to that because it is a uniquely named variable in the containing     function. Even after the function is returned, that is still bound to object, so calling object.getIdentityFunc\(\)  returns 'My Object'.
-* Both **this and arguments** behave in this way. If you want access to a   containing scope’s arguments object, you’ll need to save a reference into another   variable that the closure can access.
+      called: **this and arguments.** An inner function can never access these variables directly from an outer      &#x20;function
+  * Before    &#x20;defining the anonymous function, a variable named that is assigned equal to the this object. When    &#x20;the closure is defined, it has access to that because it is a uniquely named variable in the containing    &#x20;function. Even after the function is returned, that is still bound to object, so calling object.getIdentityFunc()  returns 'My Object'.
+* Both **this and arguments** behave in this way. If you want access to a  &#x20;containing scope’s arguments object, you’ll need to save a reference into another  &#x20;variable that the closure can access.
 
 
 
@@ -1509,18 +1506,18 @@ console.log(person.getName()); // axuebin
 
 _**如果要判断一个运行中函数的 this 绑定， 就需要找到这个函数的直接调用位置**_。 找到之后 就可以顺序应用下面这四条规则来判断 this 的绑定对象
 
-1.  `new` 调用：绑定到新创建的对象，注意：显示`return`函数或对象，返回值不是新创建的对象，而是显式返回的函数或对象
+1. &#x20;`new` 调用：绑定到新创建的对象，注意：显示`return`函数或对象，返回值不是新创建的对象，而是显式返回的函数或对象
 2. `call` 或者 `apply`（ 或者 `bind`） 调用：严格模式下，绑定到指定的第一个参数。非严格模式下，`null`和`undefined`，指向全局对象（浏览器中是`window`），其余值指向被`new Object()`包装的对象。
 3. 对象上的函数调用：绑定到那个对象。
 4. 普通函数调用： 在严格模式下绑定到 undefined，否则绑定到全局对象。
 
 ES6 中的箭头函数：不会使用上文的四条标准的绑定规则，**而是箭头函数的this指向的是谁调用箭头函数的外层function，箭头函数的this就是指向该对象，如果箭头函数没有外层函数，则指向window**
 
-DOM事件函数：一般指向绑定事件的DOM元素，但有些情况绑定到全局对象（比如IE6~IE8的attachEvent）
+DOM事件函数：一般指向绑定事件的DOM元素，但有些情况绑定到全局对象（比如IE6\~IE8的attachEvent）
 
 ### 问题1
 
-```text
+```
 // 问题 1
 var name = 'window';
 var person = {
@@ -1546,7 +1543,7 @@ Student.doSth.call(person); // 'person'
 
 ### 问题 2：
 
-```text
+```
 "use strict";
 var a = 10;
 function foo () {
@@ -1572,7 +1569,7 @@ Uncaught TypeError: Cannot read property 'a' of undefined
 
 ### 问题 3：
 
-```text
+```
 let a = 10
 const b = 20
 
@@ -1589,11 +1586,11 @@ undefined
 undefined
 ```
 
-*  如果把`var`改成了`let 或者 const`，变量是不会被绑定到`window`上的，所以此时会打印出三个`undefined`。
+* &#x20;如果把`var`改成了`let 或者 const`，变量是不会被绑定到`window`上的，所以此时会打印出三个`undefined`。
 
 ### 问题 4：
 
-```text
+```
 var a = 1
 function foo () {
   var a = 2
@@ -1625,7 +1622,7 @@ foo()
 
 ### 问题 5：隐式绑定
 
-```text
+```
 function foo () {
   console.log(this.a)
 }
@@ -1635,11 +1632,11 @@ obj.foo()
 
 ```
 
-* 函数`foo()`虽然是定义在`window`下，但是我在`obj`对象中引用了它，并将它重新赋值到`obj.foo`上。
+*   函数`foo()`虽然是定义在`window`下，但是我在`obj`对象中引用了它，并将它重新赋值到`obj.foo`上。
 
-  且调用它的是`obj`对象，因此打印出来的`this.a`应该是`obj`中的`a`
+    且调用它的是`obj`对象，因此打印出来的`this.a`应该是`obj`中的`a`
 
-\`\`
+``
 
 ### 问题 6：隐式绑定的隐式丢失的问题
 
@@ -1648,7 +1645,7 @@ obj.foo()
   * 使用另一个变量来给函数取别名
   * 将函数作为参数传递时会被隐式赋值，回调函数丢失this绑定
 
-```text
+```
 function foo () {
   console.log(this.a)
 };
@@ -1662,13 +1659,13 @@ foo2();
 
 ```
 
-* foo2指向的是obj.foo函数，不过调用它的却是window对象，所以它里面this的指向是为window。
+*   foo2指向的是obj.foo函数，不过调用它的却是window对象，所以它里面this的指向是为window。
 
 
 
-  其实也就相当于是window.foo2\(\)
+    其实也就相当于是window.foo2()
 
-```text
+```
 function foo () {
   console.log(this.a)
 };
@@ -1691,7 +1688,7 @@ obj2.foo2();
 * `foo2()`发生了隐式丢失，调用者是`window`，使得`foo()`中的`this`指向`window`
 * `foo3()`发生了隐式丢失，调用者是`obj2`，使得`foo()`中的`this`指向`obj2`
 
-```text
+```
 function foo () {
   console.log(this.a)
 }
@@ -1707,9 +1704,9 @@ doFoo(obj.foo)
 
 ```
 
-* 这里我们将obj.foo当成参数传递到doFoo函数中，在传递的过程中，obj.foo\(\)函数内的this发生了改变，指向了window
+* 这里我们将obj.foo当成参数传递到doFoo函数中，在传递的过程中，obj.foo()函数内的this发生了改变，指向了window
 
-```text
+```
 function foo () {
   console.log(this.a)
 }
@@ -1729,11 +1726,11 @@ obj2.doFoo(obj.foo)
 
 ```
 
- **所以说，如果你把一个函数当成参数传递到另一个函数的时候，也会发生隐式丢失的问题，且与包裹着它的函数的this指向无关。在非严格模式下，会把该函数的this绑定到window上，严格模式下绑定到undefined。**
+&#x20;**所以说，如果你把一个函数当成参数传递到另一个函数的时候，也会发生隐式丢失的问题，且与包裹着它的函数的this指向无关。在非严格模式下，会把该函数的this绑定到window上，严格模式下绑定到undefined。**
 
 ### 问题 7：显示绑定
 
-```text
+```
 function foo () {
   console.log(this.a)
 }
@@ -1762,9 +1759,9 @@ foo.call(undefined)
 
 ```
 
-*  如果`call、apply、bind`接收到的第一个参数是空或者`null、undefined`的话，则会忽略这个参数。
+* &#x20;如果`call、apply、bind`接收到的第一个参数是空或者`null、undefined`的话，则会忽略这个参数。
 
-```text
+```
 var obj1 = {
   a: 1
 }
@@ -1817,10 +1814,10 @@ obj2.foo2()
 
 ```
 
-*   谁调用的函数，函数内的`this`指向的就是谁。,而对于`setTimeout`中的函数，这里存在隐式绑定的隐式丢失，也就是当我们将函数作为参数传递时会被隐式赋值，回调函数丢失`this`绑定，因此这时候`setTimeout`中的函数内的`this`是指向`window`的。
+* &#x20; 谁调用的函数，函数内的`this`指向的就是谁。,而对于`setTimeout`中的函数，这里存在隐式绑定的隐式丢失，也就是当我们将函数作为参数传递时会被隐式赋值，回调函数丢失`this`绑定，因此这时候`setTimeout`中的函数内的`this`是指向`window`的。
 * `obj2.foo2.call(obj1) ,` 我改变的就是`foo2`函数内的`this`的指向了
 
-```text
+```
 function foo () {
   console.log(this.a)
 }
@@ -1839,9 +1836,9 @@ Uncaught TypeError: Cannot read property 'call' of undefined
 ```
 
 * `foo().call(obj)`开始会执行`foo()`函数，打印出`2`，但是会对`foo()`函数的返回值执行`.call(obj)`操作，可是我们可以看到`foo()`函数的返回值是`undefined`，因此就会报错了。
-*  所以我们可以看到`foo.call()`和`foo().call()`的区别了，一个是针对于函数，一个是针对于函数的返回值。
+* &#x20;所以我们可以看到`foo.call()`和`foo().call()`的区别了，一个是针对于函数，一个是针对于函数的返回值。
 
-```text
+```
 function foo () {
   console.log(this.a)
   return function () {
@@ -1860,7 +1857,7 @@ foo().call(obj)
 // 1
 ```
 
-```text
+```
 function foo () {
   console.log(this.a)
   return function () {
@@ -1884,7 +1881,7 @@ foo().bind(obj)
 
 
 
-```text
+```
 function foo () {
   console.log(this.a)
   return function () {
@@ -1900,9 +1897,9 @@ foo.call(obj)()
 
 ```
 
-*  最后调用匿名函数的却是`window`。
+* &#x20;最后调用匿名函数的却是`window`。
 
-```text
+```
 var obj = {
   a: 'obj',
   foo: function () {
@@ -1936,7 +1933,7 @@ obj.foo().call(obj2)
 // inner: obj2
 ```
 
-```text
+```
 var obj = {
   a: 1,
   foo: function (b) {
@@ -1960,7 +1957,7 @@ obj.foo.call(obj2)(1)
 * 开始调用`obj.foo(a)`将`2`传入`foo`函数并赋值给型参`b`，并且由于闭包的原因，使得匿名函数内能访问到`b`，之后调用匿名函数的时候，用`call()`改变了`this`的指向，使得匿名函数内`this.a`为`3`，并传入最后一个参数`1`，所以第一行输出的应该是`3 + 2 + 1`，也就是`6`。
 * 而第二行，`obj.foo.call(obj2)`这里是将`foo`函数内的`this`指向了`obj2`，同时并没有传递任何参数，所以`b`开始是`undefined`的，但是又因为有一句`b = b || this.a`，使得`b`变为了`3`；同时最后一段代码`(1)`，是在调用匿名函数，且和这个匿名函数内的`this`应该是指向`window`的，因此输出也为`3+2+1`，为`6`
 
-```text
+```
 function foo (item) {
   console.log(item, this.a)
 }
@@ -1989,7 +1986,7 @@ arr.filter(function (i) {
 
 * 使用new来调用一个函数，会构造一个新对象并把这个新对象绑定到调用函数中的this。
 
-```text
+```
 function Person (name) {
   this.name = name
 }
@@ -2001,9 +1998,9 @@ console.log(person1.name)
 
 ```
 
-*  使用`new`来调用`Person`，构造了一个新对象`person1`并把它\(`person1`\)绑定到`Person`调用中的`this`。
+* &#x20;使用`new`来调用`Person`，构造了一个新对象`person1`并把它(`person1`)绑定到`Person`调用中的`this`。
 
-```text
+```
 var name = 'window'
 function Person (name) {
   this.name = name
@@ -2034,7 +2031,7 @@ person2.foo()()
 
 ```
 
-```text
+```
 var name = 'window'
 function Person (name) {
   this.name = name
@@ -2056,15 +2053,15 @@ person1.foo().call(person2)
 // person2
 ```
 
-* `person1.foo.call(person2)()`将`foo()`函数内的`this`指向了`person2`，所以打印出`person2`，而内部返回的匿名函数是由`window`调用的，所以打印出`window`。\(类似题目`4.9`\)`person1.foo().call(person2)`是将匿名函数的`this`显式绑定到了`person2`上，所以打印出来的会是`person2`
+* `person1.foo.call(person2)()`将`foo()`函数内的`this`指向了`person2`，所以打印出`person2`，而内部返回的匿名函数是由`window`调用的，所以打印出`window`。(类似题目`4.9`)`person1.foo().call(person2)`是将匿名函数的`this`显式绑定到了`person2`上，所以打印出来的会是`person2`
 
-\`\`
+``
 
 ### 题目 9：箭头函数绑定
 
 * 它里面的this是由外层作用域来决定的，且指向函数定义时的this而非执行时。
 
-```text
+```
 var obj = {
   name: 'obj',
   foo1: () => {
@@ -2086,9 +2083,9 @@ obj.foo2()()
 // "obj"
 ```
 
-* obj.foo2\(\)\(\)，首先会执行obj.foo2\(\)，这不是个箭头函数，所以它里面的this是调用它的obj对象，因此打印出obj，而返回的匿名函数是一个箭头函数，它的this由外层作用域决定，那也就是函数foo2咯，那也就是它的this会和foo2函数里的this一样，就也打印出了obj。
+* obj.foo2()()，首先会执行obj.foo2()，这不是个箭头函数，所以它里面的this是调用它的obj对象，因此打印出obj，而返回的匿名函数是一个箭头函数，它的this由外层作用域决定，那也就是函数foo2咯，那也就是它的this会和foo2函数里的this一样，就也打印出了obj。
 
-```text
+```
 var name = 'window'
 var obj1 = {
   name: 'obj1',
@@ -2134,14 +2131,14 @@ obj4.foo()() // 'window' 'window'
 
 ```
 
-\`\`
+``
 
 * `obj1.foo()()`两层都是普通函数，类似于题目`4.6`，分别打印出`obj1`和`window`。
 * `obj2.foo()()`外层为普通函数，内层为箭头，类似于题目`7.1`，都是打印出`obj2`。
 * `obj3.foo()()`外层为箭头函数，内层为普通函数，箭头函数的`this`由外层作用域决定，因此为`window`，内层普通函数由调用者决定，调用它的是`window`，因此也为`window`。
 * `obj4.foo()()`两层都是箭头函数，第一个箭头函数的`this`由外层作用域决定，因此为`window`，第二个箭头函数的`this`也由外层作用域决定，它的外层作用域是第一个箭头函数，而第一个箭头函数的`this`是`window`，因此内层的`this`也是`window`
 
-```text
+```
 var name = 'window'
 function Person (name) {
   this.name = name
@@ -2166,13 +2163,13 @@ person2.foo2() // window
 
 ```
 
-\`\`
+``
 
 * `person1.foo1()`是个普通函数，**this由最后调用它的对象决定**，即`person1`。
 * `person1.foo2()`为箭头函数，**this由外层作用域决定，且指向函数定义时的this而非执行时**，在这里它的外层作用域是函数`Person`，且这个是构造函数，并且使用了`new`来生成了对象`person1`，所以此时`this`的指向是为`person1`。
 * `person2.foo2()`字面量创建的的对象`person2`中的`foo2`是个箭头函数，由于`person2`是直接在`window`下创建的，你可以理解为它所在的作用域就是在`window`下，因此`person2.foo2()`内的`this`应该是`window`。
 
-```text
+```
 var name = 'window'
 function Person (name) {
   this.name = name
@@ -2208,7 +2205,7 @@ person1.foo3()() //person1  window
 person1.foo4()() //person1 person1
 ```
 
-`person1.foo1()()`两层都是普通函数，这个不再重复说了，打印出`person1`和`window`。\(类似题目`6.2`\)
+`person1.foo1()()`两层都是普通函数，这个不再重复说了，打印出`person1`和`window`。(类似题目`6.2`)
 
 `person1.foo2()()`第一层普通函数，它的`this`是由最后调用它的对象决定也就是`person1`，第二层为箭头函数，它的`this`由外层作用域决定，也就是`foo2`这个函数，因此也为`person1`。
 
@@ -2216,7 +2213,7 @@ person1.foo4()() //person1 person1
 
 `person1.foo4()()`两层都是箭头函数，`this`由外层作用域决定，所以都是`person1`。
 
-```text
+```
 var name = 'window'
 var obj1 = {
   name: 'obj1',
@@ -2248,15 +2245,16 @@ obj1.foo2().call(obj2) // window obj2
 * `obj1.foo1.call(obj2)()`第一层为普通函数，并且通过`.call`改变了`this`指向为`obj2`，所以会打印出`obj2`，第二层为箭头函数，它的`this`和外层作用域中的`this`相同，因此也是`obj2`。
 * `obj1.foo().call(obj2)`第一层打印出`obj1`，第二层为箭头函数，使用了`.call`想要修改`this`的指向，但是并不能成功，因此`.call(obj2)`对箭头函数无效，还是打印出`obj1`。
 * `obj1.foo2.call(obj2)()`第一层为箭头函数，并且想要通过`.call(obj2)`改变`this`指向，但是无效，且它的外层作用域是`window`，所以会打印出`window`，第二层为普通函数，`this`是最后调用者`window`，所以也会打印出`window`。
-* `obj1.foo2().call(obj2)`第一层为箭头函数，外层作用域是`window`，打印出`window`，第二层为普通函数，且使用了`.call(obj2)`来改变`this`指向，所以打印出了`obj2`。
+*   `obj1.foo2().call(obj2)`第一层为箭头函数，外层作用域是`window`，打印出`window`，第二层为普通函数，且使用了`.call(obj2)`来改变`this`指向，所以打印出了`obj2`。
 
-  
+    \
+
 
 ### 综合题
 
 #### 综合题1
 
-```text
+```
 var name = 'window'
 var person1 = {
   name: 'person1',
@@ -2292,9 +2290,9 @@ person1.foo4.call(person2)() // person2
 person1.foo4().call(person2) //person1
 ```
 
-####  综合题2
+#### &#x20;综合题2
 
-```text
+```
 var name = 'window'
 function Person (name) {
   this.name = name
@@ -2334,7 +2332,7 @@ person1.foo4().call(person2) //person1
 
 #### 综合题3
 
-```text
+```
 var name = 'window'
 function Person (name) {
   this.name = name
@@ -2375,7 +2373,7 @@ person1.obj.foo2().call(person2) //obj
 
 #### 综合题 4
 
-```text
+```
 function foo() {
   console.log( this.a );
 }
@@ -2398,7 +2396,7 @@ var a = 2;
 
 
 
-```text
+```
 function Foo() {
     getName = function () { alert (1); };
     return this;
@@ -2420,7 +2418,7 @@ new new Foo().getName();
 
 #### 综合题 6
 
-```text
+```
 /**
  * Question 1
  */
@@ -2505,14 +2503,14 @@ personA.show4.call(personB)() // personB
 
 ## 15. Call Stack & Event Loop
 
-![](../.gitbook/assets/image%20%2818%29.png)
+![](<../.gitbook/assets/image (15).png>)
 
 * call stack
   * stores all your running JavaScript code. The interpreter reads the code line-by-line
 * event table
-  *  This table is responsible for moving the asynchronous code to the event queue after a specified time
+  * &#x20;This table is responsible for moving the asynchronous code to the event queue after a specified time
 * event loop:
-  * Itt is responsible for keeping check of both the call stack and the event queue. It keeps checking if all the statements from the call stack have finished execution; that is, if the call stack is empty. If so, it pops the statement from the event queue \(if present\) to the call stack to execute.
+  * Itt is responsible for keeping check of both the call stack and the event queue. It keeps checking if all the statements from the call stack have finished execution; that is, if the call stack is empty. If so, it pops the statement from the event queue (if present) to the call stack to execute.
 
 ### event loop 执行顺序
 
@@ -2527,21 +2525,21 @@ personA.show4.call(personB)() // personB
 
 ### 执行机制
 
-![](../.gitbook/assets/image%20%2828%29.png)
+![](<../.gitbook/assets/image (28).png>)
 
-![](../.gitbook/assets/image%20%28133%29.png)
+![](<../.gitbook/assets/image (132).png>)
 
 * 微任务会在执行任何其他事件处理，或渲染，或执行任何其他宏任务之前完成。
 * 对于每一个 宏任务而言， 其内部都有一个微任务队列，当该宏任务执行完成，会检查其中的微任务队列，如果为空则直接执行下一个宏任务，如果不为空，则依次执行微任务，执行完成才去执行下一个宏任务
 * Macro task queue:宏任务
   * script，setTimeout，setImmediate，promise中的executor
-* Micro Task queue\(Callback queue\):
-  * MutationObserver，process.nextTick    、Promise.then\(或.reject\) 以及以 Promise 为基础开发的其他技术\(比如fetch API\)，
+* Micro Task queue(Callback queue):
+  * MutationObserver，process.nextTick    、Promise.then(或.reject) 以及以 Promise 为基础开发的其他技术(比如fetch API)，
 * **process.nextTick优先级高于Promise.then**
 
 ### 问题 1 ：
 
-```text
+```
 //Q1
 console.log("Before Function")
 setTimeout(function(){
@@ -2554,7 +2552,7 @@ console.log("After Function")
 
 ### 问题 2 ：
 
-```text
+```
 // Q2
 console.log('start');
 setTimeout(() => {
@@ -2574,7 +2572,7 @@ console.log('end');
 
 ### 问题 3：
 
-```text
+```
 // Question 3:
 
 Promise.resolve().then(()=>{
@@ -2611,7 +2609,7 @@ Macro queue:settimeout1
 
 Print:  start promise
 
-Micro queue: 
+Micro queue:&#x20;
 
 Macro queue:settimeout1 settimeout2
 
@@ -2629,7 +2627,7 @@ Macro queue: settimeout2
 
 Print:  start promise1 settimeout1promise2
 
-Micro queue: 
+Micro queue:&#x20;
 
 Macro queue: settimeout2
 
@@ -2639,13 +2637,13 @@ Macro queue: settimeout2
 
 Print:  start promise1 settimeout1promise2 setTimeout2
 
-Micro queue: 
+Micro queue:&#x20;
 
-Macro queue: 
+Macro queue:&#x20;
 
 ### 问题 4：
 
-```text
+```
 // Question 4
 setTimeout(()=>{
    console.log(1) 
@@ -2668,7 +2666,7 @@ console.log(5)
 
 ### 问题 5：
 
-```text
+```
 new Promise((resolve,reject)=>{
     console.log("promise1")
     resolve()
@@ -2702,28 +2700,28 @@ new Promise((resolve,reject)=>{
 第一轮:
 
 * current task: promise1是当之无愧的立即执行的一个函数，参考上一章节的executor，立即执行输出`[promise1]`
-* micro task queue: \[promise1的第一个then\]
+* micro task queue: \[promise1的第一个then]
 
 第二轮
 
 * current task: then1执行中，立即输出了**then11**以及新promise2的**promise2**
-* micro task queue: \[新promise2的then函数,以及promise1的第二个then函数\]
+* micro task queue: \[新promise2的then函数,以及promise1的第二个then函数]
 
 第三轮
 
 * current task: 新promise2的then函数输出then21和promise1的第二个then函数输出then12
-* micro task queue: \[新promise2的第二then函数\]
+* micro task queue: \[新promise2的第二then函数]
 
 
 
 第四轮
 
 * current task: 新promise2的第二then函数输出then23
-* micro task queue: \[\]
+* micro task queue: \[]
 
-###  问题 6：
+### &#x20;问题 6：
 
-```text
+```
 new Promise((resolve,reject)=>{
     console.log("promise1")
     resolve()
@@ -2756,7 +2754,7 @@ new Promise((resolve,reject)=>{
 
 ### 问题 7：
 
-```text
+```
 
 //多个 promise
 new Promise((resolve,reject)=>{
@@ -2790,26 +2788,26 @@ new Promise((resolve,reject)=>{
 第一轮:
 
 * current task: promise1，promise3
-* micro task queue: \[promise1的第一个then，promise3的第一个then\]
+* micro task queue: \[promise1的第一个then，promise3的第一个then]
 
 第二轮
 
 * current task: then11，promise2，then31
-* micro task queue: \[promise2的第一个then，promise1的第二个then\]
+* micro task queue: \[promise2的第一个then，promise1的第二个then]
 
 第三轮
 
 * current task: then21，then12
-* micro task queue: \[promise2的第二个then\]
+* micro task queue: \[promise2的第二个then]
 
 第四轮
 
 * current task: then23
-* micro task queue: \[\]
+* micro task queue: \[]
 
 ### 问题 8：
 
-```text
+```
 console.log('1');
 // settimout1
 setTimeout(function() {
@@ -2851,11 +2849,11 @@ setTimeout(function() {
 //1，7，6，8，2，4，3，5，9，11，10，12
 ```
 
-{% embed url="https://juejin.cn/post/6844903512845860872\#heading-4" %}
+{% embed url="https://juejin.cn/post/6844903512845860872#heading-4" %}
 
 ### 问题 9：
 
-```text
+```
 const first = () => (new Promise((resolve,reject)=>{
     console.log(3);
     let p = new Promise((resolve, reject)=>{
@@ -2882,13 +2880,13 @@ console.log(4);
 ```
 
 * **第一轮事件循环**
-  * 先执行**宏任务**，主script ，new Promise立即执行，输出【3】，执行p这个new Promise 操作，输出【7】，发现setTimeout，将回调放入下一轮任务队列（Event Queue），p的then，姑且叫做then1，放入**微任务队列**，发现first的then，叫then2，放入**微任务队列**。执行console.log\(4\)，输出【4】,宏任务执行结束。再执行**微任务**，执行then1，输出【1】，执行then2，输出【2】。到此为止，第一轮事件循环结束。开始执行第二轮。
+  * 先执行**宏任务**，主script ，new Promise立即执行，输出【3】，执行p这个new Promise 操作，输出【7】，发现setTimeout，将回调放入下一轮任务队列（Event Queue），p的then，姑且叫做then1，放入**微任务队列**，发现first的then，叫then2，放入**微任务队列**。执行console.log(4)，输出【4】,宏任务执行结束。再执行**微任务**，执行then1，输出【1】，执行then2，输出【2】。到此为止，第一轮事件循环结束。开始执行第二轮。
 * **第二轮事件循环**
   * 先执行宏任务里面的，也就是setTimeout的回调，输出【5】。resovle不会生效，因为p这个Promise的状态一旦改变就不会在改变了。 所以最终的输出顺序是3、7、4、1、2、5。
 
 
 
-```text
+```
 
 //8. 
 
@@ -2902,7 +2900,7 @@ console.log(4);
 
 ### 问题 10:
 
-```text
+```
 process.nextTick(() => {
   console.log('nextTick')
 })
@@ -2926,7 +2924,7 @@ console.log('end')
 
 ### 问题 11：
 
-```text
+```
 const promise = new Promise((resolve, reject) => {
   console.log(1);
   resolve('success')
@@ -2948,7 +2946,7 @@ console.log(4);
 
 ### 题目 12：
 
-```text
+```
 const promise = new Promise((resolve, reject) => {
   console.log(1);
   console.log(2);
@@ -2966,7 +2964,7 @@ console.log(4);
 
 ### 题目· 13：
 
-```text
+```
 const fn = () => (new Promise((resolve, reject) => {
   console.log(1);
   resolve('success')
@@ -2981,11 +2979,11 @@ console.log('start')
 // 'success'
 ```
 
-*  `fn`函数它是直接返回了一个`new Promise`的，而且`fn`函数的调用是在`start`之前，所以它里面的内容应该会先执行
+* &#x20;`fn`函数它是直接返回了一个`new Promise`的，而且`fn`函数的调用是在`start`之前，所以它里面的内容应该会先执行
 
-###  题目 14:
+### &#x20;题目 14:
 
-```text
+```
 const fn = () =>
   new Promise((resolve, reject) => {
     console.log(1);
@@ -3001,7 +2999,7 @@ fn().then(res => {
 
 ### 题目 15:
 
-```text
+```
 const promise = new Promise((resolve, reject) => {
   console.log(1);
   setTimeout(() => {
@@ -3036,7 +3034,7 @@ console.log(4);
 
 ### 题目 16：
 
-```text
+```
 setTimeout(() => {
   console.log('timer1');
   setTimeout(() => {
@@ -3072,7 +3070,7 @@ console.log('start')
 
 ### 题目 17：
 
-```text
+```
 Promise.resolve().then(() => {
   console.log('promise1');
   const timer2 = setTimeout(() => {
@@ -3097,24 +3095,24 @@ console.log('start');
 
 * 刚开始整个脚本作为第一次宏任务来执行，我们将它标记为**宏1**，从上至下执行
 * 遇到`Promise.resolve().then`这个微任务，将`then`中的内容加入第一次的微任务队列标记为**微1**
-* 遇到定时器`timer1`，将它加入下一次宏任务的延迟列表，标记为**宏2**，等待执行\(先不管里面是什么内容\)
+* 遇到定时器`timer1`，将它加入下一次宏任务的延迟列表，标记为**宏2**，等待执行(先不管里面是什么内容)
 * 执行**宏1**中的同步代码`start`
-* 第一次宏任务\(**宏1**\)执行完毕，检查第一次的微任务队列\(**微1**\)，发现有一个`promise.then`这个微任务需要执行
+* 第一次宏任务(**宏1**)执行完毕，检查第一次的微任务队列(**微1**)，发现有一个`promise.then`这个微任务需要执行
 * 执行打印出**微1**中同步代码`promise1`，然后发现定时器`timer2`，将它加入**宏2**的后面，标记为**宏3**
-* 第一次微任务队列\(**微1**\)执行完毕，执行第二次宏任务\(**宏2**\)，首先执行同步代码`timer1`
+* 第一次微任务队列(**微1**)执行完毕，执行第二次宏任务(**宏2**)，首先执行同步代码`timer1`
 * 然后遇到了`promise2`这个微任务，将它加入此次循环的微任务队列，标记为**微2**
-* **宏2**中没有同步代码可执行了，查找本次循环的微任务队列\(**微2**\)，发现了`promise2`，执行它
+* **宏2**中没有同步代码可执行了，查找本次循环的微任务队列(**微2**)，发现了`promise2`，执行它
 * 第二轮执行完毕，执行**宏3**，打印出`timer2`
 
-  
-  
+\
+\
 
 
-![](../.gitbook/assets/image%20%28132%29.png)
+![](<../.gitbook/assets/image (133).png>)
 
 ### 题目 18：
 
-```text
+```
 const promise1 = new Promise((resolve, reject) => {
   setTimeout(() => {
     resolve('success')
@@ -3153,9 +3151,9 @@ setTimeout(() => {
 * 打印出`'promise1'`，且此时`promise1`的状态为`resolved`
 * 打印出`'promise2'`，且此时`promise2`的状态为`rejected`
 
-###  题目 19：
+### &#x20;题目 19：
 
-```text
+```
 const promise = new Promise((resolve, reject) => {
   resolve("success1");
   reject("error");
@@ -3172,11 +3170,11 @@ promise
 
 ```
 
-* 构造函数中的 resolve 或 reject 只有第一次执行有效，多次调用没有任何作用 
+* 构造函数中的 resolve 或 reject 只有第一次执行有效，多次调用没有任何作用&#x20;
 
 ### 题目 20：
 
-```text
+```
 const promise = new Promise((resolve, reject) => {
   reject("error");
   resolve("success2");
@@ -3201,7 +3199,7 @@ promise
 
 ### 题目 21：
 
-```text
+```
 Promise.resolve(1)
   .then(res => {
     console.log(res);
@@ -3222,7 +3220,7 @@ Promise.resolve(1)
 
 ### 题目 22：
 
-```text
+```
 const promise = new Promise((resolve, reject) => {
   setTimeout(() => {
     console.log('timer')
@@ -3247,7 +3245,7 @@ promise.then(res => {
 
 ### 题目 23：
 
-```text
+```
 Promise.resolve().then(() => {
   return new Error('error!!!')
 }).then(res => {
@@ -3260,11 +3258,11 @@ Promise.resolve().then(() => {
 
 ```
 
-*  返回任意一个非 `promise` 的值都会被包裹成 `promise` 对象，因此这里的`return new Error('error!!!')`也被包裹成了`return Promise.resolve(new Error('error!!!'))`
+* &#x20;返回任意一个非 `promise` 的值都会被包裹成 `promise` 对象，因此这里的`return new Error('error!!!')`也被包裹成了`return Promise.resolve(new Error('error!!!'))`
 
 ### 题目 24：
 
-```text
+```
 Promise.resolve(1)
   .then(2)
   .then(Promise.resolve(3))
@@ -3276,7 +3274,7 @@ Promise.resolve(1)
 
 ### 题目 25：
 
-```text
+```
 Promise.resolve('1')
   .then(res => {
     console.log(res)
@@ -3302,11 +3300,11 @@ Promise.resolve('2')
 ```
 
 1. 它最终返回的默认会是一个**上一次的Promise对象值**，不过如果抛出的是一个异常则返回异常的`Promise`对象。
-2. finally\(\)会等promise1\(\).then\(\)执行完才会将finally\(\)加入微任务队列，其实
+2. finally()会等promise1().then()执行完才会将finally()加入微任务队列，其实
 
 ### 题目 26：
 
-```text
+```
 function promise1 () {
   let p = new Promise((resolve) => {
     console.log('promise1');
@@ -3344,17 +3342,17 @@ promise2()
 
 此时`promise1`内的函数内容已经执行完了，跳出该函数
 
-碰到了`promise1().then()`，由于`promise1`的状态已经发生了改变且为`resolved`因此将`promise1().then()`这条微任务加入本轮的微任务列表\(**这是第一个微任务**\)
+碰到了`promise1().then()`，由于`promise1`的状态已经发生了改变且为`resolved`因此将`promise1().then()`这条微任务加入本轮的微任务列表(**这是第一个微任务**)
 
 这时候要注意了，代码并不会接着往链式调用的下面走，也就是不会先将`.finally`加入微任务列表，那是因为`.then`本身就是一个微任务，它链式后面的内容必须得等当前这个微任务执行完才会执行，因此这里我们先不管`.finally()`
 
 再往下走碰到了`promise2()`函数，其中返回的`new Promise`中并没有同步代码需要执行，所以执行`reject('error')`的时候将`promise2`函数中的`Promise`的状态变为了`rejected`
 
-跳出`promise2`函数，遇到了`promise2().catch()`，将其加入当前的微任务队列\(**这是第二个微任务**\)，且链式调用后面的内容得等该任务执行完后才执行，和`.then()`一样。
+跳出`promise2`函数，遇到了`promise2().catch()`，将其加入当前的微任务队列(**这是第二个微任务**)，且链式调用后面的内容得等该任务执行完后才执行，和`.then()`一样。
 
-OK， 本轮的宏任务全部执行完了，来看看微任务列表，存在`promise1().then()`，执行它，打印出`1`，然后遇到了`.finally()`这个微任务将它加入微任务列表\(**这是第三个微任务**\)等待执行
+OK， 本轮的宏任务全部执行完了，来看看微任务列表，存在`promise1().then()`，执行它，打印出`1`，然后遇到了`.finally()`这个微任务将它加入微任务列表(**这是第三个微任务**)等待执行
 
-再执行`promise2().catch()`打印出`error`，执行完后将`finally2`加入微任务加入微任务列表\(**这是第四个微任务**\)
+再执行`promise2().catch()`打印出`error`，执行完后将`finally2`加入微任务加入微任务列表(**这是第四个微任务**)
 
 OK， 本轮又全部执行完了，但是微任务列表还有两个新的微任务没有执行完，因此依次执行`finally1`和`finally2`。
 
@@ -3362,7 +3360,7 @@ OK， 本轮又全部执行完了，但是微任务列表还有两个新的微�
 
 ### 题目 27： 
 
-```text
+```
 async function async1() {
   console.log("async1 start");
   await async2();
@@ -3411,7 +3409,7 @@ console.log("start")
 
 ### 题目 28：
 
-```text
+```
 async function async1() {
   console.log("async1 start");
   await async2();
@@ -3436,7 +3434,7 @@ console.log("start")
 
 ### 题目 29：当时写错了
 
-```text
+```
 async function async1() {
   console.log("async1 start");
   await async2();
@@ -3466,9 +3464,9 @@ console.log("start")
 // "timer1"
 ```
 
-###  题目 30：
+### &#x20;题目 30：
 
-```text
+```
 async function async1 () {
   console.log('async1 start');
   await new Promise(resolve => {
@@ -3490,11 +3488,11 @@ console.log('srcipt end')
 
 ```
 
-*  在`async1`中`await`后面的`Promise`是没有返回值的，也就是它的状态始终是`pending`状态，因此相当于一直在`await`，`await`，`await`却始终没有响应...
+* &#x20;在`async1`中`await`后面的`Promise`是没有返回值的，也就是它的状态始终是`pending`状态，因此相当于一直在`await`，`await`，`await`却始终没有响应...
 
 ### 题目 31：
 
-```text
+```
 async function async1 () {
   console.log('async1 start');
   await new Promise(resolve => {
@@ -3524,9 +3522,9 @@ new Promise(resolve => {
 // "timer"
 ```
 
-###  题目 32
+### &#x20;题目 32
 
-```text
+```
 async function async1() {
   console.log("async1 start");
   await async2();
@@ -3565,7 +3563,7 @@ console.log('script end')
 
 ### 题目 33：当时错了
 
-```text
+```
 async function testSometing() {
   console.log("执行testSometing");
   return "testSometing";
@@ -3610,7 +3608,7 @@ console.log("test end...");
 
 ### 题目 34：async处理错误
 
-```text
+```
 async function async1 () {
   await async2();
   console.log('async1');
@@ -3632,7 +3630,7 @@ async1().then(res => console.log(res))
 
 ### 题目 35： 重点
 
-```text
+```
 const first = () => (new Promise((resolve, reject) => {
     console.log(3);
     let p = new Promise((resolve, reject) => {
@@ -3665,7 +3663,7 @@ console.log(4);
 [object Promise] { ... }
 ```
 
-第一段代码定义的是一个函数，所以我们得看看它是在哪执行的，发现它在`4`之前，所以可以来看看`first`函数里面的内容了。\(这一步有点类似于题目`1.5`\)
+第一段代码定义的是一个函数，所以我们得看看它是在哪执行的，发现它在`4`之前，所以可以来看看`first`函数里面的内容了。(这一步有点类似于题目`1.5`)
 
 函数`first`返回的是一个`new Promise()`，因此先执行里面的同步代码`3`
 
@@ -3679,7 +3677,7 @@ console.log(4);
 
 然后碰到了`p.then`，将它加入本次循环的微任务列表，等待执行
 
-跳出`first`函数，遇到了`first().then()`，将它加入本次循环的微任务列表\(`p.then`的后面执行\)
+跳出`first`函数，遇到了`first().then()`，将它加入本次循环的微任务列表(`p.then`的后面执行)
 
 然后执行同步代码`4`
 
@@ -3687,11 +3685,11 @@ console.log(4);
 
 本轮任务执行完毕了，发现还有一个定时器没有跑完，接着执行这个定时器里的内容，执行同步代码`5`
 
-然后又遇到了一个`resolve(6)`，它是放在`p`里的，但是`p`的状态在之前已经发生过改变了，因此这里就不会再改变，也就是说`resolve(6)`相当于没任何用处，因此打印出来的`p`为`Promise{<resolved>: 1}`。\(这一步类似于题目`3.1`\)
+然后又遇到了一个`resolve(6)`，它是放在`p`里的，但是`p`的状态在之前已经发生过改变了，因此这里就不会再改变，也就是说`resolve(6)`相当于没任何用处，因此打印出来的`p`为`Promise{<resolved>: 1}`。(这一步类似于题目`3.1`)
 
 ### 题目 36：重点
 
-```text
+```
 const async1 = async () => {
   console.log('async1');
   setTimeout(() => {
@@ -3728,7 +3726,7 @@ setTimeout(() => {
 
 ### 题目 37： 重点
 
-```text
+```
 const p1 = new Promise((resolve) => {
   setTimeout(() => {
     resolve('resolve3');
@@ -3755,21 +3753,21 @@ Promise{<resolved>: undefined}
 
 `Promise`的状态一旦改变就无法改变
 
-`finally`不管`Promise`的状态是`resolved`还是`rejected`都会执行，且它的回调函数是接收不到`Promise`的结果的，所以`finally()`中的`res`是一个迷惑项\(类似`3.10`\)。
+`finally`不管`Promise`的状态是`resolved`还是`rejected`都会执行，且它的回调函数是接收不到`Promise`的结果的，所以`finally()`中的`res`是一个迷惑项(类似`3.10`)。
 
-最后一个定时器打印出的`p1`其实是`.finally`的返回值，我们知道`.finally`的返回值如果在没有抛出错误的情况下默认会是上一个`Promise`的返回值\(`3.10`中也有提到\), 而这道题中`.finally`上一个`Promise`是`.then()`，但是这个`.then()`并没有返回值，所以`p1`打印出来的`Promise`的值会是`undefined`，如果你在定时器的**下面**加上一个`return 1`，则值就会变成`1`
+最后一个定时器打印出的`p1`其实是`.finally`的返回值，我们知道`.finally`的返回值如果在没有抛出错误的情况下默认会是上一个`Promise`的返回值(`3.10`中也有提到), 而这道题中`.finally`上一个`Promise`是`.then()`，但是这个`.then()`并没有返回值，所以`p1`打印出来的`Promise`的值会是`undefined`，如果你在定时器的**下面**加上一个`return 1`，则值就会变成`1`
 
 
 
-###  
+### &#x20;
 
- 
+&#x20;
 
-## 16.Array splice\(\) & slice\(\):
+## 16.Array splice() & slice():
 
-### slice\(\)
+### slice()
 
-```text
+```
 const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
 
 console.log(animals.slice(2));
@@ -3788,11 +3786,11 @@ console.log(animals.slice(2, -1));
 // expected output: Array ["camel", "duck"]
 ```
 
-* It is used to return all the values from the given start index \(first parameter\) to the given end index \(second parameter\)
+* It is used to return all the values from the given start index (first parameter) to the given end index (second parameter)
 
-### splice\(\)
+### splice()
 
-```text
+```
 //splice(start)
 //splice(start, deleteCount)
 //splice(start, deleteCount, item1)
@@ -3817,7 +3815,8 @@ console.log(months);
 ```
 
 * It is method changes the contents of an array by removing or replacing existing elements and/or adding new elements in place
-* 
+*
+
 
 
 
@@ -3826,9 +3825,9 @@ console.log(months);
 
 ## 17. Destructuring
 
-![](../.gitbook/assets/image%20%2817%29.png)
+![](<../.gitbook/assets/image (16).png>)
 
-```text
+```
 // Q1 Get name of second object 
 const exampleObject = {
    collection : [
@@ -3912,12 +3911,12 @@ pointValues({name: "jerry", age:2})
 
 Object destructuring follows a syntax similar to creating an object literal but on the left-hand side
 
-1. we use **,** to skip first index element
-2.  we use rest operator to collect all the remaining values into an array
-3.  steps
+1. we use** ,** to skip first index element
+2. &#x20;we use rest operator to collect all the remaining values into an array
+3. &#x20;steps
    1. We first access the cats property.
    2. After accessing it, we need to decide which cat object to access given the value of n.
-   3. Since cats is an array, we access the specific cat object in the array using indexing \[n\] and store it in the thisCat property.
+   3. Since cats is an array, we access the specific cat object in the array using indexing \[n] and store it in the thisCat property.
 4. Two solutions
    1. using spread operator, we create a clone of object, The values undefined and null get ignored when passed in this case, and we get an empty new object.
    2. using circus shortcut
@@ -3926,7 +3925,7 @@ Object destructuring follows a syntax similar to creating an object literal but 
 
 ## 18. Event Handling
 
-```text
+```
 let btn = document.getElementById("myBtn");
 btn.addEventListener("click", () => {
  console.log(this.id);
@@ -3946,15 +3945,14 @@ btn.addEventListener("click", handler, false);
 btn.removeEventListener("click", handler, false); // works!
 ```
 
-* we can add multiple eventListener , The event handlers fire in the order in which
+*   we can add multiple eventListener , The event handlers fire in the order in which
 
-  they were added
-
-* `btn.removeEventListener()`   remove event listener or `btn.onclick = null` 
+    they were added
+* `btn.removeEventListener()`   remove event listener or `btn.onclick = null `
 
 ### Internet Explorer Event Handlers
 
-* using attachEvent\(\) and detachEvent\(\)
+* using attachEvent() and detachEvent()
 
 
 
@@ -3962,14 +3960,14 @@ btn.removeEventListener("click", handler, false); // works!
 
 * When an event happens on an element, it first runs the handlers on it, then on its parent, then all the way up on other ancestors.  **Goes all the way to html**
 * How to stop bubbling?
-  * **event.stopPropagation\(\)**
-  * **event.cancelBubble\(\)**
+  * **event.stopPropagation()**
+  * **event.cancelBubble()**
 
-\*\*\*\*
+****
 
 ### Event Capturing
 
-```text
+```
 parent.addEventListener(
   "click",
   function() {
@@ -3980,13 +3978,14 @@ parent.addEventListener(
 ```
 
 * when handler as true, we will have event capture, **it runs from top to bottom**
-* 
+*
+
 ### Event Delegation
 
-![](../.gitbook/assets/image%20%2815%29.png)
+![](<../.gitbook/assets/image (17).png>)
 
 * The solution to the too many event handlers issue
-* Event delegation takes   advantage of event bubbling to assign a single event handler to manage all events of a particular type
+* Event delegation takes  &#x20;advantage of event bubbling to assign a single event handler to manage all events of a particular type
 * we add eventlistener on the parent div
 
 
@@ -3995,7 +3994,7 @@ parent.addEventListener(
 
 ### Same origin Policy
 
-```text
+```
 //Q1
 url1 = http://company.com/dir/page.html
 
@@ -4019,12 +4018,12 @@ document.domain = "company.com"
   * Same port number
   * Same Protocol
 * Which of the urls have same origin comparison with url1?
-  * **Url2:** the hostname, port \(HTTP is port 80 by default\), and domain are the same for both URLs; only the path dir/inner/another.html is different
+  * **Url2:** the hostname, port (HTTP is port 80 by default), and domain are the same for both URLs; only the path dir/inner/another.html is different
   * Url3:It has a different protocol than url1, https instead of http;
   * Url4: we can see that it has a different hostname; hence, it is not of the same origin.
   * **URL5**: We set document.domain to company.com for url5; this means we are allowing the subdomain xyz.company.com to access its parent’s company.com's resources.
     * However, that means we need to do the same for url1; this step will indicate that url1 wishes to allow url5 to access its resources.Now, url5 can pass the same-origin check with url1. Implementing the above-mentioned steps allows url5 to pass the port number check as well. How is that?
-    * The port number is checked separately; any call to `document.domain` overwrites the port number to null. Calling this statement for url5 sets its port number to null. Since both url1 and url5 need to have the same port number, we need to execute this statement for url1 as well. In the example above, we do exactly that; now, url5 will be of the same origin as url1.
+    * The port number is checked separately; any call to `document.domain `overwrites the port number to null. Calling this statement for url5 sets its port number to null. Since both url1 and url5 need to have the same port number, we need to execute this statement for url1 as well. In the example above, we do exactly that; now, url5 will be of the same origin as url1.
 
 
 
@@ -4032,7 +4031,7 @@ document.domain = "company.com"
 
 ### cookies
 
-```text
+```
 document.cookie = encodeURIComponent("name") + "=" +
  encodeURIComponent("Nicholas");
  
@@ -4087,16 +4086,16 @@ document.cookie = encodeURIComponent("name") + "=" +
  
 ```
 
-* This HTTP response sets a cookie with the name of "name" and a value of "value". Both the name   and the value are **URL-encoded** when sent
+* This HTTP response sets a cookie with the name of "name" and a value of "value". Both the name  &#x20;and the value are **URL-encoded** when sent
 * To specify additional information about the created cookie, just append it to string in the same format as the Set-Cookie header
 * Cookie get method:
-  * We first use indexOf\(\) to find its occurrence,
+  * We first use indexOf() to find its occurrence,
   * Then the next indexOf is used to find the next semicolon after that location.
   * If the semicolon isn’t found, this means that the cookie is the last one in the string.
 
 ### session storage
 
-```text
+```
 // Save data to sessionStorage
 sessionStorage.setItem('key', 'value');
 
@@ -4111,21 +4110,22 @@ sessionStorage.clear();
 ```
 
 * Around 5MB
-* Do not store sensitive information because the data   cache isn’t encrypted
+* Do not store sensitive information because the data  &#x20;cache isn’t encrypted
 * The data is stored **until the browser is closed,**
-* 
-  **When to use:** It should only be used primary for small pieces of data that are valid only for a session.
+*
+
+    **When to use:** It should only be used primary for small pieces of data that are valid only for a session.
 
 ### local storage
 
 * Around 5MB
-* Do not store sensitive information because the data   cache isn’t encrypted
+* Do not store sensitive information because the data  &#x20;cache isn’t encrypted
 * Permanent storage
-* In order to access the same localStorage object, pages must   be served  followed same origin policy
+* In order to access the same localStorage object, pages must  &#x20;be served  followed same origin policy
 
 ## 21 Client Detection
 
-```text
+```
  function isIOS() {
   return /iphone|ipad|itouch/i.test(navigator.userAgent);
 }
@@ -4140,22 +4140,24 @@ sessionStorage.clear();
 
 * The Navigator userAgent property is used for returning the user-agent header’s value sent to the server by the browser. It returns a string representing values such as the name, version, and platform of the browser.
 
-## **22.** The Document Object Model
+## **22. **The Document Object Model
 
 * Api that treats HTML and XML documents as tree structures with nodes
 * The DOM is constructed in the browser as the page loads
 
 ### **Window VS document:**
 
-* window is that global object that holds global variables, global functions, location, history everything is under it. Besides, setTimeout, ajax call \(XMLHttpRequest\), console or localStorage are part of window
+* window is that global object that holds global variables, global functions, location, history everything is under it. Besides, setTimeout, ajax call (XMLHttpRequest), console or localStorage are part of window
 * the document is also under the window. document is a property of the window object. document represents the DOM and DOM is the object oriented representation of the html markup you have written. All the nodes are part of document
 
 ### **W**indow.onload vs document.onload
 
 * window.onload is fired when DOM is ready and all the contents including images, css, scripts, sub-frames, etc. finished loaded. This means everything is loaded.
-* document.onload is fired when DOM \(DOM tree built from markup code within the document\)is ready which can be prior to images and other external content is loaded.Think about the differences between window and document, this would be easier for you.
+*   document.onload is fired when DOM (DOM tree built from markup code within the document)is ready which can be prior to images and other external content is loaded.Think about the differences between window and document, this would be easier for you.
 
-### Node 
+
+
+### Node&#x20;
 
 #### Node name
 
@@ -4163,13 +4165,13 @@ sessionStorage.clear();
 
 #### Node type
 
-![](../.gitbook/assets/image%20%2816%29.png)
+![](<../.gitbook/assets/image (18).png>)
 
 * There are 12 numeric constants on the Node type
 
 #### Node manipulation
 
-```text
+```
  someNode.firstNode
  someNode.lastNode
  someNode.parentNode
@@ -4210,15 +4212,16 @@ someNode.replaceChild(newNode, someNode.firstChild);
 * querySelector
 * querySelectorAll
 
-###  I can't use forEach or similar array methods on a NodeList?
+### &#x20;I can't use forEach or similar array methods on a NodeList?
 
-* Both array and nodeList have length and you can loop through elements but they are not same object.
+*   Both array and nodeList have length and you can loop through elements but they are not same object.
+
 
 * Both are inherited from Object. However array has different prototype object than nodeList. forEach, map, etc are on array.prototype which doesn't exist in the NodeList.prototype object. Hence, you don't have forEach
 
 ### How to solve previous question?
 
-```text
+```
 //Solution 1
 let nodesArray = Array.prototype.slice.call(myNodeList);
 
@@ -4242,20 +4245,20 @@ sum(1, 2);//3
 
 ```
 
-1.  It create an empty array, then iterate through the object it's running on \(originally an array, now a NodeList\) and keep appending the elements of that object to the empty array it created, which is eventually returned
-2. **Array.from\(\)**
-3.  **ES6展开运算符**
+1. &#x20;It create an empty array, then iterate through the object it's running on (originally an array, now a NodeList) and keep appending the elements of that object to the empty array it created, which is eventually returned
+2. **Array.from()**
+3. ** ES6展开运算符**
 4. **利用concat+apply**
 
-### How could you make sure to run some javaScript when DOM is ready like $\(document\).ready?
+### How could you make sure to run some javaScript when DOM is ready like $(document).ready?
 
 1. Put your script in the last tag of html body element. DOM would be ready by the time browser hits the script tag.
-2.  `document.addEventListener('DOMContentLoaded')`
-3. Watch changes in the readyState of the document. And the last state is "complete" state, you can put your code there  , either loading, or complete ![](../.gitbook/assets/image%20%2819%29.png) 
+2. ` document.addEventListener('DOMContentLoaded')`
+3. Watch changes in the readyState of the document. And the last state is "complete" state, you can put your code there  , either loading, or complete ![](<../.gitbook/assets/image (19).png>)&#x20;
 
 ### The classList property
 
-```text
+```
 div.classList.remove('dsiabled');
 div.classList.add('dsiabled');
 div.classList.toggle('dsiabled');
@@ -4280,7 +4283,7 @@ div.classList.toggle('dsiabled');
 
 ## 25. Currying functions
 
-```text
+```
 // Basic example 1
 function multiply(a,b,c){
   return a*b*c
@@ -4302,7 +4305,7 @@ function multiply(a) {
 
 ### 问题:
 
-```text
+```
 // Question 1
 function currying(func) {
 }
@@ -4331,10 +4334,10 @@ function currying(func) {
 
 ### 解析:
 
-* First, we are passing the function, func, to our function, currying \(line 1\).
+* First, we are passing the function, func, to our function, currying (line 1).
 * The next step is to think about the output. Re-stating the problem, we want to return a currying function. Hence, we define the function curriedfunc , which we will return as an output.
-* Then inside curriedfunc, we will check for the length of the arguments \(args\) passed
-* If args.length &gt;= func.length, meaning all the arguments are passed, we call func \(the function multiply\)
+* Then inside curriedfunc, we will check for the length of the arguments (args) passed
+* If args.length >= func.length, meaning all the arguments are passed, we call func (the function multiply)
 * However, if all the arguments are not passed, we return a function again to get the remaining arguments.
 
 
@@ -4343,9 +4346,9 @@ function currying(func) {
 
 * Partial functions allow taking a function as an argument and along with it takes arguments of other types too. It then uses some of the arguments passed and returns a function that will take the remaining arguments. The function returned when invoked will call the parent function with the original and its own set of arguments.
 
-![](../.gitbook/assets/image%20%2820%29.png)
+![](<../.gitbook/assets/image (20).png>)
 
-```text
+```
 const filter = func => arr => arr.filter(func);
 const map = func => arr => arr.map(func);
 
@@ -4368,7 +4371,7 @@ function test(customers){
 
 ## 27. forEach中return有效果吗？如何中断forEach循环？
 
-```text
+```
 let nums = [1, 2, 3];
 nums.forEach((item, index) => {
   return;//无效
@@ -4406,7 +4409,7 @@ For each 用 r二turn 不会返回, 函数会继续执行
 
 ## 28.JS判断数组中是否包含某个值
 
-```text
+```
 //SOLUTION 1
 var arr=[1,2,3,4];
 var index=arr.indexOf(3);
@@ -4439,15 +4442,15 @@ console.log(result);
 ```
 
 1. **array.indexOf**
-2. **array.includes\(searcElement\[,fromIndex\]\)**
-3. **array.find\(callback\[,thisArg\]\)  ,** 返回数组中满足条件的第一个元素的值，如果没有，返回undefined
-4. **array.findeIndex\(callback\[,thisArg\]\)**    返回数组中满足条件的第一个元素的下标，如果没有找到，返回-1\]
+2. **array.includes(searcElement\[,fromIndex])**
+3. **array.find(callback\[,thisArg])  , **返回数组中满足条件的第一个元素的值，如果没有，返回undefined
+4. **array.findeIndex(callback\[,thisArg])    **返回数组中满足条件的第一个元素的下标，如果没有找到，返回-1]
 
 
 
 ## 29.JS中flat---数组扁平化
 
-```text
+```
 需求:多维数组=>一维数组
 //SOLUTION 1
 ary = ary.flat(Infinity);
@@ -4492,14 +4495,14 @@ ary = ary.flat(Infinity);
 
 1. 调用ES6中的flat方法
 2. replace + split
-3.  replace + JSON.parse
+3. &#x20;replace + JSON.parse
 4. 普通递归
 5. 利用reduce函数迭代
 6. 扩展运算符
 
 ## 30. JS中浅拷贝的手段有哪些?
 
-```text
+```
 // Solution 1
 const shallowClone = (target) => {
   if (typeof target === 'object' && target !== null) {
@@ -4544,7 +4547,7 @@ let arr = [1, 2, 3];
 let newArr = [...arr];//跟arr.slice()是一样的效果
 ```
 
-1.  手动实现
+1. &#x20;手动实现
 2. Object.assign
 3. concat浅拷贝数组
 4. slice浅拷贝
@@ -4552,9 +4555,9 @@ let newArr = [...arr];//跟arr.slice()是一样的效果
 
 
 
-## 31 Document.write\(\)和 innerHtml 区别
+## 31 Document.write()和 innerHtml 区别
 
-![](../.gitbook/assets/image%20%2897%29.png)
+![](<../.gitbook/assets/image (97).png>)
 
 
 
@@ -4562,7 +4565,7 @@ let newArr = [...arr];//跟arr.slice()是一样的效果
 
 ### 异步编程 有哪些方案
 
-```text
+```
 // 回调函数时代
 fs.readFile('1.json', (err, data) => {
     fs.readFile('2.json', (err, data) => {
@@ -4598,9 +4601,9 @@ const readFileAsync = async function () {
 2. Promise 时代
 3. async + await方式
 
-###  解释一下async/await的运行机制
+### &#x20;解释一下async/await的运行机制
 
-```text
+```
 
 // await 200 变成 下面这个 function了
 
@@ -4628,11 +4631,11 @@ console.log(100)
 // 300
 ```
 
-* [https://juejin.cn/post/6844904004007247880\#heading-67](https://juejin.cn/post/6844904004007247880#heading-67)
+* [https://juejin.cn/post/6844904004007247880#heading-67](https://juejin.cn/post/6844904004007247880#heading-67)
 
-###   forEach 中用 await 会产生什么问题?怎么解决这个问题？, 
+### &#x20; forEach 中用 await 会产生什么问题?怎么解决这个问题？,&#x20;
 
-```text
+```
 async function test() {
 	let arr = [4, 2, 1]
 	arr.forEach(async item => {
@@ -4656,13 +4659,14 @@ test()
 ```
 
 * 问题:对于异步代码，forEach 并不能保证按顺序执行。
-* * 我们期望 4，2，1 但其实得到 1，2，4
+*
+* 我们期望 4，2，1 但其实得到 1，2，4
 * 问题原因
-  * foreach 底层 是拿来 直接执行了   ![](../.gitbook/assets/image%20%2827%29.png) 
+  * foreach 底层 是拿来 直接执行了   ![](<../.gitbook/assets/image (27).png>)&#x20;
 * 解决办法： 使用 for loop 就好了
 * 解决原理：for...of并不像forEach那么简单粗暴的方式去遍历执行，而是采用一种特别的手段——迭代器去遍历。
 
-```text
+```
 async function test() {
   let arr = [4, 2, 1]
   let iterator = arr[Symbol.iterator]();
@@ -4691,7 +4695,7 @@ async function test() {
 
 ### 基础
 
-```text
+```
 let promise = new Promise(resolve => {
   setTimeout(() => resolve("done!"), 1000);
 });
@@ -4740,24 +4744,24 @@ Promise.resolve(1)
   // 1
 ```
 
-*  `Promise`对象代表一个异步操作， 有三种状态：`pending`（进行中）、`fulfilled`（已成功）和`rejected`（已失败）
+* &#x20;`Promise`对象代表一个异步操作， 有三种状态：`pending`（进行中）、`fulfilled`（已成功）和`rejected`（已失败）
 * **一旦状态改变，就不会再变，任何时候都可以得到这个结果**， promise 内部状态一经改变，并且有了一个值，那么后续每次调用 .then 或者 .catch 都会直接拿到该值
-*  `Promise`实例生成以后，可以用`then`方法分别指定`resolved`状态和`rejected`状态的回调函数,构造函数中的 resolve 或 reject 只有第一次执行有效，多次调用没有任何作用
+* &#x20;`Promise`实例生成以后，可以用`then`方法分别指定`resolved`状态和`rejected`状态的回调函数,构造函数中的 resolve 或 reject 只有第一次执行有效，多次调用没有任何作用
 * **then 和 catch 中 如果 return 处理**
   * 返回任意一个非 promise 的值都会被包裹成 promise 对象
-  * 即 return new Error\('error!!!'\) 等价于 `return Promise.resolve(new Error('error!!!'))`
+  * 即 return new Error('error!!!') 等价于 `return Promise.resolve(new Error('error!!!'))`
 * 怎么在 catch 和 then 中 报错 并且被后面 catch 捕获
-  * `return Promise.reject(new Error('error!!!'))`
+  *   `return Promise.reject(new Error('error!!!'))      `
 
-    `throw new Error('error!!!')`
-*  如果没有使用`catch()`方法指定错误处理的回调函数,Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。
-*  `.then` 或 `.catch` 返回的值不能是 promise 本身，否则会造成死循环
-*  `.then` 或者 `.catch` 的参数期望是函数，传入非函数则会发生值穿透。
+      `throw new Error('error!!!')`
+* &#x20;如果没有使用`catch()`方法指定错误处理的回调函数,Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。
+* &#x20;`.then` 或 `.catch` 返回的值不能是 promise 本身，否则会造成死循环
+* &#x20;`.then` 或者 `.catch` 的参数期望是函数，传入非函数则会发生值穿透。
 * 异步行为应该始终返回一个 promise。这样就可以使得之后我们计划后续的行为成为可能。即使我们现在不打算对链进行扩展
 
 
 
-```text
+```
 function timeout(ms) {
   return new Promise((resolve, reject) => {
     setTimeout(reject, ms, 'done');
@@ -4778,7 +4782,7 @@ timeout(100).then((value) => {
 
 * **Promise 新建后就会立即执行**
 
-```text
+```
 let promise = new Promise(function(resolve, reject) {
   console.log('Promise');
   resolve();
@@ -4796,9 +4800,9 @@ console.log('Hi!');
 
 ```
 
-*  `p1`和`p2`都是 Promise 的实例，但是`p2`的`resolve`方法将`p1`作为参数，即一个异步操作的结果是返回另一个异步操作。 这时`p1`的状态就会传递给`p2`，也就是说，`p1`的状态决定了`p2`的状态。如果`p1`的状态是`pending`，那么`p2`的回调函数就会等待`p1`的状态改变；如果`p1`的状态已经是`resolved`或者`rejected`，那么`p2`的回调函数将会立刻执行。
+* &#x20;`p1`和`p2`都是 Promise 的实例，但是`p2`的`resolve`方法将`p1`作为参数，即一个异步操作的结果是返回另一个异步操作。 这时`p1`的状态就会传递给`p2`，也就是说，`p1`的状态决定了`p2`的状态。如果`p1`的状态是`pending`，那么`p2`的回调函数就会等待`p1`的状态改变；如果`p1`的状态已经是`resolved`或者`rejected`，那么`p2`的回调函数将会立刻执行。
 
-```text
+```
 const p1 = new Promise(function (resolve, reject) {
   setTimeout(() => reject(new Error('fail')), 3000)
 })
@@ -4813,11 +4817,11 @@ p2
 // Error: fail
 ```
 
- `p1`是一个 Promise，3 秒之后变为`rejected`。`p2`的状态在 1 秒之后改变，`resolve`方法返回的是`p1`。由于`p2`返回的是另一个 Promise，导致`p2`自己的状态无效了，由`p1`的状态决定`p2`的状态。所以，后面的`then`语句都变成针对后者（`p1`）。又过了 2 秒，`p1`变为`rejected`，导致触发`catch`方法指定的回调函数。
+&#x20;`p1`是一个 Promise，3 秒之后变为`rejected`。`p2`的状态在 1 秒之后改变，`resolve`方法返回的是`p1`。由于`p2`返回的是另一个 Promise，导致`p2`自己的状态无效了，由`p1`的状态决定`p2`的状态。所以，后面的`then`语句都变成针对后者（`p1`）。又过了 2 秒，`p1`变为`rejected`，导致触发`catch`方法指定的回调函数。
 
-*  调用`resolve`或`reject`**并不会终结 Promise 的参数函数的执行。** 
+* &#x20;调用`resolve`或`reject`**并不会终结 Promise 的参数函数的执行。 **
 
-```text
+```
 new Promise((resolve, reject) => {
   resolve(1);
   console.log(2);
@@ -4828,9 +4832,9 @@ new Promise((resolve, reject) => {
 // 1
 ```
 
-### Promise.prototype.then\(\) <a id="Promise-prototype-then"></a>
+### Promise.prototype.then() <a href="promise-prototype-then" id="promise-prototype-then"></a>
 
-```text
+```
 Promise.resolve()
   .then(function success (res) {
     throw new Error('error')
@@ -4872,10 +4876,10 @@ new Promise(function(resolve, reject) {
 });
 ```
 
-* 它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，`then`方法的第一个参数是`resolved`状态的回调函数，第二个参数是`rejected`状态的回调函数，它们都是可选的。 `then`方法返回的是一个新的`Promise`实例, 
-* .then 的第二个处理错误的函数捕获不了第一个处理成功的函数抛出的错误，而后续的 .catch 可以捕获之前的错误\
+* 它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，`then`方法的第一个参数是`resolved`状态的回调函数，第二个参数是`rejected`状态的回调函数，它们都是可选的。 `then`方法返回的是一个新的`Promise`实例,&#x20;
+* .then 的第二个处理错误的函数捕获不了第一个处理成功的函数抛出的错误，而后续的 .catch 可以捕获之前的错误\\
 
-![](../.gitbook/assets/image%20%28131%29.png)
+![](<../.gitbook/assets/image (131).png>)
 
 * .then 也可以返回promise
 
@@ -4883,7 +4887,7 @@ new Promise(function(resolve, reject) {
 
 
 
-```text
+```
 getJSON("/post/1.json").then(function(post) {
   return getJSON(post.commentURL);
 }).then(function (comments) {
@@ -4893,11 +4897,11 @@ getJSON("/post/1.json").then(function(post) {
 });
 ```
 
-*  上面代码中，第一个`then`方法指定的回调函数，返回的是另一个`Promise`对象。这时，第二个`then`方法指定的回调函数，就会等待这个新的`Promise`对象状态发生变化。如果变为`resolved`，就调用第一个回调函数，如果状态变为`rejected`，就调用第二个回调函数。
+* &#x20;上面代码中，第一个`then`方法指定的回调函数，返回的是另一个`Promise`对象。这时，第二个`then`方法指定的回调函数，就会等待这个新的`Promise`对象状态发生变化。如果变为`resolved`，就调用第一个回调函数，如果状态变为`rejected`，就调用第二个回调函数。
 
-### Promise.prototype.catch\(\)  <a id="Promise-prototype-catch"></a>
+### Promise.prototype.catch()  <a href="promise-prototype-catch" id="promise-prototype-catch"></a>
 
-```text
+```
 window.addEventListener('unhandledrejection', function(event) {
   // 这个事件对象有两个特殊的属性：
   alert(event.promise); // [object Promise] - 生成该全局 error 的 promise
@@ -4911,7 +4915,7 @@ new Promise(function() {
 
 * 如果我们没有 处理 promise 中的 rejection 可以用 unhandledrejection 捕获
 
-```text
+```
 getJSON('/posts.json').then(function(posts) {
   // ...
 }).catch(function(error) {
@@ -4931,9 +4935,9 @@ new Promise((resolve, reject) => {
 ```
 
 * 如果异步操作抛出错误，状态就会变为`rejected`，就会调用`catch()`方法指定的回调函数，处理这个错误。另外，`then()`方法指定的回调函数，如果运行中抛出错误，也会被`catch()`方法捕获。
-*  **如果 Promise 状态已经变成`resolved`，再抛出错误是无效的。**
+* ** 如果 Promise 状态已经变成`resolved`，再抛出错误是无效的。**
 
-```text
+```
 const promise = new Promise(function(resolve, reject) {
   resolve('ok');
   throw new Error('test');
@@ -4946,7 +4950,7 @@ promise
 
 * 函数代码周围有个“隐式的 try..catch”。所以，所有同步错误都会得到处理。, 但是这里的错误并不是在 executor 运行时生成的，而是在稍后生成的。因此，promise 无法处理它。
 
-```text
+```
 new Promise(function(resolve, reject) {
   setTimeout(() => {
     throw new Error("Whoops!");
@@ -4954,13 +4958,13 @@ new Promise(function(resolve, reject) {
 }).catch(alert);
 ```
 
-###  <a id="Promise-prototype-finally"></a>
+### &#x20;<a href="promise-prototype-finally" id="promise-prototype-finally"></a>
 
-###  <a id="Promise-prototype-finally"></a>
+### &#x20;<a href="promise-prototype-finally" id="promise-prototype-finally"></a>
 
-### Promise.prototype.finally\(\) <a id="Promise-prototype-finally"></a>
+### Promise.prototype.finally() <a href="promise-prototype-finally" id="promise-prototype-finally"></a>
 
-```text
+```
 promise
 .then(result => {···})
 .catch(error => {···})
@@ -4968,11 +4972,11 @@ promise
 ```
 
 * 不管 Promise 对象最后状态如何，都会执行的操作
-*  它最终返回的默认会是一个**上一次的Promise对象值**，不过如果抛出的是一个异常则返回异常的`Promise`对象
+* &#x20;它最终返回的默认会是一个**上一次的Promise对象值**，不过如果抛出的是一个异常则返回异常的`Promise`对象
 
-### Promise.all\(\) <a id="Promise-all"></a>
+### Promise.all() <a href="promise-all" id="promise-all"></a>
 
-```text
+```
 // 例子 1
 const p = Promise.all([p1, p2, p3]);
 const promise1 = Promise.resolve(3);
@@ -4988,12 +4992,12 @@ Promise.all([promise1, promise2, promise3]).then((values) => {
 
 * 方法用于将多个 Promise 实例，包装成一个新的 Promise 实例。 `p1`、`p2`、`p3`都是 Promise 实例，如果不是，就会先调用下面讲到的`Promise.resolve`方法，将参数转为 Promise 实例，再进一步处理。另外，`Promise.all()`方法的参数可以不是数组，但必须具有 Iterator 接口，且返回的每个成员都是 Promise 实例
 * **如果其中一个 promise 被 reject，Promise.all 就会立即被 reject，完全忽略列表中其他的 promise。它们的结果也被忽略**
-*  `p`的状态由`p1`、`p2`、`p3`决定，分成两种情况。
-  *  只有`p1`、`p2`、`p3`的状态都变成`fulfilled`，`p`的状态才会变成`fulfilled`，此时`p1`、`p2`、`p3`的返回值组成一个数组，传递给`p`的回调函数
-  *  只要`p1`、`p2`、`p3`之中有一个被`rejected`，`p`的状态就变成`rejected`，此时第一个被`reject`的实例的返回值，会传递给`p`的回调函
-*  如果作为参数的 Promise 实例，自己定义了`catch`方法，那么它一旦被`rejected`，并不会触发`Promise.all()`的`catch`方法。
+* &#x20;`p`的状态由`p1`、`p2`、`p3`决定，分成两种情况。
+  * &#x20;只有`p1`、`p2`、`p3`的状态都变成`fulfilled`，`p`的状态才会变成`fulfilled`，此时`p1`、`p2`、`p3`的返回值组成一个数组，传递给`p`的回调函数
+  * &#x20;只要`p1`、`p2`、`p3`之中有一个被`rejected`，`p`的状态就变成`rejected`，此时第一个被`reject`的实例的返回值，会传递给`p`的回调函
+* &#x20;如果作为参数的 Promise 实例，自己定义了`catch`方法，那么它一旦被`rejected`，并不会触发`Promise.all()`的`catch`方法。
 
-```text
+```
 const p1 = new Promise((resolve, reject) => {
   resolve('hello');
 })
@@ -5029,12 +5033,12 @@ Promise.all([p1, p2])
 // Error: 报错了
 ```
 
-*  上面这个 例子 `p1`会`resolved`，`p2`首先会`rejected`，但是`p2`有自己的`catch`方法，该方法返回的是一个新的 Promise 实例，`p2`指向的实际上是这个实例。该实例执行完`catch`方法后，也会变成`resolved`，导致`Promise.all()`方法参数里面的两个实例都会`resolved`，因此会调用`then`方法指定的回调函数，而不会调用`catch`方法指定的回调函数。
-*  **如果`p2`没有自己的`catch`方法，就会调用`Promise.all()`的`catch`方法。**
+* &#x20;上面这个 例子 `p1`会`resolved`，`p2`首先会`rejected`，但是`p2`有自己的`catch`方法，该方法返回的是一个新的 Promise 实例，`p2`指向的实际上是这个实例。该实例执行完`catch`方法后，也会变成`resolved`，导致`Promise.all()`方法参数里面的两个实例都会`resolved`，因此会调用`then`方法指定的回调函数，而不会调用`catch`方法指定的回调函数。
+* &#x20;**如果`p2`没有自己的`catch`方法，就会调用`Promise.all()`的`catch`方法。**
 
-**Promise.all\(iterable\) 允许在 iterable 中使用 non-promise 的“常规”值**
+**Promise.all(iterable) 允许在 iterable 中使用 non-promise 的“常规”值**
 
-```text
+```
 Promise.all([
   new Promise((resolve, reject) => {
     setTimeout(() => resolve(1), 1000)
@@ -5055,13 +5059,13 @@ Promise.all([runAsync(1), runAsync(2), runAsync(3)])
 
 ```
 
-* 通常，Promise.all\(...\) 接受含有 promise 项的可迭代对象（大多数情况下是数组）作为参数。但是，如果这些对象中的任何一个不是 promise，那么它将被“按原样”传递给结果数组
+* 通常，Promise.all(...) 接受含有 promise 项的可迭代对象（大多数情况下是数组）作为参数。但是，如果这些对象中的任何一个不是 promise，那么它将被“按原样”传递给结果数组
 
 
 
-### Promise.race\(\) <a id="Promise-race"></a>
+### Promise.race() <a href="promise-race" id="promise-race"></a>
 
-```text
+```
 const p = Promise.race([p1, p2, p3]);
 
 // 例子 2
@@ -5095,13 +5099,13 @@ Promise.race([runAsync(1), runAsync(2), runAsync(3)])
 
 ```
 
-*  它只会获取最先执行完成的那个结果，其它的异步任务虽然也会继续进行下去，不过race已经不管那些任务的结果了
+* &#x20;它只会获取最先执行完成的那个结果，其它的异步任务虽然也会继续进行下去，不过race已经不管那些任务的结果了
 * `Promise.race()`方法同样是将多个 Promise 实例，包装成一个新的 Promise 实例。 只要`p1`、`p2`、`p3`之中有一个实例率先改变状态，`p`的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给`p`的回调函数
 * 上面的 例子2 如果指定时间内没有获得结果，就将 Promise 的状态变为`reject`，否则变为`resolve`。
 
-### Promise.allSettled\(\) <a id="Promise-allSettled"></a>
+### Promise.allSettled() <a href="promise-allsettled" id="promise-allsettled"></a>
 
-```text
+```
 const resolved = Promise.resolve(42);
 const rejected = Promise.reject(-1);
 
@@ -5118,11 +5122,11 @@ allSettledPromise.then(function (results) {
 
 * 方法接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例。只有等到所有这些参数实例都返回结果，不管是fulfilled还是rejected
 * 该方法返回的新的 Promise 实例，一旦结束，状态总是fulfilled，不会变成rejected
-*  **只关心这些操作有没有结束。这时，`Promise.allSettled()`方法就很有用**
+* &#x20;**只关心这些操作有没有结束。这时，`Promise.allSettled()`方法就很有用**
 
-### Promise.any\(\) <a id="Promise-any"></a>
+### Promise.any() <a href="promise-any" id="promise-any"></a>
 
-```text
+```
 Promise.any([
   fetch('https://v8.dev/').then(() => 'home'),
   fetch('https://v8.dev/blog').then(() => 'blog'),
@@ -5134,11 +5138,11 @@ Promise.any([
 });
 ```
 
-*  只要参数实例有一个变成`fulfilled`状态，包装实例就会变成`fulfilled`状态；如果所有参数实例都变成`rejected`状态，包装实例就会变成`rejected`状态。
+* &#x20;只要参数实例有一个变成`fulfilled`状态，包装实例就会变成`fulfilled`状态；如果所有参数实例都变成`rejected`状态，包装实例就会变成`rejected`状态。
 
-### Promise.resolve\(\)**/reject\(\)** <a id="Promise-resolve"></a>
+### Promise.resolve()**/reject()** <a href="promise-resolve" id="promise-resolve"></a>
 
-```text
+```
 let promise = new Promise(resolve => resolve(value));
 
 
@@ -5168,36 +5172,36 @@ p.then(function (s) {
 // 不带任何参数
 ```
 
-*  `Promise.resolve(value)` **用结果 value 创建一个 resolved 的 promise。**
-* `Promise.resolve()`方法的参数分成四种情况。
+* `  Promise.resolve(value)  `**用结果 value 创建一个 resolved 的 promise。**
+*   `Promise.resolve()`方法的参数分成四种情况。
 
-  *  **参数是一个 Promise 实例**
-    * 如果参数是 Promise 实例，那么Promise.resolve将不做任何修改、原封不动地返回这个实例。
-  *  **参数是一个`thenable`对象**
-    * thenable对象指的是具有then方法的对象，比如下面这个对象。
-    *  `Promise.resolve()`方法会将这个对象转为 Promise 对象，然后就立即执行`thenable`对象的`then()`方法。
-  *  **参数不是具有`then()`方法的对象，或根本就不是对象**
-    *  则`Promise.resolve()`方法返回一个新的 Promise 对象，状态为`resolved`。
-    *  生成一个新的 Promise 对象的实例`p`。由于字符串`Hello`不属于异步操作（判断方法是字符串对象不具有 then 方法），返回 Promise 实例的状态从一生成就是`resolved`，所以回调函数会立即执行。`Promise.resolve()`方法的参数，会同时传给回调函数。
-  *  **不带有任何参数**
+    * &#x20;**参数是一个 Promise 实例**
+      * 如果参数是 Promise 实例，那么Promise.resolve将不做任何修改、原封不动地返回这个实例。
+    * &#x20;**参数是一个`thenable`对象**
+      * thenable对象指的是具有then方法的对象，比如下面这个对象。
+      * &#x20;`Promise.resolve()`方法会将这个对象转为 Promise 对象，然后就立即执行`thenable`对象的`then()`方法。
+    * &#x20;**参数不是具有`then()`方法的对象，或根本就不是对象**
+      * &#x20;则`Promise.resolve()`方法返回一个新的 Promise 对象，状态为`resolved`。
+      * &#x20;生成一个新的 Promise 对象的实例`p`。由于字符串`Hello`不属于异步操作（判断方法是字符串对象不具有 then 方法），返回 Promise 实例的状态从一生成就是`resolved`，所以回调函数会立即执行。`Promise.resolve()`方法的参数，会同时传给回调函数。
+    *   &#x20;**不带有任何参数**
 
-    \*\*\*\*
+        ****
 
-  \*\*\*\*
+    ****
 
-### 
+###
 
-### 
+###
 
-### 
+###
 
-### 
+###
 
-### 
+###
 
 ### Promise 凭借什么消灭了回调地狱（callback hell）？
 
-```text
+```
 //Solution 1
 let readFilePromise = (filename) => {
   fs.readFile(filename, (err, data) => {
@@ -5237,11 +5241,13 @@ readFilePromise('1.json').then(data => {
 * 多层嵌套的问题。complex nested callbacks
 * 每种任务的处理结果存在两种可能性（成功或失败），那么需要在每种任务执行结束后分别处理这两种可能性。
 * each and every callback takes an argument that is a result of the previous callbacks.
-* 使用 3大手段 解决 callback hell
+*   使用 3大手段 解决 callback hell
 
-  * 回调函数延迟绑定 use `.then()`  回调函数不是直接声明的，而是在通过后面的 then 方法传入的，即延迟传入。这就是回调函数延迟绑定。
-  * 返回值穿透: 我们会根据 then 中回调函数的传入值创建不同类型的Promise, 然后把返回的 Promise 穿透到外层, 以供后续的调用。这里的 x 指的就是内部返回的 Promise，然后在 x 后面可以依次完成链式调用
-  * 错误冒泡  use .catch\(\)
+    * 回调函数延迟绑定 use `.then()  `回调函数不是直接声明的，而是在通过后面的 then 方法传入的，即延迟传入。这就是回调函数延迟绑定。
+    * 返回值穿透: 我们会根据 then 中回调函数的传入值创建不同类型的Promise, 然后把返回的 Promise 穿透到外层, 以供后续的调用。这里的 x 指的就是内部返回的 Promise，然后在 x 后面可以依次完成链式调用
+    * 错误冒泡  use .catch()
+
+
 
 ### 题目1
 
@@ -5249,7 +5255,7 @@ readFilePromise('1.json').then(data => {
 
 红灯3秒亮一次，黄灯2秒亮一次，绿灯1秒亮一次；如何让三个灯不断交替重复亮灯？（用Promise实现）三个亮灯函数已经存在：
 
-```text
+```
 function red() {
   console.log("red");
 }
@@ -5288,7 +5294,7 @@ step();
 
 封装一个异步加载图片的方法
 
-```text
+```
 function loadImg(url) {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -5310,11 +5316,11 @@ function loadImg(url) {
 
 ### 题目3
 
-{% embed url="https://juejin.cn/post/6844904077537574919\#heading-56" %}
+{% embed url="https://juejin.cn/post/6844904077537574919#heading-56" %}
 
 ### 题目4
 
-```text
+```
 const time = (timer) => {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -5375,7 +5381,7 @@ mergePromise([ajax1, ajax2, ajax3]).then(data => {
 
 ## 31： Async/await
 
-```text
+```
 async function f() {
   return 1;
 }
@@ -5477,28 +5483,29 @@ function f() {
 f();
 ```
 
-* async 这个function 总是返回一个 promise,其他值将自动被包装在一个 `Promise.resolve()` 的 promise 中。
+* async 这个function 总是返回一个 promise,其他值将自动被包装在一个` Promise.resolve()` 的 promise 中。
 * await
-  *  await 让 JavaScript 引擎等待直到 promise 完成（settle）并返回结果。
+  * &#x20;await 让 JavaScript 引擎等待直到 promise 完成（settle）并返回结果。
   * 相比于 promise.then，它只是获取 promise 的结果的一个更优雅的语法，同时也更易于读写。
   * await 接受 “thenables”,像 promise.then 那样，await 允许我们使用 thenable 对象（那些具有可调用的 then 方法的对象）。这里的想法是，第三方对象可能不是一个 promise，但却是 promise 兼容的：如果这些对象支持 .then，那么就可以对它们使用 await。
-*  `async/await` 可以和 `Promise.all` 一起使用
+* &#x20;`async/await` 可以和 `Promise.all` 一起使用
 * error 处理
   * 如果一个 promise 正常 resolve，await promise 返回的就是其结果。但是如果 promise 被 reject，它将 throw 这个 error，**接一个 catch**
   * **或者try catch捕获上面的错误**
-* 
+*
+
 ## 32： Execution Context & Execution stack
 
-### Execution Context 
+### Execution Context&#x20;
 
-![](../.gitbook/assets/image%20%28121%29.png)
+![](<../.gitbook/assets/image (121).png>)
 
-![](../.gitbook/assets/image%20%28122%29.png)
+![](<../.gitbook/assets/image (120).png>)
 
 * an execution context is an abstract concept of an environment where the Javascript code is evaluated and executed. Whenever any code is run in JavaScript, it’s run inside an execution context.
 * **Types of Execution Context:**
-  * Global Execution Context 
-    * This is the default or base execution context. The code that is not inside any function is in the global execution context. It performs two things: it creates a global object which is a window object \(in the case of browsers\) and sets the value of this to equal to the global object. There can only be one global execution context in a program
+  * Global Execution Context&#x20;
+    * This is the default or base execution context. The code that is not inside any function is in the global execution context. It performs two things: it creates a global object which is a window object (in the case of browsers) and sets the value of this to equal to the global object. There can only be one global execution context in a program
   * Functional Execution Context
     * Every time a function is invoked, a brand new execution context is created for that function
   * Eval Function Execution Context
@@ -5511,12 +5518,12 @@ f();
 
 #### 活动对象
 
-* 在函数上下文中，我们用活动对象\(activation object, AO\)来表示变量对象。
+* 在函数上下文中，我们用活动对象(activation object, AO)来表示变量对象。
 * 不可在 JavaScript 环境中访问，只有到当进入一个执行上下文中，这个执行上下文的变量对象才会被激活，所以才叫 activation object 呐，而只有被激活的变量对象，也就是活动对象上的各种属性才能被访问。
 
-![](../.gitbook/assets/image%20%28120%29.png)
+![](<../.gitbook/assets/image (122).png>)
 
-```text
+```
 function bar(a) {
   console.log(a);// function
   function a(){
@@ -5550,7 +5557,7 @@ foo = 1;
 
 * 因为在进入执行上下文时，首先会处理函数声明，其次会处理变量声明，如果变量名称跟已经声明的形式参数或函数相同，则变量声明不会干扰已经存在的这类属性。在console log 时候 会 print function
 
-```text
+```
 VO = {
     foo: reference to function foo(){},
 }
@@ -5564,7 +5571,7 @@ VO = {
 
 
 
-```text
+```
 比较下面两段代码，试述两段代码的不同之处
 // A--------------------------
 var scope = "global scope";
@@ -5589,13 +5596,13 @@ function checkscope(){
 checkscope()();
 ```
 
-![](../.gitbook/assets/image%20%28123%29.png)
+![](<../.gitbook/assets/image (123).png>)
 
 ## 33 : Js Operator\_Precedence
 
-{% embed url="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator\_Precedence" %}
+{% embed url="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence" %}
 
-```text
+```
 // eg1
 new Foo.getName();
 //变成了
@@ -5617,11 +5624,11 @@ new Foo() 可以理解为两种运算：new 带参数（即 new Foo()）和函�
 或得 Foo 类的实例对象，再进行了成员访问 .getName。
 ```
 
-1. \(\) --&gt; 分组
-2. obj.a --&gt; 成员访问
-3. obj\["hello "\] --&gt; 需计算的成员访问
-4. new（带参数列表）new … \( … \)  `const car1 = new Car('Eagle', 'Talon TSi', 1993);`
-5. 函数调用\(\)   `myFunc(mycar);`
+1. () --> 分组
+2. obj.a --> 成员访问
+3. obj\["hello "] --> 需计算的成员访问
+4. new（带参数列表）new … ( … )  `const car1 = new Car('Eagle', 'Talon TSi', 1993);`
+5. 函数调用()  ` myFunc(mycar);`
 6. ？.
 7. new（无参数列表）new …
 
@@ -5633,43 +5640,43 @@ g 代表全局模式找出所有的手机号
 
 {}用大括号表示重复次数
 
-\| 或者  
-? 可有可无  
-+ 一个到无限个
+\| 或者\
+? 可有可无\
+\+ 一个到无限个
 
 ### 手机号
 
-* `/^1[34578]\d/g    以1开头然后第二位是3，4，5，7，8， ，` 
+* `/^1[34578]\d/g    以1开头然后第二位是3，4，5，7，8， ， `
 
 ### 颜色
 
 \#48D1CC
 
-```text
+```
 /#?([0-9a-fA-F]{6} | [0-9a-fA-F]{3})/g
 ```
 
 ### 邮箱
 
-```text
+```
 /^([A-Za-z0-9_\-\.])+@([A-Za-z0-9_\-\.]+)\.([A-Za-z]{2,6})$/g
 ```
 
 ### url
 
-```text
+```
 /^((https?|ftp|file):\/\/)?([\da-z\.\-]+)\.([a-z\.]{2,6})([\/\w\.\-]*)*\/?$/g
 ```
 
 
 
-## 35: setTimeout 模拟setInterval\(\):
+## 35: setTimeout 模拟setInterval():
 
 setInterval 函数 理论上是每隔 1秒执行 但是 函数里面的 需要花费3秒, 这里需要等到前面执行完才可以执行下一个回调函数，不会按照间隔时间来执行了， 也就是说 他不是真正的间隔一段时间来执行
 
-![](../.gitbook/assets/image%20%28109%29.png)
+![](<../.gitbook/assets/image (108).png>)
 
-![](../.gitbook/assets/image%20%28108%29.png)
+![](<../.gitbook/assets/image (109).png>)
 
 
 
@@ -5680,7 +5687,7 @@ setInterval 函数 理论上是每隔 1秒执行 但是 函数里面的 需要�
 * 所有函数的参数都是按值传递的。就和把值从一个变量复制到另一个变量一样。
 * 但是如果是 object 就是共享传递，传递对象的引用的副本，obj里面的 复杂类型就会是 引用传递 ，基本类型是 按置传递
 
-```text
+```
 var obj = {
     value: 1
 };
@@ -5709,7 +5716,7 @@ console.log(obj.value) // 1
 
 ### 将类数组转换成数组
 
-```text
+```
 var arrayLike = {0: 'name', 1: 'age', 2: 'sex', length: 3 }
 // 1. slice
 Array.prototype.slice.call(arrayLike); // ["name", "age", "sex"] 
@@ -5723,7 +5730,7 @@ Array.prototype.concat.apply([], arrayLike)
 
 ## 38. async/await 遇上 forEach
 
-```text
+```
 // 有问题的 code 我们想每隔一秒 output一个数字
 var getNumbers = () => {
   return Promise.resolve([1, 2, 3])
@@ -5779,17 +5786,17 @@ test();
 ```
 
 * 原因 在 foreach 里面we are not waiting for the callback to be done, so using a function that returns a promise won't wait for the promise to resolve everytime.但是实际却是并行执行了。
-* **解决办法 使用 普通 for** 
+* **解决办法 使用 普通 for **
 
-\*\*\*\*
+****
 
 ## **39.Functional Programming**
 
-**Functional programming \(often abbreviated FP\) is the process of building software by composing pure functions**
+**Functional programming (often abbreviated FP) is the process of building software by composing pure functions**
 
 ### Functions as first - class objects
 
-```text
+```
 const convert2Obj = compose(genObj('name'), capitalizeName)
 
 ```
@@ -5801,7 +5808,8 @@ const convert2Obj = compose(genObj('name'), capitalizeName)
 
 * 函数式编程大多时候都是在声明我需要做什么，而非怎么去做
 * ，因为声明式代码大多都是接近自然语言的，同时，它解放了大量的人力，因为它不关心具体的实现，因此它可以把优化能力交给具体的实现，这也方便我们进行分工协作。
-* SQL 语句就是声明式的，你无需关心 Select 语句是如何实现的，不同的数据库会去实现它自己的方法并且优化。React 也是声明式的，你只要描述你的 UI，接下来状态变化后 UI 如何更新，是 React 在运行时帮你处理的，而不是靠你自己去渲染和优化 diff 算法。 
+* SQL 语句就是声明式的，你无需关心 Select 语句是如何实现的，不同的数据库会去实现它自己的方法并且优化。React 也是声明式的，你只要描述你的 UI，接下来状态变化后 UI 如何更新，是 React 在运行时帮你处理的，而不是靠你自己去渲染和优化 diff 算法。\
+
 
 ### Pure function
 
@@ -5810,7 +5818,7 @@ const convert2Obj = compose(genObj('name'), capitalizeName)
 ### high Order Functions
 
 * functions like map, filter, reduce, etc
-*  They are functions that take other functions as parameters. They can either return a new function or a result based on the function that was passed to it
+* &#x20;They are functions that take other functions as parameters. They can either return a new function or a result based on the function that was passed to it
 
 ### curry Functions
 
@@ -5820,7 +5828,7 @@ const convert2Obj = compose(genObj('name'), capitalizeName)
 
 ## 40.ES6语法知识点
 
-{% embed url="https://juejin.cn/post/6844903775329583112\#heading-31" %}
+{% embed url="https://juejin.cn/post/6844903775329583112#heading-31" %}
 
 {% embed url="https://juejin.cn/post/6844903959283367950" %}
 
@@ -5836,7 +5844,7 @@ const convert2Obj = compose(genObj('name'), capitalizeName)
 
 在早期，使用立即执行函数实现模块化是常见的手段，通过函数作用域解决了命名冲突、污染全局作用域的问题
 
-```text
+```
 (function(globalVariable){
    globalVariable.test = function() {}
    // ... 声明各种变量、函数都不会污染全局作用域
@@ -5845,7 +5853,7 @@ const convert2Obj = compose(genObj('name'), capitalizeName)
 
 ### AMD 和 CMD
 
-```text
+```
 // AMD
 define(['./a', './b'], function(a, b) {
   // 加载模块完毕可以使用
@@ -5881,9 +5889,7 @@ define(function(require, exports, module) {
 
 
 
-\*\*\*\*
-
-
+****
 
 
 

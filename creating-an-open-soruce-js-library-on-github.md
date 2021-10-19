@@ -8,7 +8,7 @@
 
 ## Npm
 
-```text
+```
 npm config set init-author-name boyan liu
 npm config set init-author-email lbyybl1996@gmail.com
 npm config set init-author-url https://www.boyanliu.me/
@@ -21,7 +21,7 @@ npm config set email lbyybl1996@gmail.com
 
 ## Create a simple library
 
-```text
+```
 //index.js
 'use strict';
 
@@ -39,14 +39,12 @@ module.exports = {
 
 ## Linting & Testing:
 
-```text
+```
 git checkout -f FEM/04.0-linting
 npm i -D eslint eslint-config-kentcdodds
 Configure eslint
 Add lint script
 ```
-
-
 
 
 

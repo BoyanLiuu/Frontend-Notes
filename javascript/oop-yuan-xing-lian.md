@@ -4,7 +4,7 @@
 
 ### Object Destructuing:
 
-```text
+```
 // EG 1
 let person = {
  name: 'Matt',
@@ -41,11 +41,11 @@ console.log(title); // Software engineer
 1. 如果没有match 就会得到 undefined
 2. It can have default value
 3. Nested Destructuring
-   1. 
+   1.
 
 ### Object 方法：
 
-```text
+```
 //1. 对象本身的方法
 Object.print = function (o) { console.log(o) };
 
@@ -61,12 +61,12 @@ obj.print() // Object
 1. 对象本身的方法
    * _**直接定义在Object 对象的方法**_
 2. Object 实例方法
-   1. _**定义在 Object.prototype**_ 也可以被 Object 实例直接使用
+   1. _**定义在 Object.prototype** _也可以被 Object 实例直接使用
    2. 凡是定义在Object.prototype对象上面的属性和方法，将被所有实例对象共享
 
-### Object\(\):
+### Object():
 
-```text
+```
 // EG 1
 var obj = Object();
 // 等同于
@@ -108,15 +108,15 @@ isObject([]) // true
 isObject(true) // false
 ```
 
- `Object`本身是一个函数，可以当作工具函数使用，将任意值转为对象。Object\(\)
+&#x20;`Object`本身是一个函数，可以当作工具函数使用，将任意值转为对象。Object()
 
-1.  如果参数为空（或者为`undefined`和`null`），`Object()`返回一个空对象。
-2.  如果参数是原始类型的值，`Object`方法将其转为对应的包装对象的实例,  `Object`函数的参数是各种原始类型的值，转换成对象就是原始类型值对应的包装对象。
-3.  如果`Object`方法的参数是一个对象，**它总是返回该对象，即不用转换。** 利用这一点，可以写一个判断变量是否为对象的函数。
+1. &#x20;如果参数为空（或者为`undefined`和`null`），`Object()`返回一个空对象。
+2. &#x20;如果参数是原始类型的值，`Object`方法将其转为对应的包装对象的实例,  `Object`函数的参数是各种原始类型的值，转换成对象就是原始类型值对应的包装对象。
+3. &#x20;如果`Object`方法的参数是一个对象，**它总是返回该对象，即不用转换。 **利用这一点，可以写一个判断变量是否为对象的函数。
 
 ### Object 构造函数
 
-```text
+```
 var obj = new Object();
 
 var o1 = {a: 1};
@@ -127,15 +127,15 @@ var obj = new Object(123);
 obj instanceof Number // true
 ```
 
- `Object`构造函数的首要用途，是直接通过它来生成新对象.  注意，通过`var obj = new Object()`的写法生成新对象，与字面量的写法`var obj = {}`是等价的。或者说，后者只是前者的一种简便写法。
+&#x20;`Object`构造函数的首要用途，是直接通过它来生成新对象.  注意，通过`var obj = new Object()`的写法生成新对象，与字面量的写法`var obj = {}`是等价的。或者说，后者只是前者的一种简便写法。
 
-1.  `Object`构造函数的用法与工具方法很相似，几乎一模一样
+1. &#x20;`Object`构造函数的用法与工具方法很相似，几乎一模一样
 
 
 
-### Object 的静态方法\(static method\) <a id="object-&#x7684;&#x9759;&#x6001;&#x65B9;&#x6CD5;"></a>
+### Object 的静态方法(static method) <a href="object-de-jing-tai-fang-fa" id="object-de-jing-tai-fang-fa"></a>
 
-```text
+```
 // ===== EG 1 =====
 var obj = {
   p1: 123,
@@ -325,41 +325,41 @@ Date.hasOwnProperty('toString') // false
 
 _**是指Object 对象自身的方法**_
 
-**Object.prototype.keys\(obj\) // \["p1", "p2"\]   // this is not a function**
+**Object.prototype.keys(obj) // \["p1", "p2"]   // this is not a function**
 
-1. **`Object.keys()，Object.getOwnPropertyNames() , for ...in`**  都用来遍历对象的属性 
-   1.  这两个方法的参数是一个对象，返回一个数组。该数组的成员都是该对象自身的（而不是继承的）所有属性名。
-   2.  只有涉及不可枚举属性时，才会有不一样的结果。`Object.keys`方法只返回可枚举的属性，`Object.getOwnPropertyNames`方法还返回不可枚举的属性名
-   3.  一般情况下，几乎总是使用`Object.keys`方法，遍历对象的属性。
+1. **`Object.keys()，Object.getOwnPropertyNames() , for ...in  `**都用来遍历对象的属性&#x20;
+   1. &#x20;这两个方法的参数是一个对象，返回一个数组。该数组的成员都是该对象自身的（而不是继承的）所有属性名。
+   2. &#x20;只有涉及不可枚举属性时，才会有不一样的结果。`Object.keys`方法只返回可枚举的属性，`Object.getOwnPropertyNames`方法还返回不可枚举的属性名
+   3. &#x20;一般情况下，几乎总是使用`Object.keys`方法，遍历对象的属性。
 2. 对象属性模型的相关方法
-   1. `Object.getOwnPropertyDescriptor()`  在 **Reading Property Attributes** 那个 section 解释了
-   2. `Object.defineProperty(）`在 **Data properties** 那个 section 解释了
-   3. `Object.defineProperties()` 在 **Defining multiple properties** 那个 section 解释了
+   1. `Object.getOwnPropertyDescriptor()`  在 **Reading Property Attributes **那个 section 解释了
+   2. `Object.defineProperty(）`在 **Data properties **那个 section 解释了
+   3. `Object.defineProperties() `在 **Defining multiple properties** 那个 section 解释了
 3. 控制对象状态的方法
-   1. `Object.preventExtensions()` 方法可以使得一个对象无法再添加新的属性。
-   2. `Object.isExtensible()`  方法用于检查一个对象是否使用了`Object.preventExtensions`方法。也就是说，检查是否可以为一个对象添加属性。
-   3. `Object.seal()` 方法使得一个对象既无法添加新属性，也无法删除旧属性。 `Object.seal`实质是把属性描述对象的`configurable`属性设为`false`，因此属性描述对象不再能改变了。
-   4. `Object.isSealed()`  方法用于检查一个对象是否使用了`Object.seal`方法。
-   5. `Object.freeze()` 方法可以使得一个对象无法添加新属性、无法删除旧属性、也无法改变属性的值，使得这个对象实际上变成了常量。
-   6. `Object.isFrozen()`  方法用于检查一个对象是否使用了`Object.freeze`方法。
+   1. `Object.preventExtensions() `方法可以使得一个对象无法再添加新的属性。
+   2. `Object.isExtensible() ` 方法用于检查一个对象是否使用了`Object.preventExtensions`方法。也就是说，检查是否可以为一个对象添加属性。
+   3. `Object.seal() `方法使得一个对象既无法添加新属性，也无法删除旧属性。 `Object.seal`实质是把属性描述对象的`configurable`属性设为`false`，因此属性描述对象不再能改变了。
+   4. `Object.isSealed() ` 方法用于检查一个对象是否使用了`Object.seal`方法。
+   5. `Object.freeze() `方法可以使得一个对象无法添加新属性、无法删除旧属性、也无法改变属性的值，使得这个对象实际上变成了常量。
+   6. `Object.isFrozen() ` 方法用于检查一个对象是否使用了`Object.freeze`方法。
    7. 上述的 3个 方法锁定对象都有一个可能的漏洞和 局限性，
       1. 漏洞： 可以通过改变原型对象，来为对象增加属性。 上面代码中，对象obj本身不能新增属性，但是可以在它的原型对象上新增属性，就依然能够在obj上读到。
       2. 另外一个局限是，如果属性值是对象，上面这些方法只能冻结属性指向的对象，而不能冻结对象本身的内容。 上面代码中，`obj.bar`属性指向一个数组，`obj`对象被冻结以后，这个指向无法改变，即无法指向其他值，但是所指向的数组是可以改变的。
 4. 原型链相关方法
    1. `Object.create()`：该方法接受一个对象作为参数，然后以它为原型，返回一个实例对象。该实例完全继承原型对象的属性
-      1.  使用Object.create\(\)方法的时候，必须提供对象原型，即参数不能为空，或者不是对象，否则会报错
-      2.  Object.create\(\)方法生成的新对象，动态继承了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上
-      3.  `Object.create()`方法还可以接受第二个参数。该参数是一个属性描述对象，它所描述的对象属性，会添加到实例对象，作为该对象自身的属性
+      1. &#x20;使用Object.create()方法的时候，必须提供对象原型，即参数不能为空，或者不是对象，否则会报错
+      2. &#x20;Object.create()方法生成的新对象，动态继承了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上
+      3. &#x20;`Object.create()`方法还可以接受第二个参数。该参数是一个属性描述对象，它所描述的对象属性，会添加到实例对象，作为该对象自身的属性
    2. `Object.getPrototypeOf()`：获取对象的`Prototype`对象。
-   3.  `Object.setPrototypeOf()`  方法为参数对象设置原型，返回该参数对象。它接受两个参数，第一个是现有对象，第二个是原型对象。`Object.setPrototypeOf(a, b);`  将a的原型设置到b上面
-5. `getOwnPropertyNames`    返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名。
+   3. &#x20;`Object.setPrototypeOf()  `方法为参数对象设置原型，返回该参数对象。它接受两个参数，第一个是现有对象，第二个是原型对象。`Object.setPrototypeOf(a, b); ` 将a的原型设置到b上面
+5. `getOwnPropertyNames    `返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名。
 6. `Object.prototype.hasOwnProperty()`用于判断某个属性定义在对象自身，还是定义在原型链上。 `Date.length`（构造函数`Date`可以接受多少个参数）是`Date`自身的属性，`Date.toString`是继承的属性。
 
-### 
+###
 
-###  获取实例对象`obj`的原型对象 
+### &#x20;获取实例对象`obj`的原型对象&#x20;
 
-```text
+```
 var obj = new Object();
 
 obj.__proto__ === Object.prototype
@@ -389,17 +389,17 @@ var c = new C();
 c.constructor.prototype === p // true
 ```
 
-*  上面三种方法之中，前两种都不是很可靠。`__proto__`属性只有浏览器才需要部署，其他环境可以不部署。而`obj.constructor.prototype`在手动改变原型对象时，可能会失效。
-*  上面例子中 构造函数`C`的原型对象被改成了`p`，但是实例对象的`c.constructor.prototype`却没有指向`p`。所以，在改变原型对象时，一般要同时设置`constructor`属性。
+* &#x20;上面三种方法之中，前两种都不是很可靠。`__proto__`属性只有浏览器才需要部署，其他环境可以不部署。而`obj.constructor.prototype`在手动改变原型对象时，可能会失效。
+* &#x20;上面例子中 构造函数`C`的原型对象被改成了`p`，但是实例对象的`c.constructor.prototype`却没有指向`p`。所以，在改变原型对象时，一般要同时设置`constructor`属性。
 * 关于 constructor 的解释情况 在 原型链 section看
 
-###  <a id="object-&#x7684;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;"></a>
+### &#x20;<a href="object-de-shi-li-fang-fa" id="object-de-shi-li-fang-fa"></a>
 
-### Object 的实例方法\(instance method） <a id="object-&#x7684;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;"></a>
+### Object 的实例方法(instance method） <a href="object-de-shi-li-fang-fa" id="object-de-shi-li-fang-fa"></a>
 
- 定义在`Object.prototype`对象。它们称为实例方法  所有`Object`的实例对象都继承了这些方法。
+&#x20;定义在`Object.prototype`对象。它们称为实例方法  所有`Object`的实例对象都继承了这些方法。
 
-```text
+```
 // ===== EG 1 =====
 var obj = new Object();
 obj.valueOf() === obj // true
@@ -511,28 +511,30 @@ Object.getPrototypeOf(obj) === p // true
 ```
 
 1. `Object.prototype.valueOf()`：返回当前对象对应的值。默认情况下返回对象本身。
-   1.  `valueOf`方法的主要用途是，JavaScript 自动类型转换时会默认调用这个方法
-   2.  上面代码将对象`obj`与数字`1`相加，这时 JavaScript 就会默认调用`valueOf()`方法，求出`obj`的值再与`1`相加。所以，如果自定义`valueOf`方法，就可以得到想要的结果。
+   1. &#x20;`valueOf`方法的主要用途是，JavaScript 自动类型转换时会默认调用这个方法
+   2. &#x20;上面代码将对象`obj`与数字`1`相加，这时 JavaScript 就会默认调用`valueOf()`方法，求出`obj`的值再与`1`相加。所以，如果自定义`valueOf`方法，就可以得到想要的结果。
 2. `Object.prototype.toString()`：返回当前对象对应的字符串形式。
    1. 默认情况下返回类型字符串
-   2.  字符串`[object Object]`本身没有太大的用处，但是通过自定义`toString`方法，可以让对象在自动类型转换时，得到想要的字符串形式。
-   3.  数组、字符串、函数、Date 对象都分别部署了自定义的`toString`方法，覆盖了`Object.prototype.toString`方法。
+   2. &#x20;字符串`[object Object]`本身没有太大的用处，但是通过自定义`toString`方法，可以让对象在自动类型转换时，得到想要的字符串形式。
+   3. &#x20;数组、字符串、函数、Date 对象都分别部署了自定义的`toString`方法，覆盖了`Object.prototype.toString`方法。
 3. `Object.prototype.toLocaleString()`：返回当前对象对应的本地字符串形式。
-   1.  这个方法的主要作用是留出一个接口，让各种不同的对象实现自己版本的`toLocaleString`，用来返回针对某些地域的特定的值
-4.  `Object.prototype.hasOwnProperty()`：判断某个属性是否为当前对象自身的属性，还是继承自原型对象的属性
+   1. &#x20;这个方法的主要作用是留出一个接口，让各种不同的对象实现自己版本的`toLocaleString`，用来返回针对某些地域的特定的值
+4. &#x20;`Object.prototype.hasOwnProperty()`：判断某个属性是否为当前对象自身的属性，还是继承自原型对象的属性
 5. `Object.prototype.isPrototypeOf()`：判断当前对象是否为另一个对象的原型。
 6. `Object.prototype.propertyIsEnumerable()`：判断某个属性是否可枚举。
    1. 这个方法只能用于判断对象自身的属性，对于继承的属性一律返回false
-7. `Object.prototype.__proto__`   返回该对象的原型。该属性可读写。
+7.  `Object.prototype.__proto__   `返回该对象的原型。该属性可读写。
 
-   1. `Object.getPrototypeOf(a) === a.proto;`   等同于Object.getPrototypeof\(\);
-   2.  根据语言标准，`__proto__`属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用`Object.getPrototypeOf()`和`Object.setPrototypeOf()`，进行原型对象的读写操作。
+    1. `Object.getPrototypeOf(a) === a.proto;   `等同于Object.getPrototypeof();
+    2. &#x20;根据语言标准，`__proto__`属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用`Object.getPrototypeOf()`和`Object.setPrototypeOf()`，进行原型对象的读写操作。
 
-### \*\*\*\*
+
+
+### ****
 
 ### **D**ata properties:
 
-```text
+```
 
 // ===== Configurable =====
 var obj = Object.defineProperty({}, 'p', {
@@ -609,48 +611,46 @@ JSON.stringify(obj) // "{}"
 ```
 
 * Configurable
-  * **Indicates if the property may be redefined by removing the property**
+  *   **Indicates if the property may be redefined by removing the property      **
 
-    **via delete, changing the property’s attributes,** or changing the property into an accessor
+      **via delete, changing the property’s attributes,** or changing the property into an accessor
 
-    property. By default, this is true for all properties defined directly on an object
-
+      property. By default, this is true for all properties defined directly on an object
   * Calling **delete on** the property has no effect in nonstrict mode and throws an error in strict mode.
-  * **决定 是否可以修改 属性描述对象** 如果为 false  他的  `writable`、`enumerable`和`configurable`都不能被修改了。
-  *  `value`属性的情况比较特殊。只要`writable`和`configurable`有一个为`true`，就允许改动`value`。
-  *  `writable`为`false`时，直接对目标属性赋值，不报错，但不会成功。
+  * **决定 是否可以修改 属性描述对象 **如果为 false  他的  `writable`、`enumerable`和`configurable`都不能被修改了。
+  * &#x20;`value`属性的情况比较特殊。只要`writable`和`configurable`有一个为`true`，就允许改动`value`。
+  * &#x20;`writable`为`false`时，直接对目标属性赋值，不报错，但不会成功。
 * Enumerable
-  * **Indicates if the property will be returned in a for-in loop**. By default,
+  *   **Indicates if the property will be returned in a for-in loop**. By default,
 
-    this is true for all properties defined directly on an object
-
+      this is true for all properties defined directly on an object
   * 如果是 false， 下面3个操作 都不会取到该属性
     * for..in循环
     * Object.keys方法
     * JSON.stringify方法
 * Writable
-  * **Indicates if the property’s value can be changed**. By default, this is true for
+  *   **Indicates if the property’s value can be changed**. By default, this is true for
 
-    all properties defined directly on an object
+      all properties defined directly on an object
 * Value
-  * **Contains the actual data value for the property**. This is the location from which
+  *   **Contains the actual data value for the property**. This is the location from which
 
-    the property’s value is read and the location to which new values are saved
+      the property’s value is read and the location to which new values are saved
 
-```text
+```
 let person = {
  name: "Nicholas"
 };
 
 ```
 
-* Here, the property called name is created and a value of "Nicholas" is assigned. That means
+*   Here, the property called name is created and a value of "Nicholas" is assigned. That means
 
-  \[\[Value\]\] is set to "Nicholas", and any changes to that value are stored in this location.
+    \[\[Value]] is set to "Nicholas", and any changes to that value are stored in this location.
 
-To change any of the default property attributes you must use the **`Object.defineProperty()`**
+To change any of the default property attributes you must use the**` Object.defineProperty()`**
 
-```text
+```
 let person = {
   name:'boyan'
 };
@@ -664,26 +664,25 @@ person.name = "Greg";
 console.log(person.name); // "Nicholas"
 ```
 
-* . This method accepts three arguments: the object on which the property should be added or
+*   . This method accepts three arguments: the object on which the property should be added or
 
-  modified, the name of the property, and a descriptor object. The properties on the descriptor object
+    modified, the name of the property, and a descriptor object. The properties on the descriptor object
 
-  match the attribute names: configurable, enumerable, writable, and value. You can set one or all
+    match the attribute names: configurable, enumerable, writable, and value. You can set one or all
 
-  of these values to change the corresponding attribute values
-
+    of these values to change the corresponding attribute values
 * **Once setting configurable to false means that the property cannot be removed from the object. It can not changed configurable any more**
 
 ### **Accessor properties**
 
-* Accessor properties do not contain a data value. Instead, they contain a combination of a getter function and a setter function \(though both are not necessary\)。
+* Accessor properties do not contain a data value. Instead, they contain a combination of a getter function and a setter function (though both are not necessary)。
 * Accessor properties have four attributes:
   * Configurable
   * Enumerable
   * Get—The function to call when the property is read from. The default value is undefined
   * Set—The function to call when the property is written to. The default value is **undefined**
 
-```text
+```
 // Define object with pseudo-private member 'year_'
 // and public member 'edition'
 let book = {
@@ -725,7 +724,7 @@ obj.p = 123 // "setter: 123"
 
 ### Defining multiple properties
 
-```text
+```
 let book = {};
 Object.defineProperties(book, {
  year_: {
@@ -753,7 +752,7 @@ Object.defineProperties(book, {
 
 ### Reading Property Attributes
 
-```text
+```
 let book = {};
 Object.defineProperties(book, {
  year_: {
@@ -838,12 +837,12 @@ console.log(Object.getOwnPropertyDescriptors(book));
 ```
 
 * Use  `Object.  getOwnPropertyDescriptor()`
-* This method accepts two arguments: the object on which   the property resides and the name of the property whose descriptor should be retrieved.
-* In ES2017, This   method effectively performs on Object.getOwnPropertyDescriptor\(\) on all own properties and   returns them in a new object
+* This method accepts two arguments: the object on which  &#x20;the property resides and the name of the property whose descriptor should be retrieved.
+* In ES2017, This&#x20;  method effectively performs on Object.getOwnPropertyDescriptor() on all own properties and  &#x20;returns them in a new object
 
-### 对象的拷贝 <a id="&#x5BF9;&#x8C61;&#x7684;&#x62F7;&#x8D1D;"></a>
+### 对象的拷贝 <a href="dui-xiang-de-kao-bei" id="dui-xiang-de-kao-bei"></a>
 
-```text
+```
 // 有问题的方法 
 var extend = function (to, from) {
   for (var property in from) {
@@ -917,7 +916,7 @@ function copyObject(orig) {
 
 ### Merging Objects:
 
-```text
+```
 let dest, src, result;
 
 dest = {};
@@ -946,15 +945,16 @@ console.log(dest); // { a :{} }
 console.log(dest.a === src.a); // true 
 ```
 
-* **`Object.assign()`** method.
+* **`Object.assign() `**method.
 * `Object.assign(target, ...sources)`
-* It take one destination , and one or many sources, If we modify destination, result would change as well, but it would not affect source object if we do not modify object, since **Object.assign\(\) only perform shallow copy  from each source object.**
+* It take one destination , and one or many sources, If we modify destination, result would change as well, but it would not affect source object if we do not modify object, since** Object.assign() only perform shallow copy  from each source object.**
 * If multiple source objects have the same property defined, the **last one to b**e copied will be the ultimate value
 * 已经做过的copy出错后也不会 重置，所以就会有 partially copy
-* 
+*
+
 ### 创建Object的多种方法
 
-```text
+```
 // Method 1 
 let mlt =  new Object();
 mlt.meat = [];
@@ -1067,9 +1067,9 @@ class MLT {
 }
 ```
 
-* Object.creat\(\)
+* Object.creat()
   * 这些都是等价的
-  *  如果想要生成一个不继承任何属性（比如没有`toString()`和`valueOf()`方法）的对象，可以将`Object.create()`的参数设为`null`。
+  * &#x20;如果想要生成一个不继承任何属性（比如没有`toString()`和`valueOf()`方法）的对象，可以将`Object.create()`的参数设为`null`。
   * 你修改对象属性也会修改原型的属性
 
 ## Object creation
@@ -1078,7 +1078,7 @@ Although using the Object constructor or an object literal are convenient ways t
 
 ### The factory pattern:
 
-```text
+```
 function createPerson(name, age, job) {
  let o = new Object();
  o.name = name;
@@ -1094,11 +1094,11 @@ let person1 = createPerson("Nicholas", 29, "Software Engineer");
 let person2 = createPerson("Greg", 27, "Doctor");
 ```
 
-* The function can be called any number of times with different arguments and will still return an object that has three properties and one method. Though this solved the problem of creating multiple similar objects, the **factory pattern didn’t address the issue of object identification** \(what type of object an object is\)
+* The function can be called any number of times with different arguments and will still return an object that has three properties and one method. Though this solved the problem of creating multiple similar objects, the **factory pattern didn’t address the issue of object identification** (what type of object an object is)
 
 ### The Function Constructor Pattern:
 
-```text
+```
 function Person(name, age, job){
  this.name = name;
  this.age = age;
@@ -1124,12 +1124,12 @@ let Person = function(name, age, job) {
 }
 ```
 
-* define custom constructors, in the form   of a function, that define properties and methods for your own type of object.
+* define custom constructors, in the form  &#x20;of a function, that define properties and methods for your own type of object.
 * `person1 instanceof Person`
 * The major downside to constructors is that methods are created once for each instance.
 * To solve the downside, we use prototype, , 在底下解释了
 
-### Prototype pattern 
+### Prototype pattern&#x20;
 
 ## New 命令
 
@@ -1138,15 +1138,14 @@ let Person = function(name, age, job) {
 英文：
 
 * A new object is created in memory
-* The new object’s internal \[\[Prototype\]\] pointer is assigned to the constructor’s prototype property
-* The this value of the constructor is assigned to the new object \(so this points to the
+* The new object’s internal \[\[Prototype]] pointer is assigned to the constructor’s prototype property
+*   The this value of the constructor is assigned to the new object (so this points to the
 
-  new object\).
+    new object).
+* The code inside the constructor is executed (adds properties to the new object).
+*   If the constructor function returns a non-null object, that object is returned. Otherwise, the
 
-* The code inside the constructor is executed \(adds properties to the new object\).
-* If the constructor function returns a non-null object, that object is returned. Otherwise, the
-
-  new object that was just created is returned.
+    new object that was just created is returned.
 
 中文:
 
@@ -1157,7 +1156,7 @@ let Person = function(name, age, job) {
 
 也就是说，构造函数内部，this指的是一个新生成的空对象，所有针对this的操作，都会发生在这个空对象上。构造函数之所以叫“构造函数”，就是说这个函数的目的，就是操作一个空对象（即this对象），将其“构造”为需要的样子
 
-```text
+```
 var Vehicle = function () {
   this.price = 1000;
   return 1000;
@@ -1187,13 +1186,13 @@ typeof msg // "object"
 ```
 
 * **如果构造函数内部有return语句，而且return后面跟着一个对象，new命令会返回return语句指定的对象；否则，就会不管return语句，返回this对象**。
-*  上面代码中，构造函数`Vehicle`的`return`语句返回一个数值。这时，`new`命令就会忽略这个`return`语句，返回“构造”后的`this`对象。
-*  但是，如果`return`语句返回的是一个跟`this`无关的新对象，`new`命令会返回这个新对象，而不是`this`对象。这一点需要特别引起注意。
-*  另一方面，如果对普通函数（内部没有`this`关键字的函数）使用`new`命令，则会返回一个空对象。
+* &#x20;上面代码中，构造函数`Vehicle`的`return`语句返回一个数值。这时，`new`命令就会忽略这个`return`语句，返回“构造”后的`this`对象。
+* &#x20;但是，如果`return`语句返回的是一个跟`this`无关的新对象，`new`命令会返回这个新对象，而不是`this`对象。这一点需要特别引起注意。
+* &#x20;另一方面，如果对普通函数（内部没有`this`关键字的函数）使用`new`命令，则会返回一个空对象。
 
 ### new 命令简化的内部流程
 
-```text
+```
 function _new(/* 构造函数 */ constructor, /* 构造函数参数 */ params) {
   // 将 arguments 对象转为数组
   var args = [].slice.call(arguments);
@@ -1213,15 +1212,15 @@ var actor = _new(Person, '张三', 28);
 
 ## 原型&原型链（prototype & prototype chain）
 
-![](../.gitbook/assets/image%20%28115%29.png)
+![](<../.gitbook/assets/image (113).png>)
 
-![](../.gitbook/assets/image%20%28111%29.png)
+![](<../.gitbook/assets/image (112).png>)
 
 
 
-![](../.gitbook/assets/image%20%2831%29.png)
+![](<../.gitbook/assets/image (31).png>)
 
-```text
+```
 function Person() {}
 /**
  * Upon declaration, the constructor function already
@@ -1249,21 +1248,21 @@ console.log(person1.__proto__ === Person.prototype); // true
 conosle.log(person1.__proto__.constructor === Person); // true
 ```
 
-`person1.__proto__ === Person.prototype  
-person1.__proto__.constructor === Person.prototype.constructor === Person  
-person1.constructor === Person`
+`person1.__proto__ === Person.prototype`\
+`person1.__proto__.constructor === Person.prototype.constructor === Person`\
+`person1.constructor === Person`
 
- 1️⃣`__proto__`和`constructor`是**对象**独有的。2️⃣`prototype`属性是**函数**独有的；
+&#x20;1️⃣`__proto__`和`constructor`是**对象**独有的。2️⃣`prototype`属性是**函数**独有的；
 
- `__proto__`属性既不能被 `for in` 遍历出来，也不能被 `Object.keys(obj)` 查找出来。
+&#x20;`__proto__`属性既不能被 `for in` 遍历出来，也不能被 `Object.keys(obj)` 查找出来。
 
-![](../.gitbook/assets/image%20%28118%29.png)
+![](<../.gitbook/assets/image (116).png>)
 
 ### prototype原型
 
-![](../.gitbook/assets/image%20%28117%29.png)
+![](<../.gitbook/assets/image (117).png>)
 
-```text
+```
 function f() {}
 typeof f.prototype // "object"
 
@@ -1286,11 +1285,11 @@ cat1.color // "yellow"
 cat2.color // "yellow"
 ```
 
-* **每一个对象都会从原型"继承"属性。** ``原型对象的所有属性和方法，都能被实例对象共享。也就是说，如果属性和方法定义在原型上，那么所有实例对象就能共享，不仅节省了内存，还体现了实例对象之间的联系。
-*  每个函数都有一个`prototype`属性，指向一个对象。
-* EG 1 
+* **每一个对象都会从原型"继承"属性。**` `原型对象的所有属性和方法，都能被实例对象共享。也就是说，如果属性和方法定义在原型上，那么所有实例对象就能共享，不仅节省了内存，还体现了实例对象之间的联系。
+* &#x20;每个函数都有一个`prototype`属性，指向一个对象。
+* EG 1&#x20;
   * 生成实例的时候，该属性会自动成为实例对象的原型
-  *  只要修改原型对象，变动就立刻会体现在**所有**实例对象上。
+  * &#x20;只要修改原型对象，变动就立刻会体现在**所有**实例对象上。
   * 当实例对象本身没有某个属性或方法的时候，它会到原型对象去寻找该属性或方法
 
 ### \_\__proto\_\__
@@ -1299,13 +1298,13 @@ _**所有函数对象的 \_\_proto\_\_ 都指向 Function.prototype，它是一�
 
 _**对象\_\_proto\_\_属性的值就是它所对应的原型对象：**_
 
-![](../.gitbook/assets/image%20%28116%29.png)
+![](<../.gitbook/assets/image (118).png>)
 
 ### 原型链
 
 它的作用就是当你在访问一个对象属性的时候，如果该对象内部不存在这个属性，那么就回去它的\_\_proto\_\_属性所指向的对象（父类对象）上查找
 
-```text
+```
 Object.getPrototypeOf(Object.prototype)
 // NULL
 
@@ -1322,19 +1321,19 @@ mine instanceof Array // true
 ```
 
 * 所有对象都有自己的原型对象（prototype）。一方面，任何一个对象，都可以充当其他对象的原型；另一方面，由于原型对象也是对象，所以它也有自己的原型。因此，就会形成一个“原型链”（prototype chain）：对象到原型，再到原型的原型……
-*  所有对象的原型最终都可以上溯到`Object.prototype`
-*  即`Object`构造函数的`prototype`属性。也就是说，所有对象都继承了`Object.prototype`的属性
-*  `object.prototype`的原型是`null  ,` **原型链的尽头就是`null`。**
+* &#x20;所有对象的原型最终都可以上溯到`Object.prototype`
+* &#x20;即`Object`构造函数的`prototype`属性。也就是说，所有对象都继承了`Object.prototype`的属性
+* &#x20;`object.prototype`的原型是`null  ,` **原型链的尽头就是`null`。**
 
 ### constructor 属性
 
-**`prototype`对象有一个`constructor`属性**，默认指向`prototype`对象所在的构造函数\(function\)
+**`prototype`对象有一个`constructor`属性**，默认指向`prototype`对象所在的构造函数(function)
 
 当获取 person.constructor 时，其实 person 中并没有 constructor 属性,当不能读取到constructor 属性时，会从 person 的原型也就是 Person.prototype 中读取，正好原型中有该属性，所以：
 
-![](../.gitbook/assets/image%20%28119%29.png)
+![](<../.gitbook/assets/image (119).png>)
 
-```text
+```
 function P() {}
 P.prototype.constructor === P // true
 var p = new P();
@@ -1365,15 +1364,15 @@ Person.prototype.constructor === Person // false
 Person.prototype.constructor === Object // true
 ```
 
-*  **`f.constructor.name`**  可以得到 构造函数的名称。
-*  由于`constructor`属性定义在`prototype`对象上面，意味着可以被所有实例对象继承。
-*  `constructor`属性的作用是，可以得知某个实例对象，到底是哪一个构造函数产生的。
+* **`  f.constructor.name   `**可以得到 构造函数的名称。
+* &#x20;由于`constructor`属性定义在`prototype`对象上面，意味着可以被所有实例对象继承。
+* &#x20;`constructor`属性的作用是，可以得知某个实例对象，到底是哪一个构造函数产生的。
 * `constructor`属性表示**原型对象与构造函数之间的关联关系**，如果修改了原型对象，一般会同时修改`constructor`属性，防止引用的时候出错。 **修改原型对象时，一般要同时修改`constructor`属性的指向。**
-  *  上面代码中，构造函数`Person`的原型对象改掉了，但是没有修改`constructor`属性，导致这个属性不再指向`Person`。由于`Person`的新原型是一个普通对象，而普通对象的`constructor`属性指向`Object`构造函数，导致`Person.prototype.constructor`变成了`Object`
+  * &#x20;上面代码中，构造函数`Person`的原型对象改掉了，但是没有修改`constructor`属性，导致这个属性不再指向`Person`。由于`Person`的新原型是一个普通对象，而普通对象的`constructor`属性指向`Object`构造函数，导致`Person.prototype.constructor`变成了`Object`
 
 
 
-## 
+##
 
 ### Prototypes 继承
 
@@ -1382,14 +1381,14 @@ Person.prototype.constructor === Object // true
 * 就是指我们亲自将某个对象设置为另一个对象的原型
 * 如下，通过调用 Object.setPrototypeOf 方法，我们将 obj\_a 设置为 obj\_b 的原型
 
-```text
+```
 const obj_a = {a:1}
 const obj_b = {b:2}
 
 Object.setPrototypeOf(obj_b,obj_a);
 ```
 
-* 还有一种是 Object.create\(\);直接继承另一个对象,Object.create，给我一个对象，它将作为我创建的新对象的原型
+* 还有一种是 Object.create();直接继承另一个对象,Object.create，给我一个对象，它将作为我创建的新对象的原型
 
 #### 2 隐式原型继承
 
@@ -1397,19 +1396,19 @@ Object.setPrototypeOf(obj_b,obj_a);
 * 设置该空对象的原型为另一个对象或者 null
 * 填充该对象，增加属性或方法。
 
-![](../.gitbook/assets/image%20%28114%29.png)
+![](<../.gitbook/assets/image (114).png>)
 
 
 
- 3 .constructor 构造函数，在使用 new 关键字实例化时，会自动继承 constructor 的 prototype 对象，作为实例的原型。
+&#x20;3 .constructor 构造函数，在使用 new 关键字实例化时，会自动继承 constructor 的 prototype 对象，作为实例的原型。
 
-4. 在 ES2015 中提供了 class 的风格，背后跟 constructor 工作方式一样，写起来更内聚一些。
+4\. 在 ES2015 中提供了 class 的风格，背后跟 constructor 工作方式一样，写起来更内聚一些。
 
 ## 继承
 
 ### _Prototype Chain 继承_
 
-```text
+```
 function SuperType() {
  this.property = true;
 }
@@ -1435,12 +1434,12 @@ console.log(instance.getSuperValue()); // true
 
 **缺点**
 
-* that all instances get the same property values by default. 
+* that all instances get the same property values by default.&#x20;
 * The main problem comes with their shared nature. The real problem occurs when a property contains a reference value.， 你更改其中一个 field 所有的 instance都会得到更改过后的值
 
-### 借用构造函数\(constructor stealing\)
+### 借用构造函数(constructor stealing)
 
-```text
+```
 function SuperType(name){
  this.name = name;
  this.colors = ["red", "blue", "green"];
@@ -1483,7 +1482,7 @@ instance2.sayAge(); //
 
 #### 缺点
 
-```text
+```
 function Cat(name, color) {
   this.name = name;
   this.color = color;
@@ -1500,13 +1499,13 @@ cat1.meow === cat2.meow
 ```
 
 * 同一个构造函数的多个实例之间，无法共享属性，从而造成对系统资源的浪费
-*  上面代码中，`cat1`和`cat2`是同一个构造函数的两个实例，它们都具有`meow`方法。由于`meow`方法是生成在每个实例对象上面，所以两个实例就生成了两次。也就是说，**每新建一个实例，就会新建一个`meow`方法**
+* &#x20;上面代码中，`cat1`和`cat2`是同一个构造函数的两个实例，它们都具有`meow`方法。由于`meow`方法是生成在每个实例对象上面，所以两个实例就生成了两次。也就是说，**每新建一个实例，就会新建一个`meow`方法**
 * 解决办法 JavaScript 的原型对象（prototype）
 * `SuperClass.call(this,id)`当然就是构造函数继承的核心语句了.由于父类中给this绑定属性，因此子类自然也就继承父类的共有属性。由于这种类型的继承没有涉及到原型`prototype`，所以父类的原型方法自然不会被子类继承，而如果想被子类继承，就必须放到构造函数中，这样创建出来的每一个实例都会单独的拥有一份而不能共用，这样就违背了代码复用的原则，所以综合上述两种，我们提出了组合式继承方法
 
-### combination inheritance（原型链继承和经典继承双剑合璧。） <a id="&#x6784;&#x9020;&#x51FD;&#x6570;&#x7684;&#x7EE7;&#x627F;"></a>
+### combination inheritance（原型链继承和经典继承双剑合璧。） <a href="gou-zao-han-shu-de-ji-cheng" id="gou-zao-han-shu-de-ji-cheng"></a>
 
-```text
+```
 function Parent (name) {
     this.name = name;
     this.colors = ['red', 'blue', 'green'];
@@ -1547,7 +1546,7 @@ console.log(child2.colors); // ["red", "blue", "green"]
 
 ### 原型式继承Prototypal Inheritance
 
-```text
+```
 function object(o) {
  function F() {}
  F.prototype = o;
@@ -1581,7 +1580,7 @@ console.log(person.friends); // "Shelby,Court,Van,Rob,Barbie"
 
 创建一个仅用于封装继承过程的函数，该函数在内部以某种形式来做增强对象，最后返回对象。
 
-```text
+```
 function createObj (o) {
     var clone = Object.create(o);
     clone.sayName = function () {
@@ -1597,7 +1596,7 @@ function createObj (o) {
 
 ### 寄生组合式继承
 
-```text
+```
 function object(o) {
  function F() {}
  F.prototype = o;
@@ -1640,7 +1639,7 @@ SubType.prototype.sayAge = function() {
 
 ## Classes
 
-```text
+```
 //ES 5的 class 写法
 function Point(x, y) {
   this.x = x;
@@ -1698,14 +1697,14 @@ p1.__proto__ === p2.__proto__
 
 1. ES6 的class可以看作只是一个语法糖，它的绝大部分功能，ES5 都可以做到
 2. class 的所有 method 都再 prototype 上面 Point.prototype
-3.  由于类的方法都定义在`prototype`对象上面，所以类的新方法可以添加在`prototype`对象上面。`Object.assign()`方法可以很方便地一次向类添加多个方法。
+3. &#x20;由于类的方法都定义在`prototype`对象上面，所以类的新方法可以添加在`prototype`对象上面。`Object.assign()`方法可以很方便地一次向类添加多个方法。
 4. 类的内部所有定义的方法，都是不可枚举的（non-enumerable）
 5. 与 ES5 一样，类的所有实例共享一个原型对象。
 6. 类 不存在 hoist
 
 ### 静态方法 ， 静态 属性
 
-```text
+```
 class Foo {
   static classMethod() {
     return 'hello';
@@ -1752,7 +1751,7 @@ class MyClass {
 
 ### 私有方法 & 私有属性
 
-```text
+```
 // ===== 方法 1 =====
 class Widget {
 
@@ -1790,11 +1789,11 @@ export default class myClass{
 ```
 
 1. 一种做法是在命名上加以区别，这种命名是不保险的，在类的外部，还是可以调用到这个方法
-2.  还有一种方法是利用`Symbol`值的唯一性，将私有方法的名字命名为一个`Symbol`值。 一般情况下无法获取到它们，因此达到了私有方法和私有属性的效果。但是也不是绝对不行，`Reflect.ownKeys()`依然可以拿到它们。
+2. &#x20;还有一种方法是利用`Symbol`值的唯一性，将私有方法的名字命名为一个`Symbol`值。 一般情况下无法获取到它们，因此达到了私有方法和私有属性的效果。但是也不是绝对不行，`Reflect.ownKeys()`依然可以拿到它们。
 
 ### Class 的继承
 
-```text
+```
 // ===== EG 1 =====
 class Point {
 }
@@ -1813,12 +1812,12 @@ class ColorPoint extends Point {
 let cp = new ColorPoint(); // ReferenceError
 ```
 
-1.  Class 可以通过`extends`关键字实现继承
-2.  子类必须在`constructor`方法中调用`super`方法，否则新建实例时会报错。这是因为子类自己的`this`对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。如果不调用`super`方法，子类就得不到`this`对象。
+1. &#x20;Class 可以通过`extends`关键字实现继承
+2. &#x20;子类必须在`constructor`方法中调用`super`方法，否则新建实例时会报错。这是因为子类自己的`this`对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。如果不调用`super`方法，子类就得不到`this`对象。
 
-### Class 的 prototype 属性和\_\_proto\_\_属性 <a id="&#x7C7B;&#x7684;-prototype-&#x5C5E;&#x6027;&#x548C;__proto__&#x5C5E;&#x6027;"></a>
+### Class 的 prototype 属性和\_\_proto\_\_属性 <a href="lei-de-prototype-shu-xing-he-proto-shu-xing" id="lei-de-prototype-shu-xing-he-proto-shu-xing"></a>
 
-```text
+```
 class A {
 }
 
@@ -1840,15 +1839,15 @@ Object.setPrototypeOf(B, A);
 B.__proto__ = A;
 ```
 
-*  子类的`__proto__`属性，表示构造函数的继承，总是指向父类
-*  子类`prototype`属性的`__proto__`属性，表示方法的继承，总是指向父类的`prototype`属性
-*  这两条继承链，可以这样理解：作为一个对象，子类（`B`）的原型（`__proto__`属性）是父类（`A`）；作为一个构造函数，子类（`B`）的原型对象（`prototype`属性）是父类的原型对象（`prototype`属性）的实例。
+* &#x20;子类的`__proto__`属性，表示构造函数的继承，总是指向父类
+* &#x20;子类`prototype`属性的`__proto__`属性，表示方法的继承，总是指向父类的`prototype`属性
+* &#x20;这两条继承链，可以这样理解：作为一个对象，子类（`B`）的原型（`__proto__`属性）是父类（`A`）；作为一个构造函数，子类（`B`）的原型对象（`prototype`属性）是父类的原型对象（`prototype`属性）的实例。
 
 
 
 ### 实例的 \_\_proto\_\_ 属性
 
-```text
+```
 var p1 = new Point(2, 3);
 var p2 = new ColorPoint(2, 3, 'red');
 
@@ -1856,11 +1855,11 @@ p2.__proto__ === p1.__proto__ // false
 p2.__proto__.__proto__ === p1.__proto__ // true
 ```
 
-*  子类实例的`__proto__`属性的`__proto__`属性，指向父类实例的`__proto__`属性。也就是说，子类的原型的原型，是父类的原型。
+* &#x20;子类实例的`__proto__`属性的`__proto__`属性，指向父类实例的`__proto__`属性。也就是说，子类的原型的原型，是父类的原型。
 
 ### Mixin 模式
 
-```text
+```
 // 最基本的实现
 const a = {
   a: 'a'
@@ -1902,7 +1901,5 @@ b.baz();  // baz
 ```
 
 * Mixin 指的是多个对象合成一个新的对象，新对象具有各个组成成员的接口。它的最简单实现如下。
-*  One strategy is to define “nestable” functions that accept a superclass as a parameter, define the mixin class as a subclass of the parameter, and return that class. These mixins can be chained inside each other and provided as the superclass expression
-
-
+* &#x20;One strategy is to define “nestable” functions that accept a superclass as a parameter, define the mixin class as a subclass of the parameter, and return that class. These mixins can be chained inside each other and provided as the superclass expression
 

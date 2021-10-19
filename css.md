@@ -8,32 +8,33 @@
 
 * 有两个值： flex , inline-flex, 如果你使用块元素如 div，你就可以使用 flex，而如果你使用行内元素，你可以使用 inline-flex。
 * 当设置为 flex 布局 后， **子元素的 float、clear、vertical-align 的属性将会失效。**
-* **下列 6种属性可以设置在 容器上**
+*   **下列 6种属性可以设置在 容器上**
 
-  * flex-direction
-  * flex-wrap
-  * flex-flow
-  * justify-content
-  * align-items
-  * align-content
+    * flex-direction
+    * flex-wrap
+    * flex-flow
+    * justify-content
+    * align-items
+    * align-content
 
-* 
-   ****flex-direction: 决定主轴的方向\(即项目的排列方向\)
 
-  *  **** flex-direction: row \| row-reverse \| column \| column-reverse;
+*
 
+    ** **flex-direction: 决定主轴的方向(即项目的排列方向)
+
+    * ** ** flex-direction: row | row-reverse | column | column-reverse;
 * flex-wrap: 决定容器内项目是否可换行
-  *   flex-wrap: nowrap \| wrap \| wrap-reverse;
-*  flex-flow: flex-direction 和 flex-wrap 的简写形式
-  *  flex-flow: &lt;flex-direction&gt; \|\| &lt;flex-wrap&gt;;
+  * &#x20; flex-wrap: nowrap | wrap | wrap-reverse;
+* &#x20;flex-flow: flex-direction 和 flex-wrap 的简写形式
+  * &#x20;flex-flow: \<flex-direction> || \<flex-wrap>;
   * 直接分开写 就不需要记这个属性了
-*  justify-content：定义了项目在主轴的对齐方式。
+* &#x20;justify-content：定义了项目在主轴的对齐方式。
 * align-items: 定义了项目在交叉轴上的对齐方式
 * align-content: 定义了多根轴线的对齐方式，如果项目只有一根轴线，那么该属性将不起作用
   * 当设置为 `flex-wrap: wrap`，   容器就会出现多条轴线
-  *  _Note, this property has no effect when the flexbox has only a single line._
+  * &#x20;_Note, this property has no effect when the flexbox has only a single line._
 
-![](.gitbook/assets/image%20%2839%29.png)
+![](<.gitbook/assets/image (43).png>)
 
 ### Flex item 属性
 
@@ -45,17 +46,17 @@
   * flex
   * align-self
 * order: 定义项目在容器中的排列顺序，数值越小，排列越靠前，默认值为 0
-* **flex-grow**:默认值为 0，即如果存在剩余空间，也不放大,If all items have flex-grow set to 1, the remaining space in the container will be distributed equally to all children. If one of the children has a value of 2, the remaining space would take up twice as much space as the others 
+* **flex-grow**:默认值为 0，即如果存在剩余空间，也不放大,If all items have flex-grow set to 1, the remaining space in the container will be distributed equally to all children. If one of the children has a value of 2, the remaining space would take up twice as much space as the others&#x20;
 * **flex-shrink**：**默认为1，即如果空间不足，该项目将缩小。** This defines the ability for a flex item to shrink if necessary.
 * **flex-basis**:定义了在分配剩余空间之前元素的默认大小  can be set to any value that would apply to width, including values in px, ems, or percentages. Its initial value is auto, which means the browser will look to see if the element has a width declared. If so, the browser uses that size; if not, it determines the element’s size naturally by the contents   **默认值是`auto`，就是自动。有设置`width`则占据空间就是`width`，没有设置就按内容宽度来**
-  * **This means that width will be ignored for elements that have any flex basis     other than auto**
-  *  当剩余空间不足的时候，flex子项的实际宽度并通常不是设置的`flex-basis`尺寸，因为flex布局剩余空间不足的时候默认会收缩
-*  **flex**: flex-grow, flex-shrink 和 flex-basis的简写
-  *  flex 的默认值是 0 1 auto。
-  *  2个快捷键 `auto` \(`1 1 auto`\) 和 none \(`0 0 auto`\)。
+  * **This means that width will be ignored for elements that have any flex basis    &#x20;other than auto**
+  * &#x20;当剩余空间不足的时候，flex子项的实际宽度并通常不是设置的`flex-basis`尺寸，因为flex布局剩余空间不足的时候默认会收缩
+* ** flex**: flex-grow, flex-shrink 和 flex-basis的简写
+  * &#x20;flex 的默认值是 0 1 auto。
+  * &#x20;2个快捷键 `auto` (`1 1 auto`) 和 none (`0 0 auto`)。
 * **align-self**:允许单个项目有与其他项目不一样的对齐方式
 
-![](.gitbook/assets/image%20%2840%29.png)
+![](<.gitbook/assets/image (44).png>)
 
 ## Grid 布局
 
@@ -63,23 +64,23 @@
 
 
 
-* Grid 算作二维布局，  `display: grid | inline-grid;`
+* Grid 算作二维布局， ` display: grid | inline-grid;`
 * **grid-template-columns** 和 **grid-template-rows** 属性来定义网格中的行和列
-  *  `grid-template-columns` 属性设置列宽 `grid-template-rows` 属性设置行高
+  * &#x20;`grid-template-columns` 属性设置列宽 `grid-template-rows` 属性设置行高
 * **grid-row-gap** 属性、**grid-column-gap** 属性以及 grid-gap 属性
-  *  `grid-row-gap` 属性、`grid-column-gap` 属性分别设置行间距和列间距。`grid-gap` 属性是两者的简写形式
-  *  `grid-row-gap: 10px` 表示行间距是 10px，`grid-column-gap: 20px` 表示列间距是 20px。`grid-gap: 10px 20px` 实现的效果是一样的
-* **grid-template-areas：** 属性用于定义区域，一个区域由一个或者多个单元格组成
-* **grid-auto-flow ：默认值是 row**  `grid-auto-flow: row | column | row dense | column dense;`
-* **grid-auto-columns:,grid-auto-rows:**Specifies the size of any auto-generated grid track, 多余的行会根据 grid-auto-rows 算， 
-*  **justify-items** 属性设置单元格内容的水平位置
-*  **align-items** 属性设置单元格的垂直位置（上中下）
-*  **justify-content** 属性是整个内容区域在容器里面的水平位置
-*  **align-content** 属性是整个内容区域的垂直位置（上中下）
+  * &#x20;`grid-row-gap` 属性、`grid-column-gap` 属性分别设置行间距和列间距。`grid-gap` 属性是两者的简写形式
+  * &#x20;`grid-row-gap: 10px` 表示行间距是 10px，`grid-column-gap: 20px` 表示列间距是 20px。`grid-gap: 10px 20px` 实现的效果是一样的
+* **grid-template-areas： **属性用于定义区域，一个区域由一个或者多个单元格组成
+* **grid-auto-flow ：默认值是 row  **`grid-auto-flow: row | column | row dense | column dense;`
+* **grid-auto-columns:,grid-auto-rows:**Specifies the size of any auto-generated grid track, 多余的行会根据 grid-auto-rows 算，&#x20;
+* ** justify-items** 属性设置单元格内容的水平位置
+* ** align-items** 属性设置单元格的垂直位置（上中下）
+* ** justify-content** 属性是整个内容区域在容器里面的水平位置
+* ** align-content** 属性是整个内容区域的垂直位置（上中下）
 
 ### Grid 实战
 
-* fr 实现 等分响应式: `grid-template-columns: 1fr 1fr 1fr;` 表示容器分为三等分
+* fr 实现 等分响应式: `grid-template-columns: 1fr 1fr 1fr; `表示容器分为三等分
 * repeat + auto-fit——固定列宽，改变列数量   `grid-template-columns: repeat(auto-fit, 200px);`
   * 我们的网格能够固定列宽，并根据容器的宽度来改变列的数量,表示固定列宽为 200px，数量是自适应的，只要容纳得下，就会往上排列
 
@@ -95,11 +96,11 @@
 
 ## CSS box mode
 
-![](.gitbook/assets/image%20%2842%29.png)
+![](<.gitbook/assets/image (41).png>)
 
-* Default `box-sizing: content-box`   This means that any height or width you specify only sets the size of the content box
+* Default`  box-sizing: content-box    `This means that any height or width you specify only sets the size of the content box
 
-![](.gitbook/assets/image%20%2841%29.png)
+![](<.gitbook/assets/image (42).png>)
 
 * If you set an element's width to 100 pixels, that 100 pixels will include any border or padding you added,设置元素的height/width属性指的是border + padding + content部分的高/宽
 
@@ -110,7 +111,7 @@
 
 ## CSS Selectors
 
-```text
+```
 // eg 1
 p, div, span {
   background-color: yellow;
@@ -160,24 +161,24 @@ p ~ h1 {
 ```
 
 * Id selector has more specificity than the attribute, class, pseudo-class, and pseudo-element selectors. Only inline styles have move specificity than id selectors.
-* We use , for grouping multiple selectors **\(eg1\)**
+* We use , for grouping multiple selectors** (eg1)**
 * **Attribute selectors:**
-  * **Simple attribute selector** , select all h1 ele‐ ments that have a class attribute **\(eg2\)**
-  * **With exact attribute value:   \(eg 3\)**
+  * **Simple attribute selector** , select all h1 ele‐ ments that have a class attribute **(eg2)**
+  * **With exact attribute value:   (eg 3)**
   * **Selection based on partial attribute values**
-    * `[foo~="bar"]` Selects any element with an attribute foo whose value contains the word bar in a space-separated list of words
-    * `[foo*="bar"]` Selects any element with an attribute foo whose value contains the substring bar
-    * `[foo^="bar"]` Selects any element with an attribute foo whose value begins with bar
-    * `[foo$="bar"]` Selects any element with an attribute foo whose value ends with bar
-    * `[foo|="bar"]`\] Selects any element with an attribute foo whose value starts with bar followed by a dash -  or whose value is exactly equal to bar   **\(eg 4\)**
-* **Descendant Selector:  \(eg 5\),** Select ****em elements that are descended from h1 elements
-* **Selecting children \(eg 6\),** select a strong element only if it is a direct child of an h1 element
-* **Selecting Adjacent Sibling Elements \(eg 7\)**  ,  All the immediate h1 tags  after p tags changed their background color to orange. If there is any other element between `p` tag and `h1` tag then this rule is not applicable. **只有第一个 出现的  才会 apply**
-* **General Sibling Selector \(eg 8\)**     All h1 tags after p tags have orange background color
+    * `[foo~="bar"] `Selects any element with an attribute foo whose value contains the word bar in a space-separated list of words
+    * `[foo*="bar"] `Selects any element with an attribute foo whose value contains the substring bar
+    * `[foo^="bar"] `Selects any element with an attribute foo whose value begins with bar
+    * `[foo$="bar"] `Selects any element with an attribute foo whose value ends with bar
+    * `[foo|="bar"]`] Selects any element with an attribute foo whose value starts with bar followed by a dash -  or whose value is exactly equal to bar   **(eg 4)**
+* **Descendant Selector:  (eg 5), **Select** **em elements that are descended from h1 elements
+* **Selecting children (eg 6), **select a strong element only if it is a direct child of an h1 element
+* **Selecting Adjacent Sibling Elements (eg 7)  **,  All the immediate h1 tags  after p tags changed their background color to orange. If there is any other element between `p` tag and `h1` tag then this rule is not applicable. **只有第一个 出现的  才会 apply**
+* **General Sibling Selector (eg 8)     **All h1 tags after p tags have orange background color
 
 ### Chain pseudo-classes
 
-```text
+```
 a:link:hover {color: red;}
 a:visited:hover {color: maroon;}
 ```
@@ -186,7 +187,7 @@ a:visited:hover {color: maroon;}
 
 ### Pseduo-class 伪类
 
-```text
+```
 // EG 1
 :root {border: 10px dotted gray;}
 
@@ -225,30 +226,30 @@ A pseudo-class is a selector that selects elements that are in a specific state,
 
 伪类就是开头为冒号的关键字：
 
-1. Selecting the root element     `:root`
-2. Selecting empty elements  `:empty`
+1. Selecting the root element   &#x20; `:root`
+2. Selecting empty elements ` :empty`
 3. `:only-child`
 4. `:first-child`Selects every  element that is the first child of its parent
 5. `:last-child`
 6. `:active`Selects the active link
-7. `:checked` Selects every checked  element
-8. `:default` Selects the default  element
-9. `:first-of-type` Selects every &lt;p&gt; element that is the first &lt;p&gt; element of its parent
+7. `:checked `Selects every checked  element
+8. `:default `Selects the default  element
+9. `:first-of-type `Selects every \<p> element that is the first \<p> element of its parent
 10. `:hover`
 11. `:focus`
 12. `:nth-child(n)`Selects every  p element that is the second child of its parent
-    1. `:nth-child(2n)`  所有的 even element
+    1. `:nth-child(2n)  `所有的 even element
 13. `:nth-last-child(n)`
 14. `:nth-last-of-type(n)`
 15. `:last-of-type`
 
-###  伪元素 pseudo-element
+### &#x20;伪元素 pseudo-element
 
 Pseudo-elements start with a double colon ::
 
-* 伪元素只能放在最后面  所以 `input::after:checked{display:block}`   **不正确**
+* 伪元素只能放在最后面  所以 `input::after:checked{display:block}  `** 不正确**
 
-```text
+```
 // eg 1, 就会在之后添加 这些东西
 p::after { 
   content: " - Remember this";
@@ -265,19 +266,19 @@ p::first-line
 1. `::after`
 2. `::before`
 3. `::first-letter`Selects the first letter of every  element，**only work for block-display elements**
-4. `::first-line`Selects the first line of every &lt;p&gt; element，**only work for block-display elements**
+4. `::first-line`Selects the first line of every \<p> element，**only work for block-display elements**
 
-#### 
+####
 
 
 
 ## CSS 优先级，specifity of each selector
 
-![](.gitbook/assets/image%20%2844%29.png)
+![](<.gitbook/assets/image (39).png>)
 
-![](.gitbook/assets/image%20%2843%29.png)
+![](<.gitbook/assets/image (40).png>)
 
-```text
+```
 // EG 1
 html > body table tr[id="totals"] td ul > li {color: maroon;} 
 ```
@@ -289,15 +290,14 @@ html > body table tr[id="totals"] td ul > li {color: maroon;}
 * Combinators and the universal selector do not contribute anything to the specificity
 * Inline-style: 1000
 * !important: it always goes at the end of the declaration, just before the semicolon.where an important and a non-important declaration con‐flict, the important declaration always wins.
-* if two rules have exactly the same explicit weight, origin, and specificity, then
+*   if two rules have exactly the same explicit weight, origin, and specificity, then
 
-  the one that occurs later in the style sheet wins out
-
+    the one that occurs later in the style sheet wins out
 * 继承得到的样式的优先级最低。
 
 ### Order of link style:
 
-```text
+```
 a:link {color: blue;}
 a:visited {color: purple;}
 a:focus {color: green;}
@@ -311,11 +311,11 @@ a:active {color: orange;}
 
 ## Margin:
 
-![](.gitbook/assets/image%20%2858%29.png)
+![](<.gitbook/assets/image (49).png>)
 
 * 底下方法可以使 div 包含 margin
 
-```text
+```
 <div class="wrapper"><h1>This is heading 1</h1></div>
 
 // CSS
@@ -333,7 +333,7 @@ background:red;
 
 ### 外边框塌陷:（margin）
 
-```text
+```
 //case 1
 <div class="box1 box">
 </div>
@@ -364,15 +364,15 @@ background:red;
 }
 ```
 
-![](.gitbook/assets/image%20%2851%29.png)
+![](<.gitbook/assets/image (54).png>)
 
 
 
-![A&#x5143;&#x7D20;&#x5305;&#x542B; B&#x5143;&#x7D20;&#xFF0C;A&#x5143;&#x7D20;&#x548C;C&#x5143;&#x7D20;&#x662F; &#x5144;&#x5F1F;&#x5173;&#x7CFB;](.gitbook/assets/image%20%2855%29.png)
+![A元素包含 B元素，A元素和C元素是 兄弟关系](<.gitbook/assets/image (55).png>)
 
-![&#x9519;&#x8BEF;&#x7684;code &#x7684;&#x6548;&#x679C;&#xFF0C; &#x8FD9;&#x91CC; &#x9009;&#x53D6;&#x4E86; 20px](.gitbook/assets/image%20%2854%29.png)
+![错误的code 的效果， 这里 选取了 20px](<.gitbook/assets/image (56).png>)
 
-```text
+```
 // 怎么可以给A元素 margin top 10px， B 元素  margin top 20px
 // 这里跟 A，B 同时设置外边距， 就会出现外边框塌陷
 
@@ -500,13 +500,15 @@ background:lightblue;
   * 两个都是正数 取 最大的数
   * 两个都是负数， 取 绝对值最大的
   * 一正 一负， 相加的和
-* 解决办法
+*   解决办法
 
-  * 绝对定位
-  *  使用 inline block element
-  * 使用 相对定位,就不可以使用 margin-top 定位了
-  * 使用 BFC
-  * 使用 padding
+    * 绝对定位
+    * &#x20;使用 inline block element
+    * 使用 相对定位,就不可以使用 margin-top 定位了
+    * 使用 BFC
+    * 使用 padding
+
+
 
 
 
@@ -514,44 +516,45 @@ background:lightblue;
 
 ## float:
 
-![Typical float example](.gitbook/assets/image%20%2852%29.png)
+![Typical float example](<.gitbook/assets/image (45).png>)
 
-* 
+*
+
 ### The great Collapse:浮动塌陷
 
-![](.gitbook/assets/image%20%2848%29.png)
+![](<.gitbook/assets/image (47).png>)
 
 * floated elements does not affect parent height
 
-### **清除浮动**  How to fix above issue?
+### **清除浮动  **How to fix above issue?
 
 * Method 1: 使用BFC 在parent 这里 加入 `overflow:auto;`
 * Method 2: 把父元素也变成float 就可以了， 但是这样子会影响布局， 比较局限
-* Method 3: Adds an empty div with a clear at the end of parent div  ,  drawback: **It add unwanted markup to HTML**  `<div style="clear: left"></div>`
-* Method 4:we can use pseudo-element, ::after    **最推荐**
+* Method 3: Adds an empty div with a clear at the end of parent div  ,  drawback: **It add unwanted markup to HTML**`  <div style="clear: left"></div>`
+* Method 4:we can use pseudo-element, ::after   ** 最推荐**
 
-![](.gitbook/assets/image%20%2857%29.png)
+![](<.gitbook/assets/image (48).png>)
 
 
 
 ### clear property:
 
-![](.gitbook/assets/image%20%2861%29.png)
+![](<.gitbook/assets/image (46).png>)
 
-*  When we use the `float` property, and we want the next element below \(not on right or left\), we will have to use the `clear` property.
-*  The `clear` property specifies what should happen with the element that is next to a floating element.
-*  The `clear` property can have one of the following values:
+* &#x20;When we use the `float` property, and we want the next element below (not on right or left), we will have to use the `clear` property.
+* &#x20;The `clear` property specifies what should happen with the element that is next to a floating element.
+* &#x20;The `clear` property can have one of the following values:
   * `none` - The element is not pushed below left or right floated elements. This is default
   * `left` - The element is pushed below left floated elements
   * `right` - The element is pushed below right floated elements
   * `both` - The element is pushed below both left and right floated elements
   * `inherit` - The element inherits the clear value from its parent
 
-![](.gitbook/assets/image%20%2860%29.png)
+![](<.gitbook/assets/image (50).png>)
 
 
 
-```text
+```
 .media:nth-child(odd) {
   clear: left;
 }
@@ -559,13 +562,13 @@ background:lightblue;
 
 * In order to fix above issue, the third float needs to clear the floats above it.more generally, **the first element of each row needs to clear the float above it**
 
-![img is floated to the left](.gitbook/assets/image%20%2856%29.png)
+![img is floated to the left](<.gitbook/assets/image (51).png>)
 
-![](.gitbook/assets/image%20%2853%29.png)
+![](<.gitbook/assets/image (52).png>)
 
-![](.gitbook/assets/image%20%2850%29.png)
+![](<.gitbook/assets/image (53).png>)
 
-```text
+```
 <div class="media">
  <img class="media-image" src="shoes.png">
  <div class="media-body">
@@ -590,17 +593,17 @@ background:lightblue;
 * How to solve above issue?
   * we need to establish BFS for the media body. **So it will not overlap with floated elements outside the BFC.**
 
-\*\*\*\*
+****
 
-\*\*\*\*
+****
 
-### \*\*\*\*
+### ****
 
 
 
 ## BFC
 
-```text
+```
 //防止浮动导致父元素高度塌陷
 
   <div class="container">
@@ -647,8 +650,8 @@ background:lightblue;
     
 ```
 
-* A block formatting context itself is part of the surrounding document flow, **but it isolates its contents from   the outside context,** This isolation does three things for the element that establishes the BFC\(原理\):
-  * It contains the top and bottom margins of all elements within it. They won’t collapse with margins of elements outside of the block formatting context. **不会出现外边距塌陷**
+* A block formatting context itself is part of the surrounding document flow, **but it isolates its contents from  &#x20;the outside context, **This isolation does three things for the element that establishes the BFC(原理):
+  * It contains the top and bottom margins of all elements within it. They won’t collapse with margins of elements outside of the block formatting context.** 不会出现外边距塌陷**
   * **It contains internal floats**.
     * Make float content and alongside content the same height.
   * **It excludes external floats.**
@@ -657,19 +660,18 @@ background:lightblue;
 * BFC是一个独立的容器，外面的元素不会影响里面的元素
 * the contents inside a block formatting context will not overlap or interact with elements on the outside as you would normally expect
 * How to establish a new BFC:
-  * 根元素\(\)
+  * 根元素()
   * float: left or float: right—anything but none 浮动元素
   * overflow: hidden, auto, or scroll—anything but visible
-  * display: inline-block, table-cell, table-caption, flex, inline-flex, 
+  *   display: inline-block, table-cell, table-caption, flex, inline-flex,&#x20;
 
-    grid, or inline-grid—these are called block containers
-
+      grid, or inline-grid—these are called block containers
   * position: absolute or position: fixed 绝对定位元素
 * 应用场景
-  * **防止浮动导致父元素高度塌陷，** ![](.gitbook/assets/image%20%2870%29.png) 
+  * **防止浮动导致父元素高度塌陷， **![](<.gitbook/assets/image (62).png>)&#x20;
   * **外边框塌陷问题 （上面有解决办法）**
-  * **阻止普通文档流元素被浮动元素覆盖** ![](.gitbook/assets/image%20%2862%29.png) 创建了BFC 之后 ![](.gitbook/assets/image%20%2864%29.png) 
-  * 
+  * **阻止普通文档流元素被浮动元素覆盖 **![](<.gitbook/assets/image (63).png>) 创建了BFC 之后 ![](<.gitbook/assets/image (64).png>)&#x20;
+  *
 
 ## 掌握一套完整的响应式布局方案
 
@@ -679,12 +681,12 @@ background:lightblue;
 
 * static（默认）：按照正常文档流进行排列；So if there is a left/right/top/bottom/z-index set then there will be no effect on that element.
 * relative（相对定位）：不脱离文档流， But now left/right/top/bottom/z-index will work.
-* absolute\(绝对定位\)：参考距其最近一个不为static的父级元素通过top, bottom, left, right 定位；
-* fixed\(固定定位\)：the element is removed from the flow of the document like absolutely positioned elements. In fact they behave almost the same, only fixed positioned elements are always relative to the document, not any particular parent, and are unaffected by scrolling.
-* sticky: sticky \(experimental\): the element is treated like a relative value until the scroll location of the viewport reaches a specified threshold, at which point the element takes a fixed position where it is told to stick.
+* absolute(绝对定位)：参考距其最近一个不为static的父级元素通过top, bottom, left, right 定位；
+* fixed(固定定位)：the element is removed from the flow of the document like absolutely positioned elements. In fact they behave almost the same, only fixed positioned elements are always relative to the document, not any particular parent, and are unaffected by scrolling.
+* sticky: sticky (experimental): the element is treated like a relative value until the scroll location of the viewport reaches a specified threshold, at which point the element takes a fixed position where it is told to stick.
   * 父类元素不能有 `overflow:visible`以外的overflow设置
 
-```text
+```
 .element {
   position: sticky; top: 50px;
 }
@@ -698,36 +700,35 @@ background:lightblue;
 * RGBA和透明度
 * word-wrap（对长的不可分割单词换行）word-wrap：break-word
 * 圆角（边框半径）：border-radius 属性用于创建圆角
-* 盒阴影：box-shadow: 10px 10px 5px \#888888
+* 盒阴影：box-shadow: 10px 10px 5px #888888
 * 媒体查询（media query）：定义两套css，当浏览器的尺寸变化时会采用不同的属性
-* 边框图片：border-image: url\(border.png\) 30 30 round
+*   边框图片：border-image: url(border.png) 30 30 round
 
-  ```text
-  /* border-image: image-source image-height image-width image-repeat */
+    ```
+    /* border-image: image-source image-height image-width image-repeat */
 
-  ```
+    ```
 
 ## **为什么要初始化CSS样式**
 
 * 因为浏览器的兼容问题，不同浏览器对有些标签的默认值是不同的，如果没对CSS初始化往往会出现浏览器之间的页面显示差异
 
-##    **CSS里的visibility属性有个collapse属性值？**
+## &#x20; ** CSS里的visibility属性有个collapse属性值？**
 
-* visible**:** Default value. The element is visible
-* hidden: The element is hidden \(but still takes up space\)
-* collapse: Only for table rows \(&lt;tr&gt;\), row groups \(&lt;tbody&gt;\), columns \(&lt;col&gt;\), column groups \(&lt;colgroup&gt;\). This value removes a row or column, but it does not affect the table layout. The space taken up by the row or column will be available for other content.
+* visible**: **Default value. The element is visible
+* hidden: The element is hidden (but still takes up space)
+*   collapse: Only for table rows (\<tr>), row groups (\<tbody>), columns (\<col>), column groups (\<colgroup>). This value removes a row or column, but it does not affect the table layout. The space taken up by the row or column will be available for other content.
 
-  **If collapse is used on other elements, it renders as "hidden"**
-
+    **If collapse is used on other elements, it renders as "hidden"**
 * initial: It is used to set a CSS property to its default value.
 
-##  **display:none,visibility：hidden, opacity:0的区别？**
+## &#x20;**display:none,visibility：hidden, opacity:0的区别？**
 
 * display：none 不显示对应的元素，在文档布局中不再分配空间（回流+重绘）， 子元素即使设置了 display： block 也不会再出现
 * visibility：hidden 隐藏对应元素，在文档布局中仍保留原来的空间（重绘）,transition 可以正常使用，子元素可以通过设置visibility 出现
 * opacity: 跟visibility 很相似， opacity:0 **不会导致重绘，  子元素不能复原**
 
-![](.gitbook/assets/image%20%2859%29.png)
+![](<.gitbook/assets/image (59).png>)
 
 
 
@@ -735,7 +736,7 @@ background:lightblue;
 
 ## CSS @media Rule
 
-```text
+```
 //Change the background color of the <body> 
 //element to "lightblue" when the browser window is 600px wide or less:
 
@@ -774,13 +775,13 @@ background:lightblue;
 
 * 基线距离就是line height
 * It accept both units and unitless values
-*  CSS中起高度作用的应该就是`height`以及`line-height`了吧！如果一个标签没有定义`height`属性\(包括百分比高度\)，那么其最终表现的高度一定是由`line-height`起作用
-*  `line-height`行高怎么就产生了高度呢?
-  * 在`inline box`模型中，有个`line boxes`，这玩意是看不见的，这个玩意的工作就是包裹每行文字。一行文字一个`line boxes`。一个没有设置`height`属性的`div`的高度就是由一个一个`line boxes`的高度堆积而成的。
+* &#x20;CSS中起高度作用的应该就是`height`以及`line-height`了吧！如果一个标签没有定义`height`属性(包括百分比高度)，那么其最终表现的高度一定是由`line-height`起作用
+* &#x20;`line-height`行高怎么就产生了高度呢?
+  *   在`inline box`模型中，有个`line boxes`，这玩意是看不见的，这个玩意的工作就是包裹每行文字。一行文字一个`line boxes`。一个没有设置`height`属性的`div`的高度就是由一个一个`line boxes`的高度堆积而成的。
 
-    其实`line boxes`不是直接的生产者，属于中层干部，真正的活儿都是它的手下 – `inline boxes`干的，这些手下就是文字啦，图片啊，`<span>`之类的`inline`属性的标签啦。`line boxes`只是个考察汇报人员，考察它的手下谁的实际`line-height`值最高，谁最高，它就要谁的值，然后向上汇报，形成高度。例如，`<span style="line-height:20px;">取手下line-height<span style="line-height:40px;">最高</span>的值</span>`。则line boxes的高度就是40像素了
+      其实`line boxes`不是直接的生产者，属于中层干部，真正的活儿都是它的手下 – `inline boxes`干的，这些手下就是文字啦，图片啊，`<span>`之类的`inline`属性的标签啦。`line boxes`只是个考察汇报人员，考察它的手下谁的实际`line-height`值最高，谁最高，它就要谁的值，然后向上汇报，形成高度。例如，`<span style="line-height:20px;">取手下line-height<span style="line-height:40px;">最高</span>的值</span>`。则line boxes的高度就是40像素了
 * You should typically use unitless numbers because they’re inherited differently  `line-height: 1.2;`
-  * the line     height is calculated locally to 38.4 px \(32 px × 1.2\).
+  * the line    &#x20;height is calculated locally to 38.4 px (32 px × 1.2).
   * When you use a unitless number, that declared value is inherited, meaning its computed value is recalculated for each inheriting child element
 
 
@@ -789,24 +790,26 @@ background:lightblue;
 
 _Groups of elements with a common parent that move forward or backward together in the stacking order make up what is known as a stacking context_
 
-*  `z-index`属性值并不是在任何元素上都有效果。它**仅在**定位元素（定义了`position`属性，且属性值为非`static`值的元素）上有效果。
+* &#x20;`z-index`属性值并不是在任何元素上都有效果。它**仅在**定位元素（定义了`position`属性，且属性值为非`static`值的元素）上有效果。
 * when you add a z-index to a positioned element that element becomes the root of a new stacking context
-* 判断元素在`Z轴`上的堆叠顺序，不仅仅是直接比较两个元素的`z-index`值的大小，这个堆叠顺序实际由元素的**层叠上下文**、**层叠等级\(stacking level\)**共同决定。
+* 判断元素在`Z轴`上的堆叠顺序，不仅仅是直接比较两个元素的`z-index`值的大小，这个堆叠顺序实际由元素的**层叠上下文**、**层叠等级(stacking level)**共同决定。
 * 普通元素的层叠等级优先由其所在的层叠上下文决定。
 * 层叠等级的比较只有在当前层叠上下文元素中才有意义。不同层叠上下文中比较层叠等级是没有意义的
 * 如何产生  stacking context
-  * HTML中的根元素&lt;html&gt;&lt;/html&gt;本身j就具有层叠上下文，称为“根层叠上下文
-  * 普通元素设置position属性为非static值并设置z-index属性为具体数值，产生层叠上下文， **z-index: auto 不会产生 stacking context**
-  * CSS3中的新属性也可以产生层叠上下文, 只要满足以下条件， 就会产生 层叠 上下文
+  * HTML中的根元素\<html>\</html>本身j就具有层叠上下文，称为“根层叠上下文
+  * 普通元素设置position属性为非static值并设置z-index属性为具体数值，产生层叠上下文，** z-index: auto 不会产生 stacking context**
+  *   CSS3中的新属性也可以产生层叠上下文, 只要满足以下条件， 就会产生 层叠 上下文
 
-    * 父元素的display属性值为flex\|inline-flex，子元素z-index属性值不为auto的时候，子元素为层叠上下文元素；
-    *  元素的`opacity`属性值不是`1`
-    * 元素的`transform`属性值不是`none`；
-    * 元素`mix-blend-mode属性值不是`normal\`；
-    * 元素的`filter`属性值不是`none`；
-    * 元素的`isolation`属性值是`isolate`；
-    * `will-change`指定的属性值为上面任意一个；
-    * 元素的`-webkit-overflow-scrolling`属性值设置为`touch`。
+      * 父元素的display属性值为flex|inline-flex，子元素z-index属性值不为auto的时候，子元素为层叠上下文元素；
+      * &#x20;元素的`opacity`属性值不是`1`
+      * 元素的`transform`属性值不是`none`；
+      * 元素`mix-blend-mode属性值不是`normal\`；
+      * 元素的`filter`属性值不是`none`；
+      * 元素的`isolation`属性值是`isolate`；
+      * `will-change`指定的属性值为上面任意一个；
+      * 元素的`-webkit-overflow-scrolling`属性值设置为`touch`。
+
+
 
 
 
@@ -816,7 +819,7 @@ _Groups of elements with a common parent that move forward or backward together 
 
 
 
-```text
+```
   <div>  
     <p class="a">a</p>  
     <p class="b">b</p>  
@@ -861,15 +864,15 @@ _Groups of elements with a common parent that move forward or backward together 
 }
 ```
 
-![](.gitbook/assets/image%20%2881%29.png)
+![](<.gitbook/assets/image (80).png>)
 
-*  因为p.a、p.b、p.c三个的父元素div都没有设置`z-index`，所以不会产生层叠上下文，所以.a、.b、.c都处于由`<html></html>`标签产生的“根层叠上下文”中，属于同一个层叠上下文，此时谁的`z-index`值大，谁在上面。
+* &#x20;因为p.a、p.b、p.c三个的父元素div都没有设置`z-index`，所以不会产生层叠上下文，所以.a、.b、.c都处于由`<html></html>`标签产生的“根层叠上下文”中，属于同一个层叠上下文，此时谁的`z-index`值大，谁在上面。
 
 ### 例子2
 
-![](.gitbook/assets/image%20%2884%29.png)
+![](<.gitbook/assets/image (81).png>)
 
-```text
+```
 <body>
   <div class="box1">
     <p class="a">a</p>
@@ -918,13 +921,13 @@ _Groups of elements with a common parent that move forward or backward together 
 ```
 
 * 我们发下，虽然`p.c`元素的`z-index`值为9999，远大于`p.a`和`p.b`的`z-index`值，但是由于`p.a`、`p.b`的父元素`div.box1`产生的层叠上下文的`z-index`的值为2，`p.c`的父元素`div.box2`所产生的层叠上下文的`z-index`值为1，所以`p.c`永远在`p.a`和`p.b`下面。
-*  同时，如果我们只更改`p.a`和`p.b`的`z-index`值，由于这两个元素都在父元素`div.box1`产生的层叠上下文中，所以，谁的`z-index`值大，谁在上面。
+* &#x20;同时，如果我们只更改`p.a`和`p.b`的`z-index`值，由于这两个元素都在父元素`div.box1`产生的层叠上下文中，所以，谁的`z-index`值大，谁在上面。
 
 
 
 ### 层叠顺序
 
-![](.gitbook/assets/image%20%2886%29.png)
+![](<.gitbook/assets/image (82).png>)
 
 
 
@@ -935,9 +938,9 @@ _Groups of elements with a common parent that move forward or backward together 
 
 ### 例子3
 
-![](.gitbook/assets/image%20%2878%29.png)
+![](<.gitbook/assets/image (83).png>)
 
-```text
+```
   <div class="box1">
     <div class="child1"></div>
   </div>
@@ -976,9 +979,9 @@ _Groups of elements with a common parent that move forward or backward together 
 
 ### 例子4
 
-![](.gitbook/assets/image%20%2883%29.png)
+![](<.gitbook/assets/image (84).png>)
 
-*  上面例子 把 `z-index:auto` 改成 `z-index: 0;`
+* &#x20;上面例子 把 `z-index:auto` 改成` z-index: 0;`
 * 因为设置`z-index: 0`后，`.box1/.box2`产生了各自的层叠上下文，这时候要比较`.child1/.child2`的层叠关系完全由父元素`.box1/.box2`的层叠关系决定。但是`.box1/.box2`的`z-index`值都为`0`，都是块级元素（所以它们的层叠等级，层叠顺序是相同的），这种情况下，在`DOM`结构中**后面的覆盖前面的**，所以`.child2`就在上面。
 
 
@@ -987,11 +990,11 @@ _Groups of elements with a common parent that move forward or backward together 
 
 
 
-![](.gitbook/assets/image%20%2880%29.png)
+![](<.gitbook/assets/image (85).png>)
 
 {% embed url="https://jsfiddle.net/Boyanliuu/81mLhb79/12/" %}
 
-```text
+```
   
    <div class="box">
     <div class="parent">
@@ -1021,13 +1024,14 @@ _Groups of elements with a common parent that move forward or backward together 
   }
 ```
 
-* 当给`.box`设置`display: flex`时，`.parent`就变成层叠上下文元素，根据层叠顺序规则，层叠上下文元素的`background/border`的层叠等级小于`z-index`值小于`0`的元素的层叠等级，所以`z-index`值为`-1`的`.child`在`.parent`上面 
+* 当给`.box`设置`display: flex`时，`.parent`就变成层叠上下文元素，根据层叠顺序规则，层叠上下文元素的`background/border`的层叠等级小于`z-index`值小于`0`的元素的层叠等级，所以`z-index`值为`-1`的`.child`在`.parent`上面\
+
 
 ### 例子6 opacity
 
-![](.gitbook/assets/image%20%2879%29.png)
+![](<.gitbook/assets/image (87).png>)
 
-```text
+```
 <div class="box">
     <img src="mm1.jpg">
 </div>
@@ -1043,7 +1047,7 @@ _Groups of elements with a common parent that move forward or backward together 
 
 
 
-###  例子7
+### &#x20;例子7
 
 {% embed url="https://jsfiddle.net/Boyanliuu/tsovLxqr/5/" %}
 
@@ -1052,24 +1056,24 @@ _Groups of elements with a common parent that move forward or backward together 
 * parent 创建了一个新的 stacking context， 然后 根据 上面的 stacking order 判断的话， 他的颜色是最低级的所以 它在 child2 后面，
 * 同理 child2 也创建了一个新的 stacking order， 然后 它也是最低级的 在它的2个children 后面
 
-## 
+##
 
-  
-
-
+\
 
 
-  
 
 
-  
+\
+
+
+\
 
 
 ## 等高布局
 
 ### 使用table
 
-* 父元素:  `display:table;`   子元素 `display: table-cell;`
+* 父元素:  `display:table; `  子元素 `display: table-cell;`
 
 ### 使用 flexbox
 
@@ -1082,9 +1086,9 @@ _Groups of elements with a common parent that move forward or backward together 
 * 这个方法 不需要考虑 兼容性问题 最好
 * padding 会把背景颜色延伸出去， 正的 margin 会把 边框往外推，然后 创建 一个 BFC 就可以了
 
-![](.gitbook/assets/image%20%2863%29.png)
+![](<.gitbook/assets/image (65).png>)
 
-```text
+```
 div.left{
 padding-bottom: 99999px;
 margin-bottom: -99999px;
@@ -1098,9 +1102,9 @@ overflow:hidden;
 
 ## CSS 单行省略
 
-![](.gitbook/assets/image%20%2866%29.png)
+![](<.gitbook/assets/image (71).png>)
 
-```text
+```
 p{
   height:20px;
   overflow: hidden;
@@ -1109,17 +1113,18 @@ p{
 }
 ```
 
-* 
+*
+
 ## CSS 多行省略
 
-```text
+```
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5;
 ```
 
-![](.gitbook/assets/image%20%2867%29.png)
+![](<.gitbook/assets/image (66).png>)
 
 ### 私有属性
 
@@ -1127,9 +1132,9 @@ p{
 
 ### 使用 规范 css， 2个伪元素
 
-*  优点完全符合css 规范 ， 缺点是 如果背景 不是纯色就不好办了， 或者是图片就不好办了
+* &#x20;优点完全符合css 规范 ， 缺点是 如果背景 不是纯色就不好办了， 或者是图片就不好办了
 
-```text
+```
 // 1 使用 伪元素 创建一个包含 ... 的文本 放在右下角
 
  p::before{
@@ -1163,9 +1168,9 @@ p::after{
 
 ### 另外一种省略方法
 
-![](.gitbook/assets/image%20%2871%29.png)
+![](<.gitbook/assets/image (67).png>)
 
-![](.gitbook/assets/image%20%2868%29.png)
+![](<.gitbook/assets/image (68).png>)
 
 * 创建一个渐变颜色方块 遮挡住最后的文字， 接着 把 这个方块放到右下角的位置
 * 然后 把渐变颜色的后面部分改成和背景颜色一样即可
@@ -1193,13 +1198,13 @@ p::after{
 
 ### 流式布局（Liquid Layout）
 
-*  网页中主要的划分区域的**尺寸使用百分数**（搭配min-\*、max-\*属性使用），例如，设置网页主体的宽度为80%，min-width为960px。图片也作类似处理（width:100%, max-width一般设定为图片本身的尺寸，防止被拉伸而失真）。
+* &#x20;网页中主要的划分区域的**尺寸使用百分数**（搭配min-\*、max-\*属性使用），例如，设置网页主体的宽度为80%，min-width为960px。图片也作类似处理（width:100%, max-width一般设定为图片本身的尺寸，防止被拉伸而失真）。
 
-####  布局特点
+#### &#x20;布局特点
 
 　　屏幕分辨率变化时，页面里元素的大小会变化而但布局不变。【这就导致如果屏幕太大或者太小都会导致元素无法正常显示。
 
- **这种布局方式在Web前端开发的早期历史上，用来应对不同尺寸的PC屏幕**（那时屏幕尺寸的差异不会太大），**在当今的移动端开发也是常用布局方式**，但**缺点明显**：**主要的问题**是如果屏幕尺度跨度太大，那么在相对其原始设计而言过小或过大的屏幕上不能正常显示。因为宽度使用%百分比定义，但是高度和文字大小等大都是用px来固定，所以在大屏幕的手机下显示效果会变成有些页面元素宽度被拉的很长，但是高度、文字大小还是和原来一样（即，这些东西无法变得“流式”），显示非常不协调
+&#x20;**这种布局方式在Web前端开发的早期历史上，用来应对不同尺寸的PC屏幕**（那时屏幕尺寸的差异不会太大），**在当今的移动端开发也是常用布局方式**，但**缺点明显**：**主要的问题**是如果屏幕尺度跨度太大，那么在相对其原始设计而言过小或过大的屏幕上不能正常显示。因为宽度使用%百分比定义，但是高度和文字大小等大都是用px来固定，所以在大屏幕的手机下显示效果会变成有些页面元素宽度被拉的很长，但是高度、文字大小还是和原来一样（即，这些东西无法变得“流式”），显示非常不协调
 
 ### 自适应布局（Adaptive Layout）
 
@@ -1207,7 +1212,7 @@ p::after{
 
 ### 响应式布局（Responsive Layout）
 
- 　　随着CSS3出现了**媒体查询**技术，又出现了**响应式设计**的概念。响应式设计的目标是确保一个页面在所有终端上（各种尺寸的PC、手机、手表、冰箱的Web浏览器等等）都能显示出令人满意的效果，对CSS编写者而言，在实现上不拘泥于具体手法，但通常是糅合了流式布局+弹性布局，再搭配媒体查询技术使用。——分别为不同的屏幕分辨率定义布局，同时，在每个布局中，应用流式布局的理念，即页面元素宽度随着窗口调整而自动适配。即：创建多个流体式布局，分别对应一个屏幕分辨率范围。可以把响应式布局看作是流式布局和自适应布局设计理念的融合。
+&#x20;　　随着CSS3出现了**媒体查询**技术，又出现了**响应式设计**的概念。响应式设计的目标是确保一个页面在所有终端上（各种尺寸的PC、手机、手表、冰箱的Web浏览器等等）都能显示出令人满意的效果，对CSS编写者而言，在实现上不拘泥于具体手法，但通常是糅合了流式布局+弹性布局，再搭配媒体查询技术使用。——分别为不同的屏幕分辨率定义布局，同时，在每个布局中，应用流式布局的理念，即页面元素宽度随着窗口调整而自动适配。即：创建多个流体式布局，分别对应一个屏幕分辨率范围。可以把响应式布局看作是流式布局和自适应布局设计理念的融合。
 
 **优点**：适应pc和移动端，如果足够耐心，效果完美。
 
@@ -1219,21 +1224,21 @@ p::after{
 
 **1. rem/em区别**：rem是相对于html元素的font-size大小而言的，而em是相对于其父元素。
 
-2. 使用 em 或 rem 单位进行相对布局，相对%百分比更加灵活，同时可以支持浏览器的字体大小调整和缩放等的正常显示，因为em是相对父级元素的原因没有得到推广。【中国站点制作网页的时候，习惯用CSS强制定义字体大小，保证每个人都看到一致的效果，包括网易、搜狐这些门户网站在内的大部分站点，用的都是绝对单位px（像素）。但是，如果从网站**易用性**方面考虑，字体大小应该是可变的，一些视力不是那么好的人需要放大字体才能看得清页面内容。然而，占据大部分浏览器市场的IE无法调整那些使用px作为单位的字体大小。国外人士非常重视网站的易用性，相当一部分外国站点已经使用em作为字体单位。
+2\. 使用 em 或 rem 单位进行相对布局，相对%百分比更加灵活，同时可以支持浏览器的字体大小调整和缩放等的正常显示，因为em是相对父级元素的原因没有得到推广。【中国站点制作网页的时候，习惯用CSS强制定义字体大小，保证每个人都看到一致的效果，包括网易、搜狐这些门户网站在内的大部分站点，用的都是绝对单位px（像素）。但是，如果从网站**易用性**方面考虑，字体大小应该是可变的，一些视力不是那么好的人需要放大字体才能看得清页面内容。然而，占据大部分浏览器市场的IE无法调整那些使用px作为单位的字体大小。国外人士非常重视网站的易用性，相当一部分外国站点已经使用em作为字体单位。
 
-3. 这类布局的特点是，**包裹文字的各元素的尺寸采用em/rem做单位，而页面的主要划分区域的尺寸仍使用百分数或px做单位（同「流式布局」或「静态/固定布局」）**。**早期浏览器不支持整个页面按比例缩放**，仅支持网页内文字尺寸的放大，这种情况下。使用em/rem做单位，可以使包裹文字的元素随着文字的缩放而缩放。
+3\. 这类布局的特点是，**包裹文字的各元素的尺寸采用em/rem做单位，而页面的主要划分区域的尺寸仍使用百分数或px做单位（同「流式布局」或「静态/固定布局」）**。**早期浏览器不支持整个页面按比例缩放**，仅支持网页内文字尺寸的放大，这种情况下。使用em/rem做单位，可以使包裹文字的元素随着文字的缩放而缩放。
 
-4. 浏览器的默认字体高度一般为`16px`，即1em:16px，但是 1:16 的比例不方便计算，为了使单位em/rem更直观，CSS编写者常常将页面跟节点字体设为62.5%，比如选择用rem控制字体时，先需要设置根节点html的字体大小，因为浏览器默认字体大小16px\*62.5%=10px。这样1rem便是10px，方便了计算。
+4\. 浏览器的默认字体高度一般为`16px`，即1em:16px，但是 1:16 的比例不方便计算，为了使单位em/rem更直观，CSS编写者常常将页面跟节点字体设为62.5%，比如选择用rem控制字体时，先需要设置根节点html的字体大小，因为浏览器默认字体大小16px\*62.5%=10px。这样1rem便是10px，方便了计算。
 
-5. 用em/rem定义尺寸的另一个好处是更能适应缩进/以字体单位padding或margin／浏览器设置字体尺寸等情况（因为em/rem相对于字体大小，会同步改变）。例如：p{ text-indent: 2em; }。
+5\. 用em/rem定义尺寸的另一个好处是更能适应缩进/以字体单位padding或margin／浏览器设置字体尺寸等情况（因为em/rem相对于字体大小，会同步改变）。例如：p{ text-indent: 2em; }。
 
-6. **使用rem单位的弹性布局在移动端也很受欢迎**。
+6\. **使用rem单位的弹性布局在移动端也很受欢迎**。
 
-7. **其实在移动端使用所谓的弹性布局，是比较勉强的**。移动端弹性布局流行起来的原因归根结底是rem单位对于（根据屏幕尺寸）调整页面的各元素的尺寸、文字大小时比较好用。其实，使用vw、vh等后起之秀的单位，可以实现完美的流式布局（高度和文字大小都可以变得“流式”），弹性布局就不再必要了。
+7\. **其实在移动端使用所谓的弹性布局，是比较勉强的**。移动端弹性布局流行起来的原因归根结底是rem单位对于（根据屏幕尺寸）调整页面的各元素的尺寸、文字大小时比较好用。其实，使用vw、vh等后起之秀的单位，可以实现完美的流式布局（高度和文字大小都可以变得“流式”），弹性布局就不再必要了。
 
 #### 结论：
 
-1.如果只做pc端，那么静态布局（定宽度）是最好的选择； 
+1.如果只做pc端，那么静态布局（定宽度）是最好的选择；&#x20;
 
 2.如果做移动端，且设计对高度和元素间距要求不高，那么弹性布局（rem+js）是最好的选择，一份css+一份js调节font-size搞定；
 
@@ -1241,21 +1246,23 @@ p::after{
 
 ## Explain how browser determines what elements match a css selctor?
 
-* Browsers match selectors from rightmost \(key selector\) to left. Browsers filter out elements in the DOM according to the key selector and traverse up its parent elements to determine matches. The shorter the length of the selector chain, the faster the browser can determine if that element matches the selector.
-* For example with this selector `p span`, browsers firstly find all the &lt;span&gt; elements and traverse up its parent all the way up to the root to find the &lt;p&gt; element.
+* Browsers match selectors from rightmost (key selector) to left. Browsers filter out elements in the DOM according to the key selector and traverse up its parent elements to determine matches. The shorter the length of the selector chain, the faster the browser can determine if that element matches the selector.
+* For example with this selector `p span`, browsers firstly find all the \<span> elements and traverse up its parent all the way up to the root to find the \<p> element.
 
 ## How would you approach fixing browser-specific styling issues?
 
 * After identifying the issue and the offending browser, use a separate style sheet that only loads when that specific browser is being used. This technique requires server-side rendering though.
 * Use libraries like Bootstrap that already handles these styling issues for you.
-* Use **autoprefixer** to automatically add vendor prefixes to your code.
+* Use** autoprefixer **to automatically add vendor prefixes to your code.
 * Use  Normalize.css.
 
-##  Writing efficient CSS
+\
+Writing efficient CSS
+---------------------
 
-* Firstly, understand that browsers match selectors from rightmost \(key selector\) to left. Browsers filter out elements in the DOM according to the key selector and traverse up its parent elements to determine matches. **The shorter the length of the selector chain, the faster the browser can determine if that element matches the selector**. Hence avoid key selectors that are tag and universal selectors. They match a large number of elements and browsers will have to do more work in determining if the parents do match
-* **BEM\(Block element modifier \) recommends that everything should has a single class.**
-* Be aware of which CSS properties trigger reflow, repaint, and compositing. Avoid writing styles that change the layout \(trigger reflow\) where possible.
+* Firstly, understand that browsers match selectors from rightmost (key selector) to left. Browsers filter out elements in the DOM according to the key selector and traverse up its parent elements to determine matches. **The shorter the length of the selector chain, the faster the browser can determine if that element matches the selector**. Hence avoid key selectors that are tag and universal selectors. They match a large number of elements and browsers will have to do more work in determining if the parents do match
+* **BEM(Block element modifier ) recommends that everything should has a single class.**
+* Be aware of which CSS properties trigger reflow, repaint, and compositing. Avoid writing styles that change the layout (trigger reflow) where possible.
 
 
 
@@ -1266,21 +1273,20 @@ p::after{
 * Variables for consistent theming. Can share theme files across different projects.
 * Mixins to generate repeated CSS.
 * Splitting your code into multiple files. CSS files can be split up too but doing so will require a HTTP request to download each CSS file.
-*  **Disadvantages:** Requires tools for preprocessing. Re-compilation time can be slow.
+* &#x20;**Disadvantages: **Requires tools for preprocessing. Re-compilation time can be slow.
 
 ## 怎么把下列图片宽度变成 300px
 
-```text
+```
 <img class="img" src="pic_trulli.jpg" alt="Trulli" style="width:480px!important;">
 
 ```
 
 * `max-width: 300px`
 * `transform: scale(0.625,0.625)`
-* `box-sizing: border-box;`
+*   `box-sizing: border-box;    `
 
-  `padding: 0 90px;`
-
+    `padding: 0 90px;`
 * `document.getElementsByTagName("img")[0].setAttribute("style","width:300px!important;")`
 
 
@@ -1293,23 +1299,23 @@ p::after{
 
 ## Is there any reason you’d want to use `translate()` instead of `absolute` positioning,
 
-*  `translate()` is a value of CSS `transform`. Changing `transform` or `opacity` does not trigger browser reflow or repaint, only compositions, whereas changing the absolute positioning triggers `reflow`
-*  Hence `translate()` is more efficient and will result in shorter paint times for smoother animations.
+* &#x20;`translate()` is a value of CSS `transform`. Changing `transform` or `opacity` does not trigger browser reflow or repaint, only compositions, whereas changing the absolute positioning triggers `reflow`
+* &#x20;Hence `translate()` is more efficient and will result in shorter paint times for smoother animations.
 
 ## 图片 与 图片之间产生间隙
 
-![](.gitbook/assets/image%20%2845%29.png)
+![](<.gitbook/assets/image (60).png>)
 
 * **inline-block元素放到一起会产生一段空白。**
 * img 标签默认是 inline-block
-* normal flow 的情况 下， 多个 空白行会合并成一行， 是因为 `white-space:normal` 换行也背当成一个空白符 ， 会合并多余空白 这就是为什么会有间隙的原因， 间隙就是空白符
+* normal flow 的情况 下， 多个 空白行会合并成一行， 是因为`  white-space:normal  `换行也背当成一个空白符 ， 会合并多余空白 这就是为什么会有间隙的原因， 间隙就是空白符
 * **解决办法**
   * 给其中一个元素添加 float：left/ right
   * img element 互相紧挨着， 没有换行， 但是 会导致代码不方便阅读
-  * 因为空白符 是个 字符， 所以就会有字体大小 ， 所以我们可以把它 设置为 0， `font-size：0`, 不过增加了代码量,  **只有这个方法可以把垂直和水平方向空隙都删除了**
+  * 因为空白符 是个 字符， 所以就会有字体大小 ， 所以我们可以把它 设置为 0， `font-size：0`, 不过增加了代码量, ** 只有这个方法可以把垂直和水平方向空隙都删除了**
   * `letter-spacing:-100px;   , 不过增加了`
 
-![](.gitbook/assets/image%20%2849%29.png)
+![](<.gitbook/assets/image (61).png>)
 
 * img 是 没有基线的， 所以 它的低端会和父元素的基线对齐， 所以这里即使没有字体， img 下面也会有间隙， 这样子 有字体出现的时候 字体就会有额外的位置了
 * 如果把父元素 `font-size: 0;`  **它的底部就不会有间隙了， 但是这种情况是没有考虑父元素里面的字体的**
@@ -1324,23 +1330,23 @@ p::after{
 
 ## How browser renders the website
 
-![](.gitbook/assets/image%20%2869%29.png)
+![](<.gitbook/assets/image (69).png>)
 
 1. When the user enters the URL, It will fetch the HTML source code from the server
-2. Browser Parse the HTML source code and convert into the Tokens &lt;, TagName, Attribute, AttributeValue, &gt;
+2. Browser Parse the HTML source code and convert into the Tokens <, TagName, Attribute, AttributeValue, >
 3. The Tokens will convert into the nodes and will construct the DOM Tree
 4. The CSSOM Tree will generate from the CSS rules
 5. The DOM and CSSOM tree will combine into the RenderTree
 6. The RenderTree are constructed as below:
    1. Start from the root of the dom tree and compute which elements are visible and their computed styles
-   2. RenderTree will ignore the not visible elements like \(meta, script, link\) and display:none
+   2. RenderTree will ignore the not visible elements like (meta, script, link) and display:none
    3. It will match the visible node to the appropriate CSSOM rules and apply them
-7. Reflow\(回流\): Calculate the position and size of each visible node
-8. Repaint\(重绘\):now, the browser will paint the renderTree on the screen
+7. Reflow(回流): Calculate the position and size of each visible node
+8. Repaint(重绘):now, the browser will paint the renderTree on the screen
 
 
 
-## 浏览器的回流与重绘 \(Reflow & Repaint\)
+## 浏览器的回流与重绘 (Reflow & Repaint)
 
 * 回流必将引起重绘，重绘不一定会引起回流。
 * 回流比重绘的代价要更高。
@@ -1349,10 +1355,10 @@ p::after{
 ### 回流 Reflow:
 
 * Reflow means re-calculating the positions and geometries of elements in the document. The Reflow happens when changes are made to the elements, that affect the layout of the partial or whole page. The Reflow of the element will cause the subsequent reflow of all the child and ancestor elements in the DOM
-  * **Reflows are very expensive in terms of performance**, and is one of the main causes of slow DOM scripts, especially on devices with low
+  *   **Reflows are very expensive in terms of performance**, and is one of the main causes of slow DOM scripts, especially on devices with low
 
-    processing power, such as phones. In many cases, they are equivalent to laying out the entire page again.
-*  当`Render Tree`中部分或全部元素的尺寸、结构、或某些属性发生改变时，浏览器重新渲染部分或全部文档的过程称为回流。
+      processing power, such as phones. In many cases, they are equivalent to laying out the entire page again.
+* &#x20;当`Render Tree`中部分或全部元素的尺寸、结构、或某些属性发生改变时，浏览器重新渲染部分或全部文档的过程称为回流。
 * **会导致回流的操作：**
   * 页面首次渲染
   * Reflow will happen when Adding, Removing, Updating the DOM nodes
@@ -1366,9 +1372,9 @@ p::after{
   * 查询某些属性或调用某些方法
     * Script manipulating the DOM is the expensive operation because they have recalculated each time the document, or part of the document modified. As we have seen from all the many things that trigger a reflow, it can occur thousands and thousands of times per second
 
-![](.gitbook/assets/image%20%2865%29.png)
+![](<.gitbook/assets/image (70).png>)
 
-### 
+###
 
 ### 重绘 Repaint:
 
@@ -1380,14 +1386,14 @@ p::after{
 
 **CSS：**
 
-* 如果想设定元素的样式，通过改变元素的 class 名 \(尽可能在 DOM 树的最末端\)（Change classes on the element you wish to style \(as low in the dom tree as possible\)）
+* 如果想设定元素的样式，通过改变元素的 class 名 (尽可能在 DOM 树的最末端)（Change classes on the element you wish to style (as low in the dom tree as possible)）
   * 回流可以自上而下，或自下而上的回流的信息传递给周围的节点。回流是不可避免的，但可以减少其影响。尽可能在DOM树的里面改变class，可以限制了回流的范围，使其影响尽可能少的节点。例如，你应该避免通过改变对包装元素类去影响子节点的显示。面向对象的CSS始终尝试获得它们影响的类对象（DOM节点或节点），但在这种情况下，它已尽可能的减少了回流的影响，增加性能优势
 * 避免设置多项内联样式（Avoid setting multiple inline styles）
   * 因为每个都会造成回流，样式应该合并在一个外部类，这样当该元素的class属性可被操控时仅会产生一个reflow。
 * 应用元素的动画，使用 position 属性的 fixed 值或 absolute 值（Apply animations to elements that are position fixed or absolute）
 * 避免使用table布局（Avoid tables for layout）
 
-```text
+```
 // bad
 var left = 10,
     top = 10;
@@ -1415,11 +1421,11 @@ el.style.cssText += "; left: " + left + "px; top: " + top + "px;";
 
 有三种方式可以让DOM脱离文档流：
 
-**一： 使用文档片段\(document fragment\)在当前DOM之外构建一个子树，再把它拷贝回文档。**
+**一： 使用文档片段(document fragment)在当前DOM之外构建一个子树，再把它拷贝回文档。**
 
 * Use a `documentFragment` to hold temp changes
 
-```text
+```
 function appendDataToElement(appendToElement, data) {
     let li;
     for (let i = 0; i < data.length; i++) {
@@ -1439,9 +1445,9 @@ ul.appendChild(fragment);
 二：**隐藏元素，应用修改，重新显示**
 
 * 这个会在展示和隐藏节点的时候，产生两次回流
-* Hide the element with display: none \(1 reflow, 1 repaint\), add 100 changes, restore the display \(total 2 reflow, 2 repaint\)
+* Hide the element with display: none (1 reflow, 1 repaint), add 100 changes, restore the display (total 2 reflow, 2 repaint)
 
-```text
+```
 function appendDataToElement(appendToElement, data) {
     let li;
     for (let i = 0; i < data.length; i++) {
@@ -1460,7 +1466,7 @@ ul.style.display = 'block';
 
 * Clone, update, replace the node
 
-```text
+```
 const ul = document.getElementById('list');
 const clone = ul.cloneNode(true);
 appendDataToElement(clone, data);
@@ -1470,9 +1476,9 @@ ul.parentNode.replaceChild(clone, ul);
 ## CSS 性能优化
 
 * 建立公共样式类，把相同样式提取出来作为公共类使用。
-* 减少通配符\*或者类似\[hidden="true"\]这类选择器的使用
+* 减少通配符\*或者类似\[hidden="true"]这类选择器的使用
 * 巧妙运用css的继承机制，如果父节点定义了，子节点就无需定义
-*  去除无用CSS
+* &#x20;去除无用CSS
   * 不同元素或者其他情况下的重复代码，
   * 整个页面内没有生效的CSS代码
 * 使用normolize.css
@@ -1486,11 +1492,11 @@ ul.parentNode.replaceChild(clone, ul);
 
 ### 品字布局
 
-![](.gitbook/assets/image%20%2885%29.png)
+![](<.gitbook/assets/image (78).png>)
 
 {% embed url="https://jsfiddle.net/Boyanliuu/45adzu3q/10/" %}
 
-* 使用float 把2，3 放在一行 然后 使用 margin-left + translateX\(\)
+* 使用float 把2，3 放在一行 然后 使用 margin-left + translateX()
 
 
 
@@ -1502,9 +1508,9 @@ ul.parentNode.replaceChild(clone, ul);
 
 ### 圣杯布局
 
-![](.gitbook/assets/image%20%2875%29.png)
+![](<.gitbook/assets/image (72).png>)
 
-```text
+```
 // 基础 结构
 <!DOCTYPE html>
 <html lang="en">
@@ -1559,9 +1565,9 @@ footer , header{
 }
 ```
 
-![](.gitbook/assets/image%20%2877%29.png)
+![](<.gitbook/assets/image (73).png>)
 
-#### 一 利用 float 布局 + 负 margin 
+#### 一 利用 float 布局 + 负 margin&#x20;
 
 {% embed url="https://jsfiddle.net/Boyanliuu/xLceghj3/32/" %}
 
@@ -1569,21 +1575,21 @@ footer , header{
 
 1.中间需要优先加载， 所以会把 中间的 div 紧跟着header 放
 
-2. 为了让 中间的3个区域再同一行， 我们使用 float
+2\. 为了让 中间的3个区域再同一行， 我们使用 float
 
-![](.gitbook/assets/image%20%2872%29.png)
+![](<.gitbook/assets/image (74).png>)
 
-```text
+```
 .center,.left,.right{
   float:left;
 }
 ```
 
-3. 页脚也跑了上来 因为 float产生了 塌陷， 所以 我们需要再中间区域 清除浮动
+3\. 页脚也跑了上来 因为 float产生了 塌陷， 所以 我们需要再中间区域 清除浮动
 
-![](.gitbook/assets/image%20%2873%29.png)
+![](<.gitbook/assets/image (75).png>)
 
-```text
+```
 .clearfix::after{
   content: "";
   display:block;
@@ -1591,11 +1597,11 @@ footer , header{
 }
 ```
 
-4. 现在内容 不正确 ， 使用 negative margin 负外边距
+4\. 现在内容 不正确 ， 使用 negative margin 负外边距
 
-![](.gitbook/assets/image%20%2874%29.png)
+![](<.gitbook/assets/image (76).png>)
 
-```text
+```
 .wrapper{
   padding: 0 100px; // 添加内边距 就不会产生被覆盖的情况了
 }
@@ -1614,11 +1620,11 @@ footer , header{
 }
 ```
 
-5. 上面的问题是 左右区域会挡住 主区域的内容， 如果主区域是 1000 px 左右分别是100px的话， 我们就只能展示出来  800px， 我们可以使用 相对定位 解决.
+5\. 上面的问题是 左右区域会挡住 主区域的内容， 如果主区域是 1000 px 左右分别是100px的话， 我们就只能展示出来  800px， 我们可以使用 相对定位 解决.
 
-![](.gitbook/assets/image%20%2876%29.png)
+![](<.gitbook/assets/image (77).png>)
 
-```text
+```
 .left{
   margin-left:-100%;
   position: relative;
@@ -1632,13 +1638,13 @@ footer , header{
 }
 ```
 
-####  利用 flex 布局
+#### &#x20;利用 flex 布局
 
 {% embed url="https://jsfiddle.net/Boyanliuu/xe1wahLt/6/" %}
 
 * code 最少
 
-```text
+```
 .wrapper{
   display:flex;
 }
@@ -1655,7 +1661,7 @@ footer , header{
 
 **使用 grid 布局**
 
-```text
+```
 .wrapper{
  display:grid;
 }
@@ -1682,7 +1688,7 @@ footer , header{
 
 {% embed url="https://jsfiddle.net/Boyanliuu/2bpwjh6f/13/" %}
 
-* `.center { left: 200px; right: 200px; }`     这个可以让他的 宽度 起始点是 left 终点是right
+* `.center { left: 200px; right: 200px; }   `  这个可以让他的 宽度 起始点是 left 终点是right
 
 
 
@@ -1708,7 +1714,7 @@ footer , header{
 
 
 
-```text
+```
  * {
      margin: 0;
      padding: 0;
@@ -1729,7 +1735,7 @@ footer , header{
 
 #### float +  BFC
 
-```text
+```
 #left {
     background-color: #f00;
     float: left;
@@ -1746,7 +1752,7 @@ footer , header{
 
 #### flex 布局
 
-```text
+```
 body{
   display:flex;
 }
@@ -1766,7 +1772,7 @@ body{
 
 #### grid 布局
 
-```text
+```
 body{
   display:grid;
   grid-template-columns:100px 1fr;
@@ -1784,10 +1790,10 @@ body{
 
 ### 粘连布局
 
-![](.gitbook/assets/image%20%2882%29.png)
+![](<.gitbook/assets/image (79).png>)
 
-* 有一块内容&lt;main&gt;，当&lt;main&gt;的高康足够长的时候，紧跟在&lt;main&gt;后面的元素&lt;footer&gt;会跟在&lt;main&gt;元素的后面。
-* 当&lt;main&gt;元素比较短的时候\(比如小于屏幕的高度\),我们期望这个&lt;footer&gt;元素能够“粘连”在屏幕的底部
+* 有一块内容\<main>，当\<main>的高康足够长的时候，紧跟在\<main>后面的元素\<footer>会跟在\<main>元素的后面。
+* 当\<main>元素比较短的时候(比如小于屏幕的高度),我们期望这个\<footer>元素能够“粘连”在屏幕的底部
 
 {% embed url="https://jsfiddle.net/Boyanliuu/qhmgd45t/6/" %}
 
@@ -1804,12 +1810,12 @@ body{
 
 ### border radius 意思
 
-![](.gitbook/assets/image%20%2890%29.png)
+![](<.gitbook/assets/image (89).png>)
 
 * 水平半径 和垂直半径
 * 顺序依次是： top-left， top-right， bottom-left， bottom-right
 
-```text
+```
 border-radius: 12px
 //等于
 border-top-left-radius: 12px 12px
@@ -1826,45 +1832,42 @@ border-radius:10px 10px 10px 10px / 5px 20px
 
 ### 半椭圆
 
-![](.gitbook/assets/image%20%2895%29.png)
+![](<.gitbook/assets/image (88).png>)
 
-```text
+```
 width:200px;
 height:100px;
 border-radius: 50% / 100% 100% 0 0;
 ```
 
-* 这个形状是垂直对称的，这意味着左上角和右上角的半径值应该是
+*   这个形状是垂直对称的，这意味着左上角和右上角的半径值应该是
 
-  相同的；与此类似，左下角和右下角的半径值也应该是相同的。
+    相同的；与此类似，左下角和右下角的半径值也应该是相同的。
+*   顶部边缘并没有平直的部分（也就是说，整个顶边都是曲线），这意
 
-* 顶部边缘并没有平直的部分（也就是说，整个顶边都是曲线），这意
+    味着左上角和右上角的半径之和应该等于整个形状的宽度。
+*   基于前两条观察，我们可以推断出，左半径和右半径在水平方向上
 
-  味着左上角和右上角的半径之和应该等于整个形状的宽度。
+    的值应该均为 50%
+*   再看看垂直方向，似乎顶部的两个圆角占据了整个元素的高度，而
 
-* 基于前两条观察，我们可以推断出，左半径和右半径在水平方向上
+    且底部完全没有任何圆角。因此，在垂直方向上 border-radius 的
 
-  的值应该均为 50%
-
-* 再看看垂直方向，似乎顶部的两个圆角占据了整个元素的高度，而
-
-  且底部完全没有任何圆角。因此，在垂直方向上 border-radius 的
-
-  合理值似乎就是 100% 100% 0 0。
+    合理值似乎就是 100% 100% 0 0。
 
 ### 四分之一椭圆
 
-![](.gitbook/assets/image%20%2889%29.png)
+![](<.gitbook/assets/image (90).png>)
 
-```text
+```
   border-radius:100% 0 0 0 / 100% 0 0 0;
 ```
 
 ### 平行四边形
 
-![](.gitbook/assets/image%20%2892%29.png)
+![](<.gitbook/assets/image (91).png>)
 
-```text
+```
   // Method 1
   width:200px;
   height:100px;
@@ -1887,31 +1890,30 @@ border-radius: 50% / 100% 100% 0 0;
 }
 ```
 
-1. Method 1 也会把 内容skew ， 我们可以给内容反向 skew 变形 从而抵消容器的变形
+1.  Method 1 也会把 内容skew ， 我们可以给内容反向 skew 变形 从而抵消容器的变形
 
-   效果，最终产生我们所期望的结果，不幸的是，这意味着我们将不得不使用
+    效果，最终产生我们所期望的结果，不幸的是，这意味着我们将不得不使用
 
-   一层额外的 HTML 元素来包裹内容，比如用一个 div： **额外的 HTML 元素**
+    一层额外的 HTML 元素来包裹内容，比如用一个 div： **额外的 HTML 元素**
+2.  Method 2更好的方案 ，使用 伪元素,_**还适用于其他任何变形样式，    **_
 
-2. Method 2更好的方案 ，使用 伪元素,_**还适用于其他任何变形样式，**_
+    _**当我们想变形一个元素而不想变形它的内容时就可以用到它**_
 
-   _**当我们想变形一个元素而不想变形它的内容时就可以用到它**_
+    1.  我们希望伪元素保持良好的灵活性，可以自动继承其宿主元素的尺寸，
 
-   1. 我们希望伪元素保持良好的灵活性，可以自动继承其宿主元素的尺寸，
+        甚至当宿主元素的尺寸是由其内容来决定时仍然如此。一个简单的办法是
 
-      甚至当宿主元素的尺寸是由其内容来决定时仍然如此。一个简单的办法是
+        给宿主元素应用 position: relative 样式，并为伪元素设置 position:
 
-      给宿主元素应用 position: relative 样式，并为伪元素设置 position:
+        absolute，然后再把所有偏移量设置为零，以便让它在水平和垂直方向上都
 
-      absolute，然后再把所有偏移量设置为零，以便让它在水平和垂直方向上都
-
-      被拉伸至宿主元素的尺寸
+        被拉伸至宿主元素的尺寸
 
 ### 三角形
 
-![](.gitbook/assets/image%20%2893%29.png)
+![](<.gitbook/assets/image (94).png>)
 
-```text
+```
 .div1{
   width:0;
   height:0;
@@ -1941,11 +1943,11 @@ border-radius: 50% / 100% 100% 0 0;
 
 * 使用的就是对角切，所以我们隐藏其余的三角形就好了 使用 `transparent`
 
-####        Talk Bubble（聊天框） <a id="Talk-Bubble%EF%BC%88%E8%81%8A%E5%A4%A9%E6%A1%86%EF%BC%89"></a>
+#### &#x20;      Talk Bubble（聊天框） <a href="talk-bubble-ef-bc-88-e8-81-8a-e5-a4-a9-e6-a1-86-ef-bc-89" id="talk-bubble-ef-bc-88-e8-81-8a-e5-a4-a9-e6-a1-86-ef-bc-89"></a>
 
-![](.gitbook/assets/image%20%2888%29.png)
+![](<.gitbook/assets/image (95).png>)
 
-```text
+```
   #talkBubble{
       width: 120px;
       height: 80px;
@@ -1966,6 +1968,4 @@ border-radius: 50% / 100% 100% 0 0;
      border-bottom: 13px solid transparent;
  }
 ```
-
-
 

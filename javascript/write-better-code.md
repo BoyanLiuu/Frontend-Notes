@@ -1,10 +1,10 @@
 # Write better code
 
-##  几个优雅的 JS 运算符号
+## &#x20;几个优雅的 JS 运算符号
 
-{% embed url="https://mp.weixin.qq.com/s/FwF\_awtPQAgXQYs1SWcDfw" %}
+{% embed url="https://mp.weixin.qq.com/s/FwF_awtPQAgXQYs1SWcDfw" %}
 
-{% embed url="https://mp.weixin.qq.com/s/Xw7-6ZnuUKCq1\_s\_d-I98w" %}
+{% embed url="https://mp.weixin.qq.com/s/Xw7-6ZnuUKCq1_s_d-I98w" %}
 
 
 
@@ -12,7 +12,7 @@ nullish 代表 null 或者 undefined
 
 ### ??
 
-```text
+```
 null ?? 5 // => 5
 3 ?? 5 // => 3
 ```
@@ -22,7 +22,7 @@ null ?? 5 // => 5
 
 ### 逻辑空分配（?? =）
 
-```text
+```
 var x = null
 var y = 5
 
@@ -50,7 +50,7 @@ gameSettingsWithDefaultParams(null, null) // => { gameSpeed: null, gameDiff: nul
 
 ### ?. 操作符
 
-```text
+```
 var travelPlans  = {
   destination: 'DC',
   monday: {
@@ -66,9 +66,9 @@ console.log(tuesdayPlans) // => undefined
 
 * 允许开发人员读取深度嵌套在一个对象链中的属性值，而不必沿途显式验证每个引用。当引用为 null 时，表达式停止计算并返回 undefined，让我们来看一个例子
 
-###  ? 操作符
+### &#x20;? 操作符
 
-```text
+```
 function checkCharge(charge) {
 return (charge > 0) ? 'Ready for use' : 'Needs to charge'
 }
@@ -76,9 +76,9 @@ return (charge > 0) ? 'Ready for use' : 'Needs to charge'
 
 * 三元运算符
 
-### 逻辑或分配（\|\| =）
+### 逻辑或分配（|| =）
 
-```text
+```
 const a = { duration: 50, title: '' };
 
 a.duration ||= 10;
@@ -91,11 +91,11 @@ console.log(a.title);
 
 ```
 
-* The logical OR assignment \(x \|\|= y\) operator only assigns if x is falsy. 如果是 false 就会赋值
+* The logical OR assignment (x ||= y) operator only assigns if x is falsy. 如果是 false 就会赋值
 
 ### 逻辑与分配（&& =）
 
-```text
+```
 const a = { duration: 50, title: '' };
 
 a.duration &&= 10;
@@ -113,7 +113,7 @@ console.log(a.title);
 
 ## CSS 规范
 
-```text
+```
 // 1
 .content > .title {
   font-size: 2rem;
@@ -158,7 +158,7 @@ div{
 
 ## JS 规范：
 
-```text
+```
 // undefined 并非是一个关键字，而是全局对象的一个属性（全局变量）
 // 在早期的 IE 中，undefined 是可以赋值的全局变量
 var test;
@@ -255,7 +255,7 @@ if(!email.includes('@')){
   * `MAX_STOCK_COUNT`
 * 对象声明, 不要使用 constructor 创建
 * undefined 判断 使用 `typeof person === 'undefined'   or test === void 0`
-*  this 的转换命名
+* &#x20;this 的转换命名
   * 对上下文 this 的引用只能使用'self'来命名
 * 函数
   * 函数的注释
@@ -284,7 +284,7 @@ if(!email.includes('@')){
 
 ## React 规范
 
-```text
+```
 // 如果标签有多行属性，关闭标签要另起一行 。
 <Component
   bar="bar"
@@ -336,14 +336,14 @@ class Example extends Component {
 
 ### name
 
-* Use intention revealing names,  
-* Avoid Disinformation, We should   avoid words whose entrenched meanings vary from our intended meaning
+* Use intention revealing names, &#x20;
+* Avoid Disinformation, We should  &#x20;avoid words whose entrenched meanings vary from our intended meaning
 * Use Pronounceable names
 * Method should have verb or verb phrase name
 * Pick one word for one abstract concept and stick with it.
 * Avoid using the same word for two purposes
 
-```text
+```
 // Function ,should be small.
 public static String renderPageWithSetupsAndTeardowns(
  PageData pageData, boolean isSuite) throws Exception {
@@ -377,8 +377,7 @@ logger.log(e.getMessage());
 
 * Dont use a comment when you can use a function or a variable
 * Don not comment closing brace comments, try to shorten your functions instead
-* 
-
+*
 
 
 

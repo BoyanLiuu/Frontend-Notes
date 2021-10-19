@@ -2,5 +2,3 @@
 
 ## Same Origin Policy
 
-
-

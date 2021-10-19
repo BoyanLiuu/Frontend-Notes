@@ -4,7 +4,7 @@
 
 
 
-{% embed url="https://juejin.cn/post/6844904100035821575?from=right\_recommend" %}
+{% embed url="https://juejin.cn/post/6844904100035821575?from=right_recommend" %}
 
 1.理解什么是协议，了解TCP/IP网络协议族的构成，每层协议在应用程序中发挥的作用
 
@@ -25,6 +25,4 @@
 9.HTTPS的加密原理，如何开启HTTPS，如何劫持HTTPS请求
 
 10.理解WebSocket协议的底层原理、与HTTP的区别
-
-
 

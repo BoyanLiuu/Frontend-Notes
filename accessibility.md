@@ -1,6 +1,6 @@
 # Accessibility
 
-### How people use the web: <a id="semantic-html"></a>
+### How people use the web: <a href="semantic-html" id="semantic-html"></a>
 
 * keyboard only
 * Head wand
@@ -8,19 +8,19 @@
 * SIngle switch
 * Screen Reader
 
-### Using Semantic HTML <a id="semantic-html"></a>
+### Using Semantic HTML <a href="semantic-html" id="semantic-html"></a>
 
 * Using the various HTML elements to reinforce the meaning of information in our websites will often give us accessibility for free
 * Or label region with  `aria-label,aria-labelledby1,aria-describedby`
   * aria-describedby: it provides extended information that the user might need
 
-![](.gitbook/assets/image%20%28150%29.png)
+![](<.gitbook/assets/image (149).png>)
 
 ## **Using alt for image**
 
 ## **Labels tag:**
 
-```text
+```
         
           <form>
             <label>
@@ -41,14 +41,14 @@
 
 * wrap input with label tag , this is called implicit labelling
 * The label tag can only works with "labelable" elements. Those include:
-  * &lt;button&gt;
-  * &lt;input&gt;
-  * &lt;keygen&gt;
-  * &lt;meter&gt;
-  * &lt;output&gt;
-  * &lt;progress&gt;
-  * &lt;select&gt;
-  * &lt;textarea&gt;
+  * \<button>
+  * \<input>
+  * \<keygen>
+  * \<meter>
+  * \<output>
+  * \<progress>
+  * \<select>
+  * \<textarea>
 * If we want to give lable to other HTML use **aria-label**
 
 ## **Focus Management**
@@ -57,21 +57,21 @@
 
 ### tab navigation:
 
-```text
+```
 <div tabindex="0">I'm focusable</div>
 ```
 
 * You can use the tab key to navigate to the next tabbable item and shift + tab to navigate to the previous item.
 * Tabbable elements include:
-  * &lt;a&gt;
-  * &lt;button&gt;
-  * &lt;input&gt;
-  * &lt;select&gt;
-  * &lt;textarea&gt;
-  * &lt;iframe&gt;
+  * \<a>
+  * \<button>
+  * \<input>
+  * \<select>
+  * \<textarea>
+  * \<iframe>
 * **Tabindex values**
 
-![](.gitbook/assets/image%20%28149%29.png)
+![](<.gitbook/assets/image (150).png>)
 
 ## **Table:**
 
@@ -79,7 +79,7 @@
 
 ## **Form:**
 
-```text
+```
 <label for="firstname">First name:</label>
 <input type="text" name="firstname" id="firstname"><br>
 
@@ -87,8 +87,8 @@
 <label for="subscribe">Subscribe to newsletter</label>
 ```
 
-* Whenever possible, use the label element to associate text with form elements explicitly. The for attribute of the label must exactly match the id of the form control.  **react 里面 使用的是 htmlFor**
-*  ****The label can be hidden visually, though it still needs to be provided within the code to support other forms of presentation and interaction, such as for screen reader and speech input users.
+* Whenever possible, use the label element to associate text with form elements explicitly. The for attribute of the label must exactly match the id of the form control.**  react 里面 使用的是 htmlFor**
+* ** **The label can be hidden visually, though it still needs to be provided within the code to support other forms of presentation and interaction, such as for screen reader and speech input users.
   * Approach 1: Hide it by using css
   * Approach 2: use `aria-label="Search"`
 
@@ -96,7 +96,7 @@
 
 * Associating related controls with fieldset
 
-```text
+```
 <fieldset>
 <legend>Output format</legend>
   <div>
@@ -119,6 +119,4 @@
 
 * Google's lighthouse
 * Eslint-plugin-jsx- a11y
-
-
 

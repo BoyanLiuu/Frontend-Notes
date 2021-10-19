@@ -10,11 +10,11 @@
 
 * 我们 除以3 的话 我们 的余数就会从 3-1 到 0 之间开始循环
 
-![](../.gitbook/assets/image%20%28101%29.png)
+![](<../.gitbook/assets/image (101).png>)
 
 {% embed url="https://jsfiddle.net/Boyanliuu/fno41mkt/21/" %}
 
-```text
+```
   //先转换成秒， 除以1000然后 用余数算出来当前是多少秒
   second = Math.floor(timeRemaining/ 1000 % 60) ;
   //先转换成秒， 除以1000然后转换成 分钟 除以60 用余数算出来当前是多少分钟
@@ -25,6 +25,4 @@
   
 
 ```
-
-
 
