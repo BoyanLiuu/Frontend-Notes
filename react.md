@@ -24,6 +24,11 @@ react技术栈,推荐阅读的源码是react,react-router,redux,react-redux,axio
 
 
 
+## Keys:
+
+* Keys help React identify which items have changed, are added, or are removed. Keys should be given to the elements inside the array to give the elements a stable identity:
+* When children have keys, React uses the key to match children in the original tree with children in the subsequent tree. For example
+
 ## JSX
 
 ### &#x20;`createElement `&#x20;
@@ -272,7 +277,22 @@ const [state, dispatch] = useReducer(reducer, initialState);
 
 * &#x20;Redux 的核心概念是，组件发出 action 与状态管理器通信。状态管理器收到 action 以后，使用 Reducer 函数算出新的状态， Accepts a reducer of type `(state, action) => newState`, and returns the current state paired with a `dispatch` method.&#x20;
 
-### useCallback():
+### useCallback(): for functions
+
+* Use this tool to check if it is worth to use this function [https://developer.chrome.com/docs/devtools/evaluate-performance/](https://developer.chrome.com/docs/devtools/evaluate-performance/)
+
+```
+function MyComponent() {
+  // handleClick is re-created on each render
+  const handleClick = () => {
+    console.log('Clicked!');
+  };
+  // ...
+}
+```
+
+* `handleClick` is a different function object on every rendering of `MyComponent`.
+* Because inline functions are cheap, the re-creation of functions on each rendering is not a problem. _A few inline functions per component are acceptable._
 
 ```
 const memoizedCallback = useCallback(
@@ -287,6 +307,43 @@ const memoizedCallback = useCallback(
 * 该回调函数仅在某个依赖项改变时才会更新
 * &#x20;That’s when `useCallback(callbackFun, deps)` is helpful: given the same dependency values `deps`, the hook returns (aka memoizes) the function instance between renderings:
 
+```
+import { useCallback } from 'react';
+export function MyParent({ term }) {
+  const onItemClick = useCallback(event => {
+    console.log('You clicked ', event.currentTarget);
+  }, [term]);
+  return (
+    <MyBigList
+      term={term}
+      onItemClick={onItemClick}
+    />
+  );
+}
+```
+
+*   `onItemClick` callback is memoized by `useCallback()`. As long as `term` is the same, `useCallback()` returns the same function object.
+
+    When `MyParent` component re-renders, `onItemClick` function object remains the same and doesn’t break the memoization of `MyBigList`
+
+#### A bad example:
+
+```
+import { useCallback } from 'react';
+function MyComponent() {
+  // Contrived use of `useCallback()`
+  const handleClick = useCallback(() => {
+    // handle the click event
+  }, []);
+  return <MyChild onClick={handleClick} />;
+}
+function MyChild ({ onClick }) {
+  return <button onClick={onClick}>I am a child</button>;
+}
+```
+
+* Most likely not because `<MyChild>` component is light and its re-rendering doesn’t create performance issues.
+
 {% embed url="https://codesandbox.io/s/react-usecallback-with-problem-ckzv4?file=/src/index.js" %}
 
 
@@ -300,6 +357,30 @@ const memoizedCallback = useCallback(
 * And use  **`React.memo()`** is a built-in React feature that renders a memoized component and skip unnecessary re-rendering. So each component will only re-render if it detects a change in their props
 
 
+
+### React.memo: for component
+
+* When a component is wrapped in `React.memo()`, React renders the component and memoizes the result. Before the next render, if the new props are the same, React reuses the memoized result _skipping the next rendering_.
+
+{% embed url="https://codesandbox.io/s/react-memo-demo-c9dx1?file=%2Fsrc%2Findex.js" %}
+
+* You will see that React renders `<MemoizedMovie>` just once, while `<Movie>` re-renders every time.
+* By default `React.memo()` does a [shallow](https://github.com/facebook/react/blob/v16.8.6/packages/shared/shallowEqual.js) comparison of props and objects of props
+* To customize the props comparison you can use the second argument to indicate an equality check function: Here is the example:
+
+```
+function moviePropsAreEqual(prevMovie, nextMovie) {
+  return prevMovie.title === nextMovie.title
+    && prevMovie.releaseDate === nextMovie.releaseDate;
+}
+const MemoizedMovie2 = React.memo(Movie, moviePropsAreEqual);
+```
+
+* When to use useMemo():
+  * a pure functional component giving same props will always give same result
+  * Your components render often
+  * Your component is medium to large size
+* If the component _isn’t heavy_ and usually _renders with different props_, most likely you don’t need `React.memo()`.
 
 ### useMemo():
 

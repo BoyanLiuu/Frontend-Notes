@@ -14,7 +14,7 @@
 
 ## Ant Design Steps
 
-![](<.gitbook/assets/image (29).png>)
+![](<../.gitbook/assets/image (29).png>)
 
 
 
@@ -48,7 +48,7 @@ Without JS
 
 ## Progress
 
-![](<.gitbook/assets/image (30).png>)
+![](<../.gitbook/assets/image (30).png>)
 
 
 
