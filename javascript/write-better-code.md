@@ -336,7 +336,22 @@ class Example extends Component {
 
 ### name
 
-* Use intention revealing names, &#x20;
+```
+
+// Don't ❌
+const foo = "JDoe@example.com";
+const bar = "John";
+const age = 23;
+const qux = true;
+
+// Do ✅
+const email = "John@example.com";
+const firstName = "John";
+const age = 23;
+const isActive = true
+```
+
+* Use intention revealing names,  Names of variables should be descriptive.
 * Avoid Disinformation, We should  &#x20;avoid words whose entrenched meanings vary from our intended meaning
 * Use Pronounceable names
 * Method should have verb or verb phrase name
@@ -383,6 +398,8 @@ logger.log(e.getMessage());
 
 
 ### Best Practice
+
+{% embed url="https://medium.com/geekculture/writing-clean-javascript-es6-edition-834e83abc746" %}
 
 **1.通过条件判断给变量赋值布尔值的正确姿势**
 
@@ -708,4 +725,191 @@ let findStudentByAge = (arr, age = checkoutType()) =>
 let a = [3, 4, 5];let b = [1, 2, ...a, 6];console.log(b);  // [1, 2, 3, 4, 5, 6]
 ```
 
-****
+**20: Avoid hardcoded values**
+
+Instead of plugging in constant values, make sure to declare meaningful and searchable constants. Notice that global constants can be stylized in Screaming Snake Case (_SCREAMING\_SNAKE\_CASE_).
+
+```
+// Don't ❌
+setTimeout(clearSessionData, 900000);
+
+// Do ✅
+const SESSION_DURATION_MS = 15 * 60 * 1000;
+
+setTimeout(clearSessionData, SESSION_DURATION_MS);
+```
+
+#### 21: Avoid executing multiple actions in a function
+
+A function should do one thing at a time. This rule helps reduce the function’s size and complexity, which results in easier testing, debugging, and refactoring. The number of lines in a function is a strong indicator that should raise a flag on whether the function is doing many actions. Generally, try aiming for something less than 20–30 lines of code.
+
+```
+// Don't ❌
+function pingUsers(users) {
+  users.forEach((user) => {
+    const userRecord = database.lookup(user);
+    if (!userRecord.isActive()) {
+      ping(user);
+    }
+  });
+}
+
+// Do ✅
+function pingInactiveUsers(users) {
+  users.filter(!isUserActive).forEach(ping);
+}
+
+function isUserActive(user) {
+  const userRecord = database.lookup(user);
+  return userRecord.isActive();
+}
+```
+
+#### 22: Avoid using flags as arguments <a href="2c9d" id="2c9d"></a>
+
+A flag in one of the arguments effectively means the function can still be simplified.
+
+```
+// Don't ❌
+function createFile(name, isPublic) {
+  if (isPublic) {
+    fs.create(`./public/${name}`);
+  } else {
+    fs.create(name);
+  }
+}
+
+// Do ✅
+function createFile(name) {
+  fs.create(name);
+}
+
+function createPublicFile(name) {
+  createFile(`./public/${name}`);
+}
+```
+
+#### 23:Avoid side effects <a href="d93c" id="d93c"></a>
+
+keep functions pure unless needed otherwise. Side effects can modify shared states and resources, resulting in undesired behaviors. All side effects should be centralized; if you need to mutate a global value or modify a file, dedicate one and only one service for that.
+
+```
+// Don't ❌
+let date = "21-8-2021";
+
+function splitIntoDayMonthYear() {
+  date = date.split("-");
+}
+
+splitIntoDayMonthYear();
+
+// Another function could be expecting date as a string
+console.log(date); // ['21', '8', '2021'];
+
+// Do ✅
+function splitIntoDayMonthYear(date) {
+  return date.split("-");
+}
+
+const date = "21-8-2021";
+const newDate = splitIntoDayMonthYear(date);
+
+// Original vlaue is intact
+console.log(date); // '21-8-2021';
+console.log(newDate); // ['21', '8', '2021'];
+```
+
+#### 24:Avoid branching and return soon <a href="d997" id="d997"></a>
+
+Returning early will make your code linear, more readable, and less complex.
+
+```
+// Don't ❌
+function addUserService(db, user) {
+  if (!db) {
+    if (!db.isConnected()) {
+      if (!user) {
+        return db.insert("users", user);
+      } else {
+        throw new Error("No user");
+      }
+    } else {
+      throw new Error("No database connection");
+    }
+  } else {
+    throw new Error("No database");
+  }
+}
+
+// Do ✅
+function addUserService(db, user) {
+  if (!db) throw new Error("No database");
+  if (!db.isConnected()) throw new Error("No database connection");
+  if (!user) throw new Error("No user");
+
+  return db.insert("users", user);
+}
+```
+
+#### 25:Favor object literals or maps over switch statements
+
+Whenever this applies, indexing using objects or maps will reduce code and improve performance.
+
+```
+// Don't ❌
+const getColorByStatus = (status) => {
+  switch (status) {
+    case "success":
+      return "green";
+    case "failure":
+      return "red";
+    case "warning":
+      return "yellow";
+    case "loading":
+    default:
+      return "blue";
+  }
+};
+
+// Do ✅
+const statusColors = {
+  success: "green",
+  failure: "red",
+  warning: "yellow",
+  loading: "blue",
+};
+
+const getColorByStatus = (status) => statusColors[status] || "blue";
+```
+
+#### 26:Handle thrown errors and rejected promises
+
+No need to mention why this is an extremely important rule. Spending time now on handling errors correctly will reduce the likelihood of having to hunt down bugs later, especially when your code reaches production.
+
+```
+// Don't ❌
+try {
+  // Possible erronous code
+} catch (e) {
+  console.log(e);
+}
+
+// Do ✅
+try {
+  // Possible erronous code
+} catch (e) {
+  // Follow the most applicable (or all):
+  // 1- More suitable than console.log
+  console.error(e);
+
+  // 2- Notify user if applicable
+  alertUserOfError(e);
+
+  // 3- Report to server
+  reportErrorToServer(e);
+
+  // 4- Use a custom error handler
+  throw new CustomError(e);
+}
+view raw
+```
