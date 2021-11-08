@@ -2,11 +2,29 @@
 
 ## Table with pagination
 
-{% embed url="https://www.digitalocean.com/community/tutorials/how-to-build-custom-pagination-with-react" %}
+{% embed url="https://www.freecodecamp.org/news/build-a-custom-pagination-component-in-react" %}
 
-{% embed url="https://www.freecodecamp.org/news/build-a-custom-pagination-component-in-react/" %}
+### Overall Layout:
 
-{% embed url="https://medium.com/@SilentHackz/pagination-in-reactjs-a8c8acc027c7" %}
+* Table header
+* Table elements , it will be a state value , changed based on pagination props
+* A pagination component, from here we'll invoke the `usePagination` hook which will take in the following parameters to compute the page ranges: `totalCount` , `currentPage` , `pageSize` , `siblingCount` .
+
+
+
+
+
+
+
+### Pagination props:
+
+* **totalCount**: represents the total count of data available from the source.
+* **currentPage**:** **represents the current active page. We'll use a **1-based index** instead of a traditional 0-based index for our `currentPage` value.
+* **pageSize**:** **represents the maximum data that is visible in a single page.
+* **onPageChange**:** **callback function invoked with the updated page value when the page is changed.
+* **siblingCount **(optional):** **represents the min number of page buttons to be shown on each side of the current page button. Defaults to 1.
+
+![](<.gitbook/assets/image (152).png>)
 
 
 
