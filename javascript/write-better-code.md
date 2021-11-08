@@ -369,7 +369,7 @@ logger.log(e.getMessage());
 * Do one thing
 * One level of abstraction per function
 * Use Descriptive names
-* have no sdie effect
+* have no side effect
 * Prefer exceptions to returning error codes
 * Extract Try Catch blocks into functions of their own
 
@@ -377,25 +377,335 @@ logger.log(e.getMessage());
 
 * Dont use a comment when you can use a function or a variable
 * Don not comment closing brace comments, try to shorten your functions instead
-*
 
 
 
 
 
+### Best Practice
+
+**1.通过条件判断给变量赋值布尔值的正确姿势**
+
+```
+// bad
+if (a === 'a') {
+    b = true
+} else {
+    b = false
+}
+
+// good
+b = a === 'a'
+
+```
+
+**2.在if中判断数组长度不为零的正确姿势**
+
+```
+// bad
+if (arr.length !== 0) {
+    // todo
+}
+
+// good
+if (arr.length) {
+    // todo
+}
+
+```
+
+**3.简单的if判断使用三元表达式**
+
+```
+// bad
+if (a === 'a') {
+    b = a
+} else {
+    b = c
+}
+
+// good
+b = a === 'a' ? a : c
+
+```
+
+**4.使用includes简化if判断**
+
+```
+// bad
+if (a === 1 || a === 2 || a === 3 || a === 4) {
+    // todo
+}
+
+// good
+let arr = [1, 2, 3, 4]
+if (arr.includes(a)) {
+    // todo
+}
+
+```
+
+**5.使用some方法判断是否有满足条件的元素**
+
+```
+// bad
+let arr = [1, 3, 5, 7]
+function isHasNum (n) {
+    for (let i = 0; i < arr.length; i ++) {
+        if (arr[i] === n) {
+            return true
+        }
+    }
+    return false
+}
+
+// good
+let arr = [1, 3, 5, 7]
+let isHasNum = n => arr.some(num => num === n)
+
+// best
+let arr = [1, 3, 5, 7]
+let isHasNum = (n, arr) => arr.some(num => num === n)
+```
+
+**6.使用forEach方法遍历数组，不形成新数组**
+
+```
+// bad
+for (let i = 0; i < arr.length; i ++) {
+    // todo
+    arr[i].key = balabala
+}
+
+// good
+arr.forEach(item => {
+    // todo
+    item.key = balabala
+})
+
+```
+
+**7.使用filter方法过滤原数组，形成新数组**
+
+```
+// bad
+let arr = [1, 3, 5, 7],
+    newArr = []
+for (let i = 0; i < arr.length; i ++) {
+    if (arr[i] > 4) {
+        newArr.push(arr[i])
+    }
+}
+
+// good
+let arr = [1, 3, 5, 7]
+let newArr = arr.filter(n => n > 4) // [5, 7]
+
+```
+
+**8.使用map对数组中所有元素批量处理，形成新数组**
+
+```
+// bad
+let arr = [1, 3, 5, 7],
+    newArr = []
+for (let i = 0; i < arr.length; i ++) {
+    newArr.push(arr[i] + 1)
+}
+
+// good
+let arr = [1, 3, 5, 7]
+let newArr = arr.map(n => n + 1) // [2, 4, 6, 8]
+
+```
+
+**9.使用Object.values快速获取对象键值**
+
+```
+let obj = {
+    a: 1,
+    b: 2
+}
+// bad
+let values = []
+for (key in obj) {
+    values.push(obj[key])
+}
+
+// good
+let values = Object.values(obj) // [1, 2]
+
+```
+
+**10. 使用Object.keys快速获取对象键名**
+
+```
+let obj = {
+    a: 1,
+    b: 2
+}
+// bad
+let keys = []
+for (value in obj) {
+    keys.push(value)
+}
+
+// good
+let keys = Object.keys(obj) // ['a', 'b']
+
+```
+
+**11.解构数组进行变量值的替换**
+
+```
+// bad
+let a = 1,
+    b = 2
+let temp = a
+a = b
+b = temp
+
+// good
+let a = 1,
+    b = 2
+[b, a] = [a, b]
+
+```
+
+**12.解构对象**
+
+```
+// bad
+setForm (person) {
+    this.name = person.name
+    this.age = person.age 
+}
+
+// good
+setForm ({name, age}) {
+    this.name = name
+    this.age = age 
+}
+
+```
+
+**13.解构时重命名简化命名**
+
+```
+// bad
+setForm (data) {
+    this.one = data.aaa_bbb_ccc_ddd
+    this.two = data.eee_fff_ggg
+}
+// good
+setForm ({aaa_bbb_ccc_ddd, eee_fff_ggg}) {
+    this.one = aaa_bbb_ccc_ddd
+    this.two = eee_fff_ggg
+}
+
+// best
+setForm ({aaa_bbb_ccc_ddd: one, eee_fff_ggg: two}) {
+    this.one = one
+    this.two = two
+}
+
+```
+
+**14.解构时设置默认值**
+
+```
+// bad
+setForm ({name, age}) {
+    if (!age) age = 16
+    this.name = name
+    this.age = age 
+}
+
+// good
+setForm ({name, age = 16}) {
+    this.name = name
+    this.age = age 
+}
+
+```
+
+**15.||短路符设置默认值**
+
+```
+let person = {
+    name: '张三',
+    age: 38
+}
+
+let name = person.name || '佚名'
+
+```
+
+**16.字符串拼接使用`${}`**
+
+```
+let person = {
+    name: 'LiMing',
+    age: 18
+}
+// bad
+function sayHi (obj) {
+    console.log('大家好，我叫' + person.name = '，我今年' + person.age + '了')
+}
+
+// good
+function sayHi (person) {
+    console.log(`大家好，我叫${person.name}，我今年${person.age}了`)
+}
+
+// best
+function sayHi ({name, age}) {
+    console.log(`大家好，我叫${name}，我今年${age}了`)
+}
 
 
+```
 
+**17.函数使用箭头函数**
 
+```
+let arr [18, 19, 20, 21, 22]
+// bad
+function findStudentByAge (arr, age) {
+    return arr.filter(function (num) {
+        return num === age
+    })
+}
 
+// good
+let findStudentByAge = (arr, age)=> arr.filter(num => num === age)
 
+```
 
+**18.函数参数校验**
 
+```
+// bad
+let findStudentByAge = (arr, age) => {
+    if (!age) throw new Error('参数不能为空')
+    return arr.filter(num => num === age)
+}
 
+// good
+let checkoutType = () => {
+    throw new Error('参数不能为空')
+}
+let findStudentByAge = (arr, age = checkoutType()) =>
+    arr.filter(num => num === age)
 
+```
 
+**19： use sprad operation:**
 
+* spreading an array or object into a new array or object, and joining multiple parameters into an array
 
+```
+let a = [3, 4, 5];let b = [1, 2, ...a, 6];console.log(b);  // [1, 2, 3, 4, 5, 6]
+```
 
-
-
+****
