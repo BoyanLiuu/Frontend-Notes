@@ -24,7 +24,7 @@
 * **onPageChange**:** **callback function invoked with the updated page value when the page is changed.
 * **siblingCount **(optional):** **represents the min number of page buttons to be shown on each side of the current page button. Defaults to 1.
 
-![](<.gitbook/assets/image (152).png>)
+![](<../.gitbook/assets/image (152).png>)
 
 
 
@@ -32,7 +32,7 @@
 
 ## Ant Design Steps
 
-![](<.gitbook/assets/image (29).png>)
+![](<../.gitbook/assets/image (29).png>)
 
 
 
@@ -63,6 +63,99 @@
 ## TreeSelect
 
 ## Carousel:
+
+![](<../.gitbook/assets/image (153).png>)
+
+### FIle Strucutre:
+
+* A `<Slider/>` component
+* Inside _**Slider** component_  , We would treat two buttons as component called _**BtnSlider**_
+* The dots below will be represents by div
+
+### Logic:
+
+use slideIndex to represent current index of the image
+
+#### 自动轮播：
+
+
+
+
+
+#### NextSlide:
+
+we would pass this into _**BtnSlider  **_
+
+```
+  const nextSlide = () => {
+    if (slideIndex !== dataSlider.length) {
+      setSlideIndex(slideIndex + 1);
+    } else if (slideIndex === dataSlider.length) {
+      setSlideIndex(1);
+    }
+  };
+```
+
+#### PrevSlide:
+
+we would pass this into _**BtnSlider **_
+
+```
+  const prevSlide = () => {
+    if (slideIndex !== 1) {
+      setSlideIndex(slideIndex - 1);
+    } else if (slideIndex === 1) {
+      setSlideIndex(dataSlider.length);
+    }
+  };
+```
+
+
+
+#### Dots logic:
+
+because we give each div  an index, this will help us determine which image index we want to have
+
+```
+  const moveDot = (index) => {
+    setSlideIndex(index);
+  };
+```
+
+
+
+#### CSS  logic:
+
+For the image / div we want to display:
+
+```
+.slide {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: 0;
+  transition: opacity ease-in-out 0.4s;
+}
+
+.active-anim {
+  opacity: 1;
+}
+```
+
+* use opacity to hide them, initially all the non-current slide will be `opacity:0`
+* If the current image is active, we would give `opacity:1;`
+
+
+
+``
+
+
+
+
+
+
+
+
 
 {% embed url="https://www.youtube.com/watch?v=N7W-S4JhMXY" %}
 
@@ -96,7 +189,7 @@ With
 
 ## Progress
 
-![](<.gitbook/assets/image (30).png>)
+![](<../.gitbook/assets/image (30).png>)
 
 
 
