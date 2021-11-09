@@ -157,12 +157,6 @@ For the image / div we want to display:
 
 
 
-{% embed url="https://www.youtube.com/watch?v=N7W-S4JhMXY" %}
-
-{% embed url="https://www.youtube.com/watch?v=l1MYfu5YWHc" %}
-
-{% embed url="https://www.youtube.com/watch?v=og3wCO98HkQ" %}
-
 {% embed url="https://blog.karenying.com/posts/adding-transitions-to-a-react-carousel-with-material-ui#conclusion" %}
 
 {% embed url="https://brainhub.eu/library/react-carousel" %}
