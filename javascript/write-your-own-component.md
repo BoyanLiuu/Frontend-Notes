@@ -38,6 +38,8 @@
 
 ## Star Rating Widget:
 
+{% embed url="https://arco.design/react/components/rate" %}
+
 {% embed url="https://codesandbox.io/s/react-starwidget-w7fl5?file=%2Fsrc%2Findex.js" %}
 
 ```
@@ -63,6 +65,8 @@
 ## TreeSelect
 
 ## Carousel:
+
+{% embed url="https://arco.design/react/components/carousel" %}
 
 ![](<../.gitbook/assets/image (153).png>)
 
@@ -224,7 +228,49 @@ How we update  time
 
 
 
+## 数据特效
 
+{% embed url="https://arco.design/react/components/statistic" %}
+
+## 标签页
+
+{% embed url="https://arco.design/react/components/tabs" %}
+、
+{% endembed %}
+
+## AutoComplete <a href="zi-dong-bu-quan-autocomplete" id="zi-dong-bu-quan-autocomplete"></a>
+
+{% embed url="https://arco.design/react/components/auto-complete" %}
+
+## Selector:
+
+{% embed url="https://arco.design/react/components/select" %}
+
+
+
+## Slider
+
+{% embed url="https://arco.design/react/components/slider" %}
+
+
+
+## SWITCH
+
+{% embed url="https://arco.design/react/components/switch" %}
+
+## Skeleton
+
+{% embed url="https://arco.design/react/components/skeleton" %}
+
+
+
+## BackTop:
+
+
+
+## ResizeBox:
+
+{% embed url="https://arco.design/react/components/resize-box" %}
 
 
 
