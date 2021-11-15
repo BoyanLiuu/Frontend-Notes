@@ -1,5 +1,24 @@
 # Write your own component
 
+## 计划：
+
+11/15 研究 infinity scroll&#x20;
+
+* [https://github.com/ankeetmaini/react-infinite-scroll-component](https://github.com/ankeetmaini/react-infinite-scroll-component)
+* [https://github.com/danbovey/react-infinite-scroller](https://github.com/danbovey/react-infinite-scroller)
+
+11//22 研究 pagination
+
+* [https://github.com/arco-design/arco-design/blob/main/components/Pagination/pagination.tsx](https://github.com/arco-design/arco-design/blob/main/components/Pagination/pagination.tsx)
+
+11/29 研究 carousal
+
+* [https://github.com/arco-design/arco-design/blob/main/components/Carousel/index.tsx](https://github.com/arco-design/arco-design/blob/main/components/Carousel/index.tsx)
+
+
+
+&#x20;
+
 ## Table with pagination
 
 {% embed url="https://www.freecodecamp.org/news/build-a-custom-pagination-component-in-react" %}
