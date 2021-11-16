@@ -17,7 +17,13 @@
 
 
 
-&#x20;
+## &#x20;Infinite scroll&#x20;
+
+### Related links:
+
+*
+
+
 
 ## Table with pagination
 
@@ -40,7 +46,7 @@
 * **totalCount**: represents the total count of data available from the source.
 * **currentPage**:** **represents the current active page. We'll use a **1-based index** instead of a traditional 0-based index for our `currentPage` value.
 * **pageSize**:** **represents the maximum data that is visible in a single page.
-* **onPageChange**:** **callback function invoked with the updated page value when the page is changed.
+* **onPageChange**:** **callback function invoked with the updated page value when thindividuale page is changed.
 * **siblingCount **(optional):** **represents the min number of page buttons to be shown on each side of the current page button. Defaults to 1.
 
 ![](<../.gitbook/assets/image (152).png>)

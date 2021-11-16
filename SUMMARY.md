@@ -26,3 +26,4 @@
 * [Typescript](typescript.md)
 * [Testing](testing-1.md)
 * [Side note](side-note.md)
+* [Blog I could write](blog-i-could-write.md)
