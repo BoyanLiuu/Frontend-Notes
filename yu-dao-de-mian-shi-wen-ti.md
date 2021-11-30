@@ -1,5 +1,19 @@
 # 遇到的面试问题
 
+## 个人简介
+
+I graduated from University of Maryland in 2020 Dec with 3.8 GPA.I have been working as a web developer after I graduated.
+
+In my previous job at Maryland Transportation Institute, We developed a prototype used to visualize transportation information using React.js, Mapbox, Context API. Besides fixing bugs and adding new features under the client's deadline.  I aim for the higher goal and improve code repository in various ways.&#x20;
+
+For example, I refactored our code to use function components and using SWR hooks to increase project performance and reduce the total lines of code by roughly 20%. I also Introduced a storybook in the project which helped the team document the UI component and reduce communication barriers
+
+In my current job at Bullpen strategy group, we are rebuilding a political intelligence analysis dashboard. What I did recently is improve the page rendering time from 3 sec to 0.5 sec by replacing all the iframe chunks with real HTML element.
+
+In my spare time, I have been volunteering myself in a volunteer organization called Hackertunity as a web developer tutor . At present, I focus all my energy to develop a software called offerland.AI. I am developing the Job board panel at this startup.
+
+I really appreciate you taking time to interview me. It has always been an honor to join a big corporation like capital one.
+
 ## Code:
 
 1. Describe css position
