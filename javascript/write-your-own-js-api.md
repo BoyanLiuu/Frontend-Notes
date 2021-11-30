@@ -66,7 +66,7 @@ function is(x, y) {
 4. &#x20;通过`new`创建的每个对象将最终被`[[Prototype]]`链接到这个函数的`prototype`对象上
 5. &#x20;如果函数没有返回对象类型`Object`(包含`Functoin`, `Array`, `Date`, `RegExg`, `Error`)，那么`new`表达式中的函数调用会自动返回这个新的对象
 
-`student.constructor === Student; `
+`student.constructor === Student;`&#x20;
 
 `Student.prototype.constructor === Student;`
 
@@ -127,7 +127,7 @@ function objectFactory() {
 
 func.apply(thisArg, \[argsArray])
 
-**thisArg: ** 可选的。在 `func` 函数运行时使用的 `this` 值。请注意，`this`可能不是该方法看到的实际值：如果这个函数处于**非严格模式**下，则指定为 `null` 或 `undefined` 时会自动替换为指向全局对象，原始值会被包装
+**thisArg:** 可选的。在 `func` 函数运行时使用的 `this` 值。请注意，`this`可能不是该方法看到的实际值：如果这个函数处于**非严格模式**下，则指定为 `null` 或 `undefined` 时会自动替换为指向全局对象，原始值会被包装
 
 **argsArray:**  可选的。一个数组或者类数组对象，其中的数组元素将作为单独的参数传给 `func` 函数。如果该参数的值为 `null` 或 `undefined`，则表示不需要传入任何参数
 
@@ -558,7 +558,7 @@ Function.prototype.bindFn = function bind(thisArg){
 
 #### 另外一个版本的最终版（看这个）
 
-* `this instanceof fNOP  `用来判断是否使用了 new 构造函数，如果是 我们就需要把 this绑定到新实例上面
+* `this instanceof fNOP`  用来判断是否使用了 new 构造函数，如果是 我们就需要把 this绑定到新实例上面
 * 把fNop的 原型对象修改为this（person）的原型对象
 * 再把 返还的函数对象 作为空函数fNop的实例进行串联
 
@@ -957,7 +957,7 @@ console.log(deepCopy(source))
    1. 创建一个Map。记录下已经拷贝过的对象，如果说已经拷贝过，那直接返回它行了。
    2. **这里有一个潜在的坑**： 就是map 上的 key 和 map 构成了强引用关系，这是相当危险的
       1. 被弱引用的对象可以在任何时候被回收，而对于强引用来说，只要这个强引用还在，那么对象无法被回收。**假设我们使用的 Map，那么图中的 foo 对象和我们深拷贝内部的 const map = new Map() 创建的 map 对象一直都是强引用关系，那么在程序结束之前，foo 不会被回收，其占用的内存空间一直不会被释放。**
-      2. **解决办法：**让 map 的 key 和 map 构成弱引用即可。ES6给我们提供了这样的数据结构，它的名字叫WeakMap，它是一种特殊的Map, 其中的键是弱引用的。其键必须是对象，而值可以是任意的。`const deepClone = (target, map = new WeakMap()) `
+      2. **解决办法：**让 map 的 key 和 map 构成弱引用即可。ES6给我们提供了这样的数据结构，它的名字叫WeakMap，它是一种特殊的Map, 其中的键是弱引用的。其键必须是对象，而值可以是任意的。`const deepClone = (target, map = new WeakMap())`&#x20;
 2. 解决引用丢失：
    1. 因为只要存储已拷贝过的对象就可以了
 

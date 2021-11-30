@@ -44,10 +44,10 @@
 ### Pagination props:
 
 * **totalCount**: represents the total count of data available from the source.
-* **currentPage**:** **represents the current active page. We'll use a **1-based index** instead of a traditional 0-based index for our `currentPage` value.
-* **pageSize**:** **represents the maximum data that is visible in a single page.
-* **onPageChange**:** **callback function invoked with the updated page value when thindividuale page is changed.
-* **siblingCount **(optional):** **represents the min number of page buttons to be shown on each side of the current page button. Defaults to 1.
+* **currentPage**: **** represents the current active page. We'll use a **1-based index** instead of a traditional 0-based index for our `currentPage` value.
+* **pageSize**: **** represents the maximum data that is visible in a single page.
+* **onPageChange**: **** callback function invoked with the updated page value when thindividuale page is changed.
+* **siblingCount** (optional): **** represents the min number of page buttons to be shown on each side of the current page button. Defaults to 1.
 
 ![](<../.gitbook/assets/image (152).png>)
 
@@ -93,7 +93,7 @@
 
 {% embed url="https://arco.design/react/components/carousel" %}
 
-![](<../.gitbook/assets/image (153).png>)
+![](<../.gitbook/assets/image (153) (1).png>)
 
 ### FIle Strucutre:
 
@@ -113,7 +113,7 @@ use slideIndex to represent current index of the image
 
 #### NextSlide:
 
-we would pass this into _**BtnSlider  **_
+we would pass this into _**BtnSlider**_ &#x20;
 
 ```
   const nextSlide = () => {
@@ -127,7 +127,7 @@ we would pass this into _**BtnSlider  **_
 
 #### PrevSlide:
 
-we would pass this into _**BtnSlider **_
+we would pass this into _**BtnSlider**_&#x20;
 
 ```
   const prevSlide = () => {
@@ -263,7 +263,7 @@ How we update  time
 、
 {% endembed %}
 
-## AutoComplete <a href="zi-dong-bu-quan-autocomplete" id="zi-dong-bu-quan-autocomplete"></a>
+## AutoComplete <a href="#zi-dong-bu-quan-autocomplete" id="zi-dong-bu-quan-autocomplete"></a>
 
 {% embed url="https://arco.design/react/components/auto-complete" %}
 

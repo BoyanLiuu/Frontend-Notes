@@ -20,9 +20,9 @@
 
 *
 
-    ** **flex-direction: 决定主轴的方向(即项目的排列方向)
+    &#x20;**** flex-direction: 决定主轴的方向(即项目的排列方向)
 
-    * ** ** flex-direction: row | row-reverse | column | column-reverse;
+    * &#x20;**** flex-direction: row | row-reverse | column | column-reverse;
 * flex-wrap: 决定容器内项目是否可换行
   * &#x20; flex-wrap: nowrap | wrap | wrap-reverse;
 * &#x20;flex-flow: flex-direction 和 flex-wrap 的简写形式
@@ -51,7 +51,7 @@
 * **flex-basis**:定义了在分配剩余空间之前元素的默认大小  can be set to any value that would apply to width, including values in px, ems, or percentages. Its initial value is auto, which means the browser will look to see if the element has a width declared. If so, the browser uses that size; if not, it determines the element’s size naturally by the contents   **默认值是`auto`，就是自动。有设置`width`则占据空间就是`width`，没有设置就按内容宽度来**
   * **This means that width will be ignored for elements that have any flex basis    &#x20;other than auto**
   * &#x20;当剩余空间不足的时候，flex子项的实际宽度并通常不是设置的`flex-basis`尺寸，因为flex布局剩余空间不足的时候默认会收缩
-* ** flex**: flex-grow, flex-shrink 和 flex-basis的简写
+* &#x20;**flex**: flex-grow, flex-shrink 和 flex-basis的简写
   * &#x20;flex 的默认值是 0 1 auto。
   * &#x20;2个快捷键 `auto` (`1 1 auto`) 和 none (`0 0 auto`)。
 * **align-self**:允许单个项目有与其他项目不一样的对齐方式
@@ -64,23 +64,23 @@
 
 
 
-* Grid 算作二维布局， ` display: grid | inline-grid;`
+* Grid 算作二维布局， `display: grid | inline-grid;`
 * **grid-template-columns** 和 **grid-template-rows** 属性来定义网格中的行和列
   * &#x20;`grid-template-columns` 属性设置列宽 `grid-template-rows` 属性设置行高
 * **grid-row-gap** 属性、**grid-column-gap** 属性以及 grid-gap 属性
   * &#x20;`grid-row-gap` 属性、`grid-column-gap` 属性分别设置行间距和列间距。`grid-gap` 属性是两者的简写形式
   * &#x20;`grid-row-gap: 10px` 表示行间距是 10px，`grid-column-gap: 20px` 表示列间距是 20px。`grid-gap: 10px 20px` 实现的效果是一样的
-* **grid-template-areas： **属性用于定义区域，一个区域由一个或者多个单元格组成
-* **grid-auto-flow ：默认值是 row  **`grid-auto-flow: row | column | row dense | column dense;`
+* **grid-template-areas：** 属性用于定义区域，一个区域由一个或者多个单元格组成
+* **grid-auto-flow ：默认值是 row**  `grid-auto-flow: row | column | row dense | column dense;`
 * **grid-auto-columns:,grid-auto-rows:**Specifies the size of any auto-generated grid track, 多余的行会根据 grid-auto-rows 算，&#x20;
-* ** justify-items** 属性设置单元格内容的水平位置
-* ** align-items** 属性设置单元格的垂直位置（上中下）
-* ** justify-content** 属性是整个内容区域在容器里面的水平位置
-* ** align-content** 属性是整个内容区域的垂直位置（上中下）
+* &#x20;**justify-items** 属性设置单元格内容的水平位置
+* &#x20;**align-items** 属性设置单元格的垂直位置（上中下）
+* &#x20;**justify-content** 属性是整个内容区域在容器里面的水平位置
+* &#x20;**align-content** 属性是整个内容区域的垂直位置（上中下）
 
 ### Grid 实战
 
-* fr 实现 等分响应式: `grid-template-columns: 1fr 1fr 1fr; `表示容器分为三等分
+* fr 实现 等分响应式: `grid-template-columns: 1fr 1fr 1fr;` 表示容器分为三等分
 * repeat + auto-fit——固定列宽，改变列数量   `grid-template-columns: repeat(auto-fit, 200px);`
   * 我们的网格能够固定列宽，并根据容器的宽度来改变列的数量,表示固定列宽为 200px，数量是自适应的，只要容纳得下，就会往上排列
 
@@ -98,7 +98,7 @@
 
 ![](<.gitbook/assets/image (41).png>)
 
-* Default`  box-sizing: content-box    `This means that any height or width you specify only sets the size of the content box
+* Default `box-sizing: content-box`   This means that any height or width you specify only sets the size of the content box
 
 ![](<.gitbook/assets/image (42).png>)
 
@@ -161,20 +161,20 @@ p ~ h1 {
 ```
 
 * Id selector has more specificity than the attribute, class, pseudo-class, and pseudo-element selectors. Only inline styles have move specificity than id selectors.
-* We use , for grouping multiple selectors** (eg1)**
+* We use , for grouping multiple selectors **(eg1)**
 * **Attribute selectors:**
   * **Simple attribute selector** , select all h1 ele‐ ments that have a class attribute **(eg2)**
   * **With exact attribute value:   (eg 3)**
   * **Selection based on partial attribute values**
-    * `[foo~="bar"] `Selects any element with an attribute foo whose value contains the word bar in a space-separated list of words
-    * `[foo*="bar"] `Selects any element with an attribute foo whose value contains the substring bar
-    * `[foo^="bar"] `Selects any element with an attribute foo whose value begins with bar
-    * `[foo$="bar"] `Selects any element with an attribute foo whose value ends with bar
+    * `[foo~="bar"]` Selects any element with an attribute foo whose value contains the word bar in a space-separated list of words
+    * `[foo*="bar"]` Selects any element with an attribute foo whose value contains the substring bar
+    * `[foo^="bar"]` Selects any element with an attribute foo whose value begins with bar
+    * `[foo$="bar"]` Selects any element with an attribute foo whose value ends with bar
     * `[foo|="bar"]`] Selects any element with an attribute foo whose value starts with bar followed by a dash -  or whose value is exactly equal to bar   **(eg 4)**
-* **Descendant Selector:  (eg 5), **Select** **em elements that are descended from h1 elements
-* **Selecting children (eg 6), **select a strong element only if it is a direct child of an h1 element
-* **Selecting Adjacent Sibling Elements (eg 7)  **,  All the immediate h1 tags  after p tags changed their background color to orange. If there is any other element between `p` tag and `h1` tag then this rule is not applicable. **只有第一个 出现的  才会 apply**
-* **General Sibling Selector (eg 8)     **All h1 tags after p tags have orange background color
+* **Descendant Selector:  (eg 5),** Select **** em elements that are descended from h1 elements
+* **Selecting children (eg 6),** select a strong element only if it is a direct child of an h1 element
+* **Selecting Adjacent Sibling Elements (eg 7)**  ,  All the immediate h1 tags  after p tags changed their background color to orange. If there is any other element between `p` tag and `h1` tag then this rule is not applicable. **只有第一个 出现的  才会 apply**
+* **General Sibling Selector (eg 8)**     All h1 tags after p tags have orange background color
 
 ### Chain pseudo-classes
 
@@ -227,18 +227,18 @@ A pseudo-class is a selector that selects elements that are in a specific state,
 伪类就是开头为冒号的关键字：
 
 1. Selecting the root element   &#x20; `:root`
-2. Selecting empty elements ` :empty`
+2. Selecting empty elements `:empty`
 3. `:only-child`
 4. `:first-child`Selects every  element that is the first child of its parent
 5. `:last-child`
 6. `:active`Selects the active link
-7. `:checked `Selects every checked  element
-8. `:default `Selects the default  element
-9. `:first-of-type `Selects every \<p> element that is the first \<p> element of its parent
+7. `:checked` Selects every checked  element
+8. `:default` Selects the default  element
+9. `:first-of-type` Selects every \<p> element that is the first \<p> element of its parent
 10. `:hover`
 11. `:focus`
 12. `:nth-child(n)`Selects every  p element that is the second child of its parent
-    1. `:nth-child(2n)  `所有的 even element
+    1. `:nth-child(2n)`  所有的 even element
 13. `:nth-last-child(n)`
 14. `:nth-last-of-type(n)`
 15. `:last-of-type`
@@ -247,7 +247,7 @@ A pseudo-class is a selector that selects elements that are in a specific state,
 
 Pseudo-elements start with a double colon ::
 
-* 伪元素只能放在最后面  所以 `input::after:checked{display:block}  `** 不正确**
+* 伪元素只能放在最后面  所以 `input::after:checked{display:block}`   **不正确**
 
 ```
 // eg 1, 就会在之后添加 这些东西
@@ -526,12 +526,12 @@ background:lightblue;
 
 * floated elements does not affect parent height
 
-### **清除浮动  **How to fix above issue?
+### **清除浮动**  How to fix above issue?
 
 * Method 1: 使用BFC 在parent 这里 加入 `overflow:auto;`
 * Method 2: 把父元素也变成float 就可以了， 但是这样子会影响布局， 比较局限
-* Method 3: Adds an empty div with a clear at the end of parent div  ,  drawback: **It add unwanted markup to HTML**`  <div style="clear: left"></div>`
-* Method 4:we can use pseudo-element, ::after   ** 最推荐**
+* Method 3: Adds an empty div with a clear at the end of parent div  ,  drawback: **It add unwanted markup to HTML**  `<div style="clear: left"></div>`
+* Method 4:we can use pseudo-element, ::after   **最推荐**
 
 ![](<.gitbook/assets/image (48).png>)
 
@@ -650,8 +650,8 @@ background:lightblue;
     
 ```
 
-* A block formatting context itself is part of the surrounding document flow, **but it isolates its contents from  &#x20;the outside context, **This isolation does three things for the element that establishes the BFC(原理):
-  * It contains the top and bottom margins of all elements within it. They won’t collapse with margins of elements outside of the block formatting context.** 不会出现外边距塌陷**
+* A block formatting context itself is part of the surrounding document flow, **but it isolates its contents from  &#x20;the outside context,** This isolation does three things for the element that establishes the BFC(原理):
+  * It contains the top and bottom margins of all elements within it. They won’t collapse with margins of elements outside of the block formatting context. **不会出现外边距塌陷**
   * **It contains internal floats**.
     * Make float content and alongside content the same height.
   * **It excludes external floats.**
@@ -668,9 +668,9 @@ background:lightblue;
       grid, or inline-grid—these are called block containers
   * position: absolute or position: fixed 绝对定位元素
 * 应用场景
-  * **防止浮动导致父元素高度塌陷， **![](<.gitbook/assets/image (62).png>)&#x20;
+  * **防止浮动导致父元素高度塌陷，** ![](<.gitbook/assets/image (62).png>)&#x20;
   * **外边框塌陷问题 （上面有解决办法）**
-  * **阻止普通文档流元素被浮动元素覆盖 **![](<.gitbook/assets/image (63).png>) 创建了BFC 之后 ![](<.gitbook/assets/image (64).png>)&#x20;
+  * **阻止普通文档流元素被浮动元素覆盖** ![](<.gitbook/assets/image (63).png>) 创建了BFC 之后 ![](<.gitbook/assets/image (64).png>)&#x20;
   *
 
 ## 掌握一套完整的响应式布局方案
@@ -713,9 +713,9 @@ background:lightblue;
 
 * 因为浏览器的兼容问题，不同浏览器对有些标签的默认值是不同的，如果没对CSS初始化往往会出现浏览器之间的页面显示差异
 
-## &#x20; ** CSS里的visibility属性有个collapse属性值？**
+## &#x20; **CSS里的visibility属性有个collapse属性值？**
 
-* visible**: **Default value. The element is visible
+* visible**:** Default value. The element is visible
 * hidden: The element is hidden (but still takes up space)
 *   collapse: Only for table rows (\<tr>), row groups (\<tbody>), columns (\<col>), column groups (\<colgroup>). This value removes a row or column, but it does not affect the table layout. The space taken up by the row or column will be available for other content.
 
@@ -797,7 +797,7 @@ _Groups of elements with a common parent that move forward or backward together 
 * 层叠等级的比较只有在当前层叠上下文元素中才有意义。不同层叠上下文中比较层叠等级是没有意义的
 * 如何产生  stacking context
   * HTML中的根元素\<html>\</html>本身j就具有层叠上下文，称为“根层叠上下文
-  * 普通元素设置position属性为非static值并设置z-index属性为具体数值，产生层叠上下文，** z-index: auto 不会产生 stacking context**
+  * 普通元素设置position属性为非static值并设置z-index属性为具体数值，产生层叠上下文， **z-index: auto 不会产生 stacking context**
   *   CSS3中的新属性也可以产生层叠上下文, 只要满足以下条件， 就会产生 层叠 上下文
 
       * 父元素的display属性值为flex|inline-flex，子元素z-index属性值不为auto的时候，子元素为层叠上下文元素；
@@ -981,7 +981,7 @@ _Groups of elements with a common parent that move forward or backward together 
 
 ![](<.gitbook/assets/image (84).png>)
 
-* &#x20;上面例子 把 `z-index:auto` 改成` z-index: 0;`
+* &#x20;上面例子 把 `z-index:auto` 改成 `z-index: 0;`
 * 因为设置`z-index: 0`后，`.box1/.box2`产生了各自的层叠上下文，这时候要比较`.child1/.child2`的层叠关系完全由父元素`.box1/.box2`的层叠关系决定。但是`.box1/.box2`的`z-index`值都为`0`，都是块级元素（所以它们的层叠等级，层叠顺序是相同的），这种情况下，在`DOM`结构中**后面的覆盖前面的**，所以`.child2`就在上面。
 
 
@@ -1073,7 +1073,7 @@ _Groups of elements with a common parent that move forward or backward together 
 
 ### 使用table
 
-* 父元素:  `display:table; `  子元素 `display: table-cell;`
+* 父元素:  `display:table;`  子元素 `display: table-cell;`
 
 ### 使用 flexbox
 
@@ -1253,7 +1253,7 @@ p::after{
 
 * After identifying the issue and the offending browser, use a separate style sheet that only loads when that specific browser is being used. This technique requires server-side rendering though.
 * Use libraries like Bootstrap that already handles these styling issues for you.
-* Use** autoprefixer **to automatically add vendor prefixes to your code.
+* Use **autoprefixer** to automatically add vendor prefixes to your code.
 * Use  Normalize.css.
 
 \
@@ -1273,7 +1273,7 @@ Writing efficient CSS
 * Variables for consistent theming. Can share theme files across different projects.
 * Mixins to generate repeated CSS.
 * Splitting your code into multiple files. CSS files can be split up too but doing so will require a HTTP request to download each CSS file.
-* &#x20;**Disadvantages: **Requires tools for preprocessing. Re-compilation time can be slow.
+* &#x20;**Disadvantages:** Requires tools for preprocessing. Re-compilation time can be slow.
 
 ## 怎么把下列图片宽度变成 300px
 
@@ -1284,7 +1284,7 @@ Writing efficient CSS
 
 * `max-width: 300px`
 * `transform: scale(0.625,0.625)`
-*   `box-sizing: border-box;    `
+*   `box-sizing: border-box;`
 
     `padding: 0 90px;`
 * `document.getElementsByTagName("img")[0].setAttribute("style","width:300px!important;")`
@@ -1308,11 +1308,11 @@ Writing efficient CSS
 
 * **inline-block元素放到一起会产生一段空白。**
 * img 标签默认是 inline-block
-* normal flow 的情况 下， 多个 空白行会合并成一行， 是因为`  white-space:normal  `换行也背当成一个空白符 ， 会合并多余空白 这就是为什么会有间隙的原因， 间隙就是空白符
+* normal flow 的情况 下， 多个 空白行会合并成一行， 是因为 `white-space:normal` 换行也背当成一个空白符 ， 会合并多余空白 这就是为什么会有间隙的原因， 间隙就是空白符
 * **解决办法**
   * 给其中一个元素添加 float：left/ right
   * img element 互相紧挨着， 没有换行， 但是 会导致代码不方便阅读
-  * 因为空白符 是个 字符， 所以就会有字体大小 ， 所以我们可以把它 设置为 0， `font-size：0`, 不过增加了代码量, ** 只有这个方法可以把垂直和水平方向空隙都删除了**
+  * 因为空白符 是个 字符， 所以就会有字体大小 ， 所以我们可以把它 设置为 0， `font-size：0`, 不过增加了代码量, **只有这个方法可以把垂直和水平方向空隙都删除了**
   * `letter-spacing:-100px;   , 不过增加了`
 
 ![](<.gitbook/assets/image (61).png>)
@@ -1688,7 +1688,7 @@ footer , header{
 
 {% embed url="https://jsfiddle.net/Boyanliuu/2bpwjh6f/13/" %}
 
-* `.center { left: 200px; right: 200px; }   `  这个可以让他的 宽度 起始点是 left 终点是right
+* `.center { left: 200px; right: 200px; }`  这个可以让他的 宽度 起始点是 left 终点是right
 
 
 
@@ -1895,7 +1895,7 @@ border-radius: 50% / 100% 100% 0 0;
     效果，最终产生我们所期望的结果，不幸的是，这意味着我们将不得不使用
 
     一层额外的 HTML 元素来包裹内容，比如用一个 div： **额外的 HTML 元素**
-2.  Method 2更好的方案 ，使用 伪元素,_**还适用于其他任何变形样式，    **_
+2.  Method 2更好的方案 ，使用 伪元素,_**还适用于其他任何变形样式，**_
 
     _**当我们想变形一个元素而不想变形它的内容时就可以用到它**_
 
@@ -1943,7 +1943,7 @@ border-radius: 50% / 100% 100% 0 0;
 
 * 使用的就是对角切，所以我们隐藏其余的三角形就好了 使用 `transparent`
 
-#### &#x20;      Talk Bubble（聊天框） <a href="talk-bubble-ef-bc-88-e8-81-8a-e5-a4-a9-e6-a1-86-ef-bc-89" id="talk-bubble-ef-bc-88-e8-81-8a-e5-a4-a9-e6-a1-86-ef-bc-89"></a>
+#### &#x20;      Talk Bubble（聊天框） <a href="#talk-bubble-ef-bc-88-e8-81-8a-e5-a4-a9-e6-a1-86-ef-bc-89" id="talk-bubble-ef-bc-88-e8-81-8a-e5-a4-a9-e6-a1-86-ef-bc-89"></a>
 
 ![](<.gitbook/assets/image (95).png>)
 

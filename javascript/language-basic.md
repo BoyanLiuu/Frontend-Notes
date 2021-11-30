@@ -3,7 +3,7 @@
 ## 1.Strict Mode
 
 * Using _**strict**_ enforces strict mode, which means stricter parsing and error handling of the JavaScript code. It allows you to catch errors in an erroneous code, whereas in a normal case.
-* to enable strict mode for an entire script, include` "use strict";`   at top.
+* to enable strict mode for an entire script, include `"use strict";`   at top.
 * **adhering to strict mode makes your code generally more optimizable by the engine**
 
 ### 题目：
@@ -39,7 +39,7 @@ obj1.x = 9;
 
 #### Question 2:
 
-* use strict can either be used for an entire script or functions. It cannot be used for a block of code enclosed in {} alone. When used inside functions,_** it changes the value of this. It changes from window object to undefined**_
+* use strict can either be used for an entire script or functions. It cannot be used for a block of code enclosed in {} alone. When used inside functions, _**it changes the value of this. It changes from window object to undefined**_
   * When we call a function with apply, the value of this is set to some custom value that is the first parameter to the apply method.
 * undefined \* 2  return NaN since, result is not a number
 * null >= 0 , so null \*0  return 0
@@ -97,7 +97,7 @@ console.log(age); // ReferenceError: age is not defined
 
 ![](<../.gitbook/assets/image (4).png>)
 
-* **let Declaration in for Loops **&#x20;
+* **let Declaration in for Loops**&#x20;
   * It will declare a new iterator variable for each loop iteration.
 
 ### const:
@@ -110,7 +110,7 @@ console.log(age); // ReferenceError: age is not defined
 
 * A variable can be declared after it has been used. This is because variable declarations using var hoisted to the top of their functional scope at compile time.
 * **Only the declarations get hoisted to the top, not the initializations.**
-* **function declaration **are also hoisted, but function expression are not  &#x20;function declaration
+* **function declaration** are also hoisted, but function expression are not  &#x20;function declaration
 
 ![](<../.gitbook/assets/image (6).png>)
 
@@ -229,9 +229,9 @@ foo = 1;
 
 ## 4.Data Type
 
-* There are** 6 simple** data type(primitive types)
+* There are **6 simple** data type(primitive types)
   * String, number, boolean,BigInt, Undefined, symbol
-* 1 complex data type,** Object**
+* 1 complex data type, **Object**
   * **3 wrapper Object**
     * Boolean  Number, String
   * null:  null is considered to be    &#x20; an empty object reference&#x20;
@@ -239,7 +239,7 @@ foo = 1;
 
       * Function, Array,Date,RegExp
 
-      **      **
+      ****
 
 ![](<../.gitbook/assets/image (9).png>)
 
@@ -279,7 +279,7 @@ console.log(typeof x);   //"bigint"
 * 在JS中，所有的数字都以双精度64位浮点格式表示，那这会带来什么问题呢？
 * 这导致JS中的Number无法精确表示非常大的整数，它会将非常大的整数四舍五入，确切地说，JS中的Number类型只能安全地表示-9007199254740991(-(2^53-1))和9007199254740991（(2^53-1)），任何超出此范围的整数值都可能失去精度。
 * `console.log(9999999999999999);  //=>10000000000000000`
-* 有一定安全性问题：` 9007199254740992 === 9007199254740993;    // → true 居然是true!`
+* 有一定安全性问题： `9007199254740992 === 9007199254740993;    // → true 居然是true!`
 * 如何创建并使用BigInt？
   * 要创建BigInt，只需要在数字末尾追加n即可。
   * 另一种创建BigInt的方法是用BigInt()构造函数
@@ -293,7 +293,7 @@ console.log(typeof x);   //"bigint"
 
 ### The typeof Operator:
 
-* It tell the type of a given variable, used them for** primitive type**  data 数据类型
+* It tell the type of a given variable, used them for **primitive type**  data 数据类型
 * new 创建的都是 object
 
 ![](<../.gitbook/assets/image (99).png>)
@@ -716,7 +716,7 @@ Array.isArray(b);//false
    1. 但是这个 方法 前提条件是 **constructor 没有被改写**
 3. 用Object的toString方法判断， 每一个 继承自 Object的对象都拥有 toString() 方法
    1. 前提条件是 toString() 没有被改写 &#x20;
-   2. 如果一个对象的toString方法没有被重写过的话，那么toString方法将会返回"\[object type]"，其中的type代表的是对象的类型，根据type的值，我们就可以判断这个疑似数组的对象到底是不是数组了。** 我们不能直接调用 数组的toString 方法**
+   2. 如果一个对象的toString方法没有被重写过的话，那么toString方法将会返回"\[object type]"，其中的type代表的是对象的类型，根据type的值，我们就可以判断这个疑似数组的对象到底是不是数组了。 **我们不能直接调用 数组的toString 方法**
    3. 从Method3 例子当中，除了对象之外，其他的数据类型的toString返回的都是内容的字符创，只有对象的toString方法会返回对象的类型。所以要判断除了对象之外的数据的数据类型，我们需要“借用”对象的toString方法，所以我们需要使用call或者apply方法来改变toString方法的执行上下文
 4. 用Array对象的isArray方法判断, 最靠谱的方法了
 
@@ -830,7 +830,7 @@ function sayHi() {
 sayHi('OO','XXX') //"Hello OO, XXX"
 ```
 
-*   when a function is defined using the** function **keyword (meaning a non-arrow function), there actually is an **arguments object** that can be accessed while inside a function to retrieve the values of each
+*   when a function is defined using the **function** keyword (meaning a non-arrow function), there actually is an **arguments object** that can be accessed while inside a function to retrieve the values of each
 
     argument that was passed in.
 * The arguments object acts like an array (though it isn’t an instance of Array)
@@ -1023,7 +1023,7 @@ sayColor.call(window); // red
 sayColor.call(o); // blue
 ```
 
-* The first argument is the** this** value, but the remaining arguments are passed directly into the  &#x20;function.&#x20;
+* The first argument is the **this** value, but the remaining arguments are passed directly into the  &#x20;function.&#x20;
 
 ### apply
 
@@ -1084,7 +1084,7 @@ console.log(a.privateVariable);// undefined
 ### StaticPrivateVariables:
 
 * Here is another way to create privileged methods , using private scope to define the private variables or  &#x20;functions.
-* In this pattern, a private scope is created to** enclose the constructor and its methods**. The private  &#x20;variables and functions are defined first, followed by the constructor and the public methods. Public methods are defined on the prototype, as in the typical **prototype pattern**
+* In this pattern, a private scope is created to **enclose the constructor and its methods**. The private  &#x20;variables and functions are defined first, followed by the constructor and the public methods. Public methods are defined on the prototype, as in the typical **prototype pattern**
 * This would create static private variables for better code reuse through prototype., although each instance doesn't have its own private variable.
 
 ```
@@ -1302,7 +1302,7 @@ console.log(new Date, i);
 1. Output:  Element: undefined, at index:4     乘4
    1. on each iteration, the setTimeout will be triggered,since it’s an asynchronous web API, the command enters the event queue, after which the next loop iteration occurs. Hence, the event queue waits for the loop commands to execute first and call stack to get empty, after which the four setTimeout commands move from the event queue to call stack and execute.
 2. &#x20;There are 4  possible solution:
-   1. Using Es6 featre,** let   **It  creates a new binding for each loop iteration, each i refers to the binding of one specific iteration and preserves the value that was current at that time
+   1. Using Es6 featre, **let**   It  creates a new binding for each loop iteration, each i refers to the binding of one specific iteration and preserves the value that was current at that time
    2. **Using IFFE**: That function takes the parameter local\_i, that is the variable i. It calls another function in return, an anonymous function that displays the value of i stored in the variable local\_i
    3. 给定时器传入第三个参数, 作为timer函数的第一个函数参数
    4. JS 中 基本类型是 pass by value
@@ -1479,7 +1479,7 @@ console.log(person.getName()); // axuebin
 * **情况1: 全局上下文**
   * `var` === `this.` === `winodw.`
 * **情况2: 函数上下文**  When a function is not  &#x20;defined using the arrow syntax, the this object is bound at runtime based on the context in which  &#x20;a function is executed:&#x20;
-  * **直接调用** when used inside global functions, this is equal to** window in nonstrict **mode    &#x20;and **undefined in strict mode  **
+  * **直接调用** when used inside global functions, this is equal to **window in nonstrict** mode    &#x20;and **undefined in strict mode** &#x20;
   * **call, apply, this 指向 绑定的对象上,如果call、apply、bind接收到的第一个参数是空或者null、undefined的话，则会忽略这个参数。**
   * **箭头函数**
     * **箭头函数会捕获其所在上下文的this值，作为自己的this值。**
@@ -1489,7 +1489,7 @@ console.log(person.getName()); // axuebin
         也就是说**无法通过call、apply、bind绑定箭头函数的this(它自身没有this)**。而call、apply、bind可以绑定缓存箭头函数上层的普通函数的this, 但是可以通过改变作用域中this的指向来间接修改。
     * 箭头函数并不绑定 this，arguments，super(ES6)，抑或 new.target(ES6)。
 * **情况3:   this指向调用函数的对象。**
-  * this is equal to the object when called as an object method  ` obj.a();`
+  * this is equal to the object when called as an object method  `obj.a();`
 * **情况4: this被绑定到正在构造的新对象。**
 * **情况5: 作为一个DOM事件处理函数**
   * Dom 事件绑定, onclick和addEventerListener中 this 默认指向绑定事件的元素。
@@ -3911,7 +3911,7 @@ pointValues({name: "jerry", age:2})
 
 Object destructuring follows a syntax similar to creating an object literal but on the left-hand side
 
-1. we use** ,** to skip first index element
+1. we use **,** to skip first index element
 2. &#x20;we use rest operator to collect all the remaining values into an array
 3. &#x20;steps
    1. We first access the cats property.
@@ -3948,7 +3948,7 @@ btn.removeEventListener("click", handler, false); // works!
 *   we can add multiple eventListener , The event handlers fire in the order in which
 
     they were added
-* `btn.removeEventListener()`   remove event listener or `btn.onclick = null `
+* `btn.removeEventListener()`   remove event listener or `btn.onclick = null`&#x20;
 
 ### Internet Explorer Event Handlers
 
@@ -4023,7 +4023,7 @@ document.domain = "company.com"
   * Url4: we can see that it has a different hostname; hence, it is not of the same origin.
   * **URL5**: We set document.domain to company.com for url5; this means we are allowing the subdomain xyz.company.com to access its parent’s company.com's resources.
     * However, that means we need to do the same for url1; this step will indicate that url1 wishes to allow url5 to access its resources.Now, url5 can pass the same-origin check with url1. Implementing the above-mentioned steps allows url5 to pass the port number check as well. How is that?
-    * The port number is checked separately; any call to `document.domain `overwrites the port number to null. Calling this statement for url5 sets its port number to null. Since both url1 and url5 need to have the same port number, we need to execute this statement for url1 as well. In the example above, we do exactly that; now, url5 will be of the same origin as url1.
+    * The port number is checked separately; any call to `document.domain` overwrites the port number to null. Calling this statement for url5 sets its port number to null. Since both url1 and url5 need to have the same port number, we need to execute this statement for url1 as well. In the example above, we do exactly that; now, url5 will be of the same origin as url1.
 
 
 
@@ -4140,7 +4140,7 @@ sessionStorage.clear();
 
 * The Navigator userAgent property is used for returning the user-agent header’s value sent to the server by the browser. It returns a string representing values such as the name, version, and platform of the browser.
 
-## **22. **The Document Object Model
+## **22.** The Document Object Model
 
 * Api that treats HTML and XML documents as tree structures with nodes
 * The DOM is constructed in the browser as the page loads
@@ -4247,13 +4247,13 @@ sum(1, 2);//3
 
 1. &#x20;It create an empty array, then iterate through the object it's running on (originally an array, now a NodeList) and keep appending the elements of that object to the empty array it created, which is eventually returned
 2. **Array.from()**
-3. ** ES6展开运算符**
+3. &#x20;**ES6展开运算符**
 4. **利用concat+apply**
 
 ### How could you make sure to run some javaScript when DOM is ready like $(document).ready?
 
 1. Put your script in the last tag of html body element. DOM would be ready by the time browser hits the script tag.
-2. ` document.addEventListener('DOMContentLoaded')`
+2. &#x20;`document.addEventListener('DOMContentLoaded')`
 3. Watch changes in the readyState of the document. And the last state is "complete" state, you can put your code there  , either loading, or complete ![](<../.gitbook/assets/image (19).png>)&#x20;
 
 ### The classList property
@@ -4443,8 +4443,8 @@ console.log(result);
 
 1. **array.indexOf**
 2. **array.includes(searcElement\[,fromIndex])**
-3. **array.find(callback\[,thisArg])  , **返回数组中满足条件的第一个元素的值，如果没有，返回undefined
-4. **array.findeIndex(callback\[,thisArg])    **返回数组中满足条件的第一个元素的下标，如果没有找到，返回-1]
+3. **array.find(callback\[,thisArg])  ,** 返回数组中满足条件的第一个元素的值，如果没有，返回undefined
+4. **array.findeIndex(callback\[,thisArg])**    返回数组中满足条件的第一个元素的下标，如果没有找到，返回-1]
 
 
 
@@ -4751,7 +4751,7 @@ Promise.resolve(1)
   * 返回任意一个非 promise 的值都会被包裹成 promise 对象
   * 即 return new Error('error!!!') 等价于 `return Promise.resolve(new Error('error!!!'))`
 * 怎么在 catch 和 then 中 报错 并且被后面 catch 捕获
-  *   `return Promise.reject(new Error('error!!!'))      `
+  *   `return Promise.reject(new Error('error!!!'))`
 
       `throw new Error('error!!!')`
 * &#x20;如果没有使用`catch()`方法指定错误处理的回调函数,Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。
@@ -4819,7 +4819,7 @@ p2
 
 &#x20;`p1`是一个 Promise，3 秒之后变为`rejected`。`p2`的状态在 1 秒之后改变，`resolve`方法返回的是`p1`。由于`p2`返回的是另一个 Promise，导致`p2`自己的状态无效了，由`p1`的状态决定`p2`的状态。所以，后面的`then`语句都变成针对后者（`p1`）。又过了 2 秒，`p1`变为`rejected`，导致触发`catch`方法指定的回调函数。
 
-* &#x20;调用`resolve`或`reject`**并不会终结 Promise 的参数函数的执行。 **
+* &#x20;调用`resolve`或`reject`**并不会终结 Promise 的参数函数的执行。**&#x20;
 
 ```
 new Promise((resolve, reject) => {
@@ -4832,7 +4832,7 @@ new Promise((resolve, reject) => {
 // 1
 ```
 
-### Promise.prototype.then() <a href="promise-prototype-then" id="promise-prototype-then"></a>
+### Promise.prototype.then() <a href="#promise-prototype-then" id="promise-prototype-then"></a>
 
 ```
 Promise.resolve()
@@ -4899,7 +4899,7 @@ getJSON("/post/1.json").then(function(post) {
 
 * &#x20;上面代码中，第一个`then`方法指定的回调函数，返回的是另一个`Promise`对象。这时，第二个`then`方法指定的回调函数，就会等待这个新的`Promise`对象状态发生变化。如果变为`resolved`，就调用第一个回调函数，如果状态变为`rejected`，就调用第二个回调函数。
 
-### Promise.prototype.catch()  <a href="promise-prototype-catch" id="promise-prototype-catch"></a>
+### Promise.prototype.catch()  <a href="#promise-prototype-catch" id="promise-prototype-catch"></a>
 
 ```
 window.addEventListener('unhandledrejection', function(event) {
@@ -4935,7 +4935,7 @@ new Promise((resolve, reject) => {
 ```
 
 * 如果异步操作抛出错误，状态就会变为`rejected`，就会调用`catch()`方法指定的回调函数，处理这个错误。另外，`then()`方法指定的回调函数，如果运行中抛出错误，也会被`catch()`方法捕获。
-* ** 如果 Promise 状态已经变成`resolved`，再抛出错误是无效的。**
+* &#x20;**如果 Promise 状态已经变成`resolved`，再抛出错误是无效的。**
 
 ```
 const promise = new Promise(function(resolve, reject) {
@@ -4958,11 +4958,11 @@ new Promise(function(resolve, reject) {
 }).catch(alert);
 ```
 
-### &#x20;<a href="promise-prototype-finally" id="promise-prototype-finally"></a>
+### &#x20;<a href="#promise-prototype-finally" id="promise-prototype-finally"></a>
 
-### &#x20;<a href="promise-prototype-finally" id="promise-prototype-finally"></a>
+### &#x20;<a href="#promise-prototype-finally" id="promise-prototype-finally"></a>
 
-### Promise.prototype.finally() <a href="promise-prototype-finally" id="promise-prototype-finally"></a>
+### Promise.prototype.finally() <a href="#promise-prototype-finally" id="promise-prototype-finally"></a>
 
 ```
 promise
@@ -4974,7 +4974,7 @@ promise
 * 不管 Promise 对象最后状态如何，都会执行的操作
 * &#x20;它最终返回的默认会是一个**上一次的Promise对象值**，不过如果抛出的是一个异常则返回异常的`Promise`对象
 
-### Promise.all() <a href="promise-all" id="promise-all"></a>
+### Promise.all() <a href="#promise-all" id="promise-all"></a>
 
 ```
 // 例子 1
@@ -5063,7 +5063,7 @@ Promise.all([runAsync(1), runAsync(2), runAsync(3)])
 
 
 
-### Promise.race() <a href="promise-race" id="promise-race"></a>
+### Promise.race() <a href="#promise-race" id="promise-race"></a>
 
 ```
 const p = Promise.race([p1, p2, p3]);
@@ -5103,7 +5103,7 @@ Promise.race([runAsync(1), runAsync(2), runAsync(3)])
 * `Promise.race()`方法同样是将多个 Promise 实例，包装成一个新的 Promise 实例。 只要`p1`、`p2`、`p3`之中有一个实例率先改变状态，`p`的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给`p`的回调函数
 * 上面的 例子2 如果指定时间内没有获得结果，就将 Promise 的状态变为`reject`，否则变为`resolve`。
 
-### Promise.allSettled() <a href="promise-allsettled" id="promise-allsettled"></a>
+### Promise.allSettled() <a href="#promise-allsettled" id="promise-allsettled"></a>
 
 ```
 const resolved = Promise.resolve(42);
@@ -5124,7 +5124,7 @@ allSettledPromise.then(function (results) {
 * 该方法返回的新的 Promise 实例，一旦结束，状态总是fulfilled，不会变成rejected
 * &#x20;**只关心这些操作有没有结束。这时，`Promise.allSettled()`方法就很有用**
 
-### Promise.any() <a href="promise-any" id="promise-any"></a>
+### Promise.any() <a href="#promise-any" id="promise-any"></a>
 
 ```
 Promise.any([
@@ -5140,7 +5140,7 @@ Promise.any([
 
 * &#x20;只要参数实例有一个变成`fulfilled`状态，包装实例就会变成`fulfilled`状态；如果所有参数实例都变成`rejected`状态，包装实例就会变成`rejected`状态。
 
-### Promise.resolve()**/reject()** <a href="promise-resolve" id="promise-resolve"></a>
+### Promise.resolve()**/reject()** <a href="#promise-resolve" id="promise-resolve"></a>
 
 ```
 let promise = new Promise(resolve => resolve(value));
@@ -5172,7 +5172,7 @@ p.then(function (s) {
 // 不带任何参数
 ```
 
-* `  Promise.resolve(value)  `**用结果 value 创建一个 resolved 的 promise。**
+* &#x20;`Promise.resolve(value)` **用结果 value 创建一个 resolved 的 promise。**
 *   `Promise.resolve()`方法的参数分成四种情况。
 
     * &#x20;**参数是一个 Promise 实例**
@@ -5243,7 +5243,7 @@ readFilePromise('1.json').then(data => {
 * each and every callback takes an argument that is a result of the previous callbacks.
 *   使用 3大手段 解决 callback hell
 
-    * 回调函数延迟绑定 use `.then()  `回调函数不是直接声明的，而是在通过后面的 then 方法传入的，即延迟传入。这就是回调函数延迟绑定。
+    * 回调函数延迟绑定 use `.then()`  回调函数不是直接声明的，而是在通过后面的 then 方法传入的，即延迟传入。这就是回调函数延迟绑定。
     * 返回值穿透: 我们会根据 then 中回调函数的传入值创建不同类型的Promise, 然后把返回的 Promise 穿透到外层, 以供后续的调用。这里的 x 指的就是内部返回的 Promise，然后在 x 后面可以依次完成链式调用
     * 错误冒泡  use .catch()
 
@@ -5483,7 +5483,7 @@ function f() {
 f();
 ```
 
-* async 这个function 总是返回一个 promise,其他值将自动被包装在一个` Promise.resolve()` 的 promise 中。
+* async 这个function 总是返回一个 promise,其他值将自动被包装在一个 `Promise.resolve()` 的 promise 中。
 * await
   * &#x20;await 让 JavaScript 引擎等待直到 promise 完成（settle）并返回结果。
   * 相比于 promise.then，它只是获取 promise 的结果的一个更优雅的语法，同时也更易于读写。
@@ -5628,7 +5628,7 @@ new Foo() 可以理解为两种运算：new 带参数（即 new Foo()）和函�
 2. obj.a --> 成员访问
 3. obj\["hello "] --> 需计算的成员访问
 4. new（带参数列表）new … ( … )  `const car1 = new Car('Eagle', 'Talon TSi', 1993);`
-5. 函数调用()  ` myFunc(mycar);`
+5. 函数调用()  `myFunc(mycar);`
 6. ？.
 7. new（无参数列表）new …
 
@@ -5646,7 +5646,7 @@ g 代表全局模式找出所有的手机号
 
 ### 手机号
 
-* `/^1[34578]\d/g    以1开头然后第二位是3，4，5，7，8， ， `
+* `/^1[34578]\d/g    以1开头然后第二位是3，4，5，7，8， ，`&#x20;
 
 ### 颜色
 
@@ -5786,7 +5786,7 @@ test();
 ```
 
 * 原因 在 foreach 里面we are not waiting for the callback to be done, so using a function that returns a promise won't wait for the promise to resolve everytime.但是实际却是并行执行了。
-* **解决办法 使用 普通 for **
+* **解决办法 使用 普通 for**&#x20;
 
 ****
 

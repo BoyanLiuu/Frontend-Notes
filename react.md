@@ -24,14 +24,13 @@ react技术栈,推荐阅读的源码是react,react-router,redux,react-redux,axio
 
 
 
-## Keys:
+##
 
-* Keys help React identify which items have changed, are added, or are removed. Keys should be given to the elements inside the array to give the elements a stable identity:
-* When children have keys, React uses the key to match children in the original tree with children in the subsequent tree. For example
+
 
 ## JSX
 
-### &#x20;`createElement `&#x20;
+### &#x20;`createElement`&#x20;
 
 ```
 <div>
@@ -120,6 +119,16 @@ const [state, setState] = useState(() => {
 ```
 
 * **Lazy initial state**:The initialState argument is the state used during the initial render. In subsequent renders, it is disregarded. If the initial state is the result of an expensive computation, you may provide a function instead, which will be executed only on the initial render
+* **Where to call useState()?**
+  * **Only Call Hooks at the Top Level**: you cannot call useState() in loops, conditions, nested functions, etc. On multiple useState() calls, the invocation order must be the same between renderings.
+  * **Only Call Hooks from React Functions**: you must call useState() only inside the functional component or a custom hook.
+
+![](<.gitbook/assets/image (154).png>)
+
+* **Stale state**
+  * [**https://codesandbox.io/s/react-usestate-async-broken-uzzvg**](https://codesandbox.io/s/react-usestate-async-broken-uzzvg)****
+  * Closures (e.g. event handlers, callbacks) might capture state variables from the functional component scope. Because state variables change between renderings, closures should capture variables with the latest state value. That is why we need to use prev state.
+*
 
 ### How does useState() work internally:
 
@@ -150,7 +159,7 @@ Each subsequent render the cursor is reset and those values are just read from e
 ### useEffect():
 
 * &#x20;The function passed to useEffect will run after the render is committed to the screen
-* &#x20;** props and state that change over time and that are used by the effect**.
+* &#x20;**props and state that change over time and that are used by the effect**.
 
 #### cleaning up an effect:
 
@@ -167,7 +176,7 @@ useEffect(() => {
 * effects create resources that need to be cleaned up before the component leaves the screen
 * The clean-up function runs before the component is removed from the UI to prevent memory leak
 * &#x20; Additionally, if a component renders multiple times (as they typically do), the **previous effect is cleaned up before executing the next effect**
-* &#x20;the function passed to `useEffect` fires after** layout and paint,** during a deferred event, not all effects can be deferred. For example, a DOM mutation that is visible to the user must fire synchronously before the next paint so that the user does not perceive a visual inconsistency.
+* &#x20;the function passed to `useEffect` fires after **layout and paint,** during a deferred event, not all effects can be deferred. For example, a DOM mutation that is visible to the user must fire synchronously before the next paint so that the user does not perceive a visual inconsistency.
 * Although `useEffect` is deferred until after the browser has painted, it’s guaranteed to fire before any new renders. React will always flush a previous render’s effects before starting a new update.
 
 #### **Conditionally firing an effect**
@@ -303,7 +312,7 @@ const memoizedCallback = useCallback(
 );
 ```
 
-* **useCallback is used to memoize functions **
+* **useCallback is used to memoize functions**&#x20;
 * 该回调函数仅在某个依赖项改变时才会更新
 * &#x20;That’s when `useCallback(callbackFun, deps)` is helpful: given the same dependency values `deps`, the hook returns (aka memoizes) the function instance between renderings:
 
@@ -353,7 +362,7 @@ function MyChild ({ onClick }) {
 
 ![](<.gitbook/assets/image (140).png>)
 
-* ** Solution: useCallBack():** This prevents the unnecessary re-rendering behaviour because it ensures the **same callback function reference** is returned when there is no change in their dependency.
+* &#x20;**Solution: useCallBack():** This prevents the unnecessary re-rendering behaviour because it ensures the **same callback function reference** is returned when there is no change in their dependency.
 * And use  **`React.memo()`** is a built-in React feature that renders a memoized component and skip unnecessary re-rendering. So each component will only re-render if it detects a change in their props
 
 
@@ -583,7 +592,7 @@ function Counter() {
 
 * **Whenever we update the state, React calls our component. Each render result “sees” its own `counter` state value which is a **_**constant**_** inside our function.**
 
-#### _**2. **Each Render Has Its Own Event Handlers_
+#### _**2.** Each Render Has Its Own Event Handlers_
 
 {% embed url="https://codesandbox.io/s/use-effect-example-85vf6?file=/src/index.js" %}
 
@@ -694,7 +703,7 @@ function Counter() {
 
 * &#x20;So even if we speak of a single conceptual effect here (updating the document title), it is represented by a different function on every render — and each effect function “sees” props and state from the particular render it “belongs” to
 
-#### _4. How does clean up work? _
+#### _4. How does clean up work?_&#x20;
 
 * **The effect cleanup doesn’t read the “latest” props, whatever that means. It reads props that belong to the render it’s defined in:**
 
@@ -714,7 +723,7 @@ function Counter() {
   * **React cleans up the effect for `{id: 10}`.**
   * React runs the effect for `{id: 20}`.
 
-#### _5. Honest about dependencies _
+#### _5. Honest about dependencies_&#x20;
 
 ```
 function Counter() {
@@ -744,7 +753,7 @@ function Counter() {
 
 * Moving functions Inside effects &#x20;
   * If we forget to update the deps of any effects that call these functions (possibly, through other functions!), our effects will fail to synchronize changes from our props and state.
-  * **Solution 1: ** Move functions inside effects,  **We no longer have to think about the “transitive dependencies.**
+  * **Solution 1:** Move functions inside effects,  **We no longer have to think about the “transitive dependencies.**
   * **Solution 2:Wrap function into useCallBack() Hook,** if we do not wrap and use that function as dependencies, it would change too often,  if `query` is the same, `getFetchUrl` also stays the same, and our effect doesn’t re-run
 
 ```
@@ -863,7 +872,7 @@ class ProfilePage extends React.Component {
 
 ![Solution 3 ](<.gitbook/assets/image (148).png>)
 
-* &#x20;This class method reads from `this.props.user`. Props are immutable in React so they can never change. **However, `this` **_**is**_**, and has always been, mutable.**
+* &#x20;This class method reads from `this.props.user`. Props are immutable in React so they can never change. **However, `this`  **_**is**_**, and has always been, mutable.**
 * &#x20;So if our component re-renders while the request is in flight, `this.props` will change, **the event handlers are a part of the render result — just like the visual output**. Our event handlers “belong” to a particular render with particular props and state.
 * How to fix this?
   * Solution 1: Use functional components
@@ -885,7 +894,7 @@ class ProfilePage extends React.Component {
 
 ## Why you should use functional components at all?&#x20;
 
-* Functional component are much **easier to read and test **because they are plain JavaScript functions without state or lifecycle-hooks
+* Functional component are much **easier to read and test** because they are plain JavaScript functions without state or lifecycle-hooks
 * You end up with **less code**
 * They help you to use best practices. It will get easier to separate container and presentational components because you need to think more about your component’s state if you don’t have access to setState() in your component
 
@@ -900,6 +909,8 @@ class ProfilePage extends React.Component {
 * &#x20;React's `key` prop gives you the ability to control component instances. **Each time React renders your components, it's calling your functions to retrieve the new React elements that it uses to update the DOM**. If you return the same element types, it keeps those components/DOM nodes around, even if all\* the props changed.
 * &#x20;This allows you to return the exact same element type, but force React to unmount the previous instance, and mount a new one. This means that all state that had existed in the component at the time is completely removed and the component is "reinitialized" for all intents and purposes. For components, this means that React will run cleanup on effects (or `componentWillUnmount`), then it will run state initializers (or the `constructor`) and effect callbacks (or `componentDidMount`).
 * **设置了key能够提升渲染效率**
+* Keys help React identify which items have changed, are added, or are removed. Keys should be given to the elements inside the array to give the elements a stable identity:
+* When children have keys, React uses the key to match children in the original tree with children in the subsequent tree. For example
 
 ****
 
@@ -955,7 +966,7 @@ class ProfilePage extends React.Component {
 
 ## **virtual dom in react:**
 
-Virtual DOM is an in-memory representation of real DOM**. **It is a lightweight JavaScript object which is a copy of Real DOM.
+Virtual DOM is an in-memory representation of real DOM**.** It is a lightweight JavaScript object which is a copy of Real DOM.
 
 ### Updating virtual DOM in ReactJS is faster because ReactJS uses:
 
@@ -968,7 +979,7 @@ Whenever setState() method is called on any component, ReactJS makes that compon
 
 ReactJS using diff algorithm compares both the Virtual DOM to find the minimum number of steps to update the Real DOM
 
-Finding the minimum number of modifications between two trees have complexity in the order of** O(n^3)**. But react uses a heuristic approach with some assumptions which makes the problems to have complexity in the order of** O(n)**
+Finding the minimum number of modifications between two trees have complexity in the order of **O(n^3)**. But react uses a heuristic approach with some assumptions which makes the problems to have complexity in the order of **O(n)**
 
 * 只对同级元素进行Diff。如果一个DOM节点在前后两次更新中跨越了层级，那么React不会尝试复用他。
 * 两个不同类型的元素会产生出不同的树。如果元素由div变为p，React会销毁div及其子孙节点，并新建p及其子孙节点。
@@ -999,12 +1010,35 @@ Finding the minimum number of modifications between two trees have complexity in
 
 
 
+### What is virtual dom?
+
+* React creates a tree of custom objects representing a part of the DOM. For example, instead of creating an actual DIV element containing a UL element, it creates a React.div object that contains a React.ul object. It can manipulate these objects very quickly without actually touching the real DOM or going through the DOM API. Then, when it renders a component, it uses this virtual DOM to figure out what it needs to do with the real DOM to get the two trees to match.
+* It can be think as a js object, it contains like type, props and child field.
+
 ### How to find  the difference in both the Virtual DOM’s:
 
 1. **Re-render all the children if parent state has changed**
 2. **Breadth First Search**
-3. **Reconciliation: **It is the process to determine which parts of the Real DOM need to be updated. It follows the below steps:
+3. **Reconciliation:** It is the process to determine which parts of the Real DOM need to be updated. It follows the below steps:
    1. Two elements of different types will produce different trees.
    2. The developer can hint at which child elements may be stable across different renders with a key prop.
+
+### What is difference between state and props?
+
+* Props and state are related. The state of one component will often become the props of a child component.
+* React components **re-render** if _props_ or _state_ **have changed**. Any update from anywhere in the code triggers an automatic re-render of the appropriate part of the User Interface.&#x20;
+* _Props_ and _state_ are **JS objects**,
+* **State**
+  * state is used communication in the component, it is mutable using useState.
+  * State has to have the initial value,
+  * Make the components interactive
+  * Update the UI when the state has been changed
+* **Props**
+  * It usually used for communication between components.&#x20;
+  * it is immutable which lets React do fast reference checks
+  * props initial value can be empty
+  * To display static non-interactive components and data
+
+
 
 

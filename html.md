@@ -20,10 +20,10 @@
 
 we use \<script> to inserting Javascript into an HTML page&#x20;
 
-* **\<script> **- HTML parsing is blocked, the script is fetched and executed immediately, HTML parsing resumes after the script is executed.
+* **\<script>** - HTML parsing is blocked, the script is fetched and executed immediately, HTML parsing resumes after the script is executed.
 *
 
-    **\<script async> **- The script will be fetched in parallel to HTML parsing and executed as soon as it is available. Use async when the script is independent of any other scripts on the page, It  should not prevent other actions on the page such as downloading resources or    &#x20;waiting for other scripts to load.**适合第三方脚本**
+    **\<script async>** - The script will be fetched in parallel to HTML parsing and executed as soon as it is available. Use async when the script is independent of any other scripts on the page, It  should not prevent other actions on the page such as downloading resources or    &#x20;waiting for other scripts to load.**适合第三方脚本**
 *
 
     **\<script defer>** - The script will be fetched in parallel to HTML parsing and executed when the page has finished parsing.If there are multiple of them, each deferred script is executed in the order they were encoun­tered in the document。 都会等到html解析完再执行脚本
@@ -43,7 +43,7 @@ we use \<script> to inserting Javascript into an HTML page&#x20;
 
 ## 4. \<NOSCRIPT> Element:
 
-* It can contain any HTML elements aside from \<script> that can be included in the document \<body>. Any content contained in a \<noscript> element will be displayed  &#x20;under only the following_** two **_circumstances:
+* It can contain any HTML elements aside from \<script> that can be included in the document \<body>. Any content contained in a \<noscript> element will be displayed  &#x20;under only the following _**two**_ circumstances:
   * The browser doesn’t support scripting
   * The browser’s scripting support is turned off.
 
@@ -139,16 +139,16 @@ we use \<script> to inserting Javascript into an HTML page&#x20;
 ### 基本标签
 
 * DOCTYPE  该声明位于文档中最前面的位置，处于 html 标签之前，此标签告知浏览器文档使用哪种 HTML 或者 XHTML 规范。  声明以 \<!DOCTYPE> 开始，不区分大小写，前面没有任何内容，
-* 优先使用 IE 最新版本和 Chrome ` <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />`
+* 优先使用 IE 最新版本和 Chrome `<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />`
 * viewport：可以让布局在移动浏览器上显示的更好,如果网站不是响应式 就不要使用 initial-scale`<meta name="viewport" content="width=device-width, initial-scale=1.0">`
-* Specifying your document's character encoding:   ` <meta charset="utf-8">`
-* Specifying language:  `<html lang="zh-cmn-Hans"> `
+* Specifying your document's character encoding:   `<meta charset="utf-8">`
+* Specifying language:  `<html lang="zh-cmn-Hans">`&#x20;
 
 ### SEO 优化标签
 
-* 页面描述： ` <meta name="description" content="不超过150个字符">`
+* 页面描述： `<meta name="description" content="不超过150个字符">`
 * 页面关键词：`<meta name="keywords" content="">`
-* 定义页面标题:` <title>标题</title>`
+* 定义页面标题: `<title>标题</title>`
 * 定义网页作者：`<meta name="author" content="name, email@gmail.com">`
 
 ### Social Meta tag:

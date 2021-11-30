@@ -61,7 +61,7 @@ obj.print() // Object
 1. 对象本身的方法
    * _**直接定义在Object 对象的方法**_
 2. Object 实例方法
-   1. _**定义在 Object.prototype** _也可以被 Object 实例直接使用
+   1. _**定义在 Object.prototype** _ 也可以被 Object 实例直接使用
    2. 凡是定义在Object.prototype对象上面的属性和方法，将被所有实例对象共享
 
 ### Object():
@@ -112,7 +112,7 @@ isObject(true) // false
 
 1. &#x20;如果参数为空（或者为`undefined`和`null`），`Object()`返回一个空对象。
 2. &#x20;如果参数是原始类型的值，`Object`方法将其转为对应的包装对象的实例,  `Object`函数的参数是各种原始类型的值，转换成对象就是原始类型值对应的包装对象。
-3. &#x20;如果`Object`方法的参数是一个对象，**它总是返回该对象，即不用转换。 **利用这一点，可以写一个判断变量是否为对象的函数。
+3. &#x20;如果`Object`方法的参数是一个对象，**它总是返回该对象，即不用转换。** 利用这一点，可以写一个判断变量是否为对象的函数。
 
 ### Object 构造函数
 
@@ -133,7 +133,7 @@ obj instanceof Number // true
 
 
 
-### Object 的静态方法(static method) <a href="object-de-jing-tai-fang-fa" id="object-de-jing-tai-fang-fa"></a>
+### Object 的静态方法(static method) <a href="#object-de-jing-tai-fang-fa" id="object-de-jing-tai-fang-fa"></a>
 
 ```
 // ===== EG 1 =====
@@ -327,21 +327,21 @@ _**是指Object 对象自身的方法**_
 
 **Object.prototype.keys(obj) // \["p1", "p2"]   // this is not a function**
 
-1. **`Object.keys()，Object.getOwnPropertyNames() , for ...in  `**都用来遍历对象的属性&#x20;
+1. **`Object.keys()，Object.getOwnPropertyNames() , for ...in`**  都用来遍历对象的属性&#x20;
    1. &#x20;这两个方法的参数是一个对象，返回一个数组。该数组的成员都是该对象自身的（而不是继承的）所有属性名。
    2. &#x20;只有涉及不可枚举属性时，才会有不一样的结果。`Object.keys`方法只返回可枚举的属性，`Object.getOwnPropertyNames`方法还返回不可枚举的属性名
    3. &#x20;一般情况下，几乎总是使用`Object.keys`方法，遍历对象的属性。
 2. 对象属性模型的相关方法
-   1. `Object.getOwnPropertyDescriptor()`  在 **Reading Property Attributes **那个 section 解释了
-   2. `Object.defineProperty(）`在 **Data properties **那个 section 解释了
-   3. `Object.defineProperties() `在 **Defining multiple properties** 那个 section 解释了
+   1. `Object.getOwnPropertyDescriptor()`  在 **Reading Property Attributes** 那个 section 解释了
+   2. `Object.defineProperty(）`在 **Data properties** 那个 section 解释了
+   3. `Object.defineProperties()` 在 **Defining multiple properties** 那个 section 解释了
 3. 控制对象状态的方法
-   1. `Object.preventExtensions() `方法可以使得一个对象无法再添加新的属性。
-   2. `Object.isExtensible() ` 方法用于检查一个对象是否使用了`Object.preventExtensions`方法。也就是说，检查是否可以为一个对象添加属性。
-   3. `Object.seal() `方法使得一个对象既无法添加新属性，也无法删除旧属性。 `Object.seal`实质是把属性描述对象的`configurable`属性设为`false`，因此属性描述对象不再能改变了。
-   4. `Object.isSealed() ` 方法用于检查一个对象是否使用了`Object.seal`方法。
-   5. `Object.freeze() `方法可以使得一个对象无法添加新属性、无法删除旧属性、也无法改变属性的值，使得这个对象实际上变成了常量。
-   6. `Object.isFrozen() ` 方法用于检查一个对象是否使用了`Object.freeze`方法。
+   1. `Object.preventExtensions()` 方法可以使得一个对象无法再添加新的属性。
+   2. `Object.isExtensible()` 方法用于检查一个对象是否使用了`Object.preventExtensions`方法。也就是说，检查是否可以为一个对象添加属性。
+   3. `Object.seal()` 方法使得一个对象既无法添加新属性，也无法删除旧属性。 `Object.seal`实质是把属性描述对象的`configurable`属性设为`false`，因此属性描述对象不再能改变了。
+   4. `Object.isSealed()` 方法用于检查一个对象是否使用了`Object.seal`方法。
+   5. `Object.freeze()` 方法可以使得一个对象无法添加新属性、无法删除旧属性、也无法改变属性的值，使得这个对象实际上变成了常量。
+   6. `Object.isFrozen()` 方法用于检查一个对象是否使用了`Object.freeze`方法。
    7. 上述的 3个 方法锁定对象都有一个可能的漏洞和 局限性，
       1. 漏洞： 可以通过改变原型对象，来为对象增加属性。 上面代码中，对象obj本身不能新增属性，但是可以在它的原型对象上新增属性，就依然能够在obj上读到。
       2. 另外一个局限是，如果属性值是对象，上面这些方法只能冻结属性指向的对象，而不能冻结对象本身的内容。 上面代码中，`obj.bar`属性指向一个数组，`obj`对象被冻结以后，这个指向无法改变，即无法指向其他值，但是所指向的数组是可以改变的。
@@ -351,8 +351,8 @@ _**是指Object 对象自身的方法**_
       2. &#x20;Object.create()方法生成的新对象，动态继承了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上
       3. &#x20;`Object.create()`方法还可以接受第二个参数。该参数是一个属性描述对象，它所描述的对象属性，会添加到实例对象，作为该对象自身的属性
    2. `Object.getPrototypeOf()`：获取对象的`Prototype`对象。
-   3. &#x20;`Object.setPrototypeOf()  `方法为参数对象设置原型，返回该参数对象。它接受两个参数，第一个是现有对象，第二个是原型对象。`Object.setPrototypeOf(a, b); ` 将a的原型设置到b上面
-5. `getOwnPropertyNames    `返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名。
+   3. &#x20;`Object.setPrototypeOf()`  方法为参数对象设置原型，返回该参数对象。它接受两个参数，第一个是现有对象，第二个是原型对象。`Object.setPrototypeOf(a, b);` 将a的原型设置到b上面
+5. `getOwnPropertyNames`    返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名。
 6. `Object.prototype.hasOwnProperty()`用于判断某个属性定义在对象自身，还是定义在原型链上。 `Date.length`（构造函数`Date`可以接受多少个参数）是`Date`自身的属性，`Date.toString`是继承的属性。
 
 ###
@@ -393,9 +393,9 @@ c.constructor.prototype === p // true
 * &#x20;上面例子中 构造函数`C`的原型对象被改成了`p`，但是实例对象的`c.constructor.prototype`却没有指向`p`。所以，在改变原型对象时，一般要同时设置`constructor`属性。
 * 关于 constructor 的解释情况 在 原型链 section看
 
-### &#x20;<a href="object-de-shi-li-fang-fa" id="object-de-shi-li-fang-fa"></a>
+### &#x20;<a href="#object-de-shi-li-fang-fa" id="object-de-shi-li-fang-fa"></a>
 
-### Object 的实例方法(instance method） <a href="object-de-shi-li-fang-fa" id="object-de-shi-li-fang-fa"></a>
+### Object 的实例方法(instance method） <a href="#object-de-shi-li-fang-fa" id="object-de-shi-li-fang-fa"></a>
 
 &#x20;定义在`Object.prototype`对象。它们称为实例方法  所有`Object`的实例对象都继承了这些方法。
 
@@ -523,9 +523,9 @@ Object.getPrototypeOf(obj) === p // true
 5. `Object.prototype.isPrototypeOf()`：判断当前对象是否为另一个对象的原型。
 6. `Object.prototype.propertyIsEnumerable()`：判断某个属性是否可枚举。
    1. 这个方法只能用于判断对象自身的属性，对于继承的属性一律返回false
-7.  `Object.prototype.__proto__   `返回该对象的原型。该属性可读写。
+7.  `Object.prototype.__proto__`   返回该对象的原型。该属性可读写。
 
-    1. `Object.getPrototypeOf(a) === a.proto;   `等同于Object.getPrototypeof();
+    1. `Object.getPrototypeOf(a) === a.proto;`   等同于Object.getPrototypeof();
     2. &#x20;根据语言标准，`__proto__`属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用`Object.getPrototypeOf()`和`Object.setPrototypeOf()`，进行原型对象的读写操作。
 
 
@@ -611,13 +611,13 @@ JSON.stringify(obj) // "{}"
 ```
 
 * Configurable
-  *   **Indicates if the property may be redefined by removing the property      **
+  *   **Indicates if the property may be redefined by removing the property**
 
       **via delete, changing the property’s attributes,** or changing the property into an accessor
 
       property. By default, this is true for all properties defined directly on an object
   * Calling **delete on** the property has no effect in nonstrict mode and throws an error in strict mode.
-  * **决定 是否可以修改 属性描述对象 **如果为 false  他的  `writable`、`enumerable`和`configurable`都不能被修改了。
+  * **决定 是否可以修改 属性描述对象** 如果为 false  他的  `writable`、`enumerable`和`configurable`都不能被修改了。
   * &#x20;`value`属性的情况比较特殊。只要`writable`和`configurable`有一个为`true`，就允许改动`value`。
   * &#x20;`writable`为`false`时，直接对目标属性赋值，不报错，但不会成功。
 * Enumerable
@@ -648,7 +648,7 @@ let person = {
 
     \[\[Value]] is set to "Nicholas", and any changes to that value are stored in this location.
 
-To change any of the default property attributes you must use the**` Object.defineProperty()`**
+To change any of the default property attributes you must use the **`Object.defineProperty()`**
 
 ```
 let person = {
@@ -840,7 +840,7 @@ console.log(Object.getOwnPropertyDescriptors(book));
 * This method accepts two arguments: the object on which  &#x20;the property resides and the name of the property whose descriptor should be retrieved.
 * In ES2017, This&#x20;  method effectively performs on Object.getOwnPropertyDescriptor() on all own properties and  &#x20;returns them in a new object
 
-### 对象的拷贝 <a href="dui-xiang-de-kao-bei" id="dui-xiang-de-kao-bei"></a>
+### 对象的拷贝 <a href="#dui-xiang-de-kao-bei" id="dui-xiang-de-kao-bei"></a>
 
 ```
 // 有问题的方法 
@@ -945,9 +945,9 @@ console.log(dest); // { a :{} }
 console.log(dest.a === src.a); // true 
 ```
 
-* **`Object.assign() `**method.
+* **`Object.assign()`** method.
 * `Object.assign(target, ...sources)`
-* It take one destination , and one or many sources, If we modify destination, result would change as well, but it would not affect source object if we do not modify object, since** Object.assign() only perform shallow copy  from each source object.**
+* It take one destination , and one or many sources, If we modify destination, result would change as well, but it would not affect source object if we do not modify object, since **Object.assign() only perform shallow copy  from each source object.**
 * If multiple source objects have the same property defined, the **last one to b**e copied will be the ultimate value
 * 已经做过的copy出错后也不会 重置，所以就会有 partially copy
 *
@@ -1285,7 +1285,7 @@ cat1.color // "yellow"
 cat2.color // "yellow"
 ```
 
-* **每一个对象都会从原型"继承"属性。**` `原型对象的所有属性和方法，都能被实例对象共享。也就是说，如果属性和方法定义在原型上，那么所有实例对象就能共享，不仅节省了内存，还体现了实例对象之间的联系。
+* **每一个对象都会从原型"继承"属性。** `` 原型对象的所有属性和方法，都能被实例对象共享。也就是说，如果属性和方法定义在原型上，那么所有实例对象就能共享，不仅节省了内存，还体现了实例对象之间的联系。
 * &#x20;每个函数都有一个`prototype`属性，指向一个对象。
 * EG 1&#x20;
   * 生成实例的时候，该属性会自动成为实例对象的原型
@@ -1364,7 +1364,7 @@ Person.prototype.constructor === Person // false
 Person.prototype.constructor === Object // true
 ```
 
-* **`  f.constructor.name   `**可以得到 构造函数的名称。
+* &#x20;**`f.constructor.name`**  可以得到 构造函数的名称。
 * &#x20;由于`constructor`属性定义在`prototype`对象上面，意味着可以被所有实例对象继承。
 * &#x20;`constructor`属性的作用是，可以得知某个实例对象，到底是哪一个构造函数产生的。
 * `constructor`属性表示**原型对象与构造函数之间的关联关系**，如果修改了原型对象，一般会同时修改`constructor`属性，防止引用的时候出错。 **修改原型对象时，一般要同时修改`constructor`属性的指向。**
@@ -1503,7 +1503,7 @@ cat1.meow === cat2.meow
 * 解决办法 JavaScript 的原型对象（prototype）
 * `SuperClass.call(this,id)`当然就是构造函数继承的核心语句了.由于父类中给this绑定属性，因此子类自然也就继承父类的共有属性。由于这种类型的继承没有涉及到原型`prototype`，所以父类的原型方法自然不会被子类继承，而如果想被子类继承，就必须放到构造函数中，这样创建出来的每一个实例都会单独的拥有一份而不能共用，这样就违背了代码复用的原则，所以综合上述两种，我们提出了组合式继承方法
 
-### combination inheritance（原型链继承和经典继承双剑合璧。） <a href="gou-zao-han-shu-de-ji-cheng" id="gou-zao-han-shu-de-ji-cheng"></a>
+### combination inheritance（原型链继承和经典继承双剑合璧。） <a href="#gou-zao-han-shu-de-ji-cheng" id="gou-zao-han-shu-de-ji-cheng"></a>
 
 ```
 function Parent (name) {
@@ -1815,7 +1815,7 @@ let cp = new ColorPoint(); // ReferenceError
 1. &#x20;Class 可以通过`extends`关键字实现继承
 2. &#x20;子类必须在`constructor`方法中调用`super`方法，否则新建实例时会报错。这是因为子类自己的`this`对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。如果不调用`super`方法，子类就得不到`this`对象。
 
-### Class 的 prototype 属性和\_\_proto\_\_属性 <a href="lei-de-prototype-shu-xing-he-proto-shu-xing" id="lei-de-prototype-shu-xing-he-proto-shu-xing"></a>
+### Class 的 prototype 属性和\_\_proto\_\_属性 <a href="#lei-de-prototype-shu-xing-he-proto-shu-xing" id="lei-de-prototype-shu-xing-he-proto-shu-xing"></a>
 
 ```
 class A {

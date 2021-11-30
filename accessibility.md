@@ -1,6 +1,6 @@
 # Accessibility
 
-### How people use the web: <a href="semantic-html" id="semantic-html"></a>
+### How people use the web: <a href="#semantic-html" id="semantic-html"></a>
 
 * keyboard only
 * Head wand
@@ -8,7 +8,7 @@
 * SIngle switch
 * Screen Reader
 
-### Using Semantic HTML <a href="semantic-html" id="semantic-html"></a>
+### Using Semantic HTML <a href="#semantic-html" id="semantic-html"></a>
 
 * Using the various HTML elements to reinforce the meaning of information in our websites will often give us accessibility for free
 * Or label region with  `aria-label,aria-labelledby1,aria-describedby`
@@ -87,8 +87,8 @@
 <label for="subscribe">Subscribe to newsletter</label>
 ```
 
-* Whenever possible, use the label element to associate text with form elements explicitly. The for attribute of the label must exactly match the id of the form control.**  react 里面 使用的是 htmlFor**
-* ** **The label can be hidden visually, though it still needs to be provided within the code to support other forms of presentation and interaction, such as for screen reader and speech input users.
+* Whenever possible, use the label element to associate text with form elements explicitly. The for attribute of the label must exactly match the id of the form control.  **react 里面 使用的是 htmlFor**
+* &#x20;**** The label can be hidden visually, though it still needs to be provided within the code to support other forms of presentation and interaction, such as for screen reader and speech input users.
   * Approach 1: Hide it by using css
   * Approach 2: use `aria-label="Search"`
 
