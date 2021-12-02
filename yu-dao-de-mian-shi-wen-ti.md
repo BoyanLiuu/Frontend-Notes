@@ -28,7 +28,7 @@ I really appreciate you taking time to interview me. It has always been an honor
      2. Vue have syntax sugar such as  v-if v-for
      3. React’s core offerings are components, DOM manipulation, and component state management. Everything else is developed and supported by the community. While seasoned developers often prefer this level of freedom, newbies may feel overwhelmed by the abundance of third-party libraries and tools.
    * **Same**:&#x20;
-     * One of the biggest similarities between Vue.js and React is the usage of what’s called a ‘Virtual DOM’. A Virtual DOM is basically what it sounds like, a virtual representation of the DOM tree.
+     * One of the biggest similarities between Vue.js and React is the usage of what’s called a ‘Virtual DOM’. A Virtual DOM is basically what it sounds like, a virtual representation of the DOM tree._we can find out what is changed and with that, we can apply only those changes to real DOM instead of replacing entire DOM_
      * Both React and Vue.js encourage a component based architecture. This essentially means separating your application into distinct chunks of related functionality with a defined way for each chunk to ‘talk’ to each other.
 8. What is the advantage of using Next.js?
    * It is react framework for production, a fullstack framework for react,
