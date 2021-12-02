@@ -1,6 +1,6 @@
 # Blog I could write
 
-{% embed url="https://www.cluemediator.com/usestate-with-the-previous-state-in-react-hooks" %}
+
 
 {% embed url="https://www.cluemediator.com/create-an-npm-package-using-create-react-app#output" %}
 
