@@ -28,7 +28,7 @@ react技术栈,推荐阅读的源码是react,react-router,redux,react-redux,axio
 
 
 
-## JSX
+## JSX&#x20;
 
 ### &#x20;`createElement`&#x20;
 
@@ -45,6 +45,12 @@ react技术栈,推荐阅读的源码是react,react-router,redux,react-redux,axio
         React.createElement("div", null, "hello,world"),
         "let us learn React!"
     )
+    
+React.createElement(
+  type,
+  [props],
+  [...children]
+)
 ```
 
 * 第一个参数：如果是组件类型，会传入组件对应的类或函数；如果是 dom 元素类型，传入 div 或者 span 之类的字符串。
@@ -73,18 +79,468 @@ react技术栈,推荐阅读的源码是react,react-router,redux,react-redux,axio
             </div>
 ```
 
+#### 转换类型表格
+
+![](<.gitbook/assets/image (157).png>)
+
 ![](<.gitbook/assets/image (139).png>)
 
+![](<.gitbook/assets/image (154).png>)
+
+### 问与答：
+
+1: 问：老版本的 React 中，为什么写 jsx 的文件要默认引入 React?
+
+```
+import React from 'react'
+function Index(){
+    return <div>hello,world</div>
+}
+```
+
+答：因为 jsx 在被 babel 编译后，写的 jsx 会变成上述 React.createElement 形式，所以需要引入 React，防止找不到 React 引起报错。
 
 
-## Hooks:
-
-### The main rules of hooks:
-
-* Don’t call Hooks inside loops, conditions, or nested functions
-* Only Call Hooks from React Functions
 
 
+
+## 组件中的通讯
+
+### props 和 callback 方式&#x20;
+
+props 和 callback 可以作为 React 组件最基本的通信方式，父组件可以通过 props 将信息传递给子组件，子组件可以通过执行 props 中的回调函数 callback 来触发父组件的方法，实现父与子的消息通讯。
+
+父组件 -> 通过自身 state 改变，重新渲染，传递 props -> 通知子组件
+
+子组件 -> 通过调用父组件 props 方法 -> 通知父组件。
+
+```
+/* 子组件 */
+function Son(props){
+    const {  fatherSay , sayFather  } = props
+    return <div className='son' >
+         我是子组件
+        <div> 父组件对我说：{ fatherSay } </div>
+        <input placeholder="我对父组件说" onChange={ (e)=>sayFather(e.target.value) }   />
+    </div>
+}
+/* 父组件 */
+function Father(){
+    const [ childSay , setChildSay ] = useState('')
+    const [ fatherSay , setFatherSay ] = useState('')
+    return <div className="box father" >
+        我是父组件
+       <div> 子组件对我说：{ childSay } </div>
+       <input placeholder="我对子组件说" onChange={ (e)=>setFatherSay(e.target.value) }   />
+       <Son fatherSay={fatherSay}  sayFather={ setChildSay }  />
+    </div>
+}
+```
+
+### ref 方式。&#x20;
+
+### React-redux 或 React-mobx 状态管理方式。&#x20;
+
+### context 上下文方式。&#x20;
+
+### event bus 事件总线。
+
+当然利用 eventBus 也可以实现组件通信，但是在 React 中并不提倡用这种方式，我还是更提倡用 props 方式通信。如果说非要用 eventBus，我觉得它更适合用 React 做基础构建的小程序，比如 Taro。接下来将上述 demo 通过 eventBus 方式进行改造。
+
+```
+import { BusService } from './eventBus'
+/* event Bus  */
+function Son(){
+    const [ fatherSay , setFatherSay ] = useState('')
+    React.useEffect(()=>{ 
+        BusService.on('fatherSay',(value)=>{  /* 事件绑定 , 给父组件绑定事件 */
+            setFatherSay(value)
+       })
+       return function(){  BusService.off('fatherSay') /* 解绑事件 */ }
+    },[])
+    return <div className='son' >
+         我是子组件
+        <div> 父组件对我说：{ fatherSay } </div>
+        <input placeholder="我对父组件说" onChange={ (e)=> BusService.emit('childSay',e.target.value)  }   />
+    </div>
+}
+/* 父组件 */
+function Father(){
+    const [ childSay , setChildSay ] = useState('')
+    React.useEffect(()=>{    /* 事件绑定 , 给子组件绑定事件 */
+        BusService.on('childSay',(value)=>{
+             setChildSay(value)
+        })
+        return function(){  BusService.off('childSay') /* 解绑事件 */ }
+    },[])
+    return <div className="box father" >
+        我是父组件
+       <div> 子组件对我说：{ childSay } </div>
+       <input placeholder="我对子组件说" onChange={ (e)=> BusService.emit('fatherSay',e.target.value) }   />
+       <Son  />
+    </div>
+}
+```
+
+
+
+这样做不仅达到了和使用 props 同样的效果，还能跨层级，不会受到 React 父子组件层级的影响。但是为什么很多人都不推荐这种方式呢？因为它有一些致命缺点。
+
+* 需要手动绑定和解绑。
+* 对于小型项目还好，但是对于中大型项目，这种方式的组件通信，会造成牵一发动全身的影响，而且后期难以维护，组件之间的状态也是未知的。
+* 一定程度上违背了 React 数据流向原则。
+
+## 组件的强化方式
+
+### **1: class component 继承**
+
+对于类组件的强化，首先想到的是继承方式，之前开发的开源项目 react-keepalive-router 就是通过继承 React-Router 中的 Switch 和 Router ，来达到缓存页面的功能的。因为 React 中类组件，有良好的继承属性，所以可以针对一些基础组件，首先实现一部分基础功能，再针对项目要求进行有方向的**改造**、**强化**、**添加额外功能**。
+
+```
+/* 人类 */
+class Person extends React.Component{
+    constructor(props){
+        super(props)
+        console.log('hello , i am person')
+    }
+    componentDidMount(){ console.log(1111)  }
+    eat(){    /* 吃饭 */ }
+    sleep(){  /* 睡觉 */  }
+    ddd(){   console.log('打豆豆')  /* 打豆豆 */ }
+    render(){
+        return <div>
+            大家好，我是一个person
+        </div>
+    }
+}
+/* 程序员 */
+class Programmer extends Person{
+    constructor(props){
+        super(props)
+        console.log('hello , i am Programmer too')
+    }
+    componentDidMount(){  console.log(this)  }
+    code(){ /* 敲代码 */ }
+    render(){
+        return <div style={ { marginTop:'50px' } } >
+            { super.render() } { /* 让 Person 中的 render 执行 */ }
+            我还是一个程序员！    { /* 添加自己的内容 */ }
+        </div>
+    }
+}
+export default Programmer
+
+```
+
+我们从上面不难发现这个继承增强效果很优秀。它的优势如下：
+
+1. 可以控制父类 render，还可以添加一些其他的渲染内容；
+2. 可以共享父类方法，还可以添加额外的方法和属性。
+
+但是也有值得注意的地方，就是 state 和生命周期会被继承后的组件修改。像上述 demo 中，Person 组件中的 componentDidMount 生命周期将不会被执行。
+
+### **2: 函数组件自定义 Hooks**
+
+### **3: HOC高阶组件**
+
+## Props
+
+```
+/* children 组件 */
+function ChidrenComponent(){
+    return <div> In this chapter, let's learn about react props ! </div>
+}
+/* props 接受处理 */
+class PropsComponent extends React.Component{
+    componentDidMount(){
+        console.log(this,'_this')
+    }
+    render(){
+        const {  children , mes , renderName , say ,Component } = this.props
+        const renderFunction = children[0]
+        const renderComponent = children[1]
+        /* 对于子组件，不同的props是怎么被处理 */
+        return <div>
+            { renderFunction() }
+            { mes }
+            { renderName() }
+            { renderComponent }
+            <Component />
+            <button onClick={ () => say() } > change content </button>
+        </div>
+    }
+}
+/* props 定义绑定 */
+class Index extends React.Component{
+    state={  
+        mes: "hello,React"
+    }
+    node = null
+    say= () =>  this.setState({ mes:'let us learn React!' })
+    render(){
+        return <div>
+            <PropsComponent  
+               mes={this.state.mes}  // ① props 作为一个渲染数据源
+               say={ this.say  }     // ② props 作为一个回调函数 callback
+               Component={ ChidrenComponent } // ③ props 作为一个组件
+               renderName={ ()=><div> my name is alien </div> } // ④ props 作为渲染函数
+            >
+                { ()=> <div>hello,world</div>  } { /* ⑤render props */ }
+                <ChidrenComponent />             { /* ⑥render component */ }
+            </PropsComponent>
+        </div>
+    }
+}
+```
+
+
+
+如上看一下 props 可以是什么？
+
+* ① props 作为一个子组件渲染数据源。
+* ② props 作为一个通知父组件的回调函数。
+* ③ props 作为一个单纯的组件传递。
+* ④ props 作为渲染函数。
+* ⑤ render props ， 和④的区别是放在了 children 属性上。
+* ⑥ render component 插槽组件。
+
+
+
+```
+<Container>
+   { (ContainerProps)=> <Children {...ContainerProps}  /> }
+</Container>
+
+```
+
+这种情况，在 Container 中， props.children 属性访问到是函数，并不是 React element 对象，针对这种情况，像下面这种情况下 children 是不能直接渲染的，直接渲染会报错。
+
+```
+function  Container(props) {
+     return  props.children
+}
+```
+
+
+
+![](<.gitbook/assets/image (156).png>)
+
+改成如下方式，就可以了。
+
+```
+function  Container(props) {
+    const  ContainerProps = {
+        name: 'alien',
+        mes:'let us learn react'
+    }
+     return  props.children(ContainerProps)
+}
+```
+
+### 如果 Container 的 children 既有函数也有组件，这种情况应该怎么处理呢？
+
+```
+<Container>
+    <Children />
+    { (ContainerProps)=> <Children {...ContainerProps} name={'haha'}  />  }
+</Container>
+```
+
+![](<.gitbook/assets/image (152).png>)
+
+```
+const Children = (props)=> (<div>
+    <div>hello, my name is {  props.name } </div>
+    <div> { props.mes } </div>
+</div>)
+
+function  Container(props) {
+    const ContainerProps = {
+        name: 'alien',
+        mes:'let us learn react'
+    }
+     return props.children.map(item=>{
+        if(React.isValidElement(item)){ // 判断是 react elment  混入 props
+            return React.cloneElement(item,{ ...ContainerProps },item.props.children)
+        }else if(typeof item === 'function'){
+            return item(ContainerProps)
+        }else return null
+     })
+}
+
+const Index = ()=>{
+    return <Container>
+        <Children />
+        { (ContainerProps)=> <Children {...ContainerProps} name={'haha'}  />  }
+    </Container>
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+States notes
+
+如果 setState 在 React 能够控制的范围被调用，它就是异步的。
+
+比如合成事件处理函数, 生命周期函数, 此时会进行批量更新, 也就是将状态合并后再进行 DOM 更新。
+
+如果 setState 在原生 JavaScript 控制的范围被调用，它就是同步的。
+
+比如原生事件处理函数中, 定时器回调函数中, Ajax 回调函数中, 此时 setState 被调用后会立即更新 DOM 。
+
+
+
+```
+export default class index extends React.Component{
+    state = { number:0 }
+    handleClick= () => {
+          this.setState({ number:this.state.number + 1 },()=>{   console.log( 'callback1', this.state.number)  })
+          console.log(this.state.number)
+          this.setState({ number:this.state.number + 1 },()=>{   console.log( 'callback2', this.state.number)  })
+          console.log(this.state.number)
+          this.setState({ number:this.state.number + 1 },()=>{   console.log( 'callback3', this.state.number)  })
+          console.log(this.state.number)
+    }
+    render(){
+        return <div>
+            { this.state.number }
+            <button onClick={ this.handleClick }  >number++</button>
+        </div>
+    }
+} 
+```
+
+点击打印：**0, 0, 0, callback1 1 ,callback2 1 ,callback3 1**
+
+****![](<.gitbook/assets/image (155).png>)****
+
+### **batchUpdate 异步操作会在如下情况 被打破**
+
+比如用 promise 或者 setTimeout 在 handleClick 中这么写：
+
+```
+setTimeout(()=>{
+    this.setState({ number:this.state.number + 1 },()=>{   console.log( 'callback1', this.state.number)  })
+    console.log(this.state.number)
+    this.setState({ number:this.state.number + 1 },()=>{    console.log( 'callback2', this.state.number)  })
+    console.log(this.state.number)
+    this.setState({ number:this.state.number + 1 },()=>{   console.log( 'callback3', this.state.number)  })
+    console.log(this.state.number)
+})
+```
+
+打印 ： **callback1 1 , 1, callback2 2 , 2,callback3 3 , 3**
+
+![](<.gitbook/assets/image (158).png>)
+
+### 怎么在异步情况下 开启 batchupdate?
+
+React-Dom 中提供了批量更新方法 `unstable_batchedUpdates`，可以去手动批量更新，可以将上述 setTimeout 里面的内容做如下修改:
+
+在实际工作中，unstable\_batchedUpdates 可以用于 Ajax 数据交互之后，合并多次 setState，或者是多次 useState 。**原因很简单，所有的数据交互都是在异步环境下，如果没有批量更新处理，一次数据交互多次改变 state 会促使视图多次渲染**
+
+```
+import ReactDOM from 'react-dom'
+const { unstable_batchedUpdates } = ReactDOM
+
+setTimeout(()=>{
+    unstable_batchedUpdates(()=>{
+        this.setState({ number:this.state.number + 1 })
+        console.log(this.state.number)
+        this.setState({ number:this.state.number + 1})
+        console.log(this.state.number)
+        this.setState({ number:this.state.number + 1 })
+        console.log(this.state.number) 
+    })
+})
+```
+
+### **那么如何提升更新优先级呢？**
+
+```
+  handleClick = () => {
+    setTimeout(() => {
+      this.setState(() => {
+        console.log(1);
+        return { number: 1 };
+      });
+    });
+    this.setState(() => {
+      console.log(2);
+      return { number: 2 };
+    });
+    ReactDOM.flushSync(() => {
+      console.log(3);
+      this.setState({ number: 3 });
+    });
+    this.setState(() => {
+      console.log(4);
+      return { number: 4 };
+    });
+  };
+```
+
+打印 **3, 2,4 1** ，相信不难理解为什么这么打印了。
+
+
+
+* 首先 `flushSync` `this.setState({ number: 3 })`设定了一个高优先级的更新，所以 2 和 3 被批量更新到 3 ，所以 3 先被打印。
+* 更新为 4。
+* 最后更新 setTimeout 中的 number = 1。
+* **flushSync补充说明**：flushSync 在同步条件下，会合并之前的 setState | useState，可以理解成，如果发现了 flushSync ，就会先执行更新，如果之前有未更新的 setState ｜ useState ，就会一起合并了，所以就解释了如上，2 和 3 被批量更新到 3 ，所以 3 先被打印。
+* **flushSync 中的 setState > 正常执行上下文中 setState > setTimeout ，Promise 中的 setState。**
+
+```
+const [ number , setNumber ] = React.useState(0)
+const handleClick = ()=>{
+    ReactDOM.flushSync(()=>{
+        setNumber(2) 
+        console.log(number) 
+    })
+    setNumber(1) 
+    console.log(number)
+    setTimeout(()=>{
+        setNumber(3) 
+        console.log(number)
+    })   
+}
+```
+
+打印：**结果： 0 0 0** 就是当调用改变 state 的函数dispatch，在本次函数执行上下文中，是获取不到最新的 state 值的。
+
+相同state 值不会更新 ui
+
+```
+export default function Index(){
+    const [ state  , dispatchState ] = useState({ name:'alien' })
+    const  handleClick = ()=>{ // 点击按钮，视图没有更新。
+        state.name = 'Alien'
+        dispatchState(state) // 直接改变 `state`，在内存中指向的地址相同。
+    }
+    return <div>
+         <span> { state.name }</span>
+        <button onClick={ handleClick }  >changeName++</button>
+    </div>
+}
+```
+
+在 useState 的 dispatchAction 处理逻辑中，会浅比较两次 state ，发现 state 相同，不会开启更新调度任务； demo 中两次 state 指向了相同的内存空间，所以默认为 state 相等，就不会发生视图更新了。
+
+解决问题： 把上述的 dispatchState 改成 dispatchState({...state}) 根本解决了问题，浅拷贝了对象，重新申请了一个内存空间。
 
 ### useState():
 
@@ -123,12 +579,11 @@ const [state, setState] = useState(() => {
   * **Only Call Hooks at the Top Level**: you cannot call useState() in loops, conditions, nested functions, etc. On multiple useState() calls, the invocation order must be the same between renderings.
   * **Only Call Hooks from React Functions**: you must call useState() only inside the functional component or a custom hook.
 
-![](<.gitbook/assets/image (154).png>)
+![](<.gitbook/assets/image (154) (1).png>)
 
 * **Stale state**
   * [**https://codesandbox.io/s/react-usestate-async-broken-uzzvg**](https://codesandbox.io/s/react-usestate-async-broken-uzzvg)****
   * Closures (e.g. event handlers, callbacks) might capture state variables from the functional component scope. Because state variables change between renderings, closures should capture variables with the latest state value. That is why we need to use prev state.
-*
 
 ### How does useState() work internally:
 
@@ -155,6 +610,13 @@ Each subsequent render the cursor is reset and those values are just read from e
 ###
 
 
+
+## Hooks:
+
+### The main rules of hooks:
+
+* Don’t call Hooks inside loops, conditions, or nested functions
+* Only Call Hooks from React Functions
 
 ### useEffect():
 

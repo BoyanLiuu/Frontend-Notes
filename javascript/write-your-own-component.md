@@ -49,7 +49,7 @@
 * **onPageChange**: **** callback function invoked with the updated page value when thindividuale page is changed.
 * **siblingCount** (optional): **** represents the min number of page buttons to be shown on each side of the current page button. Defaults to 1.
 
-![](<../.gitbook/assets/image (152).png>)
+![](<../.gitbook/assets/image (152) (1).png>)
 
 
 
@@ -93,7 +93,7 @@
 
 {% embed url="https://arco.design/react/components/carousel" %}
 
-![](<../.gitbook/assets/image (153) (1).png>)
+![](<../.gitbook/assets/image (153) (1) (1).png>)
 
 ### FIle Strucutre:
 
