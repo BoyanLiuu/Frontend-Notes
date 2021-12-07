@@ -288,6 +288,11 @@ html > body table tr[id="totals"] td ul > li {color: maroon;}
   * ayttribute selector : `[id="totals"]`
 * For every element and pseudo-element: 1
 * Combinators and the universal selector do not contribute anything to the specificity
+  * combinators:&#x20;
+    * descendant selector (space)
+    * child selector (>)
+    * adjacent sibling selector (+)
+    * general sibling selector (\~)
 * Inline-style: 1000
 * !important: it always goes at the end of the declaration, just before the semicolon.where an important and a non-important declaration con‐flict, the important declaration always wins.
 *   if two rules have exactly the same explicit weight, origin, and specificity, then
