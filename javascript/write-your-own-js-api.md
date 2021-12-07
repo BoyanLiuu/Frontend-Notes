@@ -1312,7 +1312,7 @@ window.addEventListener('resize',throttle2(coloring,2000));
 
 ## 柯里化
 
-### es5 实现继承
+## es5 实现继承
 
 异步并发数限制
 
