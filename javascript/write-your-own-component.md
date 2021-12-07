@@ -93,7 +93,7 @@
 
 {% embed url="https://arco.design/react/components/carousel" %}
 
-![](<../.gitbook/assets/image (153) (1) (1).png>)
+![](<../.gitbook/assets/image (153) (1) (1) (1).png>)
 
 ### FIle Strucutre:
 

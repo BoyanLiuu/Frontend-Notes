@@ -426,7 +426,7 @@ export default class index extends React.Component{
 
 点击打印：**0, 0, 0, callback1 1 ,callback2 1 ,callback3 1**
 
-****![](<.gitbook/assets/image (155).png>)****
+****![](<.gitbook/assets/image (155) (1).png>)****
 
 ### **batchUpdate 异步操作会在如下情况 被打破**
 
@@ -445,7 +445,7 @@ setTimeout(()=>{
 
 打印 ： **callback1 1 , 1, callback2 2 , 2,callback3 3 , 3**
 
-![](<.gitbook/assets/image (158).png>)
+![](<.gitbook/assets/image (158) (1).png>)
 
 ### 怎么在异步情况下 开启 batchupdate?
 
