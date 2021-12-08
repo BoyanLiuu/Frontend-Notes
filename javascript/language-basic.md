@@ -673,7 +673,7 @@ console.log(a instanceof Array);//true
 const a = [];
 console.log(a.constructor == Array);//true
 
-//Method 3 例子
+//Method 3 例子 使用 constructor 判断
 const a = ['Hello','Howard'];
 const b = {0:'Hello',1:'Howard'};
 const c = 'Hello Howard';
@@ -3758,10 +3758,6 @@ Promise{<resolved>: undefined}
 最后一个定时器打印出的`p1`其实是`.finally`的返回值，我们知道`.finally`的返回值如果在没有抛出错误的情况下默认会是上一个`Promise`的返回值(`3.10`中也有提到), 而这道题中`.finally`上一个`Promise`是`.then()`，但是这个`.then()`并没有返回值，所以`p1`打印出来的`Promise`的值会是`undefined`，如果你在定时器的**下面**加上一个`return 1`，则值就会变成`1`
 
 
-
-### &#x20;
-
-&#x20;
 
 ## 16.Array splice() & slice():
 
