@@ -1063,7 +1063,15 @@ console.log(copyObj.obj1 === copyObj.obj2);// 上一个版本 会返还false
 * 输入框连续输入的请求次数控制
 * 防止表单多次提交
 
-{% embed url="https://jsfiddle.net/Boyanliuu/oznt71e4/25/" %}
+### 最简易版本：
+
+[https://jsfiddle.net/Boyanliuu/oznt71e4/25/](https://jsfiddle.net/Boyanliuu/oznt71e4/25/)
+
+### 接受parameter：
+
+[https://jsfiddle.net/h9cL5av4/15/](https://jsfiddle.net/h9cL5av4/15/)
+
+###
 
 ### 没返回值版本
 
